@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# Local backups and archives
+backups/
+*.zip
+
+# Nested project copies
+innergeodessa-mvp/
