@@ -335,12 +335,13 @@ validateFailure(
 // Randomized stress testing.
 const RANDOM_TEST_COUNT = 1000;
 const generatedTypes = new Set<PersonalityType>();
+const seededRandom = createSeededRandom(0x5eed1234);
 
 for (let index = 0; index < RANDOM_TEST_COUNT; index += 1) {
   const responses = personalityQuestionBank.map((question) => {
     const option =
       question.options[
-        Math.floor(Math.random() * question.options.length)
+        Math.floor(seededRandom() * question.options.length)
       ];
 
     return {
@@ -424,4 +425,13 @@ if (issues.length > 0) {
   console.log(`${passedChecks} checks passed.`);
   console.log("PASS — Personality interpreter validated.");
   console.log("========================================");
+}
+
+function createSeededRandom(seed: number): () => number {
+  let state = seed >>> 0;
+
+  return () => {
+    state = (state * 1_664_525 + 1_013_904_223) >>> 0;
+    return state / 0x1_0000_0000;
+  };
 }
