@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "validate:personalities": "tsx scripts/validate-personalities.ts",
+    "validate:question-bank": "tsx scripts/validate-question-bank.ts",
+    "validate:personality-interpreter": "tsx scripts/validate-personality-interpreter.ts",
+    "validate": "npm run validate:question-bank && npm run validate:personalities && npm run validate:personality-interpreter"
   },
   "dependencies": {
     "next": "16.2.11",
@@ -22,6 +26,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.11",
     "tailwindcss": "^4",
+    "tsx": "^4.23.1",
     "typescript": "^5"
   }
 }
