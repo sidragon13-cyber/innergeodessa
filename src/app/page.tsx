@@ -1,65 +1,180 @@
-import Image from "next/image";
+import {
+  CompassMark,
+  Hero,
+  ProductGrid,
+  SiteFooter,
+  SiteHeader,
+  type Product,
+} from "@/components/home";
+
+const products: Product[] = [
+  {
+    number: "01",
+    id: "personality",
+    title: "Personality Test",
+    description:
+      "Understand how you gain energy, process information, make decisions, and approach life.",
+    metadata: "48 questions · 6–8 minutes",
+    cta: "Start Personality Test",
+    symbol: "P",
+    href: "/personality",
+  },
+  {
+    number: "02",
+    id: "career",
+    title: "Career Interest",
+    description:
+      "Discover the activities, environments, and fields that naturally attract you.",
+    metadata: "36 questions · 5–7 minutes",
+    cta: "Explore Career Interests",
+    symbol: "C",
+    href: "/career",
+  },
+  {
+    number: "03",
+    id: "zodiac",
+    title: "Zodiac Identity",
+    description:
+      "Begin with your birth date and discover your zodiac identity.",
+    metadata: "About 1 minute",
+    cta: "Discover Your Sign",
+    symbol: "Z",
+    href: "/zodiac",
+  },
+];
+
+const values = [
+  {
+    number: "01",
+    title: "Understand your patterns",
+    description:
+      "Notice the preferences and tendencies that shape how you move through everyday life.",
+  },
+  {
+    number: "02",
+    title: "Explore suitable directions",
+    description:
+      "Use your interests and natural inclinations as thoughtful starting points for what comes next.",
+  },
+  {
+    number: "03",
+    title: "Connect through shared identities",
+    description:
+      "See where your perspective overlaps with others as community features develop in a later phase.",
+  },
+];
+
+const trustPoints = [
+  "Results are designed for self-exploration and personal reflection.",
+  "InnerGeodessa does not provide medical or psychological diagnosis.",
+  "No account is required for the initial experience.",
+  "Privacy and user control will guide future development.",
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main id="top">
+      <SiteHeader />
+      <Hero />
+
+      <section className="explore-section shell" id="explore">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">Explore yourself</p>
+            <h2>Three ways to understand yourself</h2>
+          </div>
+          <p>
+            Start anywhere. Each experience offers a different lens on what
+            makes you, you.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <ProductGrid products={products} />
+      </section>
+
+      <section className="profile-section" id="how-it-works">
+        <div className="profile-inner shell">
+          <div className="profile-intro">
+            <p className="eyebrow">How it comes together</p>
+            <h2>
+              One profile.
+              <br />
+              <em>Three dimensions.</em>
+            </h2>
+            <p>
+              Each result becomes part of your InnerGeodessa identity profile,
+              helping you understand yourself from different perspectives.
+            </p>
+          </div>
+
+          <div className="profile-example">
+            <div className="profile-orbit" aria-hidden="true">
+              <CompassMark />
+            </div>
+            <p className="example-label">Example identity</p>
+            <div className="identity-result">
+              <span>Personality</span>
+              <strong>INTP</strong>
+            </div>
+            <div className="identity-result">
+              <span>Career interests</span>
+              <strong>Investigative · Artistic</strong>
+            </div>
+            <div className="identity-result">
+              <span>Zodiac</span>
+              <strong>Scorpio</strong>
+            </div>
+            <p className="example-note">
+              A preview of how three perspectives can sit together. Saving
+              profiles is not yet available.
+            </p>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <section className="value-section shell" id="about">
+        <div className="value-heading">
+          <p className="eyebrow">Thoughtful by design</p>
+          <h2>More than a label</h2>
+          <p>
+            Results are starting points for reflection—not boxes to put
+            yourself in.
+          </p>
+        </div>
+
+        <div className="value-grid">
+          {values.map((value) => (
+            <article key={value.number}>
+              <span className="value-number">{value.number}</span>
+              <h3>{value.title}</h3>
+              <p>{value.description}</p>
+            </article>
+          ))}
+        </div>
+
+        <p className="future-note">
+          <span aria-hidden="true">○</span>
+          Community features are planned for a later phase.
+        </p>
+      </section>
+
+      <section className="trust-section" id="trust">
+        <div className="trust-inner shell">
+          <div className="trust-heading">
+            <p className="eyebrow">A considered approach</p>
+            <h2>Designed for reflection, not diagnosis.</h2>
+          </div>
+          <ul>
+            {trustPoints.map((point, index) => (
+              <li key={point}>
+                <span aria-hidden="true">0{index + 1}</span>
+                {point}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <SiteFooter />
+    </main>
   );
 }

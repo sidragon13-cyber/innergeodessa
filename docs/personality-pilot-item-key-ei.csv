@@ -1,0 +1,19 @@
+pilot_no,item_id,key,subdimension,wording,signed_transform
+1,P-EI-PROCESS-001,E,process,Discussing a new idea with someone often helps me understand my own thinking more clearly.,raw - 3
+2,P-EI-ENERGY-003,I,energy,"After spending a long time interacting with others, I prefer a period with fewer conversations or activities.",3 - raw
+3,P-EI-STIMULATION-002,E,stimulation,I prefer having some activity around me while I work on a routine task.,raw - 3
+4,P-EI-INITIATION-005,I,initiation,"When an activity is already under way, I usually wait for an opening before joining.",3 - raw
+5,P-EI-BREADTH-002,E,breadth,"In shared settings, I tend to divide my attention among several people.",raw - 3
+6,P-EI-EXPRESSION-003,I,expression,I prefer to form my thoughts before expressing them on a complex topic.,3 - raw
+7,P-EI-ENERGY-002,E,energy,"After a long quiet period, becoming active again usually helps restore my energy.",raw - 3
+8,P-EI-PROCESS-003,I,process,"Before deciding what I think, I prefer time to consider the information on my own.",3 - raw
+9,P-EI-BREADTH-005,E,breadth,"When several conversations are available, I prefer moving between them.",raw - 3
+10,P-EI-STIMULATION-003,I,stimulation,I prefer a low-activity setting when I need to think something through.,3 - raw
+11,P-EI-INITIATION-003,E,initiation,"At the start of a shared task, I tend to ask others for their first thoughts.",raw - 3
+12,P-EI-ENERGY-004,I,energy,"Between demanding activities, I usually restore my energy by spending some quiet time.",3 - raw
+13,P-EI-EXPRESSION-001,E,expression,I often share an idea while I am still working out its details.,raw - 3
+14,P-EI-BREADTH-003,I,breadth,I prefer giving sustained attention to one or two conversations at a time.,3 - raw
+15,P-EI-STIMULATION-005,E,stimulation,I often enjoy settings where several things are happening at once.,raw - 3
+16,P-EI-EXPRESSION-004,I,expression,"When I am still forming an answer, I prefer to wait briefly before expressing it.",3 - raw
+17,P-EI-PROCESS-005,E,process,"When a task is unclear, I usually make sense of it by talking through possible approaches with someone.",raw - 3
+18,P-EI-INITIATION-006,I,initiation,"In a new shared task, I prefer some context before asking others for input.",3 - raw

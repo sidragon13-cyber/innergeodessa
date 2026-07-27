@@ -70,3 +70,11 @@ innergeodessa-mvp/backend/data/*
 
 innergeodessa-mvp/tests/*
 !innergeodessa-mvp/tests/*.py
+
+# macOS
+.DS_Store
+
+# Local development backups
+*.backup
+*.save
+*.before-*.tsx
