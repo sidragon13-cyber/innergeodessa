@@ -1,5 +1,4 @@
 from pathlib import Path
-import shutil
 import sys
 
 import pytest
@@ -9,17 +8,22 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
 
 from app import main
 from app.database import connect, initialize
+from legacy_fixture import create_legacy_database
 
 
 ROOT = Path(__file__).resolve().parents[1] / "backend"
-SOURCE_DB = ROOT / "innergeodessa.db"
 ITEMS_PATH = ROOT / "data" / "items.json"
+SCHEMA_PATH = ROOT / "schema.sql"
 
 
 @pytest.fixture
 def client_and_database(tmp_path, monkeypatch):
     database_path = tmp_path / "session-flow.db"
-    shutil.copy2(SOURCE_DB, database_path)
+    create_legacy_database(
+        database_path,
+        SCHEMA_PATH,
+        ITEMS_PATH,
+    )
     initialize(db_path=database_path, items_path=ITEMS_PATH)
 
     monkeypatch.setattr(main, "connect", lambda: connect(database_path))

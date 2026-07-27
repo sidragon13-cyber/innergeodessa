@@ -1,6 +1,5 @@
 import json
 from pathlib import Path
-import shutil
 import sqlite3
 import sys
 
@@ -9,10 +8,14 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
 
 from app.database import initialize
+from legacy_fixture import (
+    LEGACY_ITEM_COUNT,
+    OVERLAPPING_SOURCE_ID_COUNT,
+    create_legacy_database,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1] / "backend"
-SOURCE_DB = ROOT / "innergeodessa.db"
 ITEMS_PATH = ROOT / "data" / "items.json"
 SCHEMA_PATH = ROOT / "schema.sql"
 
@@ -38,35 +41,58 @@ def collect_counts(connection):
     }
 
 
+def collect_legacy_rows(connection):
+    return {
+        "items": connection.execute(
+            "SELECT * FROM items ORDER BY item_id"
+        ).fetchall(),
+        "sessions": connection.execute(
+            """SELECT session_id, consent, language, started_at,
+                      completed_at, status
+               FROM sessions ORDER BY session_id"""
+        ).fetchall(),
+        "responses": connection.execute(
+            """SELECT * FROM responses
+               ORDER BY session_id, item_id"""
+        ).fetchall(),
+        "results": connection.execute(
+            "SELECT * FROM results ORDER BY session_id"
+        ).fetchall(),
+    }
+
+
 def test_non_destructive_versioned_migration_is_idempotent(tmp_path):
     database_path = tmp_path / "migration.db"
-    shutil.copy2(SOURCE_DB, database_path)
+    create_legacy_database(
+        database_path,
+        SCHEMA_PATH,
+        ITEMS_PATH,
+    )
 
     with sqlite3.connect(database_path) as connection:
-        before_results = connection.execute(
-            "SELECT * FROM results ORDER BY session_id"
-        ).fetchall()
+        before_legacy_rows = collect_legacy_rows(connection)
 
     initialize(db_path=database_path, items_path=ITEMS_PATH)
 
     with sqlite3.connect(database_path) as connection:
         counts = collect_counts(connection)
         assert counts == {
-            "items": 72,
-            "sessions": 21,
-            "responses": 246,
-            "results": 3,
+            "items": LEGACY_ITEM_COUNT,
+            "sessions": 2,
+            "responses": 2,
+            "results": 1,
             "question_banks": 2,
-            "question_bank_items": 144,
-            "session_question_items": 1512,
-            "session_responses": 246,
+            "question_bank_items": LEGACY_ITEM_COUNT + 72,
+            "session_question_items": 2 * LEGACY_ITEM_COUNT,
+            "session_responses": 2,
         }
+        assert collect_legacy_rows(connection) == before_legacy_rows
 
         assert fetch_value(
             connection,
             "SELECT COUNT(*) FROM sessions "
             "WHERE question_bank_version='personality-legacy-v1'",
-        ) == 21
+        ) == 2
         assert fetch_value(
             connection,
             "SELECT COUNT(*) FROM sessions "
@@ -77,7 +103,7 @@ def test_non_destructive_versioned_migration_is_idempotent(tmp_path):
             connection,
             "SELECT COUNT(*) FROM question_bank_items "
             "WHERE question_bank_version='personality-legacy-v1'",
-        ) == 72
+        ) == LEGACY_ITEM_COUNT
         assert fetch_value(
             connection,
             "SELECT COUNT(*) FROM question_bank_items "
@@ -89,7 +115,16 @@ def test_non_destructive_versioned_migration_is_idempotent(tmp_path):
             "SELECT source_item_id FROM question_bank_items "
             "GROUP BY source_item_id HAVING COUNT(*)=2"
             ")",
-        ) == 24
+        ) == OVERLAPPING_SOURCE_ID_COUNT
+        assert connection.execute(
+            """SELECT session_id, COUNT(*)
+               FROM session_question_items
+               GROUP BY session_id
+               ORDER BY session_id"""
+        ).fetchall() == [
+            ("legacy-active-session", LEGACY_ITEM_COUNT),
+            ("legacy-completed-session", LEGACY_ITEM_COUNT),
+        ]
         assert fetch_value(
             connection,
             "SELECT COUNT(*) FROM session_responses sr "
@@ -98,9 +133,7 @@ def test_non_destructive_versioned_migration_is_idempotent(tmp_path):
             "WHERE qbi.item_record_id IS NULL",
         ) == 0
         assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
-        assert connection.execute(
-            "SELECT * FROM results ORDER BY session_id"
-        ).fetchall() == before_results
+        assert collect_legacy_rows(connection) == before_legacy_rows
 
     initialize(db_path=database_path, items_path=ITEMS_PATH)
 
