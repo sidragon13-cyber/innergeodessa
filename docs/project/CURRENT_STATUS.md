@@ -4,9 +4,9 @@
 - Project Name: InnerGeodessa
 - Repository: sidragon13-cyber/innergeodessa
 - Current Branch: work/personality-system-audit
-- Latest Stable Commit: 7ce4efe
+- Latest Stable Commit: fc861d7
 - Current Stage: Stage 2 — Personality MVP Closure
-- Current Substage: Stage 2.1 — Result Persistence
+- Current Substage: Stage 2.3 — Personality Registry and Preview Decoupling
 
 ## Product Goal
 
@@ -58,13 +58,14 @@ The following are not implemented:
 - GET persisted result API
 - Result recovery after refresh or direct reopening
 - `sessionStorage` reduced to an optional result cache
+- `PersonalityProfile` v1 contract formally confirmed
+- ENTJ and INTJ validated against the frozen v1 contract
+- Full personality validation pipeline passing
 
 ## Current Known Gaps
 
 - There is no formal personality `registry.ts`.
 - The preview page hardcodes ENTJ and INTJ.
-- `PersonalityProfile` v1 is not formally frozen.
-- INTJ content depth is lower than ENTJ.
 - The remaining 14 personality profiles have not been migrated.
 - RIASEC has not been implemented.
 - Identity, billing, AI, PDF, community, and SaaS capabilities have not been implemented.
@@ -73,11 +74,21 @@ The following are not implemented:
 
 ## Next Exact Task
 
-### Stage 2.2 — PersonalityProfile v1 Freeze
+### Stage 2.3 — Personality Registry and Preview Decoupling
 
 Goal:
 
-- Formally freeze the `PersonalityProfile` v1 content structure before migrating additional personality profiles.
+- Establish one formal registry as the source of truth for available personality profiles.
+- Remove hardcoded ENTJ and INTJ references from the personality preview page.
+- Preserve graceful fallback behaviour for personality types whose detailed profiles are not yet available.
+- Prepare the content system for controlled migration of the remaining 14 personality profiles.
+
+Non-goals:
+
+- Do not change the `PersonalityProfile` v1 contract.
+- Do not modify personality scoring.
+- Do not bulk-generate the remaining 14 profiles.
+- Do not introduce login, billing, AI reports, or external infrastructure.
 
 ## Validation Baseline
 

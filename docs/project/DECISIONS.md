@@ -195,3 +195,23 @@ Result recovery and a complete user flow provide more immediate product value th
 
 Do Not:
 Prioritise login, payment, AI, SaaS, or large-server infrastructure in the current stage.
+
+## D-015 — Freeze PersonalityProfile v1 by Existing Contract
+
+Status:
+Accepted
+
+Decision:
+The existing `PersonalityProfile` TypeScript contract and its validation rules are the frozen v1 content standard.
+
+All current and future personality profiles must use `schemaVersion: "1.0.0"` and pass the existing personality validation pipeline.
+
+Reason:
+The contract already defines the required content modules, supported personality types, localisation model, access labels, item counts, identifier rules, metadata, and content-completeness checks.
+
+ENTJ and INTJ both pass the complete validation pipeline without errors or warnings. No structural ambiguity was found that would prevent additional personality profiles from being added.
+
+Do Not:
+Refactor the v1 contract, add another schema layer, or change the validation rules without a demonstrated product or data-integrity problem.
+
+Do not treat registry implementation as a new content schema. The registry should only provide a controlled lookup boundary for profiles that conform to the existing v1 contract.
