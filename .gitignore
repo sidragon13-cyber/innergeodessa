@@ -63,7 +63,16 @@ innergeodessa-mvp/backend/*
 !innergeodessa-mvp/backend/requirements-dev.txt
 
 innergeodessa-mvp/backend/app/*
+
 !innergeodessa-mvp/backend/app/*.py
+
+!innergeodessa-mvp/backend/app/schemas/
+innergeodessa-mvp/backend/app/schemas/*
+!innergeodessa-mvp/backend/app/schemas/*.py
+
+!innergeodessa-mvp/backend/app/routers/
+innergeodessa-mvp/backend/app/routers/*
+!innergeodessa-mvp/backend/app/routers/*.py
 
 innergeodessa-mvp/backend/data/*
 !innergeodessa-mvp/backend/data/items.json

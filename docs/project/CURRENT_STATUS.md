@@ -4,9 +4,9 @@
 - Project Name: InnerGeodessa
 - Repository: sidragon13-cyber/innergeodessa
 - Current Branch: work/personality-system-audit
-- Latest Stable Commit: fc861d7
+- Latest Stable Commit: a7103c1
 - Current Stage: Stage 2 — Personality MVP Closure
-- Current Substage: Stage 2.3 — Personality Registry and Preview Decoupling
+- Current Substage: Stage 2.3 — Personality Registry and Preview Decoupling (Complete)
 
 ## Product Goal
 
@@ -61,12 +61,16 @@ The following are not implemented:
 - `PersonalityProfile` v1 contract formally confirmed
 - ENTJ and INTJ validated against the frozen v1 contract
 - Full personality validation pipeline passing
+- All 16 MBTI-style personality profiles implemented
+- Complete typed personality registry
+- Validator coverage for all expected personality types
+- Preview routes support all 16 personality types
+- Result page support for deterministic preview results
+- Isolated deterministic fixtures for legacy migration and session-flow tests
+- Mutable development database removed as a test fixture
 
 ## Current Known Gaps
 
-- There is no formal personality `registry.ts`.
-- The preview page hardcodes ENTJ and INTJ.
-- The remaining 14 personality profiles have not been migrated.
 - RIASEC has not been implemented.
 - Identity, billing, AI, PDF, community, and SaaS capabilities have not been implemented.
 - `globals.css` is large but is not the current priority.
@@ -74,34 +78,27 @@ The following are not implemented:
 
 ## Next Exact Task
 
-### Stage 2.3 — Personality Registry and Preview Decoupling
+### RIASEC Assessment
 
 Goal:
 
-- Establish one formal registry as the source of truth for available personality profiles.
-- Remove hardcoded ENTJ and INTJ references from the personality preview page.
-- Preserve graceful fallback behaviour for personality types whose detailed profiles are not yet available.
-- Prepare the content system for controlled migration of the remaining 14 personality profiles.
-
-Non-goals:
-
-- Do not change the `PersonalityProfile` v1 contract.
-- Do not modify personality scoring.
-- Do not bulk-generate the remaining 14 profiles.
-- Do not introduce login, billing, AI reports, or external infrastructure.
+- Begin the next assessment module only after the completed personality MVP baseline remains stable.
+- Preserve the existing personality scoring, content, result persistence, and historical-session behaviour while RIASEC is developed.
 
 ## Validation Baseline
 
-The following commands currently exist and apply to project validation:
+The current stable verification baseline is:
 
 ```bash
-npm run validate
-npm run test:python
-npm run typecheck
-npm run lint
-npm run build
-git diff --check
+npm run validate      # passed; all 16 personality profiles valid; interpreter 26 checks passed
+npm run test:python   # passed; 33 tests
+npm run typecheck     # passed
+npm run lint          # passed
+npm run build         # passed
+git diff --check      # passed
 ```
+
+The Next.js multiple `package-lock.json` warning remains non-blocking and is not a functional validation failure.
 
 ## Git Baseline
 

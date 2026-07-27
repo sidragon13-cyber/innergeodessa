@@ -8,6 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
 
 from app import main
 from app.database import connect, initialize
+from app.routers import session as session_router_module
 from legacy_fixture import create_legacy_database
 
 
@@ -26,7 +27,11 @@ def client_and_database(tmp_path, monkeypatch):
     )
     initialize(db_path=database_path, items_path=ITEMS_PATH)
 
-    monkeypatch.setattr(main, "connect", lambda: connect(database_path))
+    monkeypatch.setattr(
+        session_router_module,
+        "connect",
+        lambda: connect(database_path),
+    )
     monkeypatch.setattr(main, "initialize", lambda: None)
 
     with TestClient(main.app) as client:
@@ -190,7 +195,11 @@ def test_completed_session_can_retrieve_persisted_result(
     def reject_rescoring(*_args, **_kwargs):
         raise AssertionError("GET result must not run the scorer")
 
-    monkeypatch.setattr(main, "score_assessment", reject_rescoring)
+    monkeypatch.setattr(
+        session_router_module,
+        "score_assessment",
+        reject_rescoring,
+    )
 
     response = client.get(
         f"/api/sessions/{session['session_id']}/result"

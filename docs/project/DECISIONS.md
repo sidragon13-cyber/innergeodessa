@@ -215,3 +215,17 @@ Do Not:
 Refactor the v1 contract, add another schema layer, or change the validation rules without a demonstrated product or data-integrity problem.
 
 Do not treat registry implementation as a new content schema. The registry should only provide a controlled lookup boundary for profiles that conform to the existing v1 contract.
+
+## D-016 — Isolate Legacy Database Tests From Mutable Development Data
+
+Status:
+Accepted
+
+Decision:
+Tests must not use `backend/innergeodessa.db` as a fixture. Legacy migration and session-flow tests construct deterministic temporary databases, and development data must not affect test outcomes.
+
+Reason:
+The development database changes during normal local use. Code-created fixtures keep historical migration scenarios inspectable, isolated, and repeatable while leaving production migration behaviour unchanged.
+
+Do Not:
+Copy, reset, or modify the mutable development database to satisfy test expectations, or change production migration behaviour to match fixture-specific counts.
