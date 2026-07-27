@@ -143,6 +143,18 @@ export default function PersonalityResultPage() {
     useState<ResultLoadState>("loading");
 
   useEffect(() => {
+    const previewResult = readCachedResult(
+      sessionStorage.getItem(storageKey),
+      sessionId,
+    );
+
+    if (
+      sessionId.startsWith("preview-") &&
+      previewResult?.questionBankVersion === "preview"
+    ) {
+      return;
+    }
+
     let cancelled = false;
 
     async function loadPersistedResult() {

@@ -1,5 +1,6 @@
 import {
   personalityProfiles,
+  personalityTypeCodes,
 } from "../src/data/personality";
 
 import {
@@ -8,16 +9,19 @@ import {
 
 let hasErrors = false;
 
-for (const [type, profile] of Object.entries(
-  personalityProfiles,
-)) {
+for (const type of personalityTypeCodes) {
+  const profile = personalityProfiles[type];
+
   if (!profile) {
+    hasErrors = true;
+    console.error(`\n${type}`);
+    console.error("  ✗ Profile is missing from the registry");
     continue;
   }
 
   const result = validatePersonalityProfile(
     profile,
-    type as typeof profile.type,
+    type,
   );
 
   console.log(`\n${type}`);
@@ -40,5 +44,5 @@ for (const [type, profile] of Object.entries(
 if (hasErrors) {
   process.exitCode = 1;
 } else {
-  console.log("\nAll available personality profiles are valid.");
+  console.log("\nAll 16 personality profiles are valid.");
 }

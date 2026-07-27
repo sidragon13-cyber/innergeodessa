@@ -4,40 +4,38 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-const supportedPreviewTypes = ["ENTJ", "INTJ"] as const;
+import {
+  PERSONALITY_TIE_RULE,
+  type PersonalityResultContract,
+} from "@/data/assessment/scoring/personality";
+import { getPersonalityProfile } from "@/data/personality";
 
-type SupportedPreviewType =
-  (typeof supportedPreviewTypes)[number];
-
-function isSupportedPreviewType(
-  value: string,
-): value is SupportedPreviewType {
-  return supportedPreviewTypes.includes(
-    value as SupportedPreviewType,
-  );
-}
+const PREVIEW_TIMESTAMP = "2026-01-01T00:00:00.000Z";
 
 export default function PersonalityPreviewPage() {
   const params = useParams<{ type: string }>();
   const router = useRouter();
 
-  const personalityType = params.type.toUpperCase();
+  const personalityType = params.type.trim().toUpperCase();
+  const profile = getPersonalityProfile(personalityType);
 
   useEffect(() => {
-    if (!isSupportedPreviewType(personalityType)) {
+    if (!profile) {
       return;
     }
 
     const sessionId =
       `preview-${personalityType.toLowerCase()}`;
 
-    const previewResult = {
-      type: personalityType,
+    const previewResult: PersonalityResultContract = {
+      sessionId,
+      status: "completed",
+      type: profile.type,
       scores: {
-        EI: personalityType === "ENTJ" ? 8 : -8,
-        SN: -7,
-        TF: 7,
-        JP: 9,
+        EI: profile.type[0] === "E" ? 8 : -8,
+        SN: profile.type[1] === "S" ? 7 : -7,
+        TF: profile.type[2] === "T" ? 7 : -7,
+        JP: profile.type[3] === "J" ? 9 : -9,
       },
       confidence: {
         EI: 0.8,
@@ -45,8 +43,16 @@ export default function PersonalityPreviewPage() {
         TF: 0.7,
         JP: 0.9,
       },
-      answered: {},
-      preview: true,
+      answered: {
+        EI: 18,
+        SN: 18,
+        TF: 18,
+        JP: 18,
+      },
+      tie_rule: PERSONALITY_TIE_RULE,
+      questionBankVersion: "preview",
+      completedAt: PREVIEW_TIMESTAMP,
+      calculatedAt: PREVIEW_TIMESTAMP,
     };
 
     sessionStorage.setItem(
@@ -57,9 +63,9 @@ export default function PersonalityPreviewPage() {
     router.replace(
       `/personality/result/${sessionId}`,
     );
-  }, [personalityType, router]);
+  }, [personalityType, profile, router]);
 
-  if (!isSupportedPreviewType(personalityType)) {
+  if (!profile) {
     return (
       <main className="min-h-screen bg-[#efede5] px-6 py-20 text-[#26372d]">
         <section className="mx-auto max-w-3xl border border-[#c8c2b5] bg-[#f7f4ec] p-8 md:p-12">
@@ -70,10 +76,6 @@ export default function PersonalityPreviewPage() {
           <h1 className="mt-4 text-3xl font-semibold">
             This personality profile is not available yet.
           </h1>
-
-          <p className="mt-5 leading-7 text-[#596158]">
-            Available previews: ENTJ and INTJ.
-          </p>
 
           <Link
             href="/personality"
