@@ -2,32 +2,24 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useSyncExternalStore } from "react";
+import {
+  useEffect,
+  useState,
+  useSyncExternalStore,
+} from "react";
 
+import {
+  fetchPersonalityResult,
+  isPersonalityResultContract,
+  PersonalityResultRequestError,
+  type PersonalityResultContract,
+} from "@/data/assessment/scoring/personality";
 import { getPersonalityProfile } from "@/data/personality";
 import {
   getLocalizedStringList,
   getLocalizedText,
   type SupportedLocale,
 } from "@/data/shared";
-
-type PersonalityResult = {
-  type?: string;
-  scores?: {
-    EI?: number;
-    SN?: number;
-    TF?: number;
-    JP?: number;
-  };
-  confidence?: {
-    EI?: number;
-    SN?: number;
-    TF?: number;
-    JP?: number;
-  };
-  answered?: Record<string, unknown>;
-  [key: string]: unknown;
-};
 
 const dimensionLabels = {
   EI: "Extraversion — Introversion",
@@ -48,8 +40,86 @@ function formatConfidence(value: number | undefined) {
   return `${Math.round(value * 100)}%`;
 }
 
+type ResultLoadState =
+  | "loading"
+  | "ready"
+  | "not-found"
+  | "not-completed"
+  | "error";
+
+function readCachedResult(
+  storedResult: string | null,
+  sessionId: string,
+): PersonalityResultContract | null {
+  if (!storedResult) {
+    return null;
+  }
+
+  try {
+    const parsed: unknown = JSON.parse(storedResult);
+
+    return (
+      isPersonalityResultContract(parsed) &&
+      parsed.sessionId === sessionId
+    )
+      ? parsed
+      : null;
+  } catch {
+    return null;
+  }
+}
+
 function subscribeToSessionStorage() {
   return () => {};
+}
+
+function getFailureState(error: unknown): ResultLoadState {
+  if (error instanceof PersonalityResultRequestError) {
+    if (error.status === 404) {
+      return "not-found";
+    }
+
+    if (error.status === 409) {
+      return "not-completed";
+    }
+  }
+
+  return "error";
+}
+
+function ResultState({
+  label,
+  title,
+  message,
+}: {
+  label: string;
+  title: string;
+  message: string;
+}) {
+  return (
+    <main className="min-h-screen bg-[#efede5] px-6 py-20 text-[#26372d]">
+      <section className="mx-auto max-w-3xl border border-[#c8c2b5] bg-[#f7f4ec] p-8 md:p-12">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
+          {label}
+        </p>
+
+        <h1 className="mt-4 text-3xl font-semibold">
+          {title}
+        </h1>
+
+        <p className="mt-5 leading-7 text-[#596158]">
+          {message}
+        </p>
+
+        <Link
+          href="/personality/test"
+          className="mt-8 inline-flex min-h-12 items-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5]"
+        >
+          Start assessment
+        </Link>
+      </section>
+    </main>
+  );
 }
 
 export default function PersonalityResultPage() {
@@ -58,51 +128,98 @@ export default function PersonalityResultPage() {
 
   const locale: SupportedLocale = "en";
   const storageKey = `innergeodessa-result-${sessionId}`;
-
   const storedResult = useSyncExternalStore(
     subscribeToSessionStorage,
     () => sessionStorage.getItem(storageKey),
     () => null,
   );
+  const cachedResult = readCachedResult(
+    storedResult,
+    sessionId,
+  );
+  const [result, setResult] =
+    useState<PersonalityResultContract | null>(null);
+  const [loadState, setLoadState] =
+    useState<ResultLoadState>("loading");
 
-  let result: PersonalityResult | null = null;
+  useEffect(() => {
+    let cancelled = false;
 
-  if (storedResult) {
-    try {
-      result = JSON.parse(storedResult) as PersonalityResult;
-    } catch {
-      result = null;
+    async function loadPersistedResult() {
+      try {
+        const persistedResult =
+          await fetchPersonalityResult(sessionId);
+
+        if (cancelled) {
+          return;
+        }
+
+        setResult(persistedResult);
+        setLoadState("ready");
+        sessionStorage.setItem(
+          storageKey,
+          JSON.stringify(persistedResult),
+        );
+      } catch (error) {
+        if (cancelled) {
+          return;
+        }
+
+        setResult(null);
+        setLoadState(getFailureState(error));
+      }
     }
-  }
 
-  if (!result) {
+    loadPersistedResult();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [sessionId, storageKey]);
+
+  const displayResult = result ?? cachedResult;
+
+  if (loadState === "loading" && !displayResult) {
     return (
-      <main className="min-h-screen bg-[#efede5] px-6 py-20 text-[#26372d]">
-        <section className="mx-auto max-w-3xl border border-[#c8c2b5] bg-[#f7f4ec] p-8 md:p-12">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-            Result unavailable
-          </p>
-
-          <h1 className="mt-4 text-3xl font-semibold">
-            This result is not available in the current browser session.
-          </h1>
-
-          <p className="mt-5 leading-7 text-[#596158]">
-            Complete a new personality assessment to generate a result.
-          </p>
-
-          <Link
-            href="/personality/test"
-            className="mt-8 inline-flex min-h-12 items-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5]"
-          >
-            Start assessment
-          </Link>
-        </section>
-      </main>
+      <ResultState
+        label="Loading result"
+        title="Loading your personality result…"
+        message="Retrieving the completed assessment from the result service."
+      />
     );
   }
 
-  const profile = getPersonalityProfile(result.type);
+  if (loadState === "not-found") {
+    return (
+      <ResultState
+        label="Result not found"
+        title="This result could not be found."
+        message="Check the result link or complete a new personality assessment."
+      />
+    );
+  }
+
+  if (loadState === "not-completed") {
+    return (
+      <ResultState
+        label="Assessment not completed"
+        title="This assessment has not been completed."
+        message="Return to the assessment and answer all questions before viewing the result."
+      />
+    );
+  }
+
+  if (loadState === "error" || !displayResult) {
+    return (
+      <ResultState
+        label="Unable to load result"
+        title="Your result could not be loaded."
+        message="The result service is temporarily unavailable. Please try again later."
+      />
+    );
+  }
+
+  const profile = getPersonalityProfile(displayResult.type);
 
   const personalityName = profile
     ? getLocalizedText(profile.identity.name, locale)
@@ -140,7 +257,7 @@ export default function PersonalityResultPage() {
 
               <div className="mt-3 flex flex-wrap items-end gap-x-5 gap-y-2">
                 <h1 className="text-6xl font-semibold tracking-tight md:text-8xl">
-                  {result.type ?? "—"}
+                  {displayResult.type}
                 </h1>
 
                 {personalityName && (
@@ -280,7 +397,7 @@ export default function PersonalityResultPage() {
                   </div>
 
                   <p className="text-3xl font-semibold">
-                    {result.scores?.[dimension] ?? "—"}
+                    {displayResult.scores[dimension]}
                   </p>
                 </div>
 
@@ -291,7 +408,7 @@ export default function PersonalityResultPage() {
 
                   <span className="font-semibold">
                     {formatConfidence(
-                      result.confidence?.[dimension],
+                      displayResult.confidence[dimension],
                     )}
                   </span>
                 </div>

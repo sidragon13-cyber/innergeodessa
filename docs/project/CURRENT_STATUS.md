@@ -4,9 +4,9 @@
 - Project Name: InnerGeodessa
 - Repository: sidragon13-cyber/innergeodessa
 - Current Branch: work/personality-system-audit
-- Latest Stable Commit: d1be3bd
+- Latest Stable Commit: 7ce4efe
 - Current Stage: Stage 2 — Personality MVP Closure
-- Current Substage: Stage 2.0 — Project Continuity Foundation
+- Current Substage: Stage 2.1 — Result Persistence
 
 ## Product Goal
 
@@ -54,12 +54,13 @@ The following are not implemented:
 - Personality system read-only architecture audit
 - Site foundation pages
 - Project and assessment documentation committed and pushed
+- Shared runtime personality result contract
+- GET persisted result API
+- Result recovery after refresh or direct reopening
+- `sessionStorage` reduced to an optional result cache
 
 ## Current Known Gaps
 
-- The result page depends on `sessionStorage` for display recovery.
-- There is no GET result retrieval flow for refresh or direct reopening.
-- There is no shared runtime Result contract.
 - There is no formal personality `registry.ts`.
 - The preview page hardcodes ENTJ and INTJ.
 - `PersonalityProfile` v1 is not formally frozen.
@@ -72,40 +73,11 @@ The following are not implemented:
 
 ## Next Exact Task
 
-### Stage 2.1 — Result Persistence
+### Stage 2.2 — PersonalityProfile v1 Freeze
 
 Goal:
 
-- Define a shared personality result contract.
-- Add runtime validation.
-- Add a GET result API.
-- Retrieve a completed result by `sessionId`.
-- Restore the result page after refresh or direct reopening.
-- Keep `sessionStorage` only as an optional temporary cache.
-
-## Allowed Scope for Next Task
-
-- Result contract
-- Result retrieval repository or service
-- GET result API
-- Result page data loading
-- Result loading and error states
-- Relevant focused tests
-
-## Forbidden Scope for Next Task
-
-- Python scoring changes
-- Question bank changes
-- `PersonalityProfile` content changes
-- Registry implementation
-- Preview page refactor
-- Authentication
-- Payment
-- Supabase migration
-- RIASEC
-- AI
-- PDF
-- CSS refactor
+- Formally freeze the `PersonalityProfile` v1 content structure before migrating additional personality profiles.
 
 ## Validation Baseline
 

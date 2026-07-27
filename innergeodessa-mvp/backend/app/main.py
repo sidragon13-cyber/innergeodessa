@@ -13,7 +13,7 @@ from .database import (
     connect,
     initialize,
 )
-from .scoring import Item, score_assessment
+from .scoring import Item, TIE_RULE, score_assessment
 
 
 @asynccontextmanager
@@ -127,6 +127,66 @@ def get_session_items(session_id: str):
             (session_id,),
         ).fetchall()
     return [dict(row) for row in rows]
+
+
+@app.get("/api/sessions/{session_id}/result")
+def get_session_result(session_id: str):
+    with connect() as conn:
+        session = conn.execute(
+            """SELECT status, question_bank_version, completed_at
+               FROM sessions
+               WHERE session_id=?""",
+            (session_id,),
+        ).fetchone()
+        if not session:
+            raise HTTPException(404, "Session not found.")
+        if session["status"] != "completed":
+            raise HTTPException(409, "Session is not completed.")
+
+        result = conn.execute(
+            """SELECT personality_type,
+                      ei_score, sn_score, tf_score, jp_score,
+                      ei_confidence, sn_confidence,
+                      tf_confidence, jp_confidence,
+                      calculated_at
+               FROM results
+               WHERE session_id=?""",
+            (session_id,),
+        ).fetchone()
+        if not result:
+            raise HTTPException(
+                500,
+                "Completed session result is missing.",
+            )
+
+    return {
+        "sessionId": session_id,
+        "status": "completed",
+        "type": result["personality_type"],
+        "scores": {
+            "EI": result["ei_score"],
+            "SN": result["sn_score"],
+            "TF": result["tf_score"],
+            "JP": result["jp_score"],
+        },
+        "confidence": {
+            "EI": result["ei_confidence"],
+            "SN": result["sn_confidence"],
+            "TF": result["tf_confidence"],
+            "JP": result["jp_confidence"],
+        },
+        "answered": {
+            "EI": 18,
+            "SN": 18,
+            "TF": 18,
+            "JP": 18,
+        },
+        "tie_rule": TIE_RULE,
+        "questionBankVersion": session["question_bank_version"],
+        "completedAt": session["completed_at"],
+        "calculatedAt": result["calculated_at"],
+    }
+
 
 @app.put("/api/sessions/{session_id}/answers")
 def save_answer(session_id: str, payload: AnswerRequest):

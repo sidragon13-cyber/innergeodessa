@@ -3,6 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
+import {
+  fetchPersonalityResult,
+  type PersonalityResultContract,
+} from "@/data/assessment/scoring/personality";
+
 type AssessmentItem = {
   item_id: string;
   wording: string;
@@ -34,7 +39,6 @@ type SaveAnswerResponse = {
 
 type CompleteResponse = {
   error?: string;
-  [key: string]: unknown;
 };
 
 const answerOptions = [
@@ -59,7 +63,7 @@ export default function PersonalityTestPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
   const [completionResult, setCompletionResult] =
-    useState<CompleteResponse | null>(null);
+    useState<PersonalityResultContract | null>(null);
 
   useEffect(() => {
     async function loadItems() {
@@ -223,14 +227,17 @@ export default function PersonalityTestPage() {
           );
         }
 
-        setCompletionResult(completeData);
+        const persistedResult =
+          await fetchPersonalityResult(sessionId);
+
+        setCompletionResult(persistedResult);
         setSaveMessage(
           "Assessment completed and result generated successfully.",
         );
 
         sessionStorage.setItem(
           `innergeodessa-result-${sessionId}`,
-          JSON.stringify(completeData),
+          JSON.stringify(persistedResult),
         );
 
         router.push(`/personality/result/${sessionId}`);

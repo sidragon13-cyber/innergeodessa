@@ -48,6 +48,23 @@ def answer_all(client, session_id, items, value=3):
         assert response.status_code == 200, response.text
 
 
+def complete_new_session(client):
+    session = client.post(
+        "/api/sessions",
+        json={"consent": True, "language": "en"},
+    ).json()
+    session_id = session["session_id"]
+    items = client.get(
+        f"/api/sessions/{session_id}/items"
+    ).json()
+    answer_all(client, session_id, items)
+    completed = client.post(
+        f"/api/sessions/{session_id}/complete"
+    )
+    assert completed.status_code == 200, completed.text
+    return session, completed.json()
+
+
 def test_legacy_active_session_uses_legacy_snapshot_and_can_complete(
     client_and_database,
 ):
@@ -157,3 +174,111 @@ def test_answer_api_rejects_non_strict_or_out_of_range_values(
     )
 
     assert response.status_code == 422
+
+
+def test_completed_session_can_retrieve_persisted_result(
+    client_and_database,
+    monkeypatch,
+):
+    client, _database_path = client_and_database
+    session, completed = complete_new_session(client)
+
+    def reject_rescoring(*_args, **_kwargs):
+        raise AssertionError("GET result must not run the scorer")
+
+    monkeypatch.setattr(main, "score_assessment", reject_rescoring)
+
+    response = client.get(
+        f"/api/sessions/{session['session_id']}/result"
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "sessionId": session["session_id"],
+        "status": "completed",
+        "type": completed["type"],
+        "scores": completed["scores"],
+        "confidence": completed["confidence"],
+        "answered": {
+            "EI": 18,
+            "SN": 18,
+            "TF": 18,
+            "JP": 18,
+        },
+        "tie_rule": completed["tie_rule"],
+        "questionBankVersion": session["question_bank_version"],
+        "completedAt": response.json()["completedAt"],
+        "calculatedAt": response.json()["calculatedAt"],
+    }
+    assert response.json()["completedAt"]
+    assert response.json()["calculatedAt"]
+
+
+def test_get_result_returns_completed_scoring_values(
+    client_and_database,
+):
+    client, _database_path = client_and_database
+    session, completed = complete_new_session(client)
+
+    response = client.get(
+        f"/api/sessions/{session['session_id']}/result"
+    )
+
+    assert response.status_code == 200
+    persisted = response.json()
+    assert persisted["type"] == completed["type"]
+    assert persisted["scores"] == completed["scores"]
+    assert persisted["confidence"] == completed["confidence"]
+    assert persisted["tie_rule"] == completed["tie_rule"]
+
+
+def test_active_session_result_returns_conflict(
+    client_and_database,
+):
+    client, _database_path = client_and_database
+    session = client.post(
+        "/api/sessions",
+        json={"consent": True, "language": "en"},
+    ).json()
+
+    response = client.get(
+        f"/api/sessions/{session['session_id']}/result"
+    )
+
+    assert response.status_code == 409
+    assert response.json() == {
+        "detail": "Session is not completed."
+    }
+
+
+def test_nonexistent_session_result_returns_not_found(
+    client_and_database,
+):
+    client, _database_path = client_and_database
+
+    response = client.get("/api/sessions/unknown-session/result")
+
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Session not found."}
+
+
+def test_completed_session_without_result_returns_server_error(
+    client_and_database,
+):
+    client, database_path = client_and_database
+    session, _completed = complete_new_session(client)
+
+    with connect(database_path) as connection:
+        connection.execute(
+            "DELETE FROM results WHERE session_id=?",
+            (session["session_id"],),
+        )
+
+    response = client.get(
+        f"/api/sessions/{session['session_id']}/result"
+    )
+
+    assert response.status_code == 500
+    assert response.json() == {
+        "detail": "Completed session result is missing."
+    }
