@@ -7,6 +7,7 @@ from fastapi.testclient import TestClient
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
 
 from app import main
+from app import session_completion
 from app.database import connect, initialize
 from app.routers import session as session_router_module
 from legacy_fixture import create_legacy_database
@@ -196,7 +197,7 @@ def test_completed_session_can_retrieve_persisted_result(
         raise AssertionError("GET result must not run the scorer")
 
     monkeypatch.setattr(
-        session_router_module,
+        session_completion,
         "score_assessment",
         reject_rescoring,
     )
