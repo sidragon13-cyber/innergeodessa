@@ -23,7 +23,8 @@
     "test:python": "cd innergeodessa-mvp && backend/.venv/bin/python -m pytest tests -v",
     "validate": "npm run validate:question-bank && npm run validate:personality-bank-contract && npm run validate:personalities && npm run validate:personality-interpreter && npm run validate:personality-scoring && npm run validate:personality-sync && npm run check:personality-items && npm run validate:personality-parity && npm run validate:report-standard && npm run validate:isfj-report && npm run validate:isfj-rules && npm run validate:report-generator && npm run validate:report-generator-boundaries",
     "validate:report-generator": "tsx scripts/validate-report-generator.ts",
-    "validate:report-generator-boundaries": "tsx scripts/validate-report-generator-boundaries.ts"
+    "validate:report-generator-boundaries": "tsx scripts/validate-report-generator-boundaries.ts",
+    "scaffold:personality": "node scripts/scaffold-personality-report.mjs"
   },
   "dependencies": {
     "next": "16.2.11",
