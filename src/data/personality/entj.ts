@@ -346,7 +346,7 @@ export const entjProfile: PersonalityProfile = {
 
   premiumPreview: {
     headline: {
-      en: "Unlock Your Complete Personality Report",
+      en: "Your Complete Personality Report",
     },
 
     introduction: {
@@ -435,18 +435,18 @@ export const entjProfile: PersonalityProfile = {
       {
         id: "pdf-report",
         title: {
-          en: "Complete PDF Report",
+          en: "Structured Complete Report",
         },
         description: {
           en:
-            "Save your complete analysis for future reference, personal development, and cross-device access.",
+            "Review all personality sections, contextual insights, and personalised rule-based guidance in one complete report.",
         },
         access: "premium",
       },
     ],
 
     callToAction: {
-      en: "Unlock Full Report",
+      en: "VIEW COMPLETE ENTJ REPORT",
     },
   },
 

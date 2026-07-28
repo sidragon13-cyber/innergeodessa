@@ -61,7 +61,7 @@ export const isfjProfile: PersonalityProfile = {
       { id: "stress-signals", title: { en: "Stress Signals" }, description: { en: "Recognising silent overload and unspoken resentment." }, access: "premium" },
       { id: "sustainable-service", title: { en: "Sustainable Service" }, description: { en: "A plan for caring effectively without sacrificing wellbeing." }, access: "premium" },
     ],
-    callToAction: { en: "Explore the complete ISFJ report" },
+    callToAction: { en: "VIEW COMPLETE ISFJ REPORT" },
   },
   metadata: { assessmentModel: "MBTI_STYLE", contentVersion: "1.0.0", reviewed: true, availableLocales: ["en"] },
 };

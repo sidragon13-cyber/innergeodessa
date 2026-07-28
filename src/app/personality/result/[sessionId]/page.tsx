@@ -591,10 +591,7 @@ export default function PersonalityResultPage() {
                       href={`/personality/report/${sessionId}`}
                       className="mt-8 inline-flex min-h-12 items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-[#f1eee5] hover:text-[#34483a]"
                     >
-                      {getLocalizedText(
-                        profile.premiumPreview.callToAction,
-                        locale,
-                      )}
+                      VIEW COMPLETE {displayResult.type} REPORT
                     </Link>
                   ) : (
                     <>

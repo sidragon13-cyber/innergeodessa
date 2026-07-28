@@ -10,6 +10,12 @@ import type {
 import type {
   PersonalityType,
 } from "../src/data/assessment/personality";
+import {
+  entjProfile,
+} from "../src/data/personality/entj";
+import {
+  isfjProfile,
+} from "../src/data/personality/isfj";
 
 const baseScores = {
   EI: 12.345,
@@ -64,6 +70,36 @@ assert(
   hasCompletePersonalityReport("ENTP") &&
     !isPhaseOnePersonalityReportType("ENTP"),
   "ENTP must remain unavailable in the Phase 1 frontend despite its generator registration.",
+);
+
+const phaseOneProfiles = [isfjProfile, entjProfile] as const;
+
+for (const profile of phaseOneProfiles) {
+  const expectedCallToAction =
+    `VIEW COMPLETE ${profile.type} REPORT`;
+  const callToAction = profile.premiumPreview.callToAction.en;
+
+  assert(
+    callToAction === expectedCallToAction,
+    `${profile.type} must use the standard Phase 1 report call to action.`,
+  );
+  assert(
+    !callToAction.toLowerCase().includes("unlock"),
+    `${profile.type} Phase 1 call to action must not imply an unlock flow.`,
+  );
+}
+
+const phaseOneFeatureCopy = phaseOneProfiles.flatMap(
+  (profile) =>
+    profile.premiumPreview.sections.flatMap((section) => [
+      section.title.en,
+      section.description.en,
+    ]),
+);
+
+assert(
+  !phaseOneFeatureCopy.includes("Complete PDF Report"),
+  'Phase 1 feature copy must not contain "Complete PDF Report".',
 );
 
 const unsupportedTypes: PersonalityType[] = [
