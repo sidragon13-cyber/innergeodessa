@@ -1,6 +1,14 @@
 export {
+  createReportDimensions,
+} from "./from-assessment-result";
+
+export {
   generatePersonalityReport,
 } from "./generate-report";
+
+export {
+  isPhaseOnePersonalityReportType,
+} from "./phase-one";
 
 export {
   getCompletePersonalityReport,
@@ -12,3 +20,7 @@ export type {
   GeneratedPersonalityReportResult,
   GeneratedReportMetadata,
 } from "./types";
+
+export type {
+  PhaseOnePersonalityReportType,
+} from "./phase-one";

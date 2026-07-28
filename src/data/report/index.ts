@@ -63,13 +63,19 @@ export type {
 } from "./types";
 
 export {
+  createReportDimensions,
   generatePersonalityReport,
   getCompletePersonalityReport,
   hasCompletePersonalityReport,
+  isPhaseOnePersonalityReportType,
 } from "./generator";
 
 export type {
   GeneratePersonalityReportInput,
   GeneratedPersonalityReportResult,
   GeneratedReportMetadata,
+} from "./generator";
+
+export type {
+  PhaseOnePersonalityReportType,
 } from "./generator";

@@ -16,6 +16,9 @@ import {
 } from "@/data/assessment/scoring/personality";
 import { getPersonalityProfile } from "@/data/personality";
 import {
+  isPhaseOnePersonalityReportType,
+} from "@/data/report";
+import {
   getLocalizedStringList,
   getLocalizedText,
   type SupportedLocale,
@@ -581,21 +584,37 @@ export default function PersonalityResultPage() {
                     )}
                   </p>
 
-                  <button
-                    type="button"
-                    disabled
-                    className="mt-8 inline-flex min-h-12 cursor-not-allowed items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] opacity-70"
-                  >
-                    {getLocalizedText(
-                      profile.premiumPreview.callToAction,
-                      locale,
-                    )}
-                  </button>
+                  {isPhaseOnePersonalityReportType(
+                    displayResult.type,
+                  ) ? (
+                    <Link
+                      href={`/personality/report/${sessionId}`}
+                      className="mt-8 inline-flex min-h-12 items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-[#f1eee5] hover:text-[#34483a]"
+                    >
+                      {getLocalizedText(
+                        profile.premiumPreview.callToAction,
+                        locale,
+                      )}
+                    </Link>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        disabled
+                        className="mt-8 inline-flex min-h-12 cursor-not-allowed items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] opacity-70"
+                      >
+                        {getLocalizedText(
+                          profile.premiumPreview.callToAction,
+                          locale,
+                        )}
+                      </button>
 
-                  <p className="mt-3 text-xs text-[#bdc7be]">
-                    Premium reports will be introduced in a later
-                    development stage.
-                  </p>
+                      <p className="mt-3 text-xs text-[#bdc7be]">
+                        Premium reports will be introduced in a later
+                        development stage.
+                      </p>
+                    </>
+                  )}
                 </div>
 
                 <div className="grid gap-px bg-[#68786c] sm:grid-cols-2">
