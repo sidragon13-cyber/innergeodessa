@@ -17,11 +17,13 @@ import { createReportSectionAnchor } from "./section-navigation";
 
 export interface ReportDocumentProps {
   locale: SupportedLocale;
+  recipientName?: string;
   report: GeneratedPersonalityReportResult;
 }
 
 export function ReportDocument({
   locale,
+  recipientName,
   report,
 }: ReportDocumentProps) {
   const sections = [...report.sections]
@@ -52,6 +54,8 @@ export function ReportDocument({
           }
           generatedAt={report.generatedAt}
           personalityType={report.personalityType}
+          recipientName={recipientName}
+          sessionId={report.sessionId}
           version={report.version}
         />
 

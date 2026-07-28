@@ -4,12 +4,15 @@ import type {
 
 import { PrintReportButton } from "./print-report-button";
 import { ReportMetadata } from "./report-metadata";
+import { ReportRecipientName } from "./report-recipient-name";
 
 export interface ReportHeaderProps {
   appliedRuleCount: number;
   generatedAt: string;
   personalityType:
     GeneratedPersonalityReportResult["personalityType"];
+  recipientName?: string;
+  sessionId: string;
   version: GeneratedPersonalityReportResult["version"];
 }
 
@@ -17,6 +20,8 @@ export function ReportHeader({
   appliedRuleCount,
   generatedAt,
   personalityType,
+  recipientName,
+  sessionId,
   version,
 }: ReportHeaderProps) {
   return (
@@ -42,6 +47,11 @@ export function ReportHeader({
         </div>
 
         <div>
+          <ReportRecipientName
+            initialName={recipientName}
+            sessionId={sessionId}
+          />
+
           <ReportMetadata
             appliedRuleCount={appliedRuleCount}
             generatedAt={generatedAt}
