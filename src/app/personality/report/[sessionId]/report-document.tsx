@@ -1,0 +1,76 @@
+import type {
+  GeneratedPersonalityReportResult,
+} from "@/data/report";
+import {
+  getLocalizedText,
+  type SupportedLocale,
+} from "@/data/shared";
+
+import { ReportHeader } from "./report-header";
+import { ReportNavigation } from "./report-navigation";
+import { ReportSection } from "./report-section";
+import {
+  ReportTableOfContents,
+  type ReportSectionNavigationItem,
+} from "./report-table-of-contents";
+import { createReportSectionAnchor } from "./section-navigation";
+
+export interface ReportDocumentProps {
+  locale: SupportedLocale;
+  report: GeneratedPersonalityReportResult;
+}
+
+export function ReportDocument({
+  locale,
+  report,
+}: ReportDocumentProps) {
+  const sections = [...report.sections]
+    .sort((left, right) => left.order - right.order)
+    .map((section) => ({
+      section,
+      title: getLocalizedText(section.title, locale),
+      anchor: createReportSectionAnchor(
+        section.order,
+        section.id,
+      ),
+    }));
+  const navigationItems: ReportSectionNavigationItem[] =
+    sections.map(({ section, title, anchor }) => ({
+      access: section.access,
+      anchor,
+      id: section.id,
+      order: section.order,
+      title,
+    }));
+
+  return (
+    <main className="personality-report min-h-screen bg-[#efede5] px-6 py-12 text-[#26372d] md:py-20">
+      <div className="personality-report-container mx-auto max-w-6xl">
+        <ReportHeader
+          appliedRuleCount={
+            report.metadata.appliedRuleCount
+          }
+          generatedAt={report.generatedAt}
+          personalityType={report.personalityType}
+          version={report.version}
+        />
+
+        <ReportTableOfContents items={navigationItems} />
+
+        <div className="personality-report-sections mt-12 space-y-12">
+          {sections.map(({ section, title, anchor }) => (
+            <ReportSection
+              key={section.id}
+              anchor={anchor}
+              locale={locale}
+              section={section}
+              title={title}
+            />
+          ))}
+        </div>
+
+        <ReportNavigation sessionId={report.sessionId} />
+      </div>
+    </main>
+  );
+}

@@ -19,13 +19,8 @@ import {
   generatePersonalityReport,
   isPhaseOnePersonalityReportType,
 } from "@/data/report";
-import {
-  getLocalizedText,
-  type SupportedLocale,
-} from "@/data/shared";
 
-import { PrintReportButton } from "./print-report-button";
-import { createReportSectionAnchor } from "./section-navigation";
+import { ReportDocument } from "./report-document";
 
 type ReportLoadState =
   | "loading"
@@ -72,19 +67,6 @@ function getFailureState(error: unknown): ReportLoadState {
   }
 
   return "error";
-}
-
-function formatGeneratedDate(value: string): string {
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return value;
-  }
-
-  return new Intl.DateTimeFormat("en", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
 }
 
 function ReportState({
@@ -136,7 +118,6 @@ function ReportState({
 export default function PersonalityReportPage() {
   const params = useParams<{ sessionId: string }>();
   const sessionId = params.sessionId;
-  const locale: SupportedLocale = "en";
   const storageKey = `innergeodessa-result-${sessionId}`;
   const storedResult = useSyncExternalStore(
     subscribeToSessionStorage,
@@ -277,205 +258,10 @@ export default function PersonalityReportPage() {
     );
   }
 
-  const orderedSections = [...report.sections].sort(
-    (left, right) => left.order - right.order,
-  );
-  const navigationSections = orderedSections.map(
-    (section) => ({
-      section,
-      title: getLocalizedText(section.title, locale),
-      anchor: createReportSectionAnchor(
-        section.order,
-        section.id,
-      ),
-    }),
-  );
-
   return (
-    <main className="personality-report min-h-screen bg-[#efede5] px-6 py-12 text-[#26372d] md:py-20">
-      <div className="personality-report-container mx-auto max-w-6xl">
-        <header className="personality-report-header border-b border-[#c8c2b5] pb-10">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6d746b]">
-            InnerGeodessa Complete Personality Report
-          </p>
-
-          <div className="mt-7 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div>
-              <p className="text-sm text-[#6d746b]">
-                Premium report
-              </p>
-
-              <h1 className="mt-3 text-5xl font-semibold tracking-tight md:text-7xl">
-                {report.personalityType}
-              </h1>
-
-              <p className="mt-5 max-w-3xl text-lg leading-8 text-[#596158]">
-                A contextual report generated from your persisted
-                dimension scores and confidence pattern.
-              </p>
-            </div>
-
-            <div>
-              <dl className="report-print-compact-block grid grid-cols-[auto_auto] gap-x-5 gap-y-1 text-sm leading-6 text-[#6d746b] lg:text-right">
-                <dt>Report</dt>
-                <dd>{report.version.reportVersion}</dd>
-                <dt>Content</dt>
-                <dd>{report.version.contentVersion}</dd>
-                <dt>Rules</dt>
-                <dd>{report.version.ruleVersion}</dd>
-                <dt>Applied rules</dt>
-                <dd>{report.metadata.appliedRuleCount}</dd>
-                <dt>Generated</dt>
-                <dd>
-                  {formatGeneratedDate(report.generatedAt)}
-                </dd>
-              </dl>
-
-              <div className="report-interactive-only mt-6 flex flex-col items-start gap-3 lg:items-end">
-                <PrintReportButton />
-
-                <p className="report-interactive-only report-print-guidance max-w-xs text-xs leading-5 text-[#6d746b] lg:text-right">
-                  For a clean PDF, disable browser headers and
-                  footers in the print dialog.
-                </p>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <nav
-          id="report-table-of-contents"
-          aria-label="Report table of contents"
-          className="report-table-of-contents mt-10 border border-[#c8c2b5] bg-[#f7f4ec] p-7 md:p-9"
-        >
-          <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-            Table of contents
-          </h2>
-
-          <p className="mt-3 leading-7 text-[#596158]">
-            Navigate directly to any section of your report.
-          </p>
-
-          <ol className="mt-7 grid gap-px bg-[#d8d2c6] sm:grid-cols-2">
-            {navigationSections.map(
-              ({ section, title, anchor }) => (
-                <li
-                  key={section.id}
-                  className="bg-[#f7f4ec]"
-                >
-                  <a
-                    href={`#${anchor}`}
-                    className="grid min-h-16 grid-cols-[auto_1fr_auto] items-center gap-4 px-4 py-3 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#34483a]"
-                  >
-                    <span className="text-xs font-bold tabular-nums tracking-[0.12em] text-[#7c684d]">
-                      {String(section.order).padStart(2, "0")}
-                    </span>
-
-                    <span className="font-semibold">
-                      {title}
-                    </span>
-
-                    <span className="text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-[#6d746b]">
-                      {section.access}
-                    </span>
-                  </a>
-                </li>
-              ),
-            )}
-          </ol>
-        </nav>
-
-        <div className="personality-report-sections mt-12 space-y-12">
-          {navigationSections.map(
-            ({ section, title, anchor }) => (
-              <section
-                key={section.id}
-                id={anchor}
-                className="personality-report-section border border-[#c8c2b5] bg-[#f7f4ec]"
-              >
-                <header className="personality-report-section-header report-print-section-heading-group border-b border-[#d8d2c6] p-7 md:p-9">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-                      Section {section.order}
-                    </p>
-
-                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#7c684d]">
-                      {section.access}
-                    </p>
-                  </div>
-
-                  <h2 className="mt-4 text-3xl font-semibold">
-                    {title}
-                  </h2>
-
-                  <p className="mt-4 max-w-4xl leading-7 text-[#596158]">
-                    {getLocalizedText(
-                      section.description,
-                      locale,
-                    )}
-                  </p>
-                </header>
-
-                <div className="divide-y divide-[#d8d2c6]">
-                  {section.contentBlocks.map((contentBlock) => (
-                    <article
-                      key={contentBlock.id}
-                      className="personality-report-content-block report-print-flow-block p-7 md:p-9"
-                    >
-                      <div className="report-print-content-heading-group">
-                        <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#7c684d]">
-                          {contentBlock.type}
-                        </p>
-
-                        {contentBlock.title && (
-                          <h3 className="mt-3 text-xl font-semibold">
-                            {getLocalizedText(
-                              contentBlock.title,
-                              locale,
-                            )}
-                          </h3>
-                        )}
-                      </div>
-
-                      <p className="mt-4 max-w-4xl whitespace-pre-line leading-8 text-[#596158]">
-                        {getLocalizedText(
-                          contentBlock.content,
-                          locale,
-                        )}
-                      </p>
-                    </article>
-                  ))}
-                </div>
-
-                <div className="report-back-to-contents report-interactive-only border-t border-[#d8d2c6] px-7 py-5 md:px-9">
-                  <a
-                    href="#report-table-of-contents"
-                    className="inline-flex min-h-10 items-center text-xs font-bold uppercase tracking-[0.14em] text-[#6d746b] underline decoration-[#a8a194] underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#34483a]"
-                  >
-                    Back to contents
-                  </a>
-                </div>
-              </section>
-            ),
-          )}
-        </div>
-
-        <div className="report-interactive-only mt-12 flex flex-col gap-4 border-t border-[#c8c2b5] pt-8 sm:flex-row">
-          <Link
-            href={`/personality/result/${sessionId}`}
-            className="inline-flex min-h-12 items-center justify-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5]"
-          >
-            Back to free result
-          </Link>
-
-          <Link
-            href="/personality"
-            className="inline-flex min-h-12 items-center justify-center border border-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em]"
-          >
-            Personality overview
-          </Link>
-        </div>
-      </div>
-    </main>
+    <ReportDocument
+      locale="en"
+      report={report}
+    />
   );
 }

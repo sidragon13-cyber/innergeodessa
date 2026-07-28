@@ -1,8 +1,14 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-const reportPageSource = readSource(
-  "src/app/personality/report/[sessionId]/page.tsx",
+const reportHeaderSource = readSource(
+  "src/app/personality/report/[sessionId]/report-header.tsx",
+);
+const reportSectionSource = readSource(
+  "src/app/personality/report/[sessionId]/report-section.tsx",
+);
+const reportContentBlockSource = readSource(
+  "src/app/personality/report/[sessionId]/report-content-block.tsx",
 );
 const printButtonSource = readSource(
   "src/app/personality/report/[sessionId]/print-report-button.tsx",
@@ -11,8 +17,8 @@ const globalStylesSource = readSource("src/app/globals.css");
 
 assert(
   /import\s+\{\s*PrintReportButton\s*\}\s+from\s+["']\.\/print-report-button["']/.test(
-    reportPageSource,
-  ) && /<PrintReportButton\s*\/>/.test(reportPageSource),
+    reportHeaderSource,
+  ) && /<PrintReportButton\s*\/>/.test(reportHeaderSource),
   "The complete report page must include the shared print control.",
 );
 
@@ -68,7 +74,7 @@ assert(
 );
 
 assert(
-  reportPageSource.includes(
+  reportSectionSource.includes(
     "report-print-section-heading-group",
   ),
   "The report page must define a dedicated print section-heading group.",
@@ -88,7 +94,9 @@ assert(
 );
 
 assert(
-  reportPageSource.includes("report-print-flow-block") &&
+  reportContentBlockSource.includes(
+    "report-print-flow-block",
+  ) &&
     !/break-inside\s*:\s*avoid(?:-page)?/.test(
       flowBlockStyles,
     ) &&
@@ -97,11 +105,11 @@ assert(
 );
 
 assert(
-  normaliseWhitespace(reportPageSource).includes(
+  normaliseWhitespace(reportHeaderSource).includes(
     "For a clean PDF, disable browser headers and footers in the print dialog.",
   ) &&
     /report-interactive-only[^"]*report-print-guidance|report-print-guidance[^"]*report-interactive-only/.test(
-      reportPageSource,
+      reportHeaderSource,
     ),
   "The screen-only print guidance must be present and hidden during print.",
 );

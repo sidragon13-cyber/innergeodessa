@@ -5,8 +5,14 @@ import {
   createReportSectionAnchor,
 } from "../src/app/personality/report/[sessionId]/section-navigation";
 
-const reportPageSource = readSource(
-  "src/app/personality/report/[sessionId]/page.tsx",
+const reportDocumentSource = readSource(
+  "src/app/personality/report/[sessionId]/report-document.tsx",
+);
+const reportSectionSource = readSource(
+  "src/app/personality/report/[sessionId]/report-section.tsx",
+);
+const tableOfContentsSource = readSource(
+  "src/app/personality/report/[sessionId]/report-table-of-contents.tsx",
 );
 const globalStylesSource = readSource("src/app/globals.css");
 
@@ -27,31 +33,42 @@ assert(
 
 assert(
   /<nav\b[^>]*\bid\s*=\s*["']report-table-of-contents["'][^>]*\baria-label\s*=\s*["']Report table of contents["']|<nav\b[^>]*\baria-label\s*=\s*["']Report table of contents["'][^>]*\bid\s*=\s*["']report-table-of-contents["']/.test(
-    reportPageSource,
+    tableOfContentsSource,
   ),
   "The report must contain a semantic, accessibly labelled table of contents.",
 );
 
 assert(
-  /id\s*=\s*\{\s*anchor\s*\}/.test(reportPageSource),
+  /id\s*=\s*\{\s*anchor\s*\}/.test(reportSectionSource),
   "Each report section must use its generated anchor as its HTML id.",
 );
 
 assert(
-  /href\s*=\s*\{\s*`#\$\{anchor\}`\s*\}/.test(
-    reportPageSource,
+  /href\s*=\s*\{\s*`#\$\{(?:item\.)?anchor\}`\s*\}/.test(
+    tableOfContentsSource,
   ),
   "Each table-of-contents item must link to its matching section anchor.",
 );
 
 assert(
   /href\s*=\s*["']#report-table-of-contents["']/.test(
-    reportPageSource,
+    reportSectionSource,
   ) &&
-    normaliseWhitespace(reportPageSource).includes(
+    normaliseWhitespace(reportSectionSource).includes(
       "Back to contents",
     ),
   "Each rendered section must include a back-to-contents link.",
+);
+
+assert(
+  /\bcreateReportSectionAnchor\b/.test(
+    reportDocumentSource,
+  ) &&
+    /<ReportTableOfContents\b/.test(
+      reportDocumentSource,
+    ) &&
+    /<ReportSection\b/.test(reportDocumentSource),
+  "ReportDocument must share stable anchors with the TOC and rendered sections.",
 );
 
 const printStyles = getPrintMediaBlock(globalStylesSource);
