@@ -1,12 +1,8 @@
 import {
-  ISFJ_REPORT_RULES,
-} from "../isfj";
-import {
   analyseRuleInput,
   selectReportRules,
 } from "../rules";
 import type {
-  ReportRuleDefinition,
   SelectedReportRule,
 } from "../rules";
 import type {
@@ -16,6 +12,9 @@ import type {
 import {
   getCompletePersonalityReport,
 } from "./registry";
+import {
+  getReportRules,
+} from "./rule-registry";
 import type {
   GeneratePersonalityReportInput,
   GeneratedPersonalityReportResult,
@@ -116,17 +115,6 @@ export function generatePersonalityReport(
         reportDefinition.version.ruleVersion,
     },
   };
-}
-
-function getReportRules(
-  personalityType:
-    GeneratePersonalityReportInput["personalityType"],
-): readonly ReportRuleDefinition[] {
-  if (personalityType === "ISFJ") {
-    return ISFJ_REPORT_RULES;
-  }
-
-  return [];
 }
 
 function createBlocksForSlots(

@@ -2,6 +2,9 @@ import type {
   PersonalityTypeCode,
 } from "../../personality/types";
 import {
+  ENTJ_COMPLETE_REPORT,
+} from "../entj";
+import {
   ISFJ_COMPLETE_REPORT,
 } from "../isfj";
 import type {
@@ -15,6 +18,7 @@ const COMPLETE_REPORT_REGISTRY: Partial<
   >
 > = {
   ISFJ: ISFJ_COMPLETE_REPORT,
+  ENTJ: ENTJ_COMPLETE_REPORT,
 };
 
 export function getCompletePersonalityReport(
