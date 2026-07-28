@@ -34,6 +34,18 @@ assert(
 );
 
 const printStyles = getPrintMediaBlock(globalStylesSource);
+const sectionStyles = getCssDeclarations(
+  printStyles,
+  ".personality-report-section",
+);
+const sectionHeadingGroupStyles = getCssDeclarations(
+  printStyles,
+  ".report-print-section-heading-group",
+);
+const flowBlockStyles = getCssDeclarations(
+  printStyles,
+  ".report-print-flow-block",
+);
 
 assert(
   /\.report-interactive-only[\s\S]*?display\s*:\s*none/.test(
@@ -47,6 +59,51 @@ assert(
     globalStylesSource,
   ),
   "Print CSS must configure A4 pages.",
+);
+
+assert(
+  !/break-inside\s*:\s*avoid(?:-page)?/.test(sectionStyles) &&
+    !/page-break-inside\s*:\s*avoid/.test(sectionStyles),
+  "Long report sections must be allowed to flow across pages.",
+);
+
+assert(
+  reportPageSource.includes(
+    "report-print-section-heading-group",
+  ),
+  "The report page must define a dedicated print section-heading group.",
+);
+
+assert(
+  /break-inside\s*:\s*avoid(?:-page)?/.test(
+    sectionHeadingGroupStyles,
+  ) &&
+    /break-after\s*:\s*avoid-page/.test(
+      sectionHeadingGroupStyles,
+    ) &&
+    /page-break-after\s*:\s*avoid/.test(
+      sectionHeadingGroupStyles,
+    ),
+  "The print section-heading group must stay together and with following content.",
+);
+
+assert(
+  reportPageSource.includes("report-print-flow-block") &&
+    !/break-inside\s*:\s*avoid(?:-page)?/.test(
+      flowBlockStyles,
+    ) &&
+    !/page-break-inside\s*:\s*avoid/.test(flowBlockStyles),
+  "Long content blocks must be explicitly allowed to flow across pages.",
+);
+
+assert(
+  normaliseWhitespace(reportPageSource).includes(
+    "For a clean PDF, disable browser headers and footers in the print dialog.",
+  ) &&
+    /report-interactive-only[^"]*report-print-guidance|report-print-guidance[^"]*report-interactive-only/.test(
+      reportPageSource,
+    ),
+  "The screen-only print guidance must be present and hidden during print.",
 );
 
 function readSource(relativePath: string): string {
@@ -65,6 +122,23 @@ function getPrintMediaBlock(styles: string): string {
   }
 
   return styles.slice(printStart);
+}
+
+function getCssDeclarations(
+  styles: string,
+  selector: string,
+): string {
+  for (const match of styles.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    const selectors = (match[1] ?? "")
+      .split(",")
+      .map((value) => value.trim());
+
+    if (selectors.includes(selector)) {
+      return match[2] ?? "";
+    }
+  }
+
+  return "";
 }
 
 function assert(

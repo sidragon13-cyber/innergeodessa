@@ -3930,6 +3930,8 @@ a {
     overflow: visible;
     background: #ffffff !important;
     color: #111111 !important;
+    font-size: 10.5pt;
+    line-height: 1.5;
   }
 
   .personality-report *,
@@ -3952,6 +3954,11 @@ a {
     border-color: #777777;
   }
 
+  .report-print-compact-block {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+
   .personality-report-sections {
     margin-top: 8mm;
   }
@@ -3965,17 +3972,28 @@ a {
     margin-top: 0 !important;
   }
 
-  .personality-report-section-header {
+  .report-print-section-heading-group {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
     break-after: avoid-page;
     page-break-after: avoid;
+  }
+
+  .personality-report-section-header {
     padding: 5mm;
     border-color: #b5b5b5;
   }
 
-  .personality-report-content-block {
+  .report-print-flow-block {
+    min-height: 0;
+    padding: 5mm;
+  }
+
+  .report-print-content-heading-group {
     break-inside: avoid-page;
     page-break-inside: avoid;
-    padding: 5mm;
+    break-after: avoid-page;
+    page-break-after: avoid;
   }
 
   .personality-report h1,
@@ -3983,6 +4001,30 @@ a {
   .personality-report h3 {
     break-after: avoid-page;
     page-break-after: avoid;
+  }
+
+  .personality-report h1 {
+    margin-top: 2mm !important;
+    font-size: 28pt;
+    line-height: 1.05;
+  }
+
+  .personality-report h2 {
+    margin-top: 3mm !important;
+    font-size: 18pt;
+    line-height: 1.15;
+  }
+
+  .personality-report h3 {
+    margin-top: 2mm !important;
+    font-size: 13pt;
+    line-height: 1.25;
+  }
+
+  .personality-report-content-block > p {
+    margin-top: 3mm !important;
+    font-size: 10.5pt;
+    line-height: 1.55;
   }
 
   .personality-report p,

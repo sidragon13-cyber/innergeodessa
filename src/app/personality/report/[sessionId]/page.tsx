@@ -305,7 +305,7 @@ export default function PersonalityReportPage() {
             </div>
 
             <div>
-              <dl className="grid grid-cols-[auto_auto] gap-x-5 gap-y-1 text-sm leading-6 text-[#6d746b] lg:text-right">
+              <dl className="report-print-compact-block grid grid-cols-[auto_auto] gap-x-5 gap-y-1 text-sm leading-6 text-[#6d746b] lg:text-right">
                 <dt>Report</dt>
                 <dd>{report.version.reportVersion}</dd>
                 <dt>Content</dt>
@@ -320,8 +320,13 @@ export default function PersonalityReportPage() {
                 </dd>
               </dl>
 
-              <div className="report-interactive-only mt-6 flex lg:justify-end">
+              <div className="report-interactive-only mt-6 flex flex-col items-start gap-3 lg:items-end">
                 <PrintReportButton />
+
+                <p className="report-interactive-only report-print-guidance max-w-xs text-xs leading-5 text-[#6d746b] lg:text-right">
+                  For a clean PDF, disable browser headers and
+                  footers in the print dialog.
+                </p>
               </div>
             </div>
           </div>
@@ -333,7 +338,7 @@ export default function PersonalityReportPage() {
               key={section.id}
               className="personality-report-section border border-[#c8c2b5] bg-[#f7f4ec]"
             >
-              <header className="personality-report-section-header border-b border-[#d8d2c6] p-7 md:p-9">
+              <header className="personality-report-section-header report-print-section-heading-group border-b border-[#d8d2c6] p-7 md:p-9">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
                     Section {section.order}
@@ -360,20 +365,22 @@ export default function PersonalityReportPage() {
                 {section.contentBlocks.map((contentBlock) => (
                   <article
                     key={contentBlock.id}
-                    className="personality-report-content-block p-7 md:p-9"
+                    className="personality-report-content-block report-print-flow-block p-7 md:p-9"
                   >
-                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#7c684d]">
-                      {contentBlock.type}
-                    </p>
+                    <div className="report-print-content-heading-group">
+                      <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#7c684d]">
+                        {contentBlock.type}
+                      </p>
 
-                    {contentBlock.title && (
-                      <h3 className="mt-3 text-xl font-semibold">
-                        {getLocalizedText(
-                          contentBlock.title,
-                          locale,
-                        )}
-                      </h3>
-                    )}
+                      {contentBlock.title && (
+                        <h3 className="mt-3 text-xl font-semibold">
+                          {getLocalizedText(
+                            contentBlock.title,
+                            locale,
+                          )}
+                        </h3>
+                      )}
+                    </div>
 
                     <p className="mt-4 max-w-4xl whitespace-pre-line leading-8 text-[#596158]">
                       {getLocalizedText(
