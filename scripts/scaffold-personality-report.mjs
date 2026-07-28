@@ -87,6 +87,12 @@ writeEmptyRuleIndex(
   personalityType,
 );
 
+writePersonalityIndex(
+  path.join(targetDirectory, "index.ts"),
+  personalityType,
+  pascalType,
+);
+
 registerPersonality({
   filePath: reportRegistryPath,
   importSymbol: `${personalityType}_COMPLETE_REPORT`,
@@ -200,6 +206,32 @@ function writeEmptyRuleIndex(filePath, type) {
 
 export const ${type}_REPORT_RULES:
   readonly ReportRuleDefinition[] = [];
+`,
+  );
+}
+
+function writePersonalityIndex(
+  filePath,
+  type,
+  pascalType,
+) {
+  fs.writeFileSync(
+    filePath,
+    `export {
+  ${type}_COMPLETE_REPORT,
+} from "./report";
+
+export {
+  validate${pascalType}CompleteReport,
+} from "./validation";
+
+export type {
+  ${pascalType}ReportValidationResult,
+} from "./validation";
+
+export {
+  ${type}_REPORT_RULES,
+} from "./rules";
 `,
   );
 }

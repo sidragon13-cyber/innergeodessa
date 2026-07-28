@@ -2,6 +2,9 @@ import type {
   PersonalityTypeCode,
 } from "../../personality/types";
 import {
+  ENTP_REPORT_RULES,
+} from "../entp";
+import {
   ENTJ_REPORT_RULES,
 } from "../entj";
 import {
@@ -19,6 +22,7 @@ const REPORT_RULE_REGISTRY: Partial<
 > = {
   ISFJ: ISFJ_REPORT_RULES,
   ENTJ: ENTJ_REPORT_RULES,
+  ENTP: ENTP_REPORT_RULES,
 };
 
 export function getReportRules(
