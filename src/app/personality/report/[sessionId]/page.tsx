@@ -24,6 +24,8 @@ import {
   type SupportedLocale,
 } from "@/data/shared";
 
+import { PrintReportButton } from "./print-report-button";
+
 type ReportLoadState =
   | "loading"
   | "ready"
@@ -279,9 +281,9 @@ export default function PersonalityReportPage() {
   );
 
   return (
-    <main className="min-h-screen bg-[#efede5] px-6 py-12 text-[#26372d] md:py-20">
-      <div className="mx-auto max-w-6xl">
-        <header className="border-b border-[#c8c2b5] pb-10">
+    <main className="personality-report min-h-screen bg-[#efede5] px-6 py-12 text-[#26372d] md:py-20">
+      <div className="personality-report-container mx-auto max-w-6xl">
+        <header className="personality-report-header border-b border-[#c8c2b5] pb-10">
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6d746b]">
             InnerGeodessa Complete Personality Report
           </p>
@@ -302,30 +304,36 @@ export default function PersonalityReportPage() {
               </p>
             </div>
 
-            <dl className="grid grid-cols-[auto_auto] gap-x-5 gap-y-1 text-sm leading-6 text-[#6d746b] lg:text-right">
-              <dt>Report</dt>
-              <dd>{report.version.reportVersion}</dd>
-              <dt>Content</dt>
-              <dd>{report.version.contentVersion}</dd>
-              <dt>Rules</dt>
-              <dd>{report.version.ruleVersion}</dd>
-              <dt>Applied rules</dt>
-              <dd>{report.metadata.appliedRuleCount}</dd>
-              <dt>Generated</dt>
-              <dd>
-                {formatGeneratedDate(report.generatedAt)}
-              </dd>
-            </dl>
+            <div>
+              <dl className="grid grid-cols-[auto_auto] gap-x-5 gap-y-1 text-sm leading-6 text-[#6d746b] lg:text-right">
+                <dt>Report</dt>
+                <dd>{report.version.reportVersion}</dd>
+                <dt>Content</dt>
+                <dd>{report.version.contentVersion}</dd>
+                <dt>Rules</dt>
+                <dd>{report.version.ruleVersion}</dd>
+                <dt>Applied rules</dt>
+                <dd>{report.metadata.appliedRuleCount}</dd>
+                <dt>Generated</dt>
+                <dd>
+                  {formatGeneratedDate(report.generatedAt)}
+                </dd>
+              </dl>
+
+              <div className="report-interactive-only mt-6 flex lg:justify-end">
+                <PrintReportButton />
+              </div>
+            </div>
           </div>
         </header>
 
-        <div className="mt-12 space-y-12">
+        <div className="personality-report-sections mt-12 space-y-12">
           {orderedSections.map((section) => (
             <section
               key={section.id}
-              className="border border-[#c8c2b5] bg-[#f7f4ec]"
+              className="personality-report-section border border-[#c8c2b5] bg-[#f7f4ec]"
             >
-              <header className="border-b border-[#d8d2c6] p-7 md:p-9">
+              <header className="personality-report-section-header border-b border-[#d8d2c6] p-7 md:p-9">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
                     Section {section.order}
@@ -352,7 +360,7 @@ export default function PersonalityReportPage() {
                 {section.contentBlocks.map((contentBlock) => (
                   <article
                     key={contentBlock.id}
-                    className="p-7 md:p-9"
+                    className="personality-report-content-block p-7 md:p-9"
                   >
                     <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#7c684d]">
                       {contentBlock.type}
@@ -380,7 +388,7 @@ export default function PersonalityReportPage() {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-[#c8c2b5] pt-8 sm:flex-row">
+        <div className="report-interactive-only mt-12 flex flex-col gap-4 border-t border-[#c8c2b5] pt-8 sm:flex-row">
           <Link
             href={`/personality/result/${sessionId}`}
             className="inline-flex min-h-12 items-center justify-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5]"
