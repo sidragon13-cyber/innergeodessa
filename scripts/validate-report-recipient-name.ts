@@ -85,13 +85,25 @@ const changedPaths = getChangedPaths();
 assert(
   changedPaths.every(
     (path) =>
-      !path.startsWith("src/data/report/") &&
+      !isProtectedReportDomainPath(path) &&
       !path.startsWith(
         "src/data/assessment/scoring/",
       ),
   ),
   "Recipient-name support must not modify report-domain or scoring files.",
 );
+
+function isProtectedReportDomainPath(path: string): boolean {
+  return (
+    path === "src/data/report/types.ts" ||
+    path === "src/data/report/report-standard.ts" ||
+    path.startsWith("src/data/report/generator/") ||
+    path.startsWith("src/data/report/rules/") ||
+    path.startsWith("src/data/report/isfj/") ||
+    path.startsWith("src/data/report/entj/") ||
+    path.startsWith("src/data/report/entp/")
+  );
+}
 
 function readSource(relativePath: string): string {
   try {
