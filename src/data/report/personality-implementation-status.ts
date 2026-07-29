@@ -66,10 +66,10 @@ export const PERSONALITY_IMPLEMENTATION_MANIFEST:
     ]),
     entry("ESTJ", ["domain_complete", "validated"]),
     entry("ESFJ", ["domain_complete", "validated"]),
-    entry("ISTP", ["not_started"]),
-    entry("ISFP", ["not_started"]),
-    entry("ESTP", ["not_started"]),
-    entry("ESFP", ["not_started"]),
+    entry("ISTP", ["domain_complete", "validated"]),
+    entry("ISFP", ["domain_complete", "validated"]),
+    entry("ESTP", ["domain_complete", "validated"]),
+    entry("ESFP", ["domain_complete", "validated"]),
   ]);
 
 export function validatePersonalityImplementationManifest(

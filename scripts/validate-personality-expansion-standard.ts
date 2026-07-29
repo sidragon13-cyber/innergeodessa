@@ -71,6 +71,26 @@ import {
   validateIstjRuleSet,
 } from "../src/data/report/istj";
 import {
+  ISTP_COMPLETE_REPORT,
+  ISTP_REPORT_RULES,
+  validateIstpRuleSet,
+} from "../src/data/report/istp";
+import {
+  ISFP_COMPLETE_REPORT,
+  ISFP_REPORT_RULES,
+  validateIsfpRuleSet,
+} from "../src/data/report/isfp";
+import {
+  ESTP_COMPLETE_REPORT,
+  ESTP_REPORT_RULES,
+  validateEstpRuleSet,
+} from "../src/data/report/estp";
+import {
+  ESFP_COMPLETE_REPORT,
+  ESFP_REPORT_RULES,
+  validateEsfpRuleSet,
+} from "../src/data/report/esfp";
+import {
   personalityTypeCodes,
 } from "../src/data/personality/types";
 import {
@@ -237,6 +257,21 @@ assert.deepEqual(
   ["domain_complete", "validated"],
   "ESFJ must be domain-complete and validated.",
 );
+for (const personalityType of [
+  "ISTP",
+  "ISFP",
+  "ESTP",
+  "ESFP",
+] as const) {
+  const status = PERSONALITY_IMPLEMENTATION_MANIFEST.find(
+    (entry) => entry.personalityType === personalityType,
+  );
+  assert.deepEqual(
+    status?.stages,
+    ["domain_complete", "validated"],
+    `${personalityType} must be domain-complete and validated.`,
+  );
+}
 
 const manifestValidation =
   validatePersonalityImplementationManifest();
@@ -298,6 +333,10 @@ for (const [definition, rules] of [
   [ISTJ_COMPLETE_REPORT, ISTJ_REPORT_RULES],
   [ESTJ_COMPLETE_REPORT, ESTJ_REPORT_RULES],
   [ESFJ_COMPLETE_REPORT, ESFJ_REPORT_RULES],
+  [ISTP_COMPLETE_REPORT, ISTP_REPORT_RULES],
+  [ISFP_COMPLETE_REPORT, ISFP_REPORT_RULES],
+  [ESTP_COMPLETE_REPORT, ESTP_REPORT_RULES],
+  [ESFP_COMPLETE_REPORT, ESFP_REPORT_RULES],
 ] as const) {
   const validation = validateCompletePersonalityDefinition(
     definition.personalityType,
@@ -495,6 +534,18 @@ assert.equal(
   true,
   esfjRuleValidation.errors.join("\n"),
 );
+for (const validation of [
+  validateIstpRuleSet(),
+  validateIsfpRuleSet(),
+  validateEstpRuleSet(),
+  validateEsfpRuleSet(),
+]) {
+  assert.equal(
+    validation.valid,
+    true,
+    validation.errors.join("\n"),
+  );
+}
 
 const placeholderDefinition = {
   ...ISFJ_COMPLETE_REPORT,

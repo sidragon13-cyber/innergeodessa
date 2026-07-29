@@ -26,6 +26,18 @@ import {
   ESFJ_COMPLETE_REPORT,
 } from "../esfj";
 import {
+  ISTP_COMPLETE_REPORT,
+} from "../istp";
+import {
+  ISFP_COMPLETE_REPORT,
+} from "../isfp";
+import {
+  ESTP_COMPLETE_REPORT,
+} from "../estp";
+import {
+  ESFP_COMPLETE_REPORT,
+} from "../esfp";
+import {
   INFJ_COMPLETE_REPORT,
 } from "../infj";
 import {
@@ -59,6 +71,10 @@ const COMPLETE_REPORT_REGISTRY: Partial<
   ISTJ: ISTJ_COMPLETE_REPORT,
   ESTJ: ESTJ_COMPLETE_REPORT,
   ESFJ: ESFJ_COMPLETE_REPORT,
+  ISTP: ISTP_COMPLETE_REPORT,
+  ISFP: ISFP_COMPLETE_REPORT,
+  ESTP: ESTP_COMPLETE_REPORT,
+  ESFP: ESFP_COMPLETE_REPORT,
 };
 
 export function getCompletePersonalityReport(

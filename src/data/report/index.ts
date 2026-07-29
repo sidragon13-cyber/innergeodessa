@@ -117,6 +117,42 @@ export {
   validateEsfjRuleSet,
 } from "./esfj";
 export {
+  ISTP_COMPLETE_REPORT,
+  ISTP_COMBINATION_RULES,
+  ISTP_CONFIDENCE_RULES,
+  ISTP_DIMENSION_RULES,
+  ISTP_REPORT_RULES,
+  validateIstpCompleteReport,
+  validateIstpRuleSet,
+} from "./istp";
+export {
+  ISFP_COMPLETE_REPORT,
+  ISFP_COMBINATION_RULES,
+  ISFP_CONFIDENCE_RULES,
+  ISFP_DIMENSION_RULES,
+  ISFP_REPORT_RULES,
+  validateIsfpCompleteReport,
+  validateIsfpRuleSet,
+} from "./isfp";
+export {
+  ESTP_COMPLETE_REPORT,
+  ESTP_COMBINATION_RULES,
+  ESTP_CONFIDENCE_RULES,
+  ESTP_DIMENSION_RULES,
+  ESTP_REPORT_RULES,
+  validateEstpCompleteReport,
+  validateEstpRuleSet,
+} from "./estp";
+export {
+  ESFP_COMPLETE_REPORT,
+  ESFP_COMBINATION_RULES,
+  ESFP_CONFIDENCE_RULES,
+  ESFP_DIMENSION_RULES,
+  ESFP_REPORT_RULES,
+  validateEsfpCompleteReport,
+  validateEsfpRuleSet,
+} from "./esfp";
+export {
   analyseDimension,
   analyseRuleInput,
   DIMENSION_CODES,
@@ -190,6 +226,22 @@ export type {
   EsfjReportValidationResult,
   EsfjRuleSetValidationResult,
 } from "./esfj";
+export type {
+  IstpReportValidationResult,
+  IstpRuleSetValidationResult,
+} from "./istp";
+export type {
+  IsfpReportValidationResult,
+  IsfpRuleSetValidationResult,
+} from "./isfp";
+export type {
+  EstpReportValidationResult,
+  EstpRuleSetValidationResult,
+} from "./estp";
+export type {
+  EsfpReportValidationResult,
+  EsfpRuleSetValidationResult,
+} from "./esfp";
 
 export type {
   AggregateRuleCondition,

@@ -37,6 +37,18 @@ import {
 import {
   ESFJ_REPORT_RULES,
 } from "../esfj";
+import {
+  ISTP_REPORT_RULES,
+} from "../istp";
+import {
+  ISFP_REPORT_RULES,
+} from "../isfp";
+import {
+  ESTP_REPORT_RULES,
+} from "../estp";
+import {
+  ESFP_REPORT_RULES,
+} from "../esfp";
 import type {
   ReportRuleDefinition,
 } from "../rules";
@@ -59,6 +71,10 @@ const REPORT_RULE_REGISTRY: Partial<
   ISTJ: ISTJ_REPORT_RULES,
   ESTJ: ESTJ_REPORT_RULES,
   ESFJ: ESFJ_REPORT_RULES,
+  ISTP: ISTP_REPORT_RULES,
+  ISFP: ISFP_REPORT_RULES,
+  ESTP: ESTP_REPORT_RULES,
+  ESFP: ESFP_REPORT_RULES,
 };
 
 export function getReportRules(

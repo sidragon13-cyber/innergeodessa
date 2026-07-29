@@ -13,6 +13,9 @@ import type {
   DimensionResult,
   SelectedReportRule,
 } from "../src/data/report/rules";
+import type {
+  PersonalityTypeCode,
+} from "../src/data/personality/types";
 
 const validDimensions: Record<
   DimensionCode,
@@ -93,18 +96,18 @@ expectThrows(
 );
 
 expectThrows(
-  "Unregistered personality report rejected",
+  "Unsupported personality report rejected",
   () => {
     generatePersonalityReport({
-      sessionId: "unregistered-report-test",
-      personalityType: "ISTP",
+      sessionId: "unsupported-report-test",
+      personalityType: "XXXX" as PersonalityTypeCode,
       dimensions: validDimensions,
       accessLevel: "free",
       generatedAt: "2026-07-28T00:00:00.000Z",
     });
   },
   Error,
-  "Complete report is not available for personality type: ISTP",
+  "Complete report is not available for personality type: XXXX",
 );
 
 const analysedInput = analyseRuleInput({
