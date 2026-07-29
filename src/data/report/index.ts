@@ -54,6 +54,42 @@ export {
   validateIntpRuleSet,
 } from "./intp";
 export {
+  INFJ_COMPLETE_REPORT,
+  INFJ_COMBINATION_RULES,
+  INFJ_CONFIDENCE_RULES,
+  INFJ_DIMENSION_RULES,
+  INFJ_REPORT_RULES,
+  validateInfjCompleteReport,
+  validateInfjRuleSet,
+} from "./infj";
+export {
+  INFP_COMPLETE_REPORT,
+  INFP_COMBINATION_RULES,
+  INFP_CONFIDENCE_RULES,
+  INFP_DIMENSION_RULES,
+  INFP_REPORT_RULES,
+  validateInfpCompleteReport,
+  validateInfpRuleSet,
+} from "./infp";
+export {
+  ENFJ_COMPLETE_REPORT,
+  ENFJ_COMBINATION_RULES,
+  ENFJ_CONFIDENCE_RULES,
+  ENFJ_DIMENSION_RULES,
+  ENFJ_REPORT_RULES,
+  validateEnfjCompleteReport,
+  validateEnfjRuleSet,
+} from "./enfj";
+export {
+  ENFP_COMPLETE_REPORT,
+  ENFP_COMBINATION_RULES,
+  ENFP_CONFIDENCE_RULES,
+  ENFP_DIMENSION_RULES,
+  ENFP_REPORT_RULES,
+  validateEnfpCompleteReport,
+  validateEnfpRuleSet,
+} from "./enfp";
+export {
   analyseDimension,
   analyseRuleInput,
   DIMENSION_CODES,
@@ -99,6 +135,22 @@ export type {
   IntpReportValidationResult,
   IntpRuleSetValidationResult,
 } from "./intp";
+export type {
+  InfjReportValidationResult,
+  InfjRuleSetValidationResult,
+} from "./infj";
+export type {
+  InfpReportValidationResult,
+  InfpRuleSetValidationResult,
+} from "./infp";
+export type {
+  EnfjReportValidationResult,
+  EnfjRuleSetValidationResult,
+} from "./enfj";
+export type {
+  EnfpReportValidationResult,
+  EnfpRuleSetValidationResult,
+} from "./enfp";
 
 export type {
   AggregateRuleCondition,

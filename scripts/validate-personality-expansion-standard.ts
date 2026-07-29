@@ -31,6 +31,26 @@ import {
   validateIntjRuleSet,
 } from "../src/data/report/intj";
 import {
+  INFJ_COMPLETE_REPORT,
+  INFJ_REPORT_RULES,
+  validateInfjRuleSet,
+} from "../src/data/report/infj";
+import {
+  INFP_COMPLETE_REPORT,
+  INFP_REPORT_RULES,
+  validateInfpRuleSet,
+} from "../src/data/report/infp";
+import {
+  ENFJ_COMPLETE_REPORT,
+  ENFJ_REPORT_RULES,
+  validateEnfjRuleSet,
+} from "../src/data/report/enfj";
+import {
+  ENFP_COMPLETE_REPORT,
+  ENFP_REPORT_RULES,
+  validateEnfpRuleSet,
+} from "../src/data/report/enfp";
+import {
   INTP_COMPLETE_REPORT,
   INTP_REPORT_RULES,
   validateIntpRuleSet,
@@ -139,6 +159,42 @@ assert.deepEqual(
   ["domain_complete", "validated"],
   "INTP must be domain-complete and validated.",
 );
+const infjStatus =
+  PERSONALITY_IMPLEMENTATION_MANIFEST.find(
+    (entry) => entry.personalityType === "INFJ",
+  );
+assert.deepEqual(
+  infjStatus?.stages,
+  ["domain_complete", "validated"],
+  "INFJ must be domain-complete and validated.",
+);
+const infpStatus =
+  PERSONALITY_IMPLEMENTATION_MANIFEST.find(
+    (entry) => entry.personalityType === "INFP",
+  );
+assert.deepEqual(
+  infpStatus?.stages,
+  ["domain_complete", "validated"],
+  "INFP must be domain-complete and validated.",
+);
+const enfjStatus =
+  PERSONALITY_IMPLEMENTATION_MANIFEST.find(
+    (entry) => entry.personalityType === "ENFJ",
+  );
+assert.deepEqual(
+  enfjStatus?.stages,
+  ["domain_complete", "validated"],
+  "ENFJ must be domain-complete and validated.",
+);
+const enfpStatus =
+  PERSONALITY_IMPLEMENTATION_MANIFEST.find(
+    (entry) => entry.personalityType === "ENFP",
+  );
+assert.deepEqual(
+  enfpStatus?.stages,
+  ["domain_complete", "validated"],
+  "ENFP must be domain-complete and validated.",
+);
 
 const manifestValidation =
   validatePersonalityImplementationManifest();
@@ -193,6 +249,10 @@ for (const [definition, rules] of [
   [ENTP_COMPLETE_REPORT, ENTP_REPORT_RULES],
   [INTJ_COMPLETE_REPORT, INTJ_REPORT_RULES],
   [INTP_COMPLETE_REPORT, INTP_REPORT_RULES],
+  [INFJ_COMPLETE_REPORT, INFJ_REPORT_RULES],
+  [INFP_COMPLETE_REPORT, INFP_REPORT_RULES],
+  [ENFJ_COMPLETE_REPORT, ENFJ_REPORT_RULES],
+  [ENFP_COMPLETE_REPORT, ENFP_REPORT_RULES],
 ] as const) {
   const validation = validateCompletePersonalityDefinition(
     definition.personalityType,
@@ -347,6 +407,30 @@ assert.equal(
   intpRuleValidation.valid,
   true,
   intpRuleValidation.errors.join("\n"),
+);
+const infjRuleValidation = validateInfjRuleSet();
+assert.equal(
+  infjRuleValidation.valid,
+  true,
+  infjRuleValidation.errors.join("\n"),
+);
+const infpRuleValidation = validateInfpRuleSet();
+assert.equal(
+  infpRuleValidation.valid,
+  true,
+  infpRuleValidation.errors.join("\n"),
+);
+const enfjRuleValidation = validateEnfjRuleSet();
+assert.equal(
+  enfjRuleValidation.valid,
+  true,
+  enfjRuleValidation.errors.join("\n"),
+);
+const enfpRuleValidation = validateEnfpRuleSet();
+assert.equal(
+  enfpRuleValidation.valid,
+  true,
+  enfpRuleValidation.errors.join("\n"),
 );
 
 const placeholderDefinition = {
