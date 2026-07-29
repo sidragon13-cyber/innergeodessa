@@ -27,6 +27,33 @@ export {
   validateIsfjRuleSet,
 } from "./isfj";
 export {
+  ENTP_COMPLETE_REPORT,
+  ENTP_COMBINATION_RULES,
+  ENTP_CONFIDENCE_RULES,
+  ENTP_DIMENSION_RULES,
+  ENTP_REPORT_RULES,
+  validateEntpCompleteReport,
+  validateEntpRuleSet,
+} from "./entp";
+export {
+  INTJ_COMPLETE_REPORT,
+  INTJ_COMBINATION_RULES,
+  INTJ_CONFIDENCE_RULES,
+  INTJ_DIMENSION_RULES,
+  INTJ_REPORT_RULES,
+  validateIntjCompleteReport,
+  validateIntjRuleSet,
+} from "./intj";
+export {
+  INTP_COMPLETE_REPORT,
+  INTP_COMBINATION_RULES,
+  INTP_CONFIDENCE_RULES,
+  INTP_DIMENSION_RULES,
+  INTP_REPORT_RULES,
+  validateIntpCompleteReport,
+  validateIntpRuleSet,
+} from "./intp";
+export {
   analyseDimension,
   analyseRuleInput,
   DIMENSION_CODES,
@@ -60,6 +87,18 @@ export type {
   IsfjReportValidationResult,
   IsfjRuleSetValidationResult,
 } from "./isfj";
+export type {
+  EntpReportValidationResult,
+  EntpRuleSetValidationResult,
+} from "./entp";
+export type {
+  IntjReportValidationResult,
+  IntjRuleSetValidationResult,
+} from "./intj";
+export type {
+  IntpReportValidationResult,
+  IntpRuleSetValidationResult,
+} from "./intp";
 
 export type {
   AggregateRuleCondition,

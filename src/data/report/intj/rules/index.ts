@@ -1,17 +1,17 @@
 export {
-  ENTP_COMBINATION_RULES,
+  INTJ_COMBINATION_RULES,
 } from "./combination-rules";
 export {
-  ENTP_CONFIDENCE_RULES,
+  INTJ_CONFIDENCE_RULES,
 } from "./confidence-rules";
 export {
-  ENTP_DIMENSION_RULES,
+  INTJ_DIMENSION_RULES,
 } from "./dimension-rules";
 export {
-  ENTP_REPORT_RULES,
-  validateEntpRuleSet,
+  INTJ_REPORT_RULES,
+  validateIntjRuleSet,
 } from "./validation";
 
 export type {
-  EntpRuleSetValidationResult,
+  IntjRuleSetValidationResult,
 } from "./validation";

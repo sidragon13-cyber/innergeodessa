@@ -10,6 +10,12 @@ import {
 import {
   ISFJ_COMPLETE_REPORT,
 } from "../isfj";
+import {
+  INTJ_COMPLETE_REPORT,
+} from "../intj";
+import {
+  INTP_COMPLETE_REPORT,
+} from "../intp";
 import type {
   CompletePersonalityReportDefinition,
 } from "../types";
@@ -23,6 +29,8 @@ const COMPLETE_REPORT_REGISTRY: Partial<
   ISFJ: ISFJ_COMPLETE_REPORT,
   ENTJ: ENTJ_COMPLETE_REPORT,
   ENTP: ENTP_COMPLETE_REPORT,
+  INTJ: INTJ_COMPLETE_REPORT,
+  INTP: INTP_COMPLETE_REPORT,
 };
 
 export function getCompletePersonalityReport(

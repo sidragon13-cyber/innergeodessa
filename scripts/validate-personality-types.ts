@@ -21,7 +21,7 @@ import {
 const PERSONALITY_FAMILIES: Readonly<
   Record<string, readonly PersonalityTypeCode[]>
 > = {
-  analysts: ["ENTP", "INTJ", "INTP"],
+  analysts: ["ENTJ", "ENTP", "INTJ", "INTP"],
   diplomats: ["INFJ", "INFP", "ENFJ", "ENFP"],
   sentinels: ["ISTJ", "ESTJ", "ESFJ"],
   explorers: ["ISTP", "ISFP", "ESTP", "ESFP"],

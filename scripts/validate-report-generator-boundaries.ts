@@ -97,14 +97,14 @@ expectThrows(
   () => {
     generatePersonalityReport({
       sessionId: "unregistered-report-test",
-      personalityType: "INTJ",
+      personalityType: "INFJ",
       dimensions: validDimensions,
       accessLevel: "free",
       generatedAt: "2026-07-28T00:00:00.000Z",
     });
   },
   Error,
-  "Complete report is not available for personality type: INTJ",
+  "Complete report is not available for personality type: INFJ",
 );
 
 const analysedInput = analyseRuleInput({

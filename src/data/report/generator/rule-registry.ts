@@ -10,6 +10,12 @@ import {
 import {
   ISFJ_REPORT_RULES,
 } from "../isfj";
+import {
+  INTJ_REPORT_RULES,
+} from "../intj";
+import {
+  INTP_REPORT_RULES,
+} from "../intp";
 import type {
   ReportRuleDefinition,
 } from "../rules";
@@ -23,6 +29,8 @@ const REPORT_RULE_REGISTRY: Partial<
   ISFJ: ISFJ_REPORT_RULES,
   ENTJ: ENTJ_REPORT_RULES,
   ENTP: ENTP_REPORT_RULES,
+  INTJ: INTJ_REPORT_RULES,
+  INTP: INTP_REPORT_RULES,
 };
 
 export function getReportRules(

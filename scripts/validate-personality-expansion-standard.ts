@@ -13,6 +13,11 @@ import {
   validatePersonalityTypes,
 } from "../src/data/report";
 import {
+  ENTP_COMPLETE_REPORT,
+  ENTP_REPORT_RULES,
+  validateEntpRuleSet,
+} from "../src/data/report/entp";
+import {
   ENTJ_COMPLETE_REPORT,
   ENTJ_REPORT_RULES,
 } from "../src/data/report/entj";
@@ -20,6 +25,16 @@ import {
   ISFJ_COMPLETE_REPORT,
   ISFJ_REPORT_RULES,
 } from "../src/data/report/isfj";
+import {
+  INTJ_COMPLETE_REPORT,
+  INTJ_REPORT_RULES,
+  validateIntjRuleSet,
+} from "../src/data/report/intj";
+import {
+  INTP_COMPLETE_REPORT,
+  INTP_REPORT_RULES,
+  validateIntpRuleSet,
+} from "../src/data/report/intp";
 import {
   personalityTypeCodes,
 } from "../src/data/personality/types";
@@ -103,8 +118,26 @@ const entpStatus =
   );
 assert.deepEqual(
   entpStatus?.stages,
-  ["content_in_progress", "rules_in_progress"],
-  "ENTP must truthfully record incomplete content and incomplete rules.",
+  ["domain_complete", "validated"],
+  "ENTP must be domain-complete and validated.",
+);
+const intjStatus =
+  PERSONALITY_IMPLEMENTATION_MANIFEST.find(
+    (entry) => entry.personalityType === "INTJ",
+  );
+assert.deepEqual(
+  intjStatus?.stages,
+  ["domain_complete", "validated"],
+  "INTJ must be domain-complete and validated.",
+);
+const intpStatus =
+  PERSONALITY_IMPLEMENTATION_MANIFEST.find(
+    (entry) => entry.personalityType === "INTP",
+  );
+assert.deepEqual(
+  intpStatus?.stages,
+  ["domain_complete", "validated"],
+  "INTP must be domain-complete and validated.",
 );
 
 const manifestValidation =
@@ -157,6 +190,9 @@ assert(
 for (const [definition, rules] of [
   [ISFJ_COMPLETE_REPORT, ISFJ_REPORT_RULES],
   [ENTJ_COMPLETE_REPORT, ENTJ_REPORT_RULES],
+  [ENTP_COMPLETE_REPORT, ENTP_REPORT_RULES],
+  [INTJ_COMPLETE_REPORT, INTJ_REPORT_RULES],
+  [INTP_COMPLETE_REPORT, INTP_REPORT_RULES],
 ] as const) {
   const validation = validateCompletePersonalityDefinition(
     definition.personalityType,
@@ -286,14 +322,31 @@ assert.equal(
   16,
   "All-personality validation must return all 16 canonical types.",
 );
-assert(
-  allPersonalityValidation.issues.some(
-    (issue) =>
-      issue.personalityType === "ENTP" &&
-      issue.severity === "incomplete" &&
-      issue.message.includes("duplicat"),
-  ),
-  "All-personality validation must report ENTP scaffold duplication without failing its truthful incomplete state.",
+assert.equal(
+  allPersonalityValidation.issues.filter(
+    (issue) => issue.personalityType === "ENTP",
+  ).length,
+  0,
+  "Completed ENTP content must not retain scaffold duplication or incomplete issues.",
+);
+
+const entpRuleValidation = validateEntpRuleSet();
+assert.equal(
+  entpRuleValidation.valid,
+  true,
+  entpRuleValidation.errors.join("\n"),
+);
+const intjRuleValidation = validateIntjRuleSet();
+assert.equal(
+  intjRuleValidation.valid,
+  true,
+  intjRuleValidation.errors.join("\n"),
+);
+const intpRuleValidation = validateIntpRuleSet();
+assert.equal(
+  intpRuleValidation.valid,
+  true,
+  intpRuleValidation.errors.join("\n"),
 );
 
 const placeholderDefinition = {

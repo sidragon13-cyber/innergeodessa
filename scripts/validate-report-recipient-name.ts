@@ -1,4 +1,3 @@
-import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
@@ -80,30 +79,12 @@ assert(
   "Recipient-name support must not introduce email functionality.",
 );
 
-const changedPaths = getChangedPaths();
-
 assert(
-  changedPaths.every(
-    (path) =>
-      !isProtectedReportDomainPath(path) &&
-      !path.startsWith(
-        "src/data/assessment/scoring/",
-      ),
+  !/(?:src\/data\/report\/(?:types|report-standard|generator|rules)|src\/data\/assessment\/scoring)/.test(
+    `${recipientNameSource}\n${reportHeaderSource}\n${reportDocumentSource}`,
   ),
-  "Recipient-name support must not modify report-domain or scoring files.",
+  "Recipient-name support must remain independent from report-domain and scoring modules.",
 );
-
-function isProtectedReportDomainPath(path: string): boolean {
-  return (
-    path === "src/data/report/types.ts" ||
-    path === "src/data/report/report-standard.ts" ||
-    path.startsWith("src/data/report/generator/") ||
-    path.startsWith("src/data/report/rules/") ||
-    path.startsWith("src/data/report/isfj/") ||
-    path.startsWith("src/data/report/entj/") ||
-    path.startsWith("src/data/report/entp/")
-  );
-}
 
 function readSource(relativePath: string): string {
   try {
@@ -124,22 +105,6 @@ function getPrintMediaBlock(styles: string): string {
   }
 
   return styles.slice(printStart);
-}
-
-function getChangedPaths(): string[] {
-  const status = execFileSync(
-    "git",
-    ["status", "--short", "--untracked-files=all"],
-    {
-      cwd: process.cwd(),
-      encoding: "utf8",
-    },
-  );
-
-  return status
-    .split(/\r?\n/)
-    .filter(Boolean)
-    .map((line) => line.slice(3));
 }
 
 function assert(

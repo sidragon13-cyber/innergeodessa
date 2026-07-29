@@ -46,17 +46,14 @@ export const CANONICAL_PERSONALITY_TYPES:
 export const PERSONALITY_IMPLEMENTATION_MANIFEST:
   readonly PersonalityImplementationStatus[] =
   Object.freeze([
-    entry("INTJ", ["not_started"]),
-    entry("INTP", ["not_started"]),
+    entry("INTJ", ["domain_complete", "validated"]),
+    entry("INTP", ["domain_complete", "validated"]),
     entry("ENTJ", [
       "domain_complete",
       "validated",
       "frontend_enabled",
     ]),
-    entry("ENTP", [
-      "content_in_progress",
-      "rules_in_progress",
-    ]),
+    entry("ENTP", ["domain_complete", "validated"]),
     entry("INFJ", ["not_started"]),
     entry("INFP", ["not_started"]),
     entry("ENFJ", ["not_started"]),
