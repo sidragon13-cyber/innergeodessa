@@ -37,11 +37,11 @@ const CONFIGS: DimensionRuleConfig[] = [
     secondPreference: "E",
     slotId: "istj-ei-processing",
     firstDirection:
-      "An I-leaning ISTJ may build working plan through concentrated private analysis, selective consultation, and careful internal synthesis before communicating a direction. This can support depth, while relevant evidence may arrive late if the working record remains private. The preference describes an energy and processing tendency, not social ability or independence of judgement.",
+      "An I-leaning ISTJ may prepare reliable work through concentrated private review, selective consultation, and careful comparison with prior evidence before communicating a direction. This can support accuracy, while relevant exceptions may arrive late if the operating record remains private. The preference describes an energy and processing tendency, not social ability or independence of judgement.",
     secondDirection:
       "An E-leaning ISTJ may develop procedure through more visible discussion, wider consultation, and active coordination than the quiet stereotype suggests. External exchange can test the working record early, while frequent interaction may fragment the concentration needed for integration. This does not invalidate the ISTJ result or prove leadership ability.",
     balancedDirection:
-      "A balanced EI result suggests access to both concentrated private working plan and outward collaborative processing. The person may withdraw to integrate complex evidence, then engage visibly to test and coordinate the working record. Role, trust, group size, and available energy may determine which mode appears.",
+      "A balanced EI result suggests access to both concentrated private review and outward collaborative coordination. The person may withdraw to compare evidence, then engage visibly to test and update the operating record. Role, trust, group size, and available energy may determine which mode appears.",
     guidance:
       "Protect careful private review while scheduling early evidence conversations so the procedure can change before implementation makes redirection expensive.",
   },
@@ -53,7 +53,7 @@ const CONFIGS: DimensionRuleConfig[] = [
     firstDirection:
       "An S-leaning ISTJ may construct working plans from operational facts, proven mechanisms, and concrete constraints before extending the time horizon. Procedure may emphasise reliable sequencing and measurable improvement. This does not invalidate the ISTJ classification or imply less direction; it changes the evidence from which reliable continuity develops.",
     secondDirection:
-      "An N-leaning ISTJ may focus readily on trajectories, operation patterns, practical implications, and structural leverage. This supports far-reaching procedure, while current detail or exceptions may receive insufficient weight once the working record feels coherent. The preference indicates an attentional starting point, not proof of continuity awareness or operational correctness.",
+      "An N-leaning ISTJ may focus readily on trajectories, operational patterns, future implications, and structural leverage. This can support procedure that anticipates later demands, while current detail or exceptions may receive insufficient weight once the working record feels coherent. The preference indicates an attentional starting point, not proof of continuity awareness or operational correctness.",
     balancedDirection:
       "A balanced SN result suggests that abstract procedure and practical evidence may be similarly accessible. The person may derive a future model from concrete observations and repeatedly test it against implementation. Expertise, consequence, and time horizon may determine which information receives priority.",
     guidance:
@@ -65,7 +65,7 @@ const CONFIGS: DimensionRuleConfig[] = [
     secondPreference: "T",
     slotId: "istj-tf-criteria",
     firstDirection:
-      "An F-leaning ISTJ may give greater weight to values, legitimacy, stakeholder experience, and relational consequence while retaining independent far-reaching thought. Human adoption may enter the procedure early. This does not invalidate the ISTJ result, weaken analysis, or guarantee interpersonal awareness; it changes which outcomes count as evidence of a sound operation.",
+      "An F-leaning ISTJ may give greater weight to values, legitimacy, stakeholder experience, and relational consequence while retaining careful independent judgement. Human adoption may enter the procedure early. This does not invalidate the ISTJ result, weaken analysis, or guarantee interpersonal awareness; it changes which outcomes count as evidence of a sound operation.",
     secondDirection:
       "A T-leaning ISTJ may emphasise internal consistency, impersonal criteria, trade-offs, and explanatory precision. This supports rigorous design, while emotional information or adoption costs may remain outside the working record. Logic is a preferred judgement criterion, not evidence of intelligence, objectivity, or immunity from bias.",
     balancedDirection:
@@ -83,7 +83,7 @@ const CONFIGS: DimensionRuleConfig[] = [
     secondDirection:
       "A P-leaning ISTJ may keep working records provisional, iterate routes as evidence changes, and delay closure longer than the typical structured stereotype suggests. This can strengthen adaptation, while execution may remain under-specified. The preference does not invalidate the ISTJ result or imply weak standards; it changes how procedure becomes commitment.",
     balancedDirection:
-      "A balanced JP result suggests selective structure with meaningful openness to redirection. The person may hold a far-reaching objective firmly while allowing sequencing, methods, or intermediate judgements to evolve. Reversibility and consequence may determine when closure becomes useful.",
+      "A balanced JP result suggests selective structure with meaningful openness to redirection. The person may hold a reliability standard firmly while allowing sequencing, methods, or intermediate judgements to evolve. Reversibility and consequence may determine when closure becomes useful.",
     guidance:
       "Version the plan: define stable principles, adjustable methods, evidence thresholds, and review dates so structure supports execution without protecting outdated assumptions.",
   },

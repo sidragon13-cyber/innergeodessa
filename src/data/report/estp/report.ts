@@ -99,7 +99,7 @@ const CONTENT_BY_SECTION: Record<
     block(
       "estp-core-summary",
       "summary",
-      "Tactical Direction and Adaptationd Action",
+      "Tactical Direction and Adaptive Action",
       "An ESTP pattern often links a view of working direction with objective decision criteria and a preference for organised action. The ESTP negotiator may translate an ambitious opportunity outcome into priorities, real-time criteria, ownership, and coordinated action, then challenge arrangements that no longer serve the goal. Effective use balances tactical adaptation with stakeholder responsibility and the realities of human implementation. The retained dynamic slots below examine that interaction and qualify it when dimensions are balanced or confidence is low.",
       [
         {
@@ -483,20 +483,20 @@ const CONTENT_BY_SECTION: Record<
     block(
       "estp-action-days-1-30",
       "action",
-      "Days 1–30: Coordination and Workload Audit",
-      "Objective: establish operating evidence about responsibility, control, and decision quality. Actions: (1) map recurring coordination and action work with its true time cost; (2) mark each control point as required, inherited, or preference-based; (3) identify decisions that require consultation and name the missing voices; (4) record current measures for opportunity, adoption, team capability, and recovery; (5) identify work owned personally because delegation feels slower. Success indicators: a complete responsibility map, three potential transfers, two consultation gaps, and baseline measures. Review questions: Where is my decision authority essential? Where have I become the system?",
+      "Days 1–30: Observe the Live System",
+      "Objective: replace assumptions about an immediate opportunity with direct operating evidence. Actions: (1) choose one active situation with a measurable result; (2) observe the people, constraints, timing, and current workarounds before intervening; (3) ask two local participants what would make action easier or riskier; (4) record one impulse to act before the decision boundary was clear; (5) define success, safeguards, and a stop condition. Success indicators: a shared situation map, two verified constraints, and one bounded tactical trial.",
     ),
     block(
       "estp-action-days-31-60",
       "action",
-      "Days 31–60: Delegation, Listening, and Adoption",
-      "Objective: test coordination behaviours that distribute judgement and improve implementation. Actions: (1) delegate one complete opportunity outcome with decision rights and review points; (2) use the context-conclusion-reasoning-uncertainty sequence for major decisions; (3) ask a quieter stakeholder to speak before giving your view; (4) add an adoption measure to one initiative; (5) protect two weekly recovery boundaries. Success indicators: the delegated owner retains the method, one decision changes through consultation, adoption operating evidence is reviewed, and recovery boundaries occur in at least six weeks. Review questions: What became stronger when I did not control the method?",
+      "Days 31–60: Act, Debrief, and Adjust",
+      "Objective: use short action cycles without confusing speed with correct judgement. Actions: (1) run the tactical trial with a named local owner; (2) hold a brief debrief after each cycle using result, unintended effect, and next constraint; (3) ask a quieter participant for evidence before proposing the adjustment; (4) leave the method with the owner inside agreed safeguards; (5) protect two weekly recovery boundaries. Success indicators: faster feedback, one decision changed by local evidence, and continued ownership without repeated intervention.",
     ),
     block(
       "estp-action-days-61-90",
       "action",
-      "Days 61–90: Build the Sustainable System",
-      "Objective: convert useful experiments into a repeatable coordination system. Actions: (1) run one tactical experiment with explicit assumptions and stop criteria; (2) maintain one delegated opportunity outcome without taking back action; (3) improve one team capability through coaching, documentation, or decision access; (4) formalise workload and recovery review points; (5) compare opportunity, adoption, capability, and sustainability with the baseline. Success indicators: usable operating evidence from the experiment, independent ownership, one demonstrated capability gain, and a documented operating rhythm. Review questions: Which results improved because responsibility became more distributed?",
+      "Days 61–90: Convert Response Into Capability",
+      "Objective: retain the useful tactical practice without making constant intervention necessary. Actions: (1) document the cues, decision boundary, safeguards, and escalation point; (2) ask another owner to run the response without you; (3) review whether speed, quality, stakeholder impact, and workload improved; (4) retire one action that created motion without value; (5) choose whether to standardise, adapt, or stop. Success indicators: independent response, a shorter evidence cycle, one removed low-value action, and recovery that does not depend on the opportunity disappearing.",
     ),
     block(
       "estp-action-review",

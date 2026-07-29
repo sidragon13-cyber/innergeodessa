@@ -213,8 +213,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "infp-decisions-reflection",
       "analysis",
-      "Provisional Convergence",
-      "The person may compare alternatives internally without feeling that the reflection has reached a naturally final point. A decision can therefore remain provisional long after enough evidence exists for the next reversible step. This protects against careless closure but hides the current best judgement from collaborators. State which option is strongest now, what uncertainty remains, and which consequence would justify reopening it. A bounded commitment can coexist with intellectual revision.",
+      "Choosing Without Betraying Every Alternative",
+      "The INFP may delay a decision when each option protects a different value or possible future. Keeping the choice open can preserve integrity while also leaving collaborators unable to plan and preventing any option from being tested in lived experience. Name the value that matters most in this decision, the value that will receive less protection, and one repair if that cost appears. A time-bounded commitment can express values without claiming that every competing possibility was wrong.",
     ),
     block(
       "infp-decisions-strength",
@@ -277,8 +277,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "infp-teamwork-reflection",
       "analysis",
-      "Selective Collaboration",
-      "The INFP may collaborate intensely when another person contributes expertise or challenge, while finding unfocused group process draining. Selectivity can protect quality and attention. It can also exclude information that arrives through informal conversation or people whose thinking style is less concise. Design collaboration around clear questions and decision rights, but leave enough room for evidence that does not arrive in the preferred format.",
+      "Collaboration With Room for Individual Voice",
+      "The INFP may engage deeply when people can contribute without flattening their values or experience into the dominant position. This can make space for overlooked perspectives, while discomfort with forceful group process may lead the person to withhold a concern until the direction is difficult to change. State the concern as an observable consequence and the value it affects, ask who else sees the situation differently, and agree how the group will decide after each voice is heard.",
     ),
     block(
       "infp-teamwork-strength",
@@ -483,20 +483,20 @@ const CONTENT_BY_SECTION: Record<
     block(
       "infp-action-days-1-30",
       "action",
-      "Days 1–30 · Map and Expose",
-      "Write the objective, system narrative, key assumptions, anomalies, stakeholders, and evidence thresholds. Identify two people with different access to reality and share the draft before deciding the full route. Ask each for one counterexample and one expression concern. Define which quality standards are essential and which can be tested through an early version.",
+      "Days 1–30 · Name Values and Choose a Medium",
+      "Choose one idea or commitment you want to express. Write the value it serves, the people affected, the concrete outcome you hope to create, and the trade-off you are willing to accept. Ask two trusted people what is clear and what remains private or abstract. Select one small form—a conversation, draft, prototype, or contribution—that can carry the idea into shared reality.",
     ),
     block(
       "infp-action-days-31-60",
       "action",
-      "Days 31–60 · Build and Test",
-      "Implement the highest-leverage part of the values-led narrative with clear interfaces and measures. Hold focused work periods, then review evidence with operators or users. Track where private predictions were accurate, incomplete, or wrong. Communicate changes to the narrative and release one useful version before every detail reaches the preferred standard.",
+      "Days 31–60 · Express and Observe",
+      "Complete and share the selected form by a fixed date. Ask recipients what they understood, what moved them, and what practical response it enabled rather than asking only whether they liked it. Record where your intention and their experience differed. Revise once using that evidence, while protecting the central value from endless accommodation.",
     ),
     block(
       "infp-action-days-61-90",
       "action",
-      "Days 61–90 · Distribute and Integrate",
-      "Transfer meaningful decision authority using principles, constraints, and review triggers rather than step-by-step control. Complete documentation and invite someone else to explain or adapt the values-led narrative. Evaluate outcome, adoption, maintainability, and capability built in others. Revise the narrative based on what occurred, not only on whether the original plan was followed.",
+      "Days 61–90 · Commit and Integrate",
+      "Choose one sustained practice that carries the value beyond a single expression, assign it a schedule or owner, and define what completion looks like. Invite another person to adapt the contribution without requiring exact agreement with your original meaning. Review whether the work produced the intended human or practical effect, then decide explicitly to continue, revise, or close it.",
     ),
     block(
       "infp-action-review",

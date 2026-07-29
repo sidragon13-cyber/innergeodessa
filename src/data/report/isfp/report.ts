@@ -469,8 +469,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "isfp-growth-action",
       "action",
-      "A Monthly Assumption Review",
-      "Once a month, select one values-grounded craft and review what it expressed, who experienced its effects, where reality differed from sensory awareness, and which promise remains. Identify one conviction that strengthened and one interpretation that changed. Share the revision in an authentic form. This creates practical humility while preserving the ISFP's strength in personal authentic contribution and imaginative depth.",
+      "A Monthly Craft-and-Impact Review",
+      "Once a month, select one piece of work, care, or expression and review the value it served, the sensory or practical choices you made, and how another person actually experienced its effects. Identify one choice that strengthened the expression and one assumption that changed through feedback. Complete any remaining promise, then make one visible revision. This protects personal integrity while keeping craft connected to lived impact.",
     ),
   ],
   "ninety-day-action-plan": [
@@ -483,20 +483,20 @@ const CONTENT_BY_SECTION: Record<
     block(
       "isfp-action-days-1-30",
       "action",
-      "Days 1–30 · Map and Expose",
-      "Write the objective, system expression, key assumptions, anomalies, stakeholders, and evidence thresholds. Identify two people with different access to reality and share the draft before deciding the full route. Notice and ask each for one counterexample and one expression concern. Define which quality standards are essential and which can be tested through an early version.",
+      "Days 1–30 · Choose a Value and Make a First Form",
+      "Choose one value you want to express through a concrete piece of work, care, design, or personal practice. Define the intended experience, the people affected, the materials or constraints, and the smallest form you can complete. Share an early version with two trusted people and ask what they actually notice rather than whether it matches your intention. Set one boundary that protects the work from endless private refinement.",
     ),
     block(
       "isfp-action-days-31-60",
       "action",
-      "Days 31–60 · Build and Test",
-      "Implement the highest-leverage part of the crafted response with clear interfaces and measures. Hold focused work periods, then review evidence with operators or users. Track where private predictions were accurate, incomplete, or wrong. Communicate changes to the expression and release one useful version before every detail reaches the preferred standard.",
+      "Days 31–60 · Refine Through Direct Feedback",
+      "Continue the work in protected sessions and complete one version by a fixed date. Ask recipients how the form affected their experience, which detail carried the value, and where intention was not visible. Revise one practical or sensory element using that evidence without surrendering the central value to every preference. Record what you chose to keep and why.",
     ),
     block(
       "isfp-action-days-61-90",
       "action",
-      "Days 61–90 · Distribute and Integrate",
-      "Transfer meaningful decision authority using principles, constraints, and review triggers rather than step-by-step control. Complete documentation and invite someone else to explain or adapt the crafted response. Evaluate outcome, adoption, maintainability, and capability built in others. Revise the expression based on what occurred, not only on whether the original plan was followed.",
+      "Days 61–90 · Complete and Integrate",
+      "Finish the work, fulfil its related promises, and make it available in the setting for which it was created. Invite another person to use, interpret, or adapt it without requiring them to reproduce your private meaning. Review whether the contribution remained congruent with the value and created the intended practical experience. Choose explicitly whether to continue the practice, develop a second version, or close it.",
     ),
     block(
       "isfp-action-review",

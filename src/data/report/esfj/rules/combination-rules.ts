@@ -82,7 +82,7 @@ export const ESFJ_COMBINATION_RULES:
       "change-and-adaptation",
       "esfj-combination-change-flexibility",
       "Interpersonal Direction With Route Flexibility",
-      "Borderline or balanced SN and JP results may combine interpersonal thought with practical meaningful situational flexibility. The person can move between conceptual direction and concrete evidence, using structure where consequences require it while allowing methods to evolve. This can strengthen change coordination because learning does not threaten the objective. Define the stable outcome, minimum safeguards, and review date, then allow local evidence to reshape sequencing or technique instead of treating every adjustment as loss of overreach.",
+      "Borderline or balanced SN and JP results may combine interpersonal awareness with practical situational flexibility. The person can move between shared direction and concrete evidence, using structure where consequences require it while allowing methods to evolve. This can strengthen change coordination because learning does not threaten the objective. Define the stable outcome, minimum safeguards, and review date, then allow local evidence to reshape sequencing or technique instead of treating every adjustment as loss of control.",
     ),
     aggregateCombinationRule(
       "esfj-combination-provisional-profile",

@@ -49,7 +49,7 @@ const CONTENT_BY_SECTION: Record<
       "istj-dimensions-context",
       "analysis",
       "Reading the Four Dimensions",
-      "An ISTJ result combines preferences across EI, SN, TF, and JP, but strength and confidence can alter the expression considerably. A more outward EI score may make working plan collaborative, a practical SN result may begin with operational evidence, a balanced TF result can integrate stakeholder consequences, and a flexible JP result may preserve more iteration. The dynamic interpretations below qualify broad type themes. Compare them with behaviour across expertise, culture, role, trust, and pressure.",
+      "An ISTJ result combines preferences across EI, SN, TF, and JP, but strength and confidence can alter the expression considerably. A more outward EI score may make planning collaborative, a practical SN result may reinforce attention to operational evidence, a balanced TF result can integrate stakeholder consequences, and a flexible JP result may preserve more iteration. The dynamic interpretations below qualify broad type themes. Compare them with behaviour across expertise, culture, role, trust, and pressure.",
       [
         {
           id: "istj-ei-processing",
@@ -99,8 +99,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "istj-core-summary",
       "summary",
-      "Accumulated Practical Knowledge and Procedural Coherence",
-      "The central ISTJ pattern often involves forming a working record of direction and organising choices around its underlying logic. The person may look beyond current symptoms to identify the procedure producing them, then select a focused route for adjustment. At its best, this creates patient leverage rather than reactive activity. The dynamic slots below qualify how working plans change with confidence, balance, and access to adjacent preferences.",
+      "Accumulated Evidence and Dependable Structure",
+      "The central ISTJ pattern often involves comparing a present responsibility with tested experience, then organising work into a sequence that can be repeated and checked. The person may notice where a standard, handoff, or exception threatens continuity and improve the procedure before failure becomes routine. At its best, this creates dependable progress grounded in evidence rather than habit alone. The dynamic slots below qualify how structure changes with confidence, balance, and access to adjacent preferences.",
       [
         {
           id: "istj-combination-procedure",
@@ -135,8 +135,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "istj-core-reflection",
       "reflection",
-      "What Could Adjustment the Model?",
-      "Choose one operational conclusion you currently hold. Which observations support it, which assumptions connect those observations, and what evidence would require redirection? Who has access to facts you do not? Share the working record before it is finished and ask for the strongest counterexample. The goal is not to surrender independent judgement, but to ensure independence produces a design that can withstand reality outside your own reasoning.",
+      "Does the Procedure Still Match the Evidence?",
+      "Choose one recurring responsibility or standard. Which past evidence justified it, which present observations still support it, and which exceptions suggest the procedure needs revision? Ask the people who perform the work where the written process and lived reality differ. Preserve what protects reliability, but change a step when repeated evidence shows that familiarity is no longer serving the outcome.",
     ),
   ],
   "motivation-and-needs": [
@@ -220,7 +220,7 @@ const CONTENT_BY_SECTION: Record<
       "istj-judgements-strength",
       "strength",
       "Resisting Short-Term Pressure",
-      "An ISTJ may hold a necessary far-reaching choice when immediate incentives favour convenience or appearance. By connecting the judgement to operation consequences, the person can protect investment, standards, or future capability. This strength needs review triggers so perseverance does not become rigidity. The judgement should remain stable because evidence still supports it, not because changing course would challenge the identity of the strategist.",
+      "An ISTJ may hold a necessary standard or long-term commitment when immediate incentives favour convenience or appearance. By connecting the judgement to operational consequences and tested precedent, the person can protect quality, investment, or future capability. This strength needs review triggers so perseverance does not become rigidity. The judgement should remain stable because current evidence supports it, not because changing course would make earlier responsibility feel wasted.",
     ),
     block(
       "istj-judgements-risk",
@@ -272,7 +272,7 @@ const CONTENT_BY_SECTION: Record<
       "istj-teamwork-summary",
       "summary",
       "Designing Capability and Direction",
-      "In teams, an ISTJ may contribute by clarifying far-reaching direction, redesigning operations, protecting focus, and anticipating dependencies. Leadership can be quiet and procedure-led rather than socially dominant. The person may prefer capable colleagues with meaningful autonomy. Effective teamwork requires making standards and reasoning visible, learning from local expertise, and recognising that coordination is not a distraction from working plan but part of how working plan becomes real.",
+      "In teams, an ISTJ may contribute by clarifying standards, sequencing dependable work, preserving institutional knowledge, and noticing where a handoff threatens continuity. Leadership can be quiet and procedure-led rather than socially dominant. The person may prefer capable colleagues with clearly owned responsibilities. Effective teamwork requires making expectations and exceptions visible, learning from frontline experience, and treating coordination as part of reliability rather than an interruption to the real work.",
     ),
     block(
       "istj-teamwork-analysis",
@@ -310,13 +310,13 @@ const CONTENT_BY_SECTION: Record<
       "istj-career-analysis",
       "analysis",
       "The Need for Protected Attention",
-      "Frequent interruption and performative activity can make it difficult to build a coherent model of complex work. The ISTJ may need blocks of uninterrupted time and clear judgement ownership. Total isolation is not the answer; working plan requires contact with users, colleagues, and changing evidence. A supportive environment alternates focused analysis with purposeful collaboration rather than treating either constant availability or solitary independence as ideal.",
+      "Frequent interruption and shifting expectations can make it difficult to maintain accurate, dependable work. The ISTJ may need protected concentration, stable priorities, and clear ownership. Total isolation is not the answer; reliable procedure requires contact with users, colleagues, and changing evidence. A supportive environment combines focused execution with scheduled coordination rather than treating either constant availability or private control as ideal.",
     ),
     block(
       "istj-career-example",
       "example",
       "Work That Rewards Procedure",
-      "Operations design, research working plan, product procedure, organisational redesign, policy analysis, or far-reaching planning may reward the ability to connect principles and consequences. The same job title can vary widely. Examine whether the daily work includes genuine problem ownership, access to evidence, authority to improve structures, and responsibility through implementation rather than relying on occupational stereotypes.",
+      "Quality assurance, operations coordination, records management, compliance, logistics, technical administration, or implementation planning may reward attention to standards, evidence, and dependable follow-through. The same job title can vary widely. Examine whether the daily work includes clear responsibility, access to operational facts, authority to improve procedures, and enough continuity to learn from results rather than relying on occupational stereotypes.",
     ),
     block(
       "istj-career-risk",
@@ -328,7 +328,7 @@ const CONTENT_BY_SECTION: Record<
       "istj-career-guidance",
       "guidance",
       "Evaluate Operational Fit",
-      "Assess roles across problem depth, autonomy, evidence quality, time horizon, implementation ownership, and access to capable challenge. Ask how judgements are reviewed and whether far-reaching work survives short-term pressure. Also identify the coordination and relationship work required for influence. Choose an environment where procedure matters, then build the skills that help other people understand and adopt it.",
+      "Assess roles across responsibility clarity, evidence quality, process stability, exception handling, implementation ownership, and access to practical feedback. Ask how standards are reviewed, whether improvements can survive short-term pressure, and who maintains the system after a change. Choose an environment where dependable work matters, then build the communication and adaptation skills that keep procedure responsive to reality.",
     ),
   ],
   "relationship-dynamics": [
@@ -439,7 +439,7 @@ const CONTENT_BY_SECTION: Record<
       "istj-development-summary",
       "summary",
       "From Private Direction to Shared Capability",
-      "ISTJ development is not about abandoning independence or far-reaching thought. It involves making working records challengeable, communicating before certainty, distinguishing excellence from overcontrol, and allowing relationship and operational evidence to shape the procedure. Development expands operational range: the person can still protect depth while involving others early enough to improve and carry the work. The dynamic slot below highlights combinations affecting this path.",
+      "ISTJ development is not about abandoning responsibility, memory, or respect for tested structure. It involves making procedures reviewable, communicating exceptions before they become failures, distinguishing quality control from overcontrol, and allowing current operational evidence to revise precedent. Development expands range: the person can still protect reliability while involving others early enough to improve and share ownership of the work. The dynamic slot below highlights combinations affecting this path.",
       [
         {
           id: "istj-combination-isolation-risk",
@@ -470,7 +470,7 @@ const CONTENT_BY_SECTION: Record<
       "istj-development-action",
       "action",
       "A Monthly Assumption Review",
-      "Once a month, select one important working plan and review its assumptions, exceptions, stakeholder effects, and implementation evidence. Identify one belief that strengthened and one that weakened. Communicate any redirection and credit the evidence source. This creates a visible practice of intellectual humility while preserving the ISTJ's strength in coherent durable practical design.",
+      "Once a month, select one important procedure and review its purpose, exceptions, stakeholder effects, and implementation evidence. Identify one standard that remains justified and one step that needs revision. Communicate the change, update the operating record, and credit the evidence source. This creates visible practical humility while preserving the ISTJ's strength in durable, dependable structure.",
     ),
   ],
   "ninety-day-action-plan": [
@@ -483,20 +483,20 @@ const CONTENT_BY_SECTION: Record<
     block(
       "istj-action-days-1-30",
       "action",
-      "Days 1–30 · Map and Expose",
-      "Write the objective, operating record, key assumptions, exceptions, stakeholders, and evidence thresholds. Identify two people with different access to reality and share the draft before deciding the full route. Ask each for one counterexample and one implementation concern. Define which quality standards are essential and which can be tested through an early version.",
+      "Days 1–30 · Map Responsibility and Evidence",
+      "Choose one recurring responsibility. Document the expected result, current procedure, owners, handoffs, known exceptions, and evidence that the standard still works. Ask two people who perform or receive the work where reality differs from the record. Identify one step retained through habit and one safeguard that must not be lost. Establish baseline measures for error, delay, rework, and workload.",
     ),
     block(
       "istj-action-days-31-60",
       "action",
-      "Days 31–60 · Build and Test",
-      "Implement the highest-leverage part of the procedure with clear interfaces and measures. Hold focused work periods, then review evidence with operators or users. Track where private predictions were accurate, incomplete, or wrong. Communicate adjustments to the working record and release one useful version before every detail reaches the preferred standard.",
+      "Days 31–60 · Revise and Run the Procedure",
+      "Change one evidence-backed step while keeping ownership, quality criteria, and the exception route explicit. Run the revised procedure for a fixed period and record errors, workarounds, handoff failures, and user impact. Ask the owner to explain where the documentation helps or constrains judgement. Update the record after actual use rather than expecting the first revision to be final.",
     ),
     block(
       "istj-action-days-61-90",
       "action",
-      "Days 61–90 · Distribute and Integrate",
-      "Transfer meaningful judgement authority using principles, constraints, and review triggers rather than step-by-step control. Complete documentation and invite someone else to explain or adapt the procedure. Evaluate outcome, adoption, maintainability, and capability built in others. Revise the working record based on what occurred, not only on whether the original plan was followed.",
+      "Days 61–90 · Stabilise Shared Ownership",
+      "Ask another owner to run the procedure without relying on your reminders or private knowledge. Confirm the decision boundary, escalation point, and review date, then remove one redundant control. Compare reliability, workload, and exception handling with the baseline. Keep the parts that protect continuity, document why other parts changed, and schedule the next evidence review before the process becomes unquestioned habit.",
     ),
     block(
       "istj-action-review",

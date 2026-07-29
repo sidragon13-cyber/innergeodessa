@@ -37,11 +37,11 @@ const CONFIGS: DimensionRuleConfig[] = [
     secondPreference: "E",
     slotId: "istp-ei-processing",
     firstDirection:
-      "An I-leaning ISTP may build working plan through concentrated private analysis, selective consultation, and careful internal synthesis before communicating a direction. This hands-on approach can support depth, while relevant evidence may arrive late if the working diagnosis remains private. The preference describes an energy and processing tendency, not social ability or independence of judgement.",
+      "An I-leaning ISTP may troubleshoot through concentrated private observation, selective consultation, and internal testing before communicating a diagnosis. This can support depth, while relevant evidence may arrive late if the working explanation remains private. The preference describes an energy and processing tendency, not social ability or independence of judgement.",
     secondDirection:
       "An E-leaning ISTP may develop an experiment through more visible discussion, wider consultation, and active coordination than the quiet stereotype suggests. External exchange can test the working diagnosis early, while frequent interaction may fragment the concentration needed for integration. This does not invalidate the ISTP result or prove leadership ability.",
     balancedDirection:
-      "A balanced EI result suggests access to both concentrated private working plan and outward collaborative processing. The ISTP practitioner may withdraw to integrate complex evidence, then engage visibly to test and coordinate the working diagnosis. Role, trust, group size, and available energy may determine which mode appears.",
+      "A balanced EI result suggests access to both concentrated private troubleshooting and outward collaborative testing. The person may withdraw to integrate observations, then engage visibly to reproduce and coordinate the working diagnosis. Role, trust, group size, and available energy may determine which mode appears.",
     guidance:
       "Protect careful private review while scheduling early evidence conversations so the experiment can change before implementation makes redirection expensive.",
   },
@@ -51,9 +51,9 @@ const CONFIGS: DimensionRuleConfig[] = [
     secondPreference: "N",
     slotId: "istp-sn-experiment",
     firstDirection:
-      "An S-leaning ISTP may construct working plan from operational facts, proven mechanisms, and concrete constraints before extending the time horizon. Experiment may emphasise reliable sequencing and measurable improvement. This does not invalidate the ISTP classification or imply less direction; it changes the evidence from which reliable adaptability develops.",
+      "An S-leaning ISTP may construct a diagnosis from direct observations, proven mechanisms, and concrete constraints before extending the time horizon. Experiment may emphasise immediate function and measurable improvement. This does not invalidate the ISTP classification or imply less foresight; it changes the evidence from which reliable adaptability develops.",
     secondDirection:
-      "An N-leaning ISTP may focus readily on trajectories, operation patterns, practical implications, and structural leverage. This supports far-reaching experiment, while current detail or exceptions may receive insufficient weight once the working diagnosis feels coherent. The preference indicates an attentional starting point, not proof of adaptability awareness or operational correctness.",
+      "An N-leaning ISTP may focus readily on trajectories, mechanism patterns, future implications, and structural leverage. This can support experiments aimed at a wider system effect, while current detail or exceptions may receive insufficient weight once the working diagnosis feels coherent. The preference indicates an attentional starting point, not proof of adaptability or operational correctness.",
     balancedDirection:
       "A balanced SN result suggests that abstract experiment and practical evidence may be similarly accessible. The ISTP practitioner may derive a future model from concrete observations and repeatedly test it against implementation. Expertise, consequence, and time horizon may determine which information receives priority.",
     guidance:
@@ -65,7 +65,7 @@ const CONFIGS: DimensionRuleConfig[] = [
     secondPreference: "T",
     slotId: "istp-tf-criteria",
     firstDirection:
-      "An F-leaning ISTP may give greater weight to values, legitimacy, stakeholder experience, and relational consequence while retaining independent far-reaching thought. Human adoption may enter the experiment early. This does not invalidate the ISTP result, weaken analysis, or guarantee interpersonal awareness; it changes which outcomes count as evidence of a sound operation.",
+      "An F-leaning ISTP may give greater weight to values, legitimacy, stakeholder experience, and relational consequence while retaining independent practical analysis. Human adoption may enter the experiment early. This does not invalidate the ISTP result, weaken analysis, or guarantee interpersonal awareness; it changes which outcomes count as evidence of a sound operation.",
     secondDirection:
       "A T-leaning ISTP may emphasise internal consistency, impersonal criteria, trade-offs, and explanatory precision. This supports rigorous design, while emotional information or adoption costs may remain outside the working diagnosis. Logic is a preferred judgement criterion, not evidence of intelligence, objectivity, or immunity from bias.",
     balancedDirection:
@@ -83,7 +83,7 @@ const CONFIGS: DimensionRuleConfig[] = [
     secondDirection:
       "A P-leaning ISTP may keep working diagnoses provisional, iterate routes as evidence changes, and delay closure longer than the typical structured stereotype suggests. This hands-on approach can strengthen adaptation, while execution may remain under-specified. The preference does not invalidate the ISTP result or imply weak standards; it changes how experiment becomes commitment.",
     balancedDirection:
-      "A balanced JP result suggests selective flexibility with meaningful openness to redirection. The ISTP practitioner may hold a far-reaching objective firmly while allowing sequencing, methods, or intermediate judgements to evolve. Reversibility and consequence may determine when closure becomes useful.",
+      "A balanced JP result suggests selective flexibility with meaningful openness to redirection. The person may hold a practical outcome firmly while allowing sequencing, methods, or intermediate judgements to evolve. Reversibility and consequence may determine when closure becomes useful.",
     guidance:
       "Version the plan: define stable principles, adjustable methods, evidence thresholds, and review dates so flexibility supports execution without protecting outdated assumptions.",
   },

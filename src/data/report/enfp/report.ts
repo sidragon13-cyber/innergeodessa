@@ -123,8 +123,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "enfp-core-strength",
       "strength",
-      "Creating Intellectual Movement",
-      "A developed expression can help people move beyond false choices. The ENFP may combine fragments from different fields, articulate an overlooked contradiction, or design a reversible trial that replaces abstract disagreement with learning. This can reduce fear around uncertainty because the group gains several ways to proceed. The contribution becomes durable when options are prioritised and someone accepts ownership for testing, integrating, and completing the most valuable one.",
+      "Activating Possibility With Human Meaning",
+      "A developed ENFP expression can help people recognise a possibility that connects change with something they genuinely value. The person may link an overlooked need with an imaginative route, invite voices that were absent, and make experimentation feel emotionally possible. This can restore agency where a group feels constrained. The contribution becomes durable when participants can shape or decline the invitation and when one meaningful option receives enough ownership and follow-through to create evidence.",
     ),
     block(
       "enfp-core-risk",
@@ -251,8 +251,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "enfp-communication-risk",
       "risk",
-      "Winning the Exchange, Losing the Signal",
-      "Verbal agility can make it possible to answer nearly every objection. The risk is that a technically successful response conceals information about trust, fatigue, values, or implementation. A person who stops arguing may not be persuaded; they may conclude that participation is costly. Notice withdrawal, repetition, and changes in tone as data. The goal is shared understanding and better judgement, not proof that every invitation can be countered.",
+      "Enthusiasm That Makes Refusal Difficult",
+      "Warmth and rapid possibility-building can make an invitation feel more settled than the ENFP intends. Another person may agree to preserve connection, avoid disappointing the group, or escape the momentum of an expanding idea. Silence or excitement is therefore not reliable consent. Pause after presenting the possibility, ask what the other person would change or decline, and give commitments enough time and specificity for people to choose freely.",
     ),
     block(
       "enfp-communication-guidance",

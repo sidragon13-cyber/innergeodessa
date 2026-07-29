@@ -167,8 +167,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "estj-motivation-guidance",
       "guidance",
-      "Define Success Broadly",
-      "For one major commitment, distinguish the desired impact from the proof of personal competence. Define success using several measures: delivery outcome, stakeholder adoption, capability built in others, ethical quality, learning, and sustainable effort. Identify what remains valuable if the original target changes. Schedule periods with no optimisation objective and notice any urge to turn recovery into another performance measure. Ambition becomes more durable when identity has more than one source of meaning.",
+      "Make Reliability Sustainable",
+      "For one recurring responsibility, define the required result, service standard, owner, exception path, and review interval. Separate controls that protect quality from checks retained mainly because you know the process best. Track missed handoffs, rework, stakeholder clarity, and workload alongside delivery. Transfer one routine decision with written criteria and resist taking it back unless the agreed exception occurs. Reliability becomes sustainable when the operation can function without constant personal supervision.",
     ),
   ],
   "information-processing": [
@@ -392,14 +392,14 @@ const CONTENT_BY_SECTION: Record<
     block(
       "estj-change-risk",
       "risk",
-      "Pace Without Adoption",
-      "Once convinced, the ESTJ may treat further consultation as avoidable delay and assume that a strong rationale should produce immediate commitment. Timelines can reflect conceptual clarity rather than training, capacity, or behavioural change. Resistance may then be met with tighter control, which reduces honest reporting and reinforces dependence. Premature certainty also makes it harder to distinguish poor adoption from a flawed design. Speed matters, but only when the system can learn while moving.",
+      "Standardising Before the Operation Is Ready",
+      "Once a procedure appears workable, the ESTJ may move quickly to standardise it and interpret exceptions as failures of discipline. A rule can then outpace training, capacity, local conditions, or the information available to frontline owners. Tighter compliance may hide workarounds instead of improving reliability. The risk is not structure itself; it is freezing a process before repeated use has shown where judgement and adaptation are still required.",
     ),
     block(
       "estj-change-guidance",
       "guidance",
-      "Design Change as a Testable System",
-      "Define the delivery outcome, assumptions, minimum safeguards, adoption measures, and decision points before scaling. Run a bounded experiment where possible and give local owners decision authority to adapt within clear constraints. Track use, quality, unintended effects, and capability—not just delivery milestones. Ask what operating evidence would justify accelerating, redesigning, or stopping. This preserves decisive movement while preventing confidence from becoming a substitute for learning.",
+      "Pilot the Procedure Before Standardising It",
+      "Choose one operating area and document the current baseline, proposed procedure, non-negotiable safeguard, local decision rights, and exception route. Run the process for a fixed period with the people who perform it. Review completion time, error patterns, workarounds, user impact, and questions the written standard did not answer. Revise the procedure before wider rollout, and record which decisions must remain local rather than converting every variation into non-compliance.",
     ),
   ],
   "stress-and-recovery": [
@@ -483,20 +483,20 @@ const CONTENT_BY_SECTION: Record<
     block(
       "estj-action-days-1-30",
       "action",
-      "Days 1–30: Coordination and Workload Audit",
-      "Objective: establish operating evidence about responsibility, control, and decision quality. Actions: (1) map recurring coordination and execution work with its true time cost; (2) mark each control point as required, inherited, or preference-based; (3) identify decisions that require consultation and name the missing voices; (4) record current measures for delivery, adoption, team capability, and recovery; (5) identify work owned personally because delegation feels slower. Success indicators: a complete responsibility map, three potential transfers, two consultation gaps, and baseline measures. Review questions: Where is my decision authority essential? Where have I become the system?",
+      "Days 1–30: Map the Operating System",
+      "Objective: identify where reliability depends on clear process and where it depends unnecessarily on your intervention. Actions: (1) map one recurring workflow, owners, handoffs, standards, and exceptions; (2) record rework, delays, and undocumented decisions; (3) ask two frontline owners which rule helps and which creates avoidable friction; (4) identify one routine decision to transfer; (5) establish a workload baseline. Success indicators: a visible workflow, three evidence-backed improvement points, one agreed decision transfer, and baseline service measures.",
     ),
     block(
       "estj-action-days-31-60",
       "action",
-      "Days 31–60: Delegation, Listening, and Adoption",
-      "Objective: test coordination behaviours that distribute judgement and improve implementation. Actions: (1) delegate one complete delivery outcome with decision rights and review points; (2) use the context-conclusion-reasoning-uncertainty sequence for major decisions; (3) ask a quieter stakeholder to speak before giving your view; (4) add an adoption measure to one initiative; (5) protect two weekly recovery boundaries. Success indicators: the delegated owner retains the method, one decision changes through consultation, adoption operating evidence is reviewed, and recovery boundaries occur in at least six weeks. Review questions: What became stronger when I did not control the method?",
+      "Days 31–60: Pilot and Transfer Judgement",
+      "Objective: improve one workflow while giving operators meaningful authority inside clear standards. Actions: (1) pilot the revised procedure in one bounded area; (2) delegate the selected routine decision with criteria and an exception route; (3) hold weekly reviews of errors, workarounds, and user impact; (4) revise one rule from frontline evidence; (5) protect two weekly recovery boundaries. Success indicators: the owner makes decisions without repeated approval, one procedure change is evidence-based, service quality is maintained, and workload does not shift invisibly to another person.",
     ),
     block(
       "estj-action-days-61-90",
       "action",
-      "Days 61–90: Build the Sustainable System",
-      "Objective: convert useful experiments into a repeatable coordination system. Actions: (1) run one operational experiment with explicit assumptions and stop criteria; (2) maintain one delegated delivery outcome without taking back execution; (3) improve one team capability through coaching, documentation, or decision access; (4) formalise workload and recovery review points; (5) compare delivery, adoption, capability, and sustainability with the baseline. Success indicators: usable operating evidence from the experiment, independent ownership, one demonstrated capability gain, and a documented operating rhythm. Review questions: Which results improved because responsibility became more distributed?",
+      "Days 61–90: Standardise What the Evidence Supports",
+      "Objective: convert the successful parts of the pilot into a maintainable operating practice. Actions: (1) publish the revised workflow, decision rights, and exception route; (2) ask another owner to run it without your intervention; (3) remove one control that no longer protects quality; (4) schedule a monthly process review using service and workload data; (5) compare results with the baseline. Success indicators: independent operation, fewer avoidable handoff failures, documented local judgement, and stable workload. Review question: Which controls improved reliability, and which only preserved familiarity?",
     ),
     block(
       "estj-action-review",

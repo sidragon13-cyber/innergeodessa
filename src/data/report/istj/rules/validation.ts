@@ -48,7 +48,7 @@ const REQUIRED_COMBINATION_RULE_IDS = [
   "istj-combination-perfection-risk",
   "istj-combination-contextual-collaboration",
   "istj-combination-evidence-led-adaptation",
-  "istj-combination-prodirectional-profile",
+  "istj-combination-provisional-profile",
   "istj-combination-outward-coordination",
   "istj-combination-values-procedure",
 ] as const;

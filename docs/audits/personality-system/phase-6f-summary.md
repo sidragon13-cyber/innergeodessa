@@ -42,3 +42,8 @@ Frontend expansion should not begin solely because generator validation passes. 
 - Browser-native print output remains browser-dependent.
 - The existing multiple-lockfile workspace-root warning is non-blocking and was not changed.
 
+## Phase 6G follow-up
+
+Phase 6G completed the recommended evidence-driven editorial pass across all 16 reports and rule sets. It corrected concrete grammar damage, mechanical substitutions, generic action plans, and the highest-risk semantic collisions without changing architecture, counts, registries, or frontend eligibility.
+
+The follow-up generated every type with balanced, high-confidence, low-confidence, and combination-oriented profiles. All 64 runs returned 18 sections and non-empty applied-rule metadata. Exact normalized duplication remained at zero outside intentionally standardized methodology. See `phase-6g-editorial-review.md` for correction details and the controlled-rollout recommendation.

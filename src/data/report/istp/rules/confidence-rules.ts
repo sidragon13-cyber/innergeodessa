@@ -10,7 +10,7 @@ export const ISTP_CONFIDENCE_RULES:
       0,
       15,
       "Low Average Confidence",
-      "Average confidence falls in the 0–15 range, so the ISTP result should be treated as a provisional hypothesis. Neighbouring preferences may be similarly available, and role, culture, strain, experience, language, or response style may substantially affect the visible pattern. Use the report to test questions about working plan and independence rather than defend a fixed identity. Give repeated lived evidence priority where the type-level description does not fit.",
+      "Average confidence falls in the 0–15 range, so the ISTP result should be treated as a provisional hypothesis. Neighbouring preferences may be similarly available, and role, culture, strain, experience, language, or response style may substantially affect the visible pattern. Use the report to test questions about practical diagnosis and independence rather than defend a fixed identity. Give repeated lived evidence priority where the type-level description does not fit.",
     ),
     averageRule(
       "istp-confidence-average-moderate",

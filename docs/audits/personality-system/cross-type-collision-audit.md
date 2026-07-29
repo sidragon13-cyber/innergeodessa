@@ -4,18 +4,18 @@ The ratings combine exact-duplicate evidence, positioning, report vocabulary, ru
 
 | Pair | Rating | Audit judgement |
 |---|---|---|
-| INTJ / INTP | Review recommended | Architecture and closure differ from conceptual inquiry and provisional analysis, but analytical language and private-processing advice deserve a side-by-side edit. |
-| ENTJ / ESTJ | Review recommended | Strategic leverage differs from operational direction; leadership, delegation, and execution scaffolds remain close. |
-| ENTP / ENFP | Review recommended | Conceptual experimentation differs from values-driven possibility activation. Three exact ENFP rule collisions were corrected; a human pass should confirm the remaining distinction. |
-| INFJ / INFP | Review recommended | Purposeful guidance differs from authenticity-led exploration; meaning, values, and reflection vocabulary overlaps. |
-| ENFJ / ESFJ | Review recommended | Collective development differs from community continuity. One exact ESFJ rule collision was corrected; relational-coordination advice needs human comparison. |
-| ISTJ / ISFJ | Review recommended | Operating continuity differs from attentive stewardship, though duty, reliability, and overextension risks can sound adjacent. |
-| ISTP / INTP | Review recommended | Practical diagnosis and live experimentation differ from conceptual modelling; abstract analytical language weakens the contrast in places. |
-| ISFP / INFP | Review recommended | Embodied craft and present values differ from imaginative values-led expression; authenticity language overlaps. |
-| ESTP / ESFP | Review recommended | Tactical negotiation differs from participative, values-sensitive engagement; action and social-energy language should be reviewed together. |
-| ESTJ / ENTJ | Review recommended | Same evidence as ENTJ / ESTJ. |
-| ISFJ / ESFJ | Review recommended | Quiet stewardship differs from visible community coordination; care, reliability, and boundary advice overlap. |
-| ENFP / ESFP | Review recommended | Future possibility activation differs from immediate shared experience; several inherited sentence structures remain similar. |
+| INTJ / INTP | Differentiated after correction | INTJ retains strategic architecture and convergent execution; INTP now uses question framing, model comparison, testing, explanation, and bounded intellectual closure. |
+| ENTJ / ESTJ | Differentiated after correction | ENTJ retains strategic authority and system leverage; ESTJ guidance and its 90-day plan now centre on operating standards, handoffs, exceptions, and sustainable reliability. |
+| ENTP / ENFP | Differentiated after correction | ENTP retains conceptual challenge and reframing; ENFP now centres values, invited participation, freely chosen commitment, and relational follow-through. |
+| INFJ / INFP | Differentiated after correction | INFJ centres consent-based purposeful guidance and shared agency; INFP centres value trade-offs, authentic expression, and committed personal contribution. |
+| ENFJ / ESFJ | Differentiated after correction | ENFJ focuses on development ownership and consent; ESFJ focuses on visible practical care, current needs, shared coordination, and safe opt-out. |
+| ISTJ / ISFJ | Differentiated after correction | ISTJ now centres accumulated evidence, standards, procedure, and exception review; ISFJ retains attentive continuity, chosen care, and capacity boundaries. |
+| ISTP / INTP | Human review still recommended | Practical diagnosis, direct testing, and transferable fixes are now clearer for ISTP, but both reports retain analytical and independent-processing language. |
+| ISFP / INFP | Differentiated after correction | ISFP action guidance now centres sensory craft and lived impact; INFP centres value articulation, chosen medium, and meaning translated into commitment. |
+| ESTP / ESFP | Differentiated after correction | ESTP uses live-system observation, tactical trials, and response capability; ESFP uses direct shared experience, participation choice, access, and aftercare. |
+| ESTJ / ENTJ | Differentiated after correction | Same evidence as ENTJ / ESTJ. |
+| ISFJ / ESFJ | Clearly differentiated | ISFJ describes quiet, capacity-aware stewardship; ESFJ describes visible coordination and shared practical care. |
+| ENFP / ESFP | Differentiated after correction | ENFP focuses on future possibility connected to values; ESFP now focuses on immediate experience, sensory evidence, participation, and follow-through after the event. |
 
 ## Corrections made
 
@@ -23,3 +23,8 @@ The initial audit classified exact duplicated dynamic-rule content across INTJ/I
 
 No pair remains at **Correction required** on the automated evidence. None should be promoted to editorial approval without the recommended human comparison.
 
+## Phase 6G evidence
+
+Phase 6G reviewed the pairs through core orientation, information processing, decisions, teamwork, risk, development, and 90-day action blocks. The most mechanically inherited passages were rewritten only where the action or vocabulary belonged to the adjacent type. Exact normalized report and rule duplication remained zero after correction.
+
+Lexical similarity still exists in confidence disclaimers, adjacent-preference qualifiers, stress signals, and safe-use language. This is not treated as a defect without a semantic conflict. ISTP/INTP remains the highest-priority pair for an independent human comparison.

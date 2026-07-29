@@ -83,7 +83,7 @@ const CONFIGS: DimensionRuleConfig[] = [
     secondDirection:
       "A P-leaning ESFJ may retain more openness, iterate as evidence develops, and allow routes to change while preserving a interpersonal outcome. Closure may be delayed until uncertainty falls or experimentation produces better information. This does not invalidate the ESFJ classification or imply weak development; results can remain central even when methods stay flexible.",
     balancedDirection:
-      "A balanced JP result suggests selective use of structure alongside practical meaningful adaptability. The person may establish clear outcomes, ownership, and safeguards while allowing methods or timing to evolve with evidence. Context, reversibility, and consequence may determine when closure is useful and when it is premature.",
+      "A balanced JP result suggests selective use of structure alongside practical adaptability. The person may establish clear outcomes, ownership, and safeguards while allowing methods or timing to evolve with evidence. Context, reversibility, and consequence may determine when closure is useful and when it is premature.",
     guidance:
       "Separate stable outcomes from adjustable methods. Set a decision date, review trigger, and minimum safeguards so flexibility supports learning without becoming drift and structure supports delivery without becoming unnecessary overreach.",
   },

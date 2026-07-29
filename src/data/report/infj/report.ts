@@ -155,8 +155,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "infj-motivation-strength",
       "strength",
-      "Patience for Difficult Improvement",
-      "When a goal matters, the INFJ may tolerate a long learning curve and invest in foundations that produce little immediate recognition. This can support deep expertise, careful design, and improvements that outlast a short campaign. The strength depends on periodic contact with users, operators, or other evidence. Persistence is valuable when the direction remains sound, not when effort continues mainly because changing the model feels like wasted competence.",
+      "Patience for Purposeful Development",
+      "When a purpose matters, the INFJ may sustain attention through slow learning, uncertain recognition, and the relational work required for durable change. This can support thoughtful guidance and development that respects both long-term meaning and individual experience. Persistence remains useful when affected people can question the interpretation and show whether it helps. Commitment becomes less constructive when preserving the original purpose narrative matters more than consent, evidence, or changing needs.",
     ),
     block(
       "infj-motivation-risk",
@@ -277,8 +277,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "infj-teamwork-analysis",
       "analysis",
-      "Selective Collaboration",
-      "The INFJ may collaborate intensely when another person contributes expertise or challenge, while finding unfocused group process draining. Selectivity can protect quality and attention. It can also exclude information that arrives through informal conversation or people whose thinking style is less concise. Design collaboration around clear questions and decision rights, but leave enough room for evidence that does not arrive in the preferred format.",
+      "Purposeful, Relational Collaboration",
+      "The INFJ may contribute most fully when a group has a meaningful purpose and enough trust for honest interpretation, while superficial participation can feel draining. Sensitivity to unspoken dynamics may help the group notice exclusion or misalignment, but it can also tempt the person to infer needs without checking them. Ask participants what support and responsibility they actually want, make the shared purpose explicit, and separate empathic observation from conclusions that others must be free to correct.",
     ),
     block(
       "infj-teamwork-strength",
@@ -489,14 +489,14 @@ const CONTENT_BY_SECTION: Record<
     block(
       "infj-action-days-31-60",
       "action",
-      "Days 31–60 · Build and Test",
-      "Implement the highest-leverage part of the meaning framework with clear interfaces and measures. Hold focused work periods, then review evidence with operators or users. Track where private predictions were accurate, incomplete, or wrong. Communicate changes to the model and release one useful version before every detail reaches the preferred standard.",
+      "Days 31–60 · Practise and Invite Correction",
+      "Apply one piece of guidance in a bounded setting with explicit consent and clear responsibility. Ask the people affected what felt useful, presumptive, unclear, or difficult to sustain. Track when private interpretation matched their experience and when direct feedback changed it. Adjust the guidance and the boundary before expanding the commitment.",
     ),
     block(
       "infj-action-days-61-90",
       "action",
-      "Days 61–90 · Distribute and Integrate",
-      "Transfer meaningful decision authority using principles, constraints, and review triggers rather than step-by-step control. Complete documentation and invite someone else to explain or adapt the meaning framework. Evaluate outcome, adoption, maintainability, and capability built in others. Revise the model based on what occurred, not only on whether the original plan was followed.",
+      "Days 61–90 · Share Ownership and Review",
+      "Transfer one meaningful decision or support responsibility to the person or group it affects, with agreed boundaries and a review date. Document the purpose and lessons without turning them into a fixed account of another person's needs. Evaluate whether agency, trust, and the intended outcome improved, then revise or end the approach according to observed impact rather than personal investment in being helpful.",
     ),
     block(
       "infj-action-review",

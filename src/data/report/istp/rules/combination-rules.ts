@@ -34,7 +34,7 @@ export const ISTP_COMBINATION_RULES:
       "core-personality-pattern",
       "istp-combination-experiment",
       "Evidence-Backed Flexibility and Deliberate Flexibility",
-      "Strong S and J preferences may connect a grounded operating model with clear sequencing, dependencies, and closure. This hands-on approach can sustain complex work beyond immediate pressure. The same combination can make the chosen experiment resistant to contradictory detail or later learning. Version the working plan, specify which assumptions support each structural choice, and establish review triggers before implementation makes adaptation feel like failure.",
+      "Strong S and J preferences may connect direct observation with clear sequencing, dependencies, and closure. This hands-on approach can sustain complex work beyond immediate pressure. The same combination can make the chosen experiment resistant to contradictory detail or later learning. Version the test, specify which observations support the diagnosis, and establish review triggers before implementation makes adaptation feel like failure.",
     ),
     combinationRule(
       "istp-combination-perfection-risk",

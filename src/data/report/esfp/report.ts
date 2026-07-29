@@ -40,8 +40,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "esfp-overview-summary",
       "summary",
-      "Expressive Connection and Experience-Led Participation",
-      "An ESFP pattern often combines outward engagement, imaginative experience, values-guided judgement, and openness to an emerging route. The ESFP participant may energise others by connecting shared experiences with human potential, reframing a constraint, and inviting experimentation around what could become more meaningful or alive. This orientation can activate change, but usefulness depends on consent, selection, follow-through, and respect for constraints that protect people and outcomes. Inspiration is a preference pattern, not a guarantee of originality or impact.",
+      "Expressive Connection and Present-Moment Participation",
+      "An ESFP pattern often combines outward engagement, attention to immediate experience, values-guided judgement, and openness to responding as circumstances develop. The person may energise others by noticing what is happening now, welcoming participation, and turning a shared value into a tangible experience. This orientation can make connection and action accessible, but usefulness depends on consent, practical follow-through, and respect for different energy, access, and boundaries. Social responsiveness is a preference pattern, not a guarantee of empathy or impact.",
     ),
   ],
   "dimension-results": [
@@ -100,7 +100,7 @@ const CONTENT_BY_SECTION: Record<
       "esfp-core-summary",
       "summary",
       "Experience, Values, and Activation",
-      "The central ESFP pattern often involves noticing an unrealised experience, connecting it with a personal or shared value, and creating enough relational energy for participation to begin. Shared Experiences develop through dialogue, sensory awareness, and experience rather than being accepted because of convention. At its best, this helps people move from a limiting story toward an experiment with genuine meaning. The dynamic slots below qualify how the pattern changes with preference strength, balance, and confidence.",
+      "The central ESFP pattern often involves noticing an immediate opportunity for shared experience, connecting it with a personal or collective value, and creating enough relational energy for participation to begin. Meaning develops through direct engagement, sensory awareness, and feedback rather than being accepted because of convention. At its best, this helps people move from passive observation toward an experience they can shape together. The dynamic slots below qualify how the pattern changes with preference strength, balance, and confidence.",
       [
         {
           id: "esfp-combination-experiment",
@@ -175,32 +175,32 @@ const CONTENT_BY_SECTION: Record<
     block(
       "esfp-information-summary",
       "summary",
-      "Patterns Across Experiences",
-      "An ESFP pattern often notices relationships among shared experiences, emerging implications, and alternatives hidden by the current frame. Information is not only collected; it is recombined to see what else could be true. This expressive participation can reveal strategic openings and imaginative errors quickly. The same speed can produce weak conclusions if novelty is mistaken for evidence or if concrete exceptions are treated as details. Participation becomes credible when models remain testable.",
+      "Reading the Immediate Environment",
+      "An ESFP pattern often notices visible reactions, sensory detail, available resources, and changes in the social atmosphere. Information becomes meaningful through direct contact: what people do, what the setting permits, and which response changes the experience now. This can support timely adaptation, while an engaging moment may receive more weight than delayed consequences or information outside the room. Observation becomes reliable when immediate impressions are checked with direct questions and follow-up evidence.",
     ),
     block(
       "esfp-information-analysis",
       "analysis",
-      "Experience Through Human and Symbolic Connection",
-      "The ESFP may expand understanding by connecting a practical issue with stories, values, relationships, and experiences from another domain. This expressive participation can reveal routes that a narrow problem frame excludes. It needs a later convergence step that compares alternatives against meaning, evidence, capacity, and effects on people. Without that step, an inspiring field of options can leave the next responsible action unclear.",
+      "Understanding Through Participation",
+      "The ESFP may understand a situation by joining it, watching how people respond, and trying a practical adjustment rather than analysing it at a distance. This can reveal needs, energy, and friction that a written account misses. Participation also changes the setting, so the person's own enthusiasm or visibility must be treated as part of the evidence. Ask what was present before you intervened and what others experienced differently.",
     ),
     block(
       "esfp-information-strength",
       "strength",
-      "Connecting Distant Domains",
-      "ESFPs may transfer a useful principle from one field into another, noticing structural similarity where surface features differ. This expressive participation can support encouragement, learning, and communication across specialist boundaries. The transfer is strongest when differences are tested rather than ignored. A metaphor can open inquiry, but operational evidence must determine whether the borrowed model explains the present system or merely sounds compelling.",
+      "Noticing What Makes Participation Work",
+      "ESFPs may quickly notice which practical detail helps people engage: the timing, tone, physical arrangement, example, or invitation that lowers friction. This can make learning, service, and shared activity more accessible. The strength is most useful when the observation is shared with other owners and tested across more than one moment. A response that worked once is evidence to examine, not a universal formula for what people need.",
     ),
     block(
       "esfp-information-risk",
       "risk",
-      "The Seduction of an Elegant Experience",
-      "An intellectually satisfying explanation can gain momentum before its assumptions are checked. The ESFP may defend its experience value while others are asking whether it is accurate, safe, or usable. Dialogue can then protect the shared experience from the evidence it was meant to invite. A concept deserves further investment when it explains observed facts, survives serious alternatives, and produces a prediction or action that can be tested.",
+      "When the Energy of the Moment Becomes the Evidence",
+      "A positive immediate response can make an activity seem more useful, inclusive, or sustainable than it is. The ESFP may give too little weight to people who stayed quiet, costs that appear later, or responsibilities left after the event. Enjoyment is real information, but it does not answer every question about access, consent, safety, or follow-through. Review the experience after the energy settles and include those who participated differently.",
     ),
     block(
       "esfp-information-guidance",
       "guidance",
-      "Turn Inspiration Into a Values Test",
-      "For a promising experience, state the limiting story, the value the alternative could express, and the lived observation that would show improvement. Identify one person's boundary and one practical constraint the experiment must respect. Invite and ask an affected participant—not only an enthusiastic supporter—to shape the test. Continue because experience supports the value, not merely because the story remains emotionally compelling.",
+      "Check the Experience After the Moment",
+      "For one shared activity, record who participated, who declined, what practical barriers appeared, and which promises or cleanup remained. Ask one enthusiastic participant and one less-visible participant what helped and what created pressure. Compare immediate energy with later effort and benefit. Continue or adapt the activity because the full pattern supports its value, not only because the moment felt successful.",
     ),
   ],
   "decision-making": [
@@ -251,8 +251,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "esfp-communication-risk",
       "risk",
-      "Winning the Exchange, Losing the Signal",
-      "Verbal agility can make it possible to answer nearly every objection. The participation risk is that a technically successful response conceals information about trust, fatigue, values, or implementation. A person who stops arguing may not be persuaded; they may conclude that participation is costly. Notice withdrawal, repetition, and changes in tone as data. The goal is shared understanding and better judgement, not proof that every invitation can be countered.",
+      "Social Momentum That Outruns Preference",
+      "Visible enthusiasm can make participation feel expected even when the ESFP intends an open invitation. People may join because the moment is public, enjoyable, or difficult to interrupt, while reservations about energy, access, or personal boundaries remain unspoken. Notice who hangs back, leaves early, or agrees without choosing a role. Offer a low-pressure way to decline or modify the activity, and treat different levels of participation as information rather than rejection.",
     ),
     block(
       "esfp-communication-guidance",
@@ -271,32 +271,32 @@ const CONTENT_BY_SECTION: Record<
     block(
       "esfp-teamwork-summary",
       "summary",
-      "Catalysing Options and Learning",
-      "In teams, an ESFP may contribute by widening the option space, challenging stale assumptions, connecting expertise, and maintaining energy during ambiguity. Leadership may appear as intellectual catalyst rather than formal command. The ESFP participant can help a group experiment before committing heavily. Teams also need continuity, role clarity, and maintenance, so the catalytic contribution must connect with people who can integrate decisions and carry work through completion.",
+      "Making Participation Practical",
+      "In teams, an ESFP may contribute by noticing who is engaged, translating a shared aim into an immediate activity, and adapting the environment so people can participate more easily. Leadership may appear through facilitation, hospitality, demonstration, or visible encouragement rather than formal authority. Teams also need role clarity and follow-through, so social energy is most useful when it helps owners act rather than making the ESFP responsible for sustaining every interaction.",
     ),
     block(
       "esfp-teamwork-analysis",
       "analysis",
-      "Useful Disruption Requires Context",
-      "Questioning the current method can prevent complacency, especially when a team has confused tradition with necessity. Yet disruption has costs: people may be protecting regulatory, operational, or relational constraints the ESFP has not seen. Before reframing, learn what the existing process solves and who bears the transition burden. A invitation becomes useful when it respects accumulated knowledge while making genuine alternatives discussable.",
+      "Visible Energy Changes the Group",
+      "The ESFP's participation can quickly raise energy, make a task approachable, or draw attention to a neglected person. It can also change the room so strongly that quieter preferences become harder to see. Before mobilising the group, ask what kind of participation is needed, which constraints matter, and who wants a different pace or role. An invitation is useful when it creates options rather than a new social expectation.",
     ),
     block(
       "esfp-teamwork-strength",
       "strength",
-      "Cross-Pollinating Expertise",
-      "The ESFP may help specialists see how their work connects, translating a pattern from one domain into a question another team can test. This expressive participation can accelerate encouragement and reduce siloed thinking. The contribution is strongest when the ESFP participant credits expertise, separates analogy from proof, and remains involved long enough to help resolve the integration problems created by the new connection.",
+      "Creating Immediate Belonging",
+      "The ESFP may help new or hesitant contributors enter a group by making introductions, demonstrating the first step, and responding visibly to their contribution. This can reduce social friction and turn a formal invitation into an experience of belonging. The contribution is strongest when welcome does not demand performance, when practical access needs are addressed, and when connection continues after the high-energy beginning.",
     ),
     block(
       "esfp-teamwork-risk",
       "risk",
-      "Unequal Distribution of Follow-Through",
-      "Teams can become excited by an ESFP's shared experiences while execution, documentation, and repair repeatedly fall to others. Even when unintentional, this creates an unequal exchange: one person retains novelty while colleagues absorb completion costs. Trust improves when shared experience ownership includes responsibility for testing assumptions, securing resources, documenting decisions, and staying available through the less stimulating stages of delivery.",
+      "When Others Inherit the Aftercare",
+      "A successful event or rapid response can leave scheduling, documentation, cleanup, and follow-up to less-visible colleagues. Even when unintentional, this creates an unequal exchange: one person carries the energising moment while others absorb its maintenance costs. Trust improves when the ESFP names the aftercare before beginning, takes ownership of at least one routine task, and stays available after attention moves elsewhere.",
     ),
     block(
       "esfp-teamwork-guidance",
       "guidance",
-      "Pair Catalysis With Stewardship",
-      "For each proposal, name the problem owner, experiment owner, integration owner, and completion condition. Choose at least one stewardship role yourself. During meetings, distinguish shared experiences offered for participation from recommendations that require resources. Review abandoned experiments for lessons and cleanup. This makes the ESFP's generative contribution easier for a team to trust and reuse.",
+      "Include the Work After the Invitation",
+      "Before starting a shared activity, name the purpose, participation choices, practical owner, access needs, end time, and aftercare. Choose at least one follow-through responsibility yourself. During the activity, notice who needs a quieter entry point or a different role. Afterward, complete the promised communication and cleanup before creating the next experience.",
     ),
   ],
   "career-environment": [
@@ -483,20 +483,20 @@ const CONTENT_BY_SECTION: Record<
     block(
       "esfp-action-days-1-30",
       "action",
-      "Days 1–30 · Choose a Value in Action",
-      "Choose one meaningful experience and write the value it expresses, the people affected, three possible forms, and the evidence that would show real benefit. Select one reversible experiment using agency, feasibility, and relational impact. Define success, boundaries, ownership, and a completion date. Pause one competing promise and tell affected people what you have chosen.",
+      "Days 1–30 · Observe and Invite",
+      "Choose one shared setting where participation or enjoyment could improve. Observe who joins, who hesitates, what practical barriers exist, and which experience people say they want rather than assuming energy equals interest. Offer one small, reversible activity with a clear time boundary and an easy way to decline or adapt it. Success means participants can choose their level of involvement and describe what made the experience worthwhile.",
     ),
     block(
       "esfp-action-days-31-60",
       "action",
-      "Days 31–60 · Sustain and Listen",
-      "Continue the experiment after novelty falls. Track lived benefit, practical friction, participant choice, and promises still unfinished. Schedule two protected follow-through periods each week and one conversation devoted to hearing another person's meaning without activating a new direction. Place fresh shared experiences in a review list instead of immediately redirecting attention.",
+      "Days 31–60 · Repeat and Share Ownership",
+      "Repeat the activity only if feedback supports it, then give participants responsibility for one element such as timing, access, materials, or facilitation. Track attendance alongside opt-outs, practical friction, energy after the event, and commitments still unfinished. Hold one short feedback conversation without defending the original idea. Place new activity ideas on a review list until the current commitment is completed.",
     ),
     block(
       "esfp-action-days-61-90",
       "action",
-      "Days 61–90 · Integrate and Honour Commitments",
-      "Decide whether to stop, adapt, or deepen the work using the original value and accumulated evidence. Complete handover, cleanup, and communication. Invite and ask participants where enthusiasm expanded agency and where changing direction created cost. Identify one follow-through practice worth retaining and one constraint that genuinely prevents meaningful contribution.",
+      "Days 61–90 · Integrate the Experience",
+      "Decide whether to stop, adapt, or continue using participant feedback, practical cost, and the original value. Complete cleanup, handover, and any promise made during the activity. Ask where enthusiasm increased choice and where social momentum made preference harder to express. Retain one practice that improved inclusion or follow-through, and close one activity that depends on novelty rather than sustained value.",
     ),
     block(
       "esfp-action-review",

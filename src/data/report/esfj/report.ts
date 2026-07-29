@@ -129,8 +129,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "esfj-core-risk",
       "risk",
-      "When Direction Becomes Overreach",
-      "The same drive for coherence can become excessive overreach when uncertainty, slower discussion, or a different working style is treated as evidence of weak development. The ESFJ may assume decisions that belong elsewhere, prescribe methods instead of outcomes, or correct work before others can learn from it. Short-term speed then reduces ownership and hides information from quieter contributors. Overreach is calibrated when it protects a genuine risk; it is overused when it mainly relieves the leader's discomfort with ambiguity.",
+      "When Practical Care Becomes Social Pressure",
+      "Attention to shared needs can become pressure when the ESFJ assumes that established support, participation, or agreement is best for everyone. A person who declines may be read as ungrateful or disengaged, and a familiar routine may continue after needs have changed. Care remains practical when preferences are checked directly, opting out is safe, and continuity is revised according to current experience rather than social expectation.",
     ),
     block(
       "esfj-core-reflection",
@@ -144,7 +144,7 @@ const CONTENT_BY_SECTION: Record<
       "esfj-motivation-summary",
       "summary",
       "Progress, Impact, and Responsibility",
-      "ESFJs may feel energised by practical meaningful progress, autonomy, competent development, and responsibility for outcomes that matter. Motivation often increases when a difficult objective can be converted into a workable strategy and when authority is proportionate to accountability. Building an effective system may be as satisfying as achieving the immediate result because it creates durable leverage. These preferences can appear differently across roles and cultures; not every ESFJ seeks formal status, competition, or public coordination.",
+      "ESFJs may feel energised by practical, meaningful progress, reciprocal relationships, and responsibility for outcomes that matter to a community. Motivation often increases when people know what support they can rely on and how their contribution fits a shared commitment. Maintaining a dependable routine may be as satisfying as achieving the immediate result because it creates continuity and trust. These preferences can appear differently across roles and cultures; not every ESFJ seeks formal status, competition, or public coordination.",
     ),
     block(
       "esfj-motivation-analysis",
@@ -156,19 +156,19 @@ const CONTENT_BY_SECTION: Record<
       "esfj-motivation-strength",
       "strength",
       "Building What Can Scale",
-      "A useful strength is the willingness to invest beyond the immediate task by clarifying a strategy, strengthening a process, or developing capability that improves upcoming needs performance. The ESFJ may tolerate complexity when it serves a significant result and can sustain effort through setbacks when progress remains measurable. This becomes more valuable when measures include quality, adoption, and long-term consequences—not only speed, output, or visible wins.",
+      "A useful strength is the willingness to invest beyond the immediate task by strengthening a routine, remembering commitments, and helping people develop the capability required for future needs. The ESFJ may tolerate complexity when it protects a significant shared result and can sustain effort through setbacks when progress remains visible. This becomes more valuable when measures include service quality, participation, owner confidence, and long-term workload—not only speed, output, or appreciation.",
     ),
     block(
       "esfj-motivation-risk",
       "risk",
       "Being Needed as Identity",
-      "Usefulness, appreciation, and interpersonal influence can become too closely tied to self-worth. Another person's independence, disagreement, or preference for space may then feel like rejection rather than ordinary agency. This can produce overwork, unsolicited support, or difficulty naming personal needs. The risk is not generosity; it is losing access to rest, mutuality, and shared values that remain practical meaningful when no one currently needs guidance.",
+      "Usefulness, appreciation, and interpersonal influence can become too closely tied to self-worth. Another person's independence, disagreement, or preference for space may then feel like rejection rather than ordinary agency. This can produce overwork, unsolicited support, or difficulty naming personal needs. The risk is not generosity; it is losing access to rest, mutuality, and shared values that remain meaningful when no one currently needs guidance.",
     ),
     block(
       "esfj-motivation-guidance",
       "guidance",
-      "Define Success Broadly",
-      "For one major commitment, distinguish the desired impact from the proof of personal competence. Define success using several measures: outcome, community adoption, capability built in others, ethical quality, learning, and sustainable effort. Identify what remains valuable if the original target changes. Schedule periods with no optimisation objective and notice any urge to turn recovery into another performance measure. Ambition becomes more durable when identity has more than one source of practical meaning.",
+      "Make Care Visible and Shared",
+      "For one recurring community or team responsibility, list the practical need, agreed service standard, current contributors, and work that remains invisible. Ask recipients which support is useful rather than assuming continuity means satisfaction. Assign ownership and a review date for each recurring task, including one responsibility you usually absorb. Care becomes sustainable when people can rely on the arrangement without relying on one person's unspoken memory and availability.",
     ),
   ],
   "information-processing": [
@@ -289,8 +289,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "esfj-teamwork-risk",
       "risk",
-      "Delegation That Is Really Retained Overreach",
-      "Delegation can fail when the outcome is assigned but every method, intermediate decision, and correction remains overreachled by the leader. The ESFJ may take work back at the first sign of delay because personal intervention appears faster. Over time, the team waits for approval, quieter contributors stop offering alternatives, and the leader becomes a bottleneck. The resulting overload can then seem to confirm the belief that nobody else is ready.",
+      "Coordination That Keeps Invisible Ownership",
+      "A task may appear delegated while the ESFJ still remembers every detail, prompts each handoff, repairs missed steps, and protects others from consequences. The group receives help but does not gain reliable ownership, while the coordinator becomes overloaded. Make the task, standard, owner, and follow-up date visible to everyone; then let the owner notice and resolve ordinary gaps before stepping in.",
     ),
     block(
       "esfj-teamwork-guidance",
@@ -304,7 +304,7 @@ const CONTENT_BY_SECTION: Record<
       "esfj-career-summary",
       "summary",
       "Career Environments for Interpersonal Responsibility",
-      "An ESFJ may be energised by environments that combine autonomy, complexity, measurable responsibility, and the opportunity to improve a system. Work can feel practical meaningful when interpersonal thinking connects to real decisions and implementation rather than remaining advisory or symbolic. Fit still depends on interests, qualifications, shared values, team culture, life stage, and the specific role. Personality preferences do not determine competence or prescribe a career.",
+      "An ESFJ may be energised by environments that combine dependable relationships, practical responsibility, visible contribution, and the opportunity to improve how people receive support. Work can feel meaningful when interpersonal awareness connects to real coordination and follow-through rather than remaining advisory or symbolic. Fit still depends on interests, qualifications, values, team culture, life stage, and the specific role. Personality preferences do not determine competence or prescribe a career.",
     ),
     block(
       "esfj-career-analysis",
@@ -483,20 +483,20 @@ const CONTENT_BY_SECTION: Record<
     block(
       "esfj-action-days-1-30",
       "action",
-      "Days 1–30: Coordination and Workload Audit",
-      "Objective: establish evidence about responsibility, overreach, and decision quality. Actions: (1) map recurring coordination and development work with its true time cost; (2) mark each overreach point as required, inherited, or preference-based; (3) identify decisions that require consultation and name the missing voices; (4) record current measures for delivery, adoption, team capability, and recovery; (5) identify work owned personally because delegation feels slower. Success indicators: a complete responsibility map, three readiness transfers, two consultation gaps, and baseline measures. Review questions: Where is my authority essential? Where have I become the system?",
+      "Days 1–30: Make Invisible Care Visible",
+      "Objective: identify recurring practical and relational work that depends on your memory or availability. Actions: (1) list weekly coordination, support, and follow-up tasks with their time cost; (2) ask recipients which support remains useful; (3) identify two tasks with unclear ownership; (4) note where declining participation feels socially difficult; (5) establish a recovery baseline. Success indicators: a shared responsibility map, two current-need corrections, two ownership gaps, and one boundary communicated before overload.",
     ),
     block(
       "esfj-action-days-31-60",
       "action",
-      "Days 31–60: Delegation, Listening, and Adoption",
-      "Objective: test coordination behaviours that distribute judgement and improve implementation. Actions: (1) delegate one complete outcome with decision rights and review points; (2) use the context-conclusion-reasoning-uncertainty sequence for major decisions; (3) ask a quieter community to speak before giving your view; (4) add an adoption measure to one initiative; (5) protect two weekly recovery boundaries. Success indicators: the delegated owner retains the method, one decision changes through consultation, adoption evidence is reviewed, and recovery boundaries occur in at least six weeks. Review questions: What became stronger when I did not overreach the method?",
+      "Days 31–60: Share Coordination Explicitly",
+      "Objective: replace informal rescue with visible, distributed responsibility. Actions: (1) assign one recurring task with a clear owner, standard, and review date; (2) let the owner handle ordinary reminders and corrections; (3) ask one quieter participant what makes contribution easier; (4) remove one expectation that no longer serves a current need; (5) protect two weekly recovery boundaries. Success indicators: the task continues without private prompting, one routine changes through direct feedback, and boundaries hold for at least six weeks.",
     ),
     block(
       "esfj-action-days-61-90",
       "action",
-      "Days 61–90: Build the Sustainable System",
-      "Objective: convert useful experiments into a repeatable coordination system. Actions: (1) run one interpersonal experiment with explicit assumptions and stop criteria; (2) maintain one delegated outcome without taking back development; (3) improve one team capability through coaching, documentation, or decision access; (4) formalise workload and recovery review points; (5) compare delivery, adoption, capability, and sustainability with the baseline. Success indicators: usable evidence from the experiment, independent ownership, one demonstrated capability gain, and a documented operating rhythm. Review questions: Which results improved because responsibility became more distributed?",
+      "Days 61–90: Sustain a Shared Care System",
+      "Objective: make useful support reliable without making yourself its permanent centre. Actions: (1) document the current responsibilities and exception contacts; (2) rotate one coordination role or train a second owner; (3) schedule a monthly needs-and-workload review; (4) close one task that persists only through habit; (5) compare continuity, participation, owner confidence, and recovery with the baseline. Success indicators: shared ownership, safe opt-out, one retired obligation, and stable support during your absence.",
     ),
     block(
       "esfj-action-review",
@@ -516,7 +516,7 @@ const CONTENT_BY_SECTION: Record<
       "esfj-method-summary",
       "summary",
       "Interpretation Notes",
-      "This V1 report combines an ESFJ type-level interpretation with dynamic dimension, confidence, and combination rules. The static content provides a coherent working hypothesis; generated slots qualify that hypothesis using the strength and balance of EI, SN, TF, and JP results. This structure preserves canonical section and block identifiers while allowing two community members with the same four-letter result to receive practical meaningfully different emphasis.",
+      "This V1 report combines an ESFJ type-level interpretation with dynamic dimension, confidence, and combination rules. The static content provides a coherent working hypothesis; generated slots qualify that hypothesis using the strength and balance of EI, SN, TF, and JP results. This structure preserves canonical section and block identifiers while allowing two people with the same four-letter result to receive meaningfully different emphasis.",
     ),
     block(
       "esfj-method-analysis",

@@ -34,7 +34,7 @@ export const ISTJ_COMBINATION_RULES:
       "core-personality-pattern",
       "istj-combination-procedure",
       "Evidence-Backed Structure and Deliberate Structure",
-      "Strong N and J preferences may connect a grounded operating model with clear sequencing, dependencies, and closure. This can sustain complex work beyond immediate pressure. The same combination can make the chosen procedure resistant to contradictory detail or later learning. Version the working plan, specify which assumptions support each structural choice, and establish review triggers before implementation makes adaptation feel like failure.",
+      "Strong N and J preferences may connect a grounded operating model with clear sequencing, dependencies, and closure. This can sustain complex work beyond immediate pressure. The same combination can make the chosen procedure resistant to contradictory detail or later learning. Version the procedure, specify which evidence supports each structural choice, and establish review triggers before implementation makes adaptation feel like failure.",
     ),
     combinationRule(
       "istj-combination-perfection-risk",
@@ -85,13 +85,13 @@ export const ISTJ_COMBINATION_RULES:
       "Borderline or balanced SN and JP results may support movement between evidence-backed structure, present facts, structured commitment, and iterative redirection. The person can preserve a coherent objective while allowing methods to change as evidence develops. Make the flexibility explicit: name the stable principles, current version, unresolved exceptions, and review date so adaptation strengthens the working record rather than appearing as arbitrary adjustment.",
     ),
     aggregateCombinationRule(
-      "istj-combination-prodirectional-profile",
+      "istj-combination-provisional-profile",
       85,
       "low-confidence-count",
       3,
       "change-and-adaptation",
       "istj-combination-adaptation",
-      "A Prodirectional, Blended ISTJ Profile",
+      "A Provisional, Blended ISTJ Profile",
       "Three or more low-confidence dimensions mean the ISTJ result should be read as highly provisional. Neighbouring preferences may be similarly accessible, and behaviour can vary with culture, role, strain, expertise, and trust. The report remains a useful set of hypotheses, but firm claims about privacy, continuity awareness, logic, or structure would exceed the evidence. Compare interpretations with repeated situations and preserve examples that contradict the rigid stereotype.",
     ),
     combinationRule(

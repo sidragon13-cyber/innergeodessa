@@ -26,7 +26,7 @@ export const ESFJ_CONFIDENCE_RULES:
       41,
       70,
       "Strong Average Confidence",
-      "Average confidence falls in the 41–70 range, suggesting that the measured preferences may appear with practical meaningful consistency across several familiar settings. This can make ESFJ themes a useful organising pattern, but consistency is not higher intelligence, maturity, ability, or coordination quality. Strong preferences can support repeatable strengths and repeatable blind spots. Use feedback, contradictory evidence, and opposite-preference strategies when the familiar approach produces excessive overreach, narrow consultation, weak adoption, or unsustainable effort.",
+      "Average confidence falls in the 41–70 range, suggesting that the measured preferences may appear with meaningful consistency across several familiar settings. This can make ESFJ themes a useful organising pattern, but consistency is not higher intelligence, maturity, ability, or coordination quality. Strong preferences can support repeatable strengths and repeatable blind spots. Use feedback, contradictory evidence, and opposite-preference strategies when the familiar approach produces excessive control, narrow consultation, weak adoption, or unsustainable effort.",
     ),
     averageRule(
       "esfj-confidence-average-very-strong",

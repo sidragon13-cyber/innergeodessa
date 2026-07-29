@@ -49,7 +49,7 @@ const CONTENT_BY_SECTION: Record<
       "istp-dimensions-context",
       "analysis",
       "Reading the Four Dimensions",
-      "An ISTP result combines preferences across EI, SN, TF, and JP, but strength and confidence can alter the expression considerably. A more outward EI score may make working plan collaborative, a practical SN result may begin with operational evidence, a balanced TF result can integrate stakeholder consequences, and a flexible JP result may preserve more iteration. The dynamic interpretations below qualify broad type themes. Compare them with behaviour across expertise, culture, role, trust, and pressure.",
+      "An ISTP result combines preferences across EI, SN, TF, and JP, but strength and confidence can alter the expression considerably. A more outward EI score may make troubleshooting collaborative, a practical SN result may reinforce direct observation, a balanced TF result can integrate stakeholder consequences, and a flexible JP result may preserve more iteration. The dynamic interpretations below qualify broad type themes. Compare them with behaviour across expertise, culture, role, trust, and pressure.",
       [
         {
           id: "istp-ei-processing",
@@ -99,8 +99,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "istp-core-summary",
       "summary",
-      "Accumulated Practical Knowledge and Procedural Coherence",
-      "The central ISTP pattern often involves forming a working diagnosis of working direction and organising choices around its underlying logic. The ISTP practitioner may look beyond current symptoms to identify the experiment producing them, then select a focused route for adjustment. At its best, this creates patient leverage rather than reactive activity. The dynamic slots below qualify how working plan changes with confidence, balance, and access to adjacent preferences.",
+      "Practical Diagnosis and Adaptive Response",
+      "The central ISTP pattern often involves observing how a mechanism behaves, isolating the constraint that matters, and trying a focused adjustment with minimal unnecessary structure. The person may understand a problem by handling, testing, or troubleshooting it directly rather than relying only on an inherited explanation. At its best, this produces calm, efficient adaptation grounded in feedback. The dynamic slots below qualify how this response changes with confidence, balance, and adjacent preferences.",
       [
         {
           id: "istp-combination-experiment",
@@ -135,8 +135,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "istp-core-reflection",
       "reflection",
-      "What Could Adjustment the Model?",
-      "Choose one operational conclusion you currently hold. Which observations support it, which assumptions connect those observations, and what evidence would require redirection? Who has access to facts you do not? Share the working diagnosis before it is finished and ask for the strongest counterexample. The goal is not to surrender independent judgement, but to ensure independence produces a design that can withstand reality outside your own reasoning.",
+      "What Would Falsify the Working Diagnosis?",
+      "Choose one practical problem you believe you understand. Which direct observations support the diagnosis, which parts have not been tested, and what result would show that a different mechanism is operating? Let another person reproduce the test or describe an exception before you optimise the solution. A useful diagnosis stays provisional until the adjustment works outside your own hands.",
     ),
   ],
   "motivation-and-needs": [
@@ -220,7 +220,7 @@ const CONTENT_BY_SECTION: Record<
       "istp-judgements-strength",
       "strength",
       "Resisting Short-Term Pressure",
-      "An ISTP may hold a necessary far-reaching choice when immediate incentives favour convenience or appearance. By connecting the judgement to operation consequences, the ISTP practitioner can protect investment, standards, or future capability. This strength needs review triggers so perseverance does not become rigidity. The judgement should remain stable because evidence still supports it, not because changing course would challenge the identity of the strategist.",
+      "An ISTP may hold a technically necessary choice when immediate pressure favours a faster but weaker workaround. By connecting the judgement to observed mechanism, safety, and downstream performance, the person can protect reliability without adding unnecessary control. This strength needs fresh tests so practical confidence does not become rigidity. The choice should remain stable because the mechanism still supports it, not because revising a diagnosis would threaten competence.",
     ),
     block(
       "istp-judgements-risk",
@@ -272,7 +272,7 @@ const CONTENT_BY_SECTION: Record<
       "istp-teamwork-summary",
       "summary",
       "Designing Capability and Direction",
-      "In teams, an ISTP may contribute by clarifying far-reaching direction, redesigning operations, protecting focus, and anticipating dependencies. Leadership can be quiet and experiment-led rather than socially dominant. The ISTP practitioner may prefer capable colleagues with meaningful autonomy. Effective teamwork requires making standards and reasoning visible, learning from local expertise, and recognising that coordination is not a distraction from working plan but part of how working plan becomes real.",
+      "In teams, an ISTP may contribute by diagnosing practical failures, simplifying a mechanism, responding calmly under pressure, and demonstrating a workable adjustment. Leadership can be quiet and expertise-led rather than socially dominant. The person may prefer capable colleagues with room to solve problems directly. Effective teamwork requires making the diagnosis and safety boundary visible, learning from operators, and staying engaged long enough for others to maintain the solution.",
     ),
     block(
       "istp-teamwork-analysis",
@@ -310,7 +310,7 @@ const CONTENT_BY_SECTION: Record<
       "istp-career-analysis",
       "analysis",
       "The Need for Protected Attention",
-      "Frequent interruption and performative activity can make it difficult to build a coherent model of complex work. The ISTP may need blocks of uninterrupted time and clear judgement ownership. Total isolation is not the answer; working plan requires contact with users, colleagues, and changing evidence. A supportive environment alternates focused analysis with purposeful collaboration rather than treating either constant availability or solitary independence as ideal.",
+      "Constant meetings and premature explanation can interfere with the concentration needed to observe and troubleshoot a complex mechanism. The ISTP may need direct access to the problem, protected test time, and clear judgement boundaries. Total isolation is not the answer; a practical diagnosis requires user experience, operator knowledge, and repeatable evidence. A supportive environment alternates hands-on investigation with concise coordination.",
     ),
     block(
       "istp-career-example",
@@ -328,7 +328,7 @@ const CONTENT_BY_SECTION: Record<
       "istp-career-guidance",
       "guidance",
       "Evaluate Operational Fit",
-      "Assess roles across problem depth, autonomy, evidence quality, time horizon, implementation ownership, and access to capable challenge. Test directly: how judgements are reviewed and whether far-reaching work survives short-term pressure. Also identify the coordination and relationship work required for influence. Choose an environment where experiment matters, then build the skills that help other people understand and adopt it.",
+      "Assess roles across access to real problems, autonomy to test, evidence quality, safety constraints, implementation ownership, and contact with capable operators. Ask how diagnoses are reviewed, whether experiments can be run without excessive ceremony, and who maintains a successful fix. Choose an environment where practical competence matters, then build the explanation and handover skills that let others understand and sustain the solution.",
     ),
   ],
   "relationship-dynamics": [
@@ -381,7 +381,7 @@ const CONTENT_BY_SECTION: Record<
       "istp-adjustment-analysis",
       "analysis",
       "Redirection Versus Abandoning the Direction",
-      "Because operational working diagnoses integrate many judgements, revising one assumption can feel as though the whole experiment is being destabilised. The ISTP practitioner may defend the original direction longer than evidence warrants. Separate the underlying purpose from the current design. A working diagnosis can change while the deeper objective remains intact, and redirection often demonstrates stronger working plan than preserving a coherent but inaccurate expectation.",
+      "A diagnosis that explains a mechanism can become attached to competence, making contradictory evidence feel like a challenge to the practitioner rather than useful feedback. The ISTP may keep adjusting the same solution after the problem has changed. Separate the required outcome from the current explanation. Replacing a diagnosis when a test fails demonstrates practical accuracy; preserving an elegant but ineffective fix does not.",
     ),
     block(
       "istp-adjustment-strength",
@@ -419,7 +419,7 @@ const CONTENT_BY_SECTION: Record<
       "istp-strain-evidence",
       "evidence",
       "Personal Early-Warning Signals",
-      "Possible signals include cancelling contact, reworking plans without new data, becoming contemptuous of ordinary mistakes, losing tolerance for ambiguity, or neglecting physical techniques while trying to solve the operation mentally. These signs are individual rather than universal. Track what appears before judgement, sleep, health, or relationship quality declines, and ask trusted people what adjustment they notice first.",
+      "Possible signals include withdrawing from contact, repeatedly reworking a fix without new data, becoming contemptuous of ordinary mistakes, losing tolerance for questions, or neglecting physical routines while trying to solve the operation alone. These signs are individual rather than universal. Track what appears before judgement, sleep, health, or relationship quality declines, and ask trusted people what change they notice first.",
     ),
     block(
       "istp-strain-risk",
@@ -439,7 +439,7 @@ const CONTENT_BY_SECTION: Record<
       "istp-development-summary",
       "summary",
       "From Private Direction to Shared Capability",
-      "ISTP development is not about abandoning independence or far-reaching thought. It involves making working diagnoses challengeable, communicating before certainty, distinguishing excellence from overcontrol, and allowing relationship and operational evidence to shape the experiment. Development expands operational range: the ISTP practitioner can still protect depth while involving others early enough to improve and carry the work. The dynamic slot below highlights combinations affecting this path.",
+      "ISTP development is not about abandoning independence, technical judgement, or direct experimentation. It involves making diagnoses reproducible, communicating the safety boundary before acting, distinguishing elegant fixes from maintainable ones, and allowing user and operator evidence to reshape the response. Development expands practical range: the person can still protect focused problem-solving while involving others early enough to test and carry the solution. The dynamic slot below highlights combinations affecting this path.",
       [
         {
           id: "istp-combination-isolation-risk",
@@ -470,7 +470,7 @@ const CONTENT_BY_SECTION: Record<
       "istp-development-action",
       "action",
       "A Monthly Assumption Review",
-      "Once a month, select one important working plan and review its assumptions, exceptions, stakeholder effects, and implementation evidence. Identify one belief that strengthened and one that weakened. Communicate any redirection and credit the evidence source. This creates a visible practice of intellectual humility while preserving the ISTP's strength in coherent durable practical design.",
+      "Once a month, select one diagnosis or fix and review the observations, failed tests, user effects, maintenance burden, and conditions under which it stops working. Identify one mechanism that the evidence strengthened and one assumption it weakened. Update the explanation and handover notes, then credit the person or observation that changed your view. This preserves practical independence while making accuracy visible and transferable.",
     ),
   ],
   "ninety-day-action-plan": [
@@ -483,20 +483,20 @@ const CONTENT_BY_SECTION: Record<
     block(
       "istp-action-days-1-30",
       "action",
-      "Days 1–30 · Map and Expose",
-      "Write the objective, operating diagnosis, key assumptions, exceptions, stakeholders, and evidence thresholds. Identify two people with different access to reality and share the draft before deciding the full route. Test directly: each for one counterexample and one implementation concern. Define which quality standards are essential and which can be tested through an early version.",
+      "Days 1–30 · Observe and Isolate",
+      "Choose one recurring practical failure or inefficiency. Observe it directly, reproduce it where safe, and separate symptoms from the suspected mechanism. Record constraints, affected users, current workarounds, and the evidence that would disprove your diagnosis. Ask one operator for an exception you have not seen. Define one small adjustment with a clear safety boundary and measurable result.",
     ),
     block(
       "istp-action-days-31-60",
       "action",
-      "Days 31–60 · Build and Test",
-      "Implement the highest-leverage part of the experiment with clear interfaces and measures. Hold focused work periods, then review evidence with operators or users. Track where private predictions were accurate, incomplete, or wrong. Communicate adjustments to the working diagnosis and release one useful version before every detail reaches the preferred standard.",
+      "Days 31–60 · Test and Adapt",
+      "Run the adjustment in short cycles and compare the result with the original mechanism prediction. Keep a simple log of what changed, what remained, and which new constraint appeared. Ask another capable person to repeat the test without your intervention. Adapt the solution when evidence changes rather than adding complexity to protect the first diagnosis.",
     ),
     block(
       "istp-action-days-61-90",
       "action",
-      "Days 61–90 · Distribute and Integrate",
-      "Transfer meaningful judgement authority using principles, constraints, and review triggers rather than step-by-step control. Complete documentation and invite someone else to explain or adapt the experiment. Evaluate outcome, adoption, maintainability, and capability built in others. Revise the working diagnosis based on what occurred, not only on whether the original plan was followed.",
+      "Days 61–90 · Make the Fix Transferable",
+      "Document the observed mechanism, safe operating boundary, test method, and conditions that require escalation. Let another owner maintain or adapt the solution while you remain available for a scheduled review rather than continuous correction. Compare performance, repair time, user impact, and dependence on specialist knowledge with the baseline. Keep the fix only if it remains useful in ordinary operation.",
     ),
     block(
       "istp-action-review",

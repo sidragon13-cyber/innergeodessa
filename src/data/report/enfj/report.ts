@@ -129,8 +129,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "enfj-core-risk",
       "risk",
-      "When Direction Becomes Overreach",
-      "The same drive for coherence can become excessive overreach when uncertainty, slower discussion, or a different working style is treated as evidence of weak development. The ENFJ may assume decisions that belong elsewhere, prescribe methods instead of outcomes, or correct work before others can learn from it. Short-term speed then reduces ownership and hides information from quieter contributors. Overreach is calibrated when it protects a genuine risk; it is overused when it mainly relieves the leader's discomfort with ambiguity.",
+      "When Development Becomes a Personal Agenda",
+      "A coherent vision of another person's potential can become overreach when the ENFJ treats hesitation, different priorities, or slower progress as evidence that more guidance is required. Support may then shift into persuasion, interpretation, or decisions that belong to the other person. The result can look collaborative while reducing consent and honest disagreement. Development remains relational when goals are chosen together and the recipient can revise or refuse the proposed direction.",
     ),
     block(
       "enfj-core-reflection",
@@ -167,8 +167,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "enfj-motivation-guidance",
       "guidance",
-      "Define Success Broadly",
-      "For one major commitment, distinguish the desired impact from the proof of personal competence. Define success using several measures: outcome, community adoption, capability built in others, ethical quality, learning, and sustainable effort. Identify what remains valuable if the original target changes. Schedule periods with no optimisation objective and notice any urge to turn recovery into another performance measure. Ambition becomes more durable when identity has more than one source of meaning.",
+      "Measure Development by Agency",
+      "For one development commitment, ask the other person or group to define the change they want, the support they welcome, and the decisions that remain theirs. Track increased capability, independent choice, honest disagreement, and sustainable effort—not gratitude or reliance on your involvement. Schedule a review where they can reduce, redirect, or end your role. Relational leadership is strongest when people gain agency rather than needing continued guidance to prove the effort mattered.",
     ),
   ],
   "information-processing": [
@@ -289,8 +289,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "enfj-teamwork-risk",
       "risk",
-      "Delegation That Is Really Retained Overreach",
-      "Delegation can fail when the outcome is assigned but every method, intermediate decision, and correction remains overreachled by the leader. The ENFJ may take work back at the first sign of delay because personal intervention appears faster. Over time, the team waits for approval, quieter contributors stop offering alternatives, and the leader becomes a bottleneck. The resulting overload can then seem to confirm the belief that nobody else is ready.",
+      "Support That Prevents Independent Judgement",
+      "Delegation can fail when the outcome is assigned but the ENFJ continues interpreting every difficulty, shaping each method, and correcting work before the owner can learn from consequences. The intervention may feel supportive while signalling that independent judgement is not trusted. Agree on the outcome, safeguards, and review points, then let the owner choose the method and bring a problem before offering a solution.",
     ),
     block(
       "enfj-teamwork-guidance",
@@ -464,7 +464,7 @@ const CONTENT_BY_SECTION: Record<
       "enfj-growth-guidance",
       "guidance",
       "Priority Development Practices",
-      "Delegate one complete outcome with explicit decision rights. In consequential discussions, listen until you can state the strongest contrary view accurately. Add community adoption and human impact to decision criteria. Define where your responsibility ends and where another owner must decide. Protect recurring recovery that has no productivity measure. When urgency rises, ask whether tighter overreach addresses the actual risk or only reduces your discomfort with uncertainty.",
+      "Delegate one complete outcome with explicit decision rights. In consequential discussions, listen until you can state the strongest contrary view accurately. Add community adoption and human impact to decision criteria. Define where your responsibility ends and where another owner must decide. Protect recurring recovery that has no productivity measure. When urgency rises, ask whether tighter control addresses the actual risk or only reduces your discomfort with uncertainty.",
     ),
     block(
       "enfj-growth-action",
@@ -483,20 +483,20 @@ const CONTENT_BY_SECTION: Record<
     block(
       "enfj-action-days-1-30",
       "action",
-      "Days 1–30: Leadership and Workload Audit",
-      "Objective: establish evidence about responsibility, overreach, and decision quality. Actions: (1) map recurring leadership and development work with its true time cost; (2) mark each overreach point as required, inherited, or preference-based; (3) identify decisions that require consultation and name the missing voices; (4) record current measures for delivery, adoption, team capability, and recovery; (5) identify work owned personally because delegation feels slower. Success indicators: a complete responsibility map, three potential transfers, two consultation gaps, and baseline measures. Review questions: Where is my authority essential? Where have I become the system?",
+      "Days 1–30: Consent and Support Audit",
+      "Objective: distinguish invited development support from responsibility assumed on another person's behalf. Actions: (1) list current mentoring, team, or community commitments and their time cost; (2) ask each recipient what outcome and support they actually want; (3) mark decisions that remain theirs; (4) identify two places where you interpret needs without checking; (5) record recovery and emotional-load boundaries. Success indicators: written agreements for two commitments, two returned decisions, and a clear baseline for time and agency.",
     ),
     block(
       "enfj-action-days-31-60",
       "action",
-      "Days 31–60: Delegation, Listening, and Adoption",
-      "Objective: test leadership behaviours that distribute judgement and improve implementation. Actions: (1) delegate one complete outcome with decision rights and review points; (2) use the context-conclusion-reasoning-uncertainty sequence for major decisions; (3) ask a quieter community to speak before giving your view; (4) add an adoption measure to one initiative; (5) protect two weekly recovery boundaries. Success indicators: the delegated owner retains the method, one decision changes through consultation, adoption evidence is reviewed, and recovery boundaries occur in at least six weeks. Review questions: What became stronger when I did not overreach the method?",
+      "Days 31–60: Practise Agency-Building Support",
+      "Objective: help others develop without becoming the interpreter or owner of their progress. Actions: (1) ask before offering advice in one recurring relationship; (2) delegate one outcome while the owner chooses the method; (3) invite a quieter participant to describe the issue before sharing your interpretation; (4) review whether support increased independent action; (5) keep two weekly recovery boundaries. Success indicators: one owner acts without approval, one assumption changes through listening, and recipients can describe their own next steps.",
     ),
     block(
       "enfj-action-days-61-90",
       "action",
-      "Days 61–90: Build the Sustainable System",
-      "Objective: convert useful experiments into a repeatable leadership system. Actions: (1) run one relational experiment with explicit assumptions and stop criteria; (2) maintain one delegated outcome without taking back development; (3) improve one team capability through coaching, documentation, or decision access; (4) formalise workload and recovery review points; (5) compare delivery, adoption, capability, and sustainability with the baseline. Success indicators: usable evidence from the experiment, independent ownership, one demonstrated capability gain, and a documented operating rhythm. Review questions: Which results improved because responsibility became more distributed?",
+      "Days 61–90: Transfer Development Ownership",
+      "Objective: make relational leadership sustainable by reducing dependence on your presence. Actions: (1) ask a recipient or team to lead the next review; (2) document principles and resources without prescribing a personal path; (3) close or transfer one support role that no longer needs you; (4) review capability, consent, honest disagreement, and workload against the baseline; (5) agree when future support will be requested. Success indicators: independent ownership, a recipient-defined next step, one responsibly closed commitment, and protected recovery.",
     ),
     block(
       "enfj-action-review",

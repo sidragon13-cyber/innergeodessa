@@ -155,8 +155,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "intp-motivation-strength",
       "strength",
-      "Patience for Difficult Improvement",
-      "When a goal matters, the INTP may tolerate a long learning curve and invest in foundations that produce little immediate recognition. This can support deep expertise, careful design, and improvements that outlast a short campaign. The strength depends on periodic contact with users, operators, or other evidence. Persistence is valuable when the direction remains sound, not when effort continues mainly because changing the model feels like wasted competence.",
+      "Patience for Difficult Understanding",
+      "When a question matters, the INTP may tolerate a long learning curve and keep refining distinctions that produce little immediate recognition. This can support deep expertise, original explanation, and solutions built on sound concepts rather than surface convention. The strength depends on testing the model against observations and making the reasoning usable to other people. Persistence is valuable while inquiry continues to improve understanding, not when analysis continues mainly because choosing a testable next step feels premature.",
     ),
     block(
       "intp-motivation-risk",
@@ -277,8 +277,8 @@ const CONTENT_BY_SECTION: Record<
     block(
       "intp-teamwork-analysis",
       "analysis",
-      "Selective Collaboration",
-      "The INTP may collaborate intensely when another person contributes expertise or challenge, while finding unfocused group process draining. Selectivity can protect quality and attention. It can also exclude information that arrives through informal conversation or people whose thinking style is less concise. Design collaboration around clear questions and decision rights, but leave enough room for evidence that does not arrive in the preferred format.",
+      "Collaboration Through Questions",
+      "The INTP may engage deeply when collaborators bring a difficult question, contradictory evidence, or a model worth testing, while routine coordination can feel less compelling. This selectivity protects concentration but may leave others unsure when input is wanted or whether a provisional idea is open to challenge. Name the question under examination, invite competing explanations before private analysis hardens, and end the discussion with the next experiment or decision owner.",
     ),
     block(
       "intp-teamwork-strength",
@@ -483,20 +483,20 @@ const CONTENT_BY_SECTION: Record<
     block(
       "intp-action-days-1-30",
       "action",
-      "Days 1–30 · Map and Expose",
-      "Write the objective, system model, key assumptions, anomalies, stakeholders, and evidence thresholds. Identify two people with different access to reality and share the draft before deciding the full route. Ask each for one counterexample and one application concern. Define which quality standards are essential and which can be tested through an early version.",
+      "Days 1–30 · Frame and Compare",
+      "Choose one unresolved question with practical consequence. Write the current explanation, its assumptions, the strongest alternative, and the evidence that would distinguish them. Ask two people with different expertise to challenge the distinctions rather than simply endorse the conclusion. Select one reversible test and set a date for deciding what the result changes.",
     ),
     block(
       "intp-action-days-31-60",
       "action",
-      "Days 31–60 · Build and Test",
-      "Implement the highest-leverage part of the conceptual model with clear interfaces and measures. Hold focused work periods, then review evidence with operators or users. Track where private predictions were accurate, incomplete, or wrong. Communicate changes to the model and release one useful version before every detail reaches the preferred standard.",
+      "Days 31–60 · Test and Explain",
+      "Run the selected test and keep observations separate from interpretation. After each focused analysis period, explain the current model to someone who must use, test, or decide from it. Record where the explanation becomes unclear and which evidence changes a distinction. Deliver one bounded output—a prototype, recommendation, or documented model—before every open question is resolved.",
     ),
     block(
       "intp-action-days-61-90",
       "action",
-      "Days 61–90 · Distribute and Integrate",
-      "Transfer meaningful decision authority using principles, constraints, and review triggers rather than step-by-step control. Complete documentation and invite someone else to explain or adapt the conceptual model. Evaluate outcome, adoption, maintainability, and capability built in others. Revise the model based on what occurred, not only on whether the original plan was followed.",
+      "Days 61–90 · Decide and Transfer",
+      "State the best-supported conclusion, the uncertainty that remains, and the next condition that would reopen the question. Give another person enough rationale and evidence to apply or challenge the model without depending on your private analysis. Evaluate whether the work improved a real decision or outcome, then archive unresolved questions separately so intellectual openness does not prevent closure.",
     ),
     block(
       "intp-action-review",
