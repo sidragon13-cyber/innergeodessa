@@ -21,7 +21,7 @@ const BAND_CONTEXT: Record<
   string
 > = {
   borderline:
-    "Borderline confidence means the adjacent preference may be similarly accessible, so expression can adjustment with role, trust, expertise, energy, and current demands. This variability is context rather than contradiction.",
+    "Borderline confidence means the adjacent preference may be similarly accessible, so expression can change with role, trust, expertise, energy, and current demands. This variability is context rather than contradiction.",
   moderate:
     "Moderate confidence suggests a recognisable tendency without making the opposite approach unusual. Experience and situational requirements may substantially alter what others observe.",
   strong:
@@ -39,11 +39,11 @@ const CONFIGS: DimensionRuleConfig[] = [
     firstDirection:
       "An I-leaning ISTP may build working plan through concentrated private analysis, selective consultation, and careful internal synthesis before communicating a direction. This hands-on approach can support depth, while relevant evidence may arrive late if the working diagnosis remains private. The preference describes an energy and processing tendency, not social ability or independence of judgement.",
     secondDirection:
-      "An E-leaning ISTP may develop experiment through more visible discussion, wider consultation, and active coordination than the quiet stereotype suggests. External exadjustment can test the working diagnosis early, while frequent interaction may fragment the concentration needed for integration. This does not invalidate the ISTP result or prove leadership ability.",
+      "An E-leaning ISTP may develop an experiment through more visible discussion, wider consultation, and active coordination than the quiet stereotype suggests. External exchange can test the working diagnosis early, while frequent interaction may fragment the concentration needed for integration. This does not invalidate the ISTP result or prove leadership ability.",
     balancedDirection:
       "A balanced EI result suggests access to both concentrated private working plan and outward collaborative processing. The ISTP practitioner may withdraw to integrate complex evidence, then engage visibly to test and coordinate the working diagnosis. Role, trust, group size, and available energy may determine which mode appears.",
     guidance:
-      "Protect careful private review while scheduling early evidence conversations so the experiment can adjustment before implementation makes redirection expensive.",
+      "Protect careful private review while scheduling early evidence conversations so the experiment can change before implementation makes redirection expensive.",
   },
   {
     dimension: "SN",

@@ -34,7 +34,7 @@ export const ENFP_CONFIDENCE_RULES:
       71,
       100,
       "Very Strong Average Confidence",
-      "Average confidence falls in the 71–100 range, so the measured preferences are likely to feel highly familiar and readily available. This does not mean greater originality, competence, maturity, or future success. A clear exploratory style can support rapid learning, while overuse may make closure, routine evidence, emotional context, or sustained implementation easier to dismiss. Practise complementary approaches before pressure makes intellectual movement feel like the only valid response.",
+      "Average confidence falls in the 71–100 range, so the measured preferences may feel highly familiar across settings. This does not indicate greater originality, authenticity, competence, or future success. Energetic possibility-making can invite meaningful change, while overuse may scatter promises or turn another person's hesitation into a problem to reframe. Practise completion, quiet listening, and concrete follow-through before enthusiasm becomes the only response that feels alive.",
     ),
     balancedRule(
       "enfp-balanced-count-1",

@@ -10,7 +10,7 @@ export const ISTJ_CONFIDENCE_RULES:
       0,
       15,
       "Low Average Confidence",
-      "Average confidence falls in the 0–15 range, so the ISTJ result should be treated as a prodirectional hypothesis. Neighbouring preferences may be similarly available, and role, culture, strain, experience, language, or response style may substantially affect the visible pattern. Use the report to test questions about working plan and independence rather than defend a fixed identity. Give repeated lived evidence priority where the type-level description does not fit.",
+      "Average confidence falls in the 0–15 range, so the ISTJ result should be treated as a provisional hypothesis. Neighbouring preferences may be similarly available, and role, culture, strain, experience, language, or response style may substantially affect the visible pattern. Use the report to test questions about working plans and independence rather than defend a fixed identity. Give repeated lived evidence priority where the type-level description does not fit.",
     ),
     averageRule(
       "istj-confidence-average-moderate",
@@ -55,7 +55,7 @@ export const ISTJ_CONFIDENCE_RULES:
       130,
       3,
       "Three or More Balanced Dimensions",
-      "Three or more dimensions are exactly balanced, making the ISTJ result highly prodirectional and sensitive to context. Multiple approaches may be similarly accessible, and small response adjustments could produce a neighbouring code. This may support flexibility, but it limits firm claims about how the person strategises, decides, communicates, or plans. Test each theme against lived evidence and avoid consequential choices based on the type result alone.",
+      "Three or more dimensions are exactly balanced, making the ISTJ result highly provisional and sensitive to context. Multiple approaches may be similarly accessible, and small response adjustments could produce a neighbouring code. This may support flexibility, but it limits firm claims about how the person strategises, decides, communicates, or plans. Test each theme against lived evidence and avoid consequential choices based on the type result alone.",
     ),
   ];
 

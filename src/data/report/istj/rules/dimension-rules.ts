@@ -21,7 +21,7 @@ const BAND_CONTEXT: Record<
   string
 > = {
   borderline:
-    "Borderline confidence means the adjacent preference may be similarly accessible, so expression can adjustment with role, trust, expertise, energy, and current demands. This variability is context rather than contradiction.",
+    "Borderline confidence means the adjacent preference may be similarly accessible, so expression can change with role, trust, expertise, energy, and current demands. This variability is context rather than contradiction.",
   moderate:
     "Moderate confidence suggests a recognisable tendency without making the opposite approach unusual. Experience and situational requirements may substantially alter what others observe.",
   strong:
@@ -39,11 +39,11 @@ const CONFIGS: DimensionRuleConfig[] = [
     firstDirection:
       "An I-leaning ISTJ may build working plan through concentrated private analysis, selective consultation, and careful internal synthesis before communicating a direction. This can support depth, while relevant evidence may arrive late if the working record remains private. The preference describes an energy and processing tendency, not social ability or independence of judgement.",
     secondDirection:
-      "An E-leaning ISTJ may develop procedure through more visible discussion, wider consultation, and active coordination than the quiet stereotype suggests. External exadjustment can test the working record early, while frequent interaction may fragment the concentration needed for integration. This does not invalidate the ISTJ result or prove leadership ability.",
+      "An E-leaning ISTJ may develop procedure through more visible discussion, wider consultation, and active coordination than the quiet stereotype suggests. External exchange can test the working record early, while frequent interaction may fragment the concentration needed for integration. This does not invalidate the ISTJ result or prove leadership ability.",
     balancedDirection:
       "A balanced EI result suggests access to both concentrated private working plan and outward collaborative processing. The person may withdraw to integrate complex evidence, then engage visibly to test and coordinate the working record. Role, trust, group size, and available energy may determine which mode appears.",
     guidance:
-      "Protect careful private review while scheduling early evidence conversations so the procedure can adjustment before implementation makes redirection expensive.",
+      "Protect careful private review while scheduling early evidence conversations so the procedure can change before implementation makes redirection expensive.",
   },
   {
     dimension: "SN",
@@ -51,7 +51,7 @@ const CONFIGS: DimensionRuleConfig[] = [
     secondPreference: "N",
     slotId: "istj-sn-procedure",
     firstDirection:
-      "An S-leaning ISTJ may construct working plan from operational facts, proven mechanisms, and concrete constraints before extending the time horizon. Procedure may emphasise reliable sequencing and measurable improvement. This does not invalidate the ISTJ classification or imply less direction; it adjustments the evidence from which reliable continuity develops.",
+      "An S-leaning ISTJ may construct working plans from operational facts, proven mechanisms, and concrete constraints before extending the time horizon. Procedure may emphasise reliable sequencing and measurable improvement. This does not invalidate the ISTJ classification or imply less direction; it changes the evidence from which reliable continuity develops.",
     secondDirection:
       "An N-leaning ISTJ may focus readily on trajectories, operation patterns, practical implications, and structural leverage. This supports far-reaching procedure, while current detail or exceptions may receive insufficient weight once the working record feels coherent. The preference indicates an attentional starting point, not proof of continuity awareness or operational correctness.",
     balancedDirection:
@@ -81,7 +81,7 @@ const CONFIGS: DimensionRuleConfig[] = [
     firstDirection:
       "A J-leaning ISTJ may prefer a coherent plan, clear dependencies, judgement closure, and protected sequencing once the procedure is established. This supports sustained execution, while certainty may arrive before enough external evidence. The preference describes an orientation to structure, not automatic reliability, discipline, or planning skill.",
     secondDirection:
-      "A P-leaning ISTJ may keep working records prodirectional, iterate routes as evidence adjustments, and delay closure longer than the typical structured stereotype suggests. This can strengthen adaptation, while execution may remain under-specified. The preference does not invalidate the ISTJ result or imply weak standards; it adjustments how procedure becomes commitment.",
+      "A P-leaning ISTJ may keep working records provisional, iterate routes as evidence changes, and delay closure longer than the typical structured stereotype suggests. This can strengthen adaptation, while execution may remain under-specified. The preference does not invalidate the ISTJ result or imply weak standards; it changes how procedure becomes commitment.",
     balancedDirection:
       "A balanced JP result suggests selective structure with meaningful openness to redirection. The person may hold a far-reaching objective firmly while allowing sequencing, methods, or intermediate judgements to evolve. Reversibility and consequence may determine when closure becomes useful.",
     guidance:

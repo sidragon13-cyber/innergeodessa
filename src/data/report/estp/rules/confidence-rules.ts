@@ -55,7 +55,7 @@ export const ESTP_CONFIDENCE_RULES:
       130,
       3,
       "Three or More Balanced Dimensions",
-      "Three or more dimensions are exactly balanced, making the ESTP result highly provisional and sensitive to context. Multiple approaches may be similarly accessible, and small response changes could produce a neighbouring type code. This tactical engagement can support flexibility, but it reduces the usefulness of firm claims about how the ESTP negotiator leads, decides, communicates, or adapts. Treat the report as a adaptationd set of hypotheses, test each theme against lived operating evidence, and avoid making consequential choices from the four-letter result alone.",
+      "Three or more dimensions are exactly balanced, making the ESTP result highly provisional and sensitive to context. Multiple approaches may be similarly accessible, and small response changes could produce a neighbouring type code. This tactical engagement can support flexibility, but it reduces the usefulness of firm claims about how the ESTP negotiator leads, decides, communicates, or adapts. Treat the report as an adaptable set of hypotheses, test each theme against lived operating evidence, and avoid making consequential choices from the four-letter result alone.",
     ),
   ];
 

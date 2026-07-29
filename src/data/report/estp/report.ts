@@ -419,7 +419,7 @@ const CONTENT_BY_SECTION: Record<
       "estp-stress-evidence",
       "evidence",
       "Early Warning Signs to Track",
-      "Useful signals may include interrupting more often, rewriting delegated work, treating questions as resistance, extending working hours without review, skipping recovery, becoming unusually contemptuous of slower contributors, or feeling that only personal supervision prevents failure. Physical tension, sleep disruption, and inability to enjoy unadaptationd time may also matter. Track change from the individual's normal pattern rather than assuming every ESTP responds identically.",
+      "Useful signals may include interrupting more often, rewriting delegated work, treating questions as resistance, extending working hours without review, skipping recovery, becoming unusually contemptuous of slower contributors, or feeling that only personal supervision prevents failure. Physical tension, sleep disruption, and inability to enjoy unstructured time may also matter. Track change from the individual's normal pattern rather than assuming every ESTP responds identically.",
     ),
     block(
       "estp-stress-risk",

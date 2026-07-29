@@ -34,7 +34,7 @@ export const ENFJ_CONFIDENCE_RULES:
       71,
       100,
       "Very Strong Average Confidence",
-      "Average confidence falls in the 71–100 range, so the measured preferences are likely to feel highly consistent and readily available. This does not mean greater intelligence, competence, maturity, success, or leadership quality. A clear style can support decisive coordination, while overuse may make alternative evidence and working methods easier to dismiss. Preserve what works, seek feedback about recurring costs, and practise opposite approaches in low-risk situations before pressure makes the familiar response feel like the only valid option.",
+      "Average confidence falls in the 71–100 range, so the measured preferences may feel highly familiar across relational settings. This does not indicate greater empathy, maturity, competence, or leadership quality. Visible guidance can create alignment, while overuse may make dissent, private processing, or another person's ownership easier to miss. Ask trusted people where encouragement becomes pressure and practise leaving consequential space for responses you did not organise.",
     ),
     balancedRule(
       "enfj-balanced-count-1",

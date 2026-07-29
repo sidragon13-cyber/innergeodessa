@@ -407,7 +407,7 @@ const CONTENT_BY_SECTION: Record<
       "enfp-stress-summary",
       "summary",
       "Restlessness, Diffusion, and Reactive Invitation",
-      "Under sustained stress, an ENFP may scatter attention across new possibilities, invitation more sharply, or keep generating alternatives to avoid an uncomfortable commitment. At other times the person may become unusually preoccupied with details, mistakes, or physical disruption. Stress responses vary widely and are not diagnostic. The useful question is which behaviours signal reduced choice, poorer judgement, or loss of restorative routines for this individual.",
+      "Under sustained stress, an ENFP may scatter attention across new possibilities, invite others more urgently, or keep generating alternatives to avoid an uncomfortable commitment. At other times the person may become unusually preoccupied with details, mistakes, or physical disruption. Stress responses vary widely and are not diagnostic. The useful question is which behaviours signal reduced choice, poorer judgement, or loss of restorative routines for this individual.",
     ),
     block(
       "enfp-stress-analysis",

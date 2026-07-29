@@ -69,9 +69,9 @@ const CONFIGS: DimensionRuleConfig[] = [
     secondDirection:
       "A T-leaning ESFJ may favour objective criteria, trade-offs, consistency, standards, efficiency, and direct evaluation. This can make decisions and accountability easier to explain, but adoption, morale, emotional information, or contextual costs may be underweighted. Care is a preferred criterion, not evidence of intelligence, emotional absence, or sound judgement.",
     balancedDirection:
-      "A balanced TF result suggests that impersonal criteria and human consequences may both influence decisions without one consistently dominating. The person may use firm standards while treating community impact as relevant evidence. Different roles can bring different criteria forward without making the overall pattern contradictory.",
+      "A balanced TF result may let the ESFJ combine practical standards with close attention to how a decision is received in the community. Different roles can bring consistency or care forward without making either criterion inauthentic.",
     guidance:
-      "For a consequential decision, record both the objective trade-offs and the human implementation evidence. Name which criterion governs the choice, who carries the cost, and what feedback would justify revision.",
+      "Before a consequential commitment, name the practical standard, the people carrying its daily cost, and the community feedback that would justify adjusting the arrangement.",
   },
   {
     dimension: "JP",

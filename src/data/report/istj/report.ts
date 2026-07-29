@@ -33,7 +33,7 @@ const CONTENT_BY_SECTION: Record<
       "istj-identity-summary",
       "summary",
       "Your Complete ISTJ Report",
-      "This report examines an ISTJ preference pattern through reliable operating structure, evidence, judgements, coordination, work, commitments, strain, and development. It treats the type code as a hypothesis about preferred ways of organising attention—not as a fixed identity, clinical judgement, or promise of competence. Culture, experience, responsibilities, trust, and learned skills can adjustment the visible pattern substantially. Use both recognition and mismatch to refine an account grounded in repeated behaviour.",
+      "This report examines an ISTJ preference pattern through reliable operating structure, evidence, judgements, coordination, work, commitments, strain, and development. It treats the type code as a hypothesis about preferred ways of organising attention—not as a fixed identity, clinical judgement, or promise of competence. Culture, experience, responsibilities, trust, and learned skills can adjust the visible pattern substantially. Use both recognition and mismatch to refine an account grounded in repeated behaviour.",
     ),
   ],
   "personality-overview": [
@@ -100,7 +100,7 @@ const CONTENT_BY_SECTION: Record<
       "istj-core-summary",
       "summary",
       "Accumulated Practical Knowledge and Procedural Coherence",
-      "The central ISTJ pattern often involves forming an working record of working direction and organising choices around its underlying logic. The person may look beyond current symptoms to identify the procedure producing them, then select a focused route for adjustment. At its best, this creates patient leverage rather than reactive activity. The dynamic slots below qualify how working plan adjustments with confidence, balance, and access to adjacent preferences.",
+      "The central ISTJ pattern often involves forming a working record of direction and organising choices around its underlying logic. The person may look beyond current symptoms to identify the procedure producing them, then select a focused route for adjustment. At its best, this creates patient leverage rather than reactive activity. The dynamic slots below qualify how working plans change with confidence, balance, and access to adjacent preferences.",
       [
         {
           id: "istj-combination-procedure",
@@ -200,7 +200,7 @@ const CONTENT_BY_SECTION: Record<
       "istj-information-guidance",
       "guidance",
       "Maintain a Model and an Exception Log",
-      "Write the current operating record, its three most important assumptions, and the indicators expected if it is correct. Beside it, keep observations that do not fit. Review both with someone close to implementation. Revise the procedure when exceptions form a pattern, and record why. This protects reliable continuity while ensuring that evidence can genuinely adjustment the direction.",
+      "Write the current operating record, its three most important assumptions, and the indicators expected if it is correct. Beside it, keep observations that do not fit. Review both with someone close to implementation. Revise the procedure when exceptions form a pattern, and record why. This protects reliable continuity while ensuring that evidence can genuinely adjust the direction.",
     ),
   ],
   "decision-making": [
@@ -264,7 +264,7 @@ const CONTENT_BY_SECTION: Record<
       "istj-coordination-reflection",
       "reflection",
       "What Was Visible to Others?",
-      "Review a recent judgement that felt obvious to you. What information did collaborators actually receive, and which connections existed only in your own model? Did you ask for evidence early enough to adjustment the direction? What emotional or practical concern was relevant even if it was expressed imprecisely? Clear procedure becomes influential when other people can inspect and use it.",
+      "Review a recent judgement that felt obvious to you. What information did collaborators actually receive, and which connections existed only in your own model? Did you ask for evidence early enough to adjust the direction? What emotional or practical concern was relevant even if it was expressed imprecisely? Clear procedure becomes influential when other people can inspect and use it.",
     ),
   ],
   "teamwork-and-leadership": [
@@ -381,7 +381,7 @@ const CONTENT_BY_SECTION: Record<
       "istj-adjustment-analysis",
       "analysis",
       "Redirection Versus Abandoning the Direction",
-      "Because operational working records integrate many judgements, revising one assumption can feel as though the whole procedure is being destabilised. The person may defend the original direction longer than evidence warrants. Separate the underlying purpose from the current design. A working record can adjustment while the deeper objective remains intact, and redirection often demonstrates stronger working plan than preserving a coherent but inaccurate expectation.",
+      "Because operational working records integrate many judgements, revising one assumption can feel as though the whole procedure is being destabilised. The person may defend the original direction longer than evidence warrants. Separate the underlying purpose from the current design. A working record can change while the deeper objective remains intact, and redirection often demonstrates stronger working plans than preserving a coherent but inaccurate expectation.",
     ),
     block(
       "istj-adjustment-strength",
@@ -452,7 +452,7 @@ const CONTENT_BY_SECTION: Record<
       "istj-development-analysis",
       "analysis",
       "Collaboration as Model Expansion",
-      "Collaboration need not mean surrendering judgement or accepting unfocused process. At its best, it adds observations, constraints, and interpretations unavailable to one mind. The developmental task is designing collaboration with enough clarity to protect depth and enough openness to permit real influence. A consultation that cannot adjustment the plan is coordination, not evidence gathering.",
+      "Collaboration need not mean surrendering judgement or accepting unfocused process. At its best, it adds observations, constraints, and interpretations unavailable to one mind. The developmental task is designing collaboration with enough clarity to protect depth and enough openness to permit real influence. A consultation that cannot adjust the plan is coordination, not evidence gathering.",
     ),
     block(
       "istj-development-risk",
@@ -464,7 +464,7 @@ const CONTENT_BY_SECTION: Record<
       "istj-development-guidance",
       "guidance",
       "Practise Earlier Exposure",
-      "Choose one model, proposal, or concern and share it at sixty-percent clarity with a trusted, relevant person. State what is stable, what is uncertain, and what feedback could adjustment the direction. Resist solving every objection immediately; record it and review the procedure later. Repeat weekly so visibility becomes part of rigorous thinking rather than a threat to it.",
+      "Choose one model, proposal, or concern and share it at sixty-percent clarity with a trusted, relevant person. State what is stable, what is uncertain, and what feedback could adjust the direction. Resist solving every objection immediately; record it and review the procedure later. Repeat weekly so visibility becomes part of rigorous thinking rather than a threat to it.",
     ),
     block(
       "istj-development-action",
@@ -478,7 +478,7 @@ const CONTENT_BY_SECTION: Record<
       "istj-action-summary",
       "summary",
       "A Ninety-Day Shared-Procedure Practice",
-      "Use the next ninety days to test whether earlier exposure improves a meaningful operational outcome. Choose one project that requires both deep analysis and adoption by others. Preserve focused work, but make assumptions and prodirectional judgements visible at planned intervals. The objective is a stronger procedure that other people can understand, challenge, and execute—not maximum consensus or a flawless plan.",
+      "Use the next ninety days to test whether earlier exposure improves a meaningful operational outcome. Choose one project that requires both deep analysis and adoption by others. Preserve focused work, but make assumptions and provisional judgements visible at planned intervals. The objective is a stronger procedure that other people can understand, challenge, and execute—not maximum consensus or a flawless plan.",
     ),
     block(
       "istj-action-days-1-30",

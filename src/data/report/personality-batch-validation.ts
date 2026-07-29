@@ -602,6 +602,45 @@ function compareImplementations(
       }
     });
   });
+
+  left.rules.forEach((leftRule, leftRuleIndex) => {
+    leftRule.content.forEach(
+      (leftContent, leftContentIndex) => {
+        const normalizedLeftContent = normalizeRuleContent(
+          leftContent,
+        );
+        if (normalizedLeftContent.length < 40) {
+          return;
+        }
+
+        const duplicate = right.rules
+          .flatMap((rule, ruleIndex) =>
+            rule.content.map((content, contentIndex) => ({
+              content,
+              contentIndex,
+              rule,
+              ruleIndex,
+            })),
+          )
+          .find(
+            ({ content }) =>
+              normalizeRuleContent(content) ===
+              normalizedLeftContent,
+          );
+        if (!duplicate) {
+          return;
+        }
+
+        addDuplicationIssue(
+          left,
+          right,
+          `rules[${leftRuleIndex}].content[${leftContentIndex}]`,
+          `duplicates full dynamic-rule content from rule "${duplicate.rule.id}"`,
+          issues,
+        );
+      },
+    );
+  });
 }
 
 function addDuplicationIssue(
@@ -701,4 +740,14 @@ function normalizeText(value: string | undefined): string {
     .trim()
     .replace(/\s+/g, " ")
     .toLowerCase();
+}
+
+function normalizeRuleContent(
+  content: ReportRuleDefinition["content"][number],
+): string {
+  return normalizeText(
+    [content.title?.en, content.content.en]
+      .filter((value): value is string => Boolean(value))
+      .join("\n"),
+  );
 }

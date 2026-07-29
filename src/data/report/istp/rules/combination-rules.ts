@@ -82,7 +82,7 @@ export const ISTP_COMBINATION_RULES:
       "change-and-adaptation",
       "istp-combination-adaptation",
       "Experiment With Evidence-Led Redirection",
-      "Borderline or balanced SN and JP results may support movement between evidence-backed flexibility, present facts, structured commitment, and iterative redirection. The ISTP practitioner can preserve a coherent objective while allowing methods to adjustment as evidence develops. Make the flexibility explicit: name the stable principles, current version, unresolved exceptions, and review date so adaptation strengthens the working diagnosis rather than appearing as arbitrary change.",
+      "Borderline or balanced SN and JP results may support movement between evidence-backed flexibility, present facts, structured commitment, and iterative redirection. The ISTP practitioner can preserve a coherent objective while allowing methods to change as evidence develops. Make the flexibility explicit: name the stable principles, current version, unresolved exceptions, and review date so adaptation strengthens the working diagnosis rather than appearing as arbitrary change.",
     ),
     aggregateCombinationRule(
       "istp-combination-provisional-profile",

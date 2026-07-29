@@ -37,7 +37,7 @@ const CONFIGS: DimensionRuleConfig[] = [
     secondPreference: "E",
     slotId: "estp-ei-strength",
     firstDirection:
-      "An I-leaning ESTP may develop operating plan through private analysis, prepare before visible action, and communicate selectively once the direction is coherent. Coordination may therefore look quieter, more deliberate, and less socially expansive while remaining adaptationd and results-oriented. This preference does not invalidate the ESTP classification and does not establish coordination ability.",
+      "An I-leaning ESTP may develop an operating plan through private analysis, prepare before visible action, and communicate selectively once the direction is coherent. Coordination may therefore look quieter, more deliberate, and less socially expansive while remaining adaptable and results-oriented. This preference does not invalidate the ESTP classification and does not establish coordination ability.",
     secondDirection:
       "An E-leaning ESTP may process ideas through interaction, initiate discussion, coordinate visibly, and mobilise colleagues and resources around a shared result. Rapid tactical feedback can sharpen action, although constant outward engagement may produce overextension or leave too little time for private reflection. This preference describes an energy and processing tendency, not automatic responsibility or coordination skill.",
     balancedDirection:
@@ -65,7 +65,7 @@ const CONFIGS: DimensionRuleConfig[] = [
     secondPreference: "T",
     slotId: "estp-tf-boundary",
     firstDirection:
-      "An F-leaning ESTP may place stronger emphasis on stakeholder experience, values, legitimacy, and relational consequences while remaining decisive and adaptationd. Human adoption may enter the decision model earlier and carry more weight in trade-offs. This preference does not invalidate the ESTP classification, weaken logic, or guarantee interpersonal skill.",
+      "An F-leaning ESTP may place stronger emphasis on stakeholder experience, values, legitimacy, and relational consequences while remaining decisive and adaptable. Human adoption may enter the decision model earlier and carry more weight in trade-offs. This preference does not invalidate the ESTP classification, weaken logic, or guarantee interpersonal skill.",
     secondDirection:
       "A T-leaning ESTP may favour objective criteria, trade-offs, consistency, real-time criteria, efficiency, and direct evaluation. This tactical engagement can make decisions and visible accountability easier to explain, but adoption, morale, emotional information, or contextual costs may be underweighted. Logic is a preferred criterion, not operating evidence of intelligence, emotional absence, or sound judgement.",
     balancedDirection:

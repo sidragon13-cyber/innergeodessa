@@ -33,7 +33,7 @@ const CONTENT_BY_SECTION: Record<
       "istp-identity-summary",
       "summary",
       "Your Complete ISTP Report",
-      "This report examines an ISTP preference pattern through reliable operating flexibility, evidence, judgements, coordination, work, commitments, strain, and development. It treats the type code as a hypothesis about preferred ways of organising attention—not as a fixed identity, clinical judgement, or promise of competence. Culture, experience, responsibilities, trust, and learned skills can adjustment the visible pattern substantially. Use both recognition and mismatch to refine an account grounded in repeated behaviour.",
+      "This report examines an ISTP preference pattern through reliable operating flexibility, evidence, judgements, coordination, work, commitments, strain, and development. It treats the type code as a hypothesis about preferred ways of organising attention—not as a fixed identity, clinical judgement, or promise of competence. Culture, experience, responsibilities, trust, and learned skills can adjust the visible pattern substantially. Use both recognition and mismatch to refine an account grounded in repeated behaviour.",
     ),
   ],
   "personality-overview": [
@@ -84,7 +84,7 @@ const CONTENT_BY_SECTION: Record<
       "istp-strengths-bridge",
       "summary",
       "Strengths in Context",
-      "Likely ISTP strengths include practical adaptability thinking, independent learning, dependable follow-through, contradiction detection, and willingness to redesign an inefficient flexibility. The pattern can be useful when complex work requires a coherent experiment beyond immediate demands. These are preferences rather than guaranteed skills. Their value depends on domain knowledge, implementation discipline, intellectual humility, and the ability to make private reasoning available to others. Later sections separate useful independence from isolation and quality from overcontrol.",
+      "Likely ISTP strengths include practical adaptive thinking, independent learning, dependable follow-through, contradiction detection, and willingness to redesign an inefficient process. The pattern can be useful when complex work requires a coherent experiment beyond immediate demands. These are preferences rather than guaranteed skills. Their value depends on domain knowledge, implementation discipline, intellectual humility, and the ability to make private reasoning available to others. Later sections separate useful independence from isolation and quality from overcontrol.",
     ),
   ],
   "growth-risks": [
@@ -200,7 +200,7 @@ const CONTENT_BY_SECTION: Record<
       "istp-information-guidance",
       "guidance",
       "Maintain a Model and an Exception Log",
-      "Write the current operating diagnosis, its three most important assumptions, and the indicators expected if it is correct. Beside it, keep observations that do not fit. Review both with someone close to implementation. Revise the experiment when exceptions form a pattern, and diagnosis why. This protects reliable adaptability while ensuring that evidence can genuinely adjustment the direction.",
+      "Write the current operating diagnosis, its three most important assumptions, and the indicators expected if it is correct. Beside it, keep observations that do not fit. Review both with someone close to implementation. Revise the experiment when exceptions form a pattern, and document why. This protects reliable adaptability while ensuring that evidence can genuinely adjust the direction.",
     ),
   ],
   "decision-making": [
@@ -264,7 +264,7 @@ const CONTENT_BY_SECTION: Record<
       "istp-coordination-reflection",
       "reflection",
       "What Was Visible to Others?",
-      "Review a recent judgement that felt obvious to you. What information did collaborators actually receive, and which connections existed only in your own model? Did you ask for evidence early enough to adjustment the direction? What emotional or practical concern was relevant even if it was expressed imprecisely? Clear experiment becomes influential when other people can inspect and use it.",
+      "Review a recent judgement that felt obvious to you. What information did collaborators actually receive, and which connections existed only in your own model? Did you ask for evidence early enough to adjust the direction? What emotional or practical concern was relevant even if it was expressed imprecisely? Clear experiments become influential when other people can inspect and use them.",
     ),
   ],
   "teamwork-and-leadership": [
@@ -316,7 +316,7 @@ const CONTENT_BY_SECTION: Record<
       "istp-career-example",
       "example",
       "Work That Rewards Experiment",
-      "Operations design, research working plan, product experiment, organisational redesign, policy analysis, or far-reaching testing may reward the ability to connect principles and consequences. The same job title can vary widely. Examine whether the daily work includes genuine problem ownership, access to evidence, authority to improve flexibilitys, and independence through implementation rather than relying on occupational stereotypes.",
+      "Operations design, applied research, product experimentation, organisational redesign, policy analysis, or field testing may reward the ability to connect principles and consequences. The same job title can vary widely. Examine whether the daily work includes genuine problem ownership, access to evidence, authority to improve processes, and independence through implementation rather than relying on occupational stereotypes.",
     ),
     block(
       "istp-career-risk",
@@ -464,7 +464,7 @@ const CONTENT_BY_SECTION: Record<
       "istp-development-guidance",
       "guidance",
       "Practise Earlier Exposure",
-      "Choose one model, proposal, or concern and share it at sixty-percent clarity with a trusted, relevant person. State what is stable, what is uncertain, and what feedback could adjustment the direction. Resist solving every objection immediately; diagnosis it and review the experiment later. Repeat weekly so visibility becomes part of rigorous thinking rather than a threat to it.",
+      "Choose one model, proposal, or concern and share it at sixty-percent clarity with a trusted, relevant person. State what is stable, what is uncertain, and what feedback could adjust the direction. Resist solving every objection immediately; document it and review the experiment later. Repeat weekly so visibility becomes part of rigorous thinking rather than a threat to it.",
     ),
     block(
       "istp-development-action",

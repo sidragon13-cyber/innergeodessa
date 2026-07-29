@@ -83,9 +83,9 @@ const CONFIGS: DimensionRuleConfig[] = [
     secondDirection:
       "A P-leaning INFJ may keep models provisional, iterate routes as evidence changes, and delay closure longer than the typical structured stereotype suggests. This can strengthen adaptation, while execution may remain under-specified. The preference does not invalidate the INFJ result or imply weak standards; it changes how meaning framework becomes commitment.",
     balancedDirection:
-      "A balanced JP result suggests selective structure with meaningful openness to revision. The person may hold a long-range objective firmly while allowing sequencing, methods, or intermediate decisions to evolve. Reversibility and consequence may determine when closure becomes useful.",
+      "A balanced JP result may let the INFJ alternate between protecting a purposeful direction and revising the route as people and evidence change. Closure can be useful for coordinated care, while openness preserves room for new meaning and consent.",
     guidance:
-      "Version the plan: define stable principles, adjustable methods, evidence thresholds, and review dates so structure supports execution without protecting outdated assumptions.",
+      "Name the purpose and relational commitments that remain stable, then set review points where affected people can reshape methods before structure becomes an unquestioned promise.",
   },
 ];
 

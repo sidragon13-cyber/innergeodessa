@@ -83,9 +83,9 @@ const CONFIGS: DimensionRuleConfig[] = [
     secondDirection:
       "A P-leaning ENFP may preserve optionality, revise routes as evidence changes, and resist closure while exploration remains productive. This supports adaptive learning, but too many open loops can diffuse ownership and prevent cumulative results. The preference describes an orientation to openness, not proof of spontaneity, creativity, or weak reliability.",
     balancedDirection:
-      "A balanced JP result suggests selective structure alongside meaningful flexibility. The person may establish firm outcomes and review dates while keeping methods adjustable, or explore widely before committing decisively. Reversibility, consequence, and shared obligations may determine when closure is useful.",
+      "A balanced JP result may let the ENFP move between open possibility and purposeful closure according to meaning, reversibility, and promises already made. The person can explore widely without treating every new option as a reason to abandon a chosen direction.",
     guidance:
-      "Separate flexible method from stable commitment: define the outcome, experiment window, evidence threshold, and review point before opening additional possibilities.",
+      "Name the value and relationship commitment that will remain stable, then define an experiment window and a clear point for choosing, pausing, or completing the current possibility.",
   },
 ];
 

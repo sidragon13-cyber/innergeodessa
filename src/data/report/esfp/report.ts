@@ -33,7 +33,7 @@ const CONTENT_BY_SECTION: Record<
       "esfp-identity-summary",
       "summary",
       "Your Complete ESFP Report",
-      "This complete report examines an ESFP preference pattern through participation, reframing, values-sensitive invitation, communication, work, relationships, stress, and development. It treats the type code as a working hypothesis about preferred ways of engaging with shared experiences and experiences—not as a fixed identity, clinical judgement, or measure of intelligence. Experience, culture, responsibilities, trust, and learned skills can substantially change how the pattern appears. Use recognition and mismatch alike as evidence for reflection.",
+      "This complete report examines an ESFP preference pattern through participation, reframing, values-sensitive invitation, communication, work, relationships, stress, and development. It treats the type code as a working hypothesis about preferred ways of engaging with shared experiences and immediate opportunities—not as a fixed identity, clinical judgement, or measure of intelligence. Experience, culture, responsibilities, trust, and learned skills can substantially change how the pattern appears. Use recognition and mismatch alike as evidence for reflection.",
     ),
   ],
   "personality-overview": [
@@ -407,7 +407,7 @@ const CONTENT_BY_SECTION: Record<
       "esfp-stress-summary",
       "summary",
       "Restlessness, Diffusion, and Reactive Invitation",
-      "Under sustained stress, an ESFP may scatter attention across new experiences, invitation more sharply, or keep generating alternatives to avoid an uncomfortable commitment. At other times the ESFP participant may become unusually preoccupied with details, mistakes, or physical disruption. Stress responses vary widely and are not diagnostic. The useful question is which behaviours signal reduced choice, poorer judgement, or loss of restorative routines for this individual.",
+      "Under sustained stress, an ESFP may scatter attention across new experiences, invite others more urgently, or keep generating alternatives to avoid an uncomfortable commitment. At other times the ESFP participant may become unusually preoccupied with details, mistakes, or physical disruption. Stress responses vary widely and are not diagnostic. The useful question is which behaviours signal reduced choice, poorer judgement, or loss of restorative routines for this individual.",
     ),
     block(
       "esfp-stress-analysis",

@@ -21,8 +21,8 @@ export const ENFP_COMBINATION_RULES:
       ],
       "core-personality-pattern",
       "enfp-combination-experiment",
-      "Visible Exploration and Rapid Experiment",
-      "Strong E and P preferences may produce a highly interactive exploratory style. Possibilities are generated through conversation, environmental contact, and quick trials, allowing the person to build momentum before a complete plan exists. The risk is opening more experiments than the available attention can integrate. Limit concurrent trials, state what each one is meant to learn, and schedule a convergence point where evidence determines which direction receives sustained effort.",
+      "Visible Possibility and Relational Experiment",
+      "Strong E and P preferences may generate possibilities through animated conversation, new relationships, and quick values-led trials. This can help people imagine movement before a complete plan exists. The risk is creating more invitations than the group can meaningfully choose or sustain. Limit concurrent experiments, make participation optional, and set a convergence point where lived value and follow-through determine what continues.",
     ),
     combinationRule(
       "enfp-combination-values-possibility",
@@ -45,8 +45,8 @@ export const ENFP_COMBINATION_RULES:
       ],
       "growth-roadmap",
       "enfp-combination-focus-risk",
-      "Possibility Expansion and Diffused Commitment",
-      "Strong N and P preferences may keep the option space unusually broad. This supports discovery when the problem is uncertain, but every new connection can compete with existing delivery. The person may confuse preserving possibilities with preserving freedom while collaborators absorb completion costs. Use a fixed exploration window, rank options against explicit criteria, and close, transfer, or pause one commitment before opening another substantial line of work.",
+      "Meaningful Options and Promise Diffusion",
+      "Strong N and P preferences may keep many value-rich futures emotionally available at once. This supports discovery when identity or direction is uncertain, but each fresh possibility can compete with promises already made. The ENFP may experience closure as loss while collaborators absorb continuity costs. Use a time-bounded exploration window, rank options by values and relational consequence, and renegotiate or complete one promise before opening another substantial path.",
     ),
     combinationRule(
       "enfp-combination-relational-flexibility",

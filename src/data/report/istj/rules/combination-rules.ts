@@ -22,7 +22,7 @@ export const ISTJ_COMBINATION_RULES:
       "core-personality-pattern",
       "istj-combination-procedure",
       "Careful Private Review and Long-Range Procedure",
-      "Strong I and N preferences may support concentrated internal synthesis and a strong orientation to recurring operational patterns. The person can develop an integrated procedure without constant external processing. A risk is that evidence and collaborators enter only after the working record is advanced. Schedule an early challenge point, share the assumptions rather than only the conclusion, and identify which operational observations could materially adjustment the working direction.",
+      "Strong I and N preferences may support concentrated internal synthesis and a strong orientation to recurring operational patterns. The person can develop an integrated procedure without constant external processing. A risk is that evidence and collaborators enter only after the working record is advanced. Schedule an early challenge point, share the assumptions rather than only the conclusion, and identify which operational observations could materially adjust the working direction.",
     ),
     combinationRule(
       "istj-combination-structured-execution",
@@ -82,7 +82,7 @@ export const ISTJ_COMBINATION_RULES:
       "change-and-adaptation",
       "istj-combination-adaptation",
       "Procedure With Evidence-Led Redirection",
-      "Borderline or balanced SN and JP results may support movement between evidence-backed structure, present facts, structured commitment, and iterative redirection. The person can preserve a coherent objective while allowing methods to adjustment as evidence develops. Make the flexibility explicit: name the stable principles, current version, unresolved exceptions, and review date so adaptation strengthens the working record rather than appearing as arbitrary adjustment.",
+      "Borderline or balanced SN and JP results may support movement between evidence-backed structure, present facts, structured commitment, and iterative redirection. The person can preserve a coherent objective while allowing methods to change as evidence develops. Make the flexibility explicit: name the stable principles, current version, unresolved exceptions, and review date so adaptation strengthens the working record rather than appearing as arbitrary adjustment.",
     ),
     aggregateCombinationRule(
       "istj-combination-prodirectional-profile",
@@ -92,7 +92,7 @@ export const ISTJ_COMBINATION_RULES:
       "change-and-adaptation",
       "istj-combination-adaptation",
       "A Prodirectional, Blended ISTJ Profile",
-      "Three or more low-confidence dimensions mean the ISTJ result should be read as highly prodirectional. Neighbouring preferences may be similarly accessible, and behaviour can vary with culture, role, strain, expertise, and trust. The report remains a useful set of hypotheses, but firm claims about privacy, continuity awareness, logic, or structure would exceed the evidence. Compare interpretations with repeated situations and preserve examples that contradict the rigid stereotype.",
+      "Three or more low-confidence dimensions mean the ISTJ result should be read as highly provisional. Neighbouring preferences may be similarly accessible, and behaviour can vary with culture, role, strain, expertise, and trust. The report remains a useful set of hypotheses, but firm claims about privacy, continuity awareness, logic, or structure would exceed the evidence. Compare interpretations with repeated situations and preserve examples that contradict the rigid stereotype.",
     ),
     combinationRule(
       "istj-combination-outward-coordination",
