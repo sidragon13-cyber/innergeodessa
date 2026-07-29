@@ -51,10 +51,25 @@ import {
   validateEnfpRuleSet,
 } from "../src/data/report/enfp";
 import {
+  ESTJ_COMPLETE_REPORT,
+  ESTJ_REPORT_RULES,
+  validateEstjRuleSet,
+} from "../src/data/report/estj";
+import {
+  ESFJ_COMPLETE_REPORT,
+  ESFJ_REPORT_RULES,
+  validateEsfjRuleSet,
+} from "../src/data/report/esfj";
+import {
   INTP_COMPLETE_REPORT,
   INTP_REPORT_RULES,
   validateIntpRuleSet,
 } from "../src/data/report/intp";
+import {
+  ISTJ_COMPLETE_REPORT,
+  ISTJ_REPORT_RULES,
+  validateIstjRuleSet,
+} from "../src/data/report/istj";
 import {
   personalityTypeCodes,
 } from "../src/data/personality/types";
@@ -195,6 +210,33 @@ assert.deepEqual(
   ["domain_complete", "validated"],
   "ENFP must be domain-complete and validated.",
 );
+const istjStatus =
+  PERSONALITY_IMPLEMENTATION_MANIFEST.find(
+    (entry) => entry.personalityType === "ISTJ",
+  );
+assert.deepEqual(
+  istjStatus?.stages,
+  ["domain_complete", "validated"],
+  "ISTJ must be domain-complete and validated.",
+);
+const estjStatus =
+  PERSONALITY_IMPLEMENTATION_MANIFEST.find(
+    (entry) => entry.personalityType === "ESTJ",
+  );
+assert.deepEqual(
+  estjStatus?.stages,
+  ["domain_complete", "validated"],
+  "ESTJ must be domain-complete and validated.",
+);
+const esfjStatus =
+  PERSONALITY_IMPLEMENTATION_MANIFEST.find(
+    (entry) => entry.personalityType === "ESFJ",
+  );
+assert.deepEqual(
+  esfjStatus?.stages,
+  ["domain_complete", "validated"],
+  "ESFJ must be domain-complete and validated.",
+);
 
 const manifestValidation =
   validatePersonalityImplementationManifest();
@@ -253,6 +295,9 @@ for (const [definition, rules] of [
   [INFP_COMPLETE_REPORT, INFP_REPORT_RULES],
   [ENFJ_COMPLETE_REPORT, ENFJ_REPORT_RULES],
   [ENFP_COMPLETE_REPORT, ENFP_REPORT_RULES],
+  [ISTJ_COMPLETE_REPORT, ISTJ_REPORT_RULES],
+  [ESTJ_COMPLETE_REPORT, ESTJ_REPORT_RULES],
+  [ESFJ_COMPLETE_REPORT, ESFJ_REPORT_RULES],
 ] as const) {
   const validation = validateCompletePersonalityDefinition(
     definition.personalityType,
@@ -431,6 +476,24 @@ assert.equal(
   enfpRuleValidation.valid,
   true,
   enfpRuleValidation.errors.join("\n"),
+);
+const istjRuleValidation = validateIstjRuleSet();
+assert.equal(
+  istjRuleValidation.valid,
+  true,
+  istjRuleValidation.errors.join("\n"),
+);
+const estjRuleValidation = validateEstjRuleSet();
+assert.equal(
+  estjRuleValidation.valid,
+  true,
+  estjRuleValidation.errors.join("\n"),
+);
+const esfjRuleValidation = validateEsfjRuleSet();
+assert.equal(
+  esfjRuleValidation.valid,
+  true,
+  esfjRuleValidation.errors.join("\n"),
 );
 
 const placeholderDefinition = {

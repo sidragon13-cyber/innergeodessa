@@ -23,7 +23,7 @@ const PERSONALITY_FAMILIES: Readonly<
 > = {
   analysts: ["ENTJ", "ENTP", "INTJ", "INTP"],
   diplomats: ["INFJ", "INFP", "ENFJ", "ENFP"],
-  sentinels: ["ISTJ", "ESTJ", "ESFJ"],
+  sentinels: ["ISTJ", "ISFJ", "ESTJ", "ESFJ"],
   explorers: ["ISTP", "ISFP", "ESTP", "ESFP"],
 };
 

@@ -28,6 +28,15 @@ import {
 import {
   ENFP_REPORT_RULES,
 } from "../enfp";
+import {
+  ISTJ_REPORT_RULES,
+} from "../istj";
+import {
+  ESTJ_REPORT_RULES,
+} from "../estj";
+import {
+  ESFJ_REPORT_RULES,
+} from "../esfj";
 import type {
   ReportRuleDefinition,
 } from "../rules";
@@ -47,6 +56,9 @@ const REPORT_RULE_REGISTRY: Partial<
   INFP: INFP_REPORT_RULES,
   ENFJ: ENFJ_REPORT_RULES,
   ENFP: ENFP_REPORT_RULES,
+  ISTJ: ISTJ_REPORT_RULES,
+  ESTJ: ESTJ_REPORT_RULES,
+  ESFJ: ESFJ_REPORT_RULES,
 };
 
 export function getReportRules(

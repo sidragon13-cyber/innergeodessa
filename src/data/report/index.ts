@@ -90,6 +90,33 @@ export {
   validateEnfpRuleSet,
 } from "./enfp";
 export {
+  ISTJ_COMPLETE_REPORT,
+  ISTJ_COMBINATION_RULES,
+  ISTJ_CONFIDENCE_RULES,
+  ISTJ_DIMENSION_RULES,
+  ISTJ_REPORT_RULES,
+  validateIstjCompleteReport,
+  validateIstjRuleSet,
+} from "./istj";
+export {
+  ESTJ_COMPLETE_REPORT,
+  ESTJ_COMBINATION_RULES,
+  ESTJ_CONFIDENCE_RULES,
+  ESTJ_DIMENSION_RULES,
+  ESTJ_REPORT_RULES,
+  validateEstjCompleteReport,
+  validateEstjRuleSet,
+} from "./estj";
+export {
+  ESFJ_COMPLETE_REPORT,
+  ESFJ_COMBINATION_RULES,
+  ESFJ_CONFIDENCE_RULES,
+  ESFJ_DIMENSION_RULES,
+  ESFJ_REPORT_RULES,
+  validateEsfjCompleteReport,
+  validateEsfjRuleSet,
+} from "./esfj";
+export {
   analyseDimension,
   analyseRuleInput,
   DIMENSION_CODES,
@@ -151,6 +178,18 @@ export type {
   EnfpReportValidationResult,
   EnfpRuleSetValidationResult,
 } from "./enfp";
+export type {
+  IstjReportValidationResult,
+  IstjRuleSetValidationResult,
+} from "./istj";
+export type {
+  EstjReportValidationResult,
+  EstjRuleSetValidationResult,
+} from "./estj";
+export type {
+  EsfjReportValidationResult,
+  EsfjRuleSetValidationResult,
+} from "./esfj";
 
 export type {
   AggregateRuleCondition,
