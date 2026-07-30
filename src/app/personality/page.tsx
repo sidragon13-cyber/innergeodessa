@@ -9,7 +9,7 @@ import {
 export const metadata: Metadata = {
   title: "Personality Test — InnerGeodessa",
   description:
-    "Explore four broad personality dimensions through a reflective 48-question self-discovery assessment.",
+    "Explore four broad personality dimensions through a reflective 72-question self-discovery assessment.",
 };
 
 const dimensions = [
@@ -49,7 +49,7 @@ const resultDetails = [
   "Strengths and possible blind spots",
   "Preferred working and learning environments",
   "Career areas worth exploring",
-  "A future connection to your InnerGeodessa identity profile",
+  "A complete personality report you can review and print",
 ];
 
 const guidance = [
@@ -107,8 +107,8 @@ export default function PersonalityPage() {
             profiles.
           </p>
           <ul className="assessment-meta" aria-label="Assessment details">
-            <li>48 questions</li>
-            <li>6–8 minutes</li>
+            <li>72 questions</li>
+            <li>8–12 minutes</li>
             <li>No account required</li>
           </ul>
           <div className="personality-actions">
@@ -171,8 +171,8 @@ export default function PersonalityPage() {
             ))}
           </ol>
           <p className="result-note">
-            Identity-profile connections are planned for a future phase.
-            Profile saving is not currently available.
+            Your result is generated immediately after completion. No account
+            or sign-in is required.
           </p>
         </div>
       </section>
@@ -213,7 +213,7 @@ export default function PersonalityPage() {
           <h2>Ready to explore your personality?</h2>
           <PrimaryButton href="/personality/test">Begin the Assessment</PrimaryButton>
           <p className="final-cta-note">
-            48 questions · approximately 6–8 minutes
+            72 questions · approximately 8–12 minutes
           </p>
         </div>
       </section>

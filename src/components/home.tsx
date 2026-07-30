@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export type Product = {
   number: string;
   id: string;
@@ -40,17 +42,17 @@ function Wordmark() {
 export function SiteHeader({ homePath = "" }: { homePath?: string }) {
   return (
     <header className="site-header shell">
-      <a
+      <Link
         className="wordmark"
         href={homePath || "#top"}
         aria-label="InnerGeodessa home"
       >
         <Wordmark />
-      </a>
+      </Link>
       <nav aria-label="Primary navigation">
-        <a href={`${homePath}#explore`}>Explore</a>
-        <a href={`${homePath}#how-it-works`}>How It Works</a>
-        <a href="/about">About</a>
+        <Link href={`${homePath}#explore`}>Explore</Link>
+        <Link href={`${homePath}#how-it-works`}>How It Works</Link>
+        <Link href="/about">About</Link>
       </nav>
     </header>
   );
@@ -63,11 +65,13 @@ export function PrimaryButton({
   href: string;
   children: React.ReactNode;
 }) {
+  const isPageAnchor = href.startsWith("#");
+
   return (
-    <a className="primary-button" href={href}>
+    <Link className="primary-button" href={href}>
       {children}
-      <span aria-hidden="true">↓</span>
-    </a>
+      <span aria-hidden="true">{isPageAnchor ? "↓" : "→"}</span>
+    </Link>
   );
 }
 
@@ -156,14 +160,14 @@ export function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="card-footer">
         <p>{product.metadata}</p>
-        <a
+        <Link
           className="card-link"
           href={product.href}
           aria-label={product.cta}
         >
           {product.cta}
           <span aria-hidden="true">↗</span>
-        </a>
+        </Link>
       </div>
     </article>
   );
@@ -184,21 +188,21 @@ export function SiteFooter({ homePath = "" }: { homePath?: string }) {
     <footer className="site-footer">
       <div className="site-footer-inner shell">
         <div>
-          <a
+          <Link
             className="wordmark footer-wordmark"
             href={homePath || "#top"}
             aria-label="InnerGeodessa home"
           >
             <Wordmark />
-          </a>
+          </Link>
           <p>Self-discovery, thoughtfully mapped.</p>
         </div>
         <nav aria-label="Footer navigation">
-          <a href="/personality">Personality</a>
-          <a href="/career">Career</a>
-          <a href="/zodiac">Zodiac</a>
-          <a href={`${homePath}#trust`}>Privacy</a>
-          <a href={`${homePath}#trust`}>Terms</a>
+          <Link href="/personality">Personality</Link>
+          <Link href="/career">Career</Link>
+          <Link href="/zodiac">Zodiac</Link>
+          <Link href={`${homePath}#trust`}>Privacy</Link>
+          <Link href={`${homePath}#trust`}>Terms</Link>
         </nav>
       </div>
     </footer>
