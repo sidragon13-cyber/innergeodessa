@@ -19,11 +19,13 @@ import {
   type RiasecResultContract,
 } from "@/data/career";
 
-type ItemsResponse = {
-  count: number;
-  items: AssessmentDisplayItem[];
-  error?: string;
-};
+type ItemsResponse =
+  | AssessmentDisplayItem[]
+  | {
+      count?: number;
+      items?: AssessmentDisplayItem[];
+      error?: string;
+    };
 
 type SessionResponse = {
   session_id: string;
@@ -95,16 +97,20 @@ export default function CareerTestPage() {
         );
 
         const data: ItemsResponse = await response.json();
+        const responseItems = Array.isArray(data) ? data : data.items;
+        const responseError = Array.isArray(data) ? undefined : data.error;
 
         if (!response.ok) {
-          throw new Error(data.error ?? "Unable to load assessment items.");
+          throw new Error(
+            responseError ?? "Unable to load assessment items.",
+          );
         }
 
-        if (!Array.isArray(data.items) || data.count !== 36) {
+        if (!Array.isArray(responseItems) || responseItems.length !== 36) {
           throw new Error("The assessment did not return all 36 questions.");
         }
 
-        const sortedItems = [...data.items].sort(
+        const sortedItems = [...responseItems].sort(
           (first, second) => first.master_order - second.master_order,
         );
 

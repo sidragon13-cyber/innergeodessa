@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CompassMark, SiteFooter, SiteHeader } from "@/components/home";
 
 export const metadata: Metadata = {
@@ -99,10 +100,9 @@ const guidance = [
 
 function ComingSoonAction({ children }: { children: React.ReactNode }) {
   return (
-    <span className="primary-button disabled-button" aria-disabled="true">
+    <Link href="/career/test" className="primary-button">
       {children}
-      <span>Coming Soon</span>
-    </span>
+    </Link>
   );
 }
 
