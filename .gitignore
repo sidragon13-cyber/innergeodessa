@@ -87,3 +87,7 @@ innergeodessa-mvp/tests/*
 *.backup
 *.save
 *.before-*.tsx
+
+# Local development audit files
+*-audit.txt
+riasec-existing-foundation.txt
