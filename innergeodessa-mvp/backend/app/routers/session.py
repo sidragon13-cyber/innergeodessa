@@ -5,10 +5,8 @@ import uuid
 
 from fastapi import APIRouter, HTTPException
 
-from ..database import (
-    CURRENT_BANK_VERSION,
-    connect,
-)
+from ..assessment_modules import get_assessment_module_config
+from ..database import connect
 from ..schemas.session import AnswerRequest, StartRequest
 from ..scoring import TIE_RULE
 from ..session_completion import complete_session_assessment
@@ -21,8 +19,15 @@ router = APIRouter()
 def start_session(payload: StartRequest):
     if not payload.consent:
         raise HTTPException(400, "Consent is required.")
+
+    try:
+        module_config = get_assessment_module_config(payload.module)
+    except ValueError as error:
+        raise HTTPException(400, str(error)) from error
+
     session_id = str(uuid.uuid4())
     now = datetime.now(timezone.utc).isoformat()
+
     with connect() as conn:
         conn.execute(
             """INSERT INTO sessions(
@@ -34,7 +39,7 @@ def start_session(payload: StartRequest):
                 session_id,
                 payload.language,
                 now,
-                CURRENT_BANK_VERSION,
+                module_config.question_bank_version,
             ),
         )
         conn.execute(
@@ -44,21 +49,42 @@ def start_session(payload: StartRequest):
                SELECT ?, item_record_id, master_order
                FROM question_bank_items
                WHERE question_bank_version=?""",
-            (session_id, CURRENT_BANK_VERSION),
+            (
+                session_id,
+                module_config.question_bank_version,
+            ),
         )
+
         snapshot_count = conn.execute(
-            "SELECT COUNT(*) FROM session_question_items WHERE session_id=?",
+            """SELECT COUNT(*)
+               FROM session_question_items
+               WHERE session_id=?""",
             (session_id,),
         ).fetchone()[0]
-        if snapshot_count != 72:
+
+        if snapshot_count != module_config.expected_item_count:
             raise HTTPException(
                 503,
-                "Current personality question bank is unavailable.",
+                detail={
+                    "message": (
+                        "Assessment question bank is unavailable."
+                    ),
+                    "module": module_config.module,
+                    "question_bank_version": (
+                        module_config.question_bank_version
+                    ),
+                    "expected": module_config.expected_item_count,
+                    "actual": snapshot_count,
+                },
             )
+
     return {
         "session_id": session_id,
         "started_at": now,
-        "question_bank_version": CURRENT_BANK_VERSION,
+        "module": module_config.module,
+        "question_bank_version": (
+            module_config.question_bank_version
+        ),
     }
 
 

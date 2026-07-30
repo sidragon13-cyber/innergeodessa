@@ -1,0 +1,1 @@
+export { scoreRiasec } from "./scoreRiasec";

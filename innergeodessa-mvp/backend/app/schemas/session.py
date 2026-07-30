@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field, StrictInt
 class StartRequest(BaseModel):
     consent: bool
     language: str = "en"
+    module: Optional[str] = None
 
 
 class AnswerRequest(BaseModel):

@@ -34,7 +34,8 @@
     "validate:personality-family": "tsx scripts/validate-personality-types.ts --family",
     "validate:personality-all": "tsx scripts/validate-personality-types.ts --all",
     "scaffold:personality": "node scripts/scaffold-personality-report.mjs",
-    "validate:riasec-question-bank": "tsx scripts/validate-riasec-question-bank.ts"
+    "validate:riasec-question-bank": "tsx scripts/validate-riasec-question-bank.ts",
+    "validate:riasec-scoring": "tsx scripts/validate-riasec-scoring.ts"
   },
   "dependencies": {
     "next": "16.2.11",
