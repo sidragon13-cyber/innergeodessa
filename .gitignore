@@ -76,6 +76,7 @@ innergeodessa-mvp/backend/app/routers/*
 
 innergeodessa-mvp/backend/data/*
 !innergeodessa-mvp/backend/data/items.json
+!innergeodessa-mvp/backend/data/riasec-items.json
 
 innergeodessa-mvp/tests/*
 !innergeodessa-mvp/tests/*.py

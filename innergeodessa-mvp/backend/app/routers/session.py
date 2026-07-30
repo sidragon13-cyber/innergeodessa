@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import json
 import uuid
 
 from fastapi import APIRouter, HTTPException
@@ -32,33 +33,38 @@ def start_session(payload: StartRequest):
         conn.execute(
             """INSERT INTO sessions(
                  session_id, consent, language, started_at,
-                 question_bank_version
+                 question_bank_version, module
                )
-               VALUES (?,1,?,?,?)""",
+               VALUES (?,1,?,?,?,?)""",
             (
                 session_id,
                 payload.language,
                 now,
                 module_config.question_bank_version,
+                module_config.module,
             ),
         )
+        if module_config.module == "riasec":
+            snapshot_table = "riasec_session_question_items"
+            item_table = "riasec_question_items"
+        else:
+            snapshot_table = "session_question_items"
+            item_table = "question_bank_items"
+
         conn.execute(
-            """INSERT INTO session_question_items(
-                 session_id, item_record_id, display_order
-               )
-               SELECT ?, item_record_id, master_order
-               FROM question_bank_items
-               WHERE question_bank_version=?""",
-            (
-                session_id,
-                module_config.question_bank_version,
-            ),
+            f"""INSERT INTO {snapshot_table}(
+                  session_id, item_record_id, display_order
+                )
+                SELECT ?, item_record_id, master_order
+                FROM {item_table}
+                WHERE question_bank_version=?""",
+            (session_id, module_config.question_bank_version),
         )
 
         snapshot_count = conn.execute(
-            """SELECT COUNT(*)
-               FROM session_question_items
-               WHERE session_id=?""",
+            f"""SELECT COUNT(*)
+                FROM {snapshot_table}
+                WHERE session_id=?""",
             (session_id,),
         ).fetchone()[0]
 
@@ -92,28 +98,46 @@ def start_session(payload: StartRequest):
 def get_session_items(session_id: str):
     with connect() as conn:
         session = conn.execute(
-            "SELECT question_bank_version FROM sessions WHERE session_id=?",
+            """SELECT question_bank_version, module
+               FROM sessions WHERE session_id=?""",
             (session_id,),
         ).fetchone()
         if not session:
             raise HTTPException(404, "Session not found.")
 
-        rows = conn.execute(
-            """SELECT qbi.source_item_id AS item_id,
-                      qbi.dimension,
-                      qbi.subdimension,
-                      qbi.keyed_pole,
-                      qbi.form,
-                      qbi.wording,
-                      sqi.display_order AS master_order,
-                      qbi.question_bank_version
-               FROM session_question_items sqi
-               JOIN question_bank_items qbi
-                 ON qbi.item_record_id=sqi.item_record_id
-               WHERE sqi.session_id=?
-               ORDER BY sqi.display_order""",
-            (session_id,),
-        ).fetchall()
+        if session["module"] == "riasec":
+            rows = conn.execute(
+                """SELECT item.source_item_id AS item_id,
+                          item.dimension,
+                          item.wording,
+                          snapshot.display_order AS master_order,
+                          item.question_bank_version
+                   FROM riasec_session_question_items snapshot
+                   JOIN riasec_question_items item
+                     ON item.item_record_id=snapshot.item_record_id
+                   WHERE snapshot.session_id=?
+                   ORDER BY snapshot.display_order""",
+                (session_id,),
+            ).fetchall()
+        elif session["module"] == "personality":
+            rows = conn.execute(
+                """SELECT qbi.source_item_id AS item_id,
+                          qbi.dimension,
+                          qbi.subdimension,
+                          qbi.keyed_pole,
+                          qbi.form,
+                          qbi.wording,
+                          sqi.display_order AS master_order,
+                          qbi.question_bank_version
+                   FROM session_question_items sqi
+                   JOIN question_bank_items qbi
+                     ON qbi.item_record_id=sqi.item_record_id
+                   WHERE sqi.session_id=?
+                   ORDER BY sqi.display_order""",
+                (session_id,),
+            ).fetchall()
+        else:
+            raise HTTPException(400, "Session module is not supported.")
     return [dict(row) for row in rows]
 
 
@@ -121,7 +145,7 @@ def get_session_items(session_id: str):
 def get_session_result(session_id: str):
     with connect() as conn:
         session = conn.execute(
-            """SELECT status, question_bank_version, completed_at
+            """SELECT status, question_bank_version, completed_at, module
                FROM sessions
                WHERE session_id=?""",
             (session_id,),
@@ -131,21 +155,58 @@ def get_session_result(session_id: str):
         if session["status"] != "completed":
             raise HTTPException(409, "Session is not completed.")
 
-        result = conn.execute(
-            """SELECT personality_type,
-                      ei_score, sn_score, tf_score, jp_score,
-                      ei_confidence, sn_confidence,
-                      tf_confidence, jp_confidence,
-                      calculated_at
-               FROM results
-               WHERE session_id=?""",
-            (session_id,),
-        ).fetchone()
+        if session["module"] == "riasec":
+            result = conn.execute(
+                """SELECT code, scores_json, percentages_json,
+                          ranking_json, answered_json, calculated_at
+                   FROM riasec_results
+                   WHERE session_id=?""",
+                (session_id,),
+            ).fetchone()
+        elif session["module"] == "personality":
+            result = conn.execute(
+                """SELECT personality_type,
+                          ei_score, sn_score, tf_score, jp_score,
+                          ei_confidence, sn_confidence,
+                          tf_confidence, jp_confidence,
+                          calculated_at
+                   FROM results
+                   WHERE session_id=?""",
+                (session_id,),
+            ).fetchone()
+        else:
+            raise HTTPException(400, "Session module is not supported.")
         if not result:
             raise HTTPException(
                 500,
                 "Completed session result is missing.",
             )
+
+    if session["module"] == "riasec":
+        try:
+            scores = json.loads(result["scores_json"])
+            percentages = json.loads(result["percentages_json"])
+            ranking = json.loads(result["ranking_json"])
+            answered = json.loads(result["answered_json"])
+        except (json.JSONDecodeError, TypeError) as error:
+            raise HTTPException(
+                500,
+                "Completed session result is invalid.",
+            ) from error
+
+        return {
+            "sessionId": session_id,
+            "module": "riasec",
+            "status": "completed",
+            "code": result["code"],
+            "scores": scores,
+            "percentages": percentages,
+            "ranking": ranking,
+            "answered": answered,
+            "questionBankVersion": session["question_bank_version"],
+            "completedAt": session["completed_at"],
+            "calculatedAt": result["calculated_at"],
+        }
 
     return {
         "sessionId": session_id,
@@ -180,34 +241,52 @@ def get_session_result(session_id: str):
 def save_answer(session_id: str, payload: AnswerRequest):
     now = datetime.now(timezone.utc).isoformat()
     with connect() as conn:
-        session = conn.execute("SELECT status FROM sessions WHERE session_id=?", (session_id,)).fetchone()
+        session = conn.execute(
+            "SELECT status, module FROM sessions WHERE session_id=?",
+            (session_id,),
+        ).fetchone()
         if not session:
             raise HTTPException(404, "Session not found.")
         if session["status"] != "active":
             raise HTTPException(409, "Session is not active.")
-        item = conn.execute(
-            """SELECT sqi.item_record_id
-               FROM session_question_items sqi
-               JOIN question_bank_items qbi
-                 ON qbi.item_record_id=sqi.item_record_id
-               WHERE sqi.session_id=? AND qbi.source_item_id=?""",
-            (session_id, payload.item_id),
-        ).fetchone()
+        if session["module"] == "riasec":
+            item = conn.execute(
+                """SELECT snapshot.item_record_id
+                   FROM riasec_session_question_items snapshot
+                   JOIN riasec_question_items item
+                     ON item.item_record_id=snapshot.item_record_id
+                   WHERE snapshot.session_id=?
+                     AND item.source_item_id=?""",
+                (session_id, payload.item_id),
+            ).fetchone()
+            response_table = "riasec_session_responses"
+        elif session["module"] == "personality":
+            item = conn.execute(
+                """SELECT sqi.item_record_id
+                   FROM session_question_items sqi
+                   JOIN question_bank_items qbi
+                     ON qbi.item_record_id=sqi.item_record_id
+                   WHERE sqi.session_id=? AND qbi.source_item_id=?""",
+                (session_id, payload.item_id),
+            ).fetchone()
+            response_table = "session_responses"
+        else:
+            raise HTTPException(400, "Session module is not supported.")
         if not item:
             raise HTTPException(
                 404,
                 "Item is not part of this session's question snapshot.",
             )
         conn.execute(
-            """INSERT INTO session_responses(
-                 session_id, item_record_id, raw_value,
-                 response_time_ms, answered_at
-               )
-               VALUES (?,?,?,?,?)
-               ON CONFLICT(session_id,item_record_id) DO UPDATE SET
-               raw_value=excluded.raw_value,
-               response_time_ms=excluded.response_time_ms,
-               answered_at=excluded.answered_at""",
+            f"""INSERT INTO {response_table}(
+                  session_id, item_record_id, raw_value,
+                  response_time_ms, answered_at
+                )
+                VALUES (?,?,?,?,?)
+                ON CONFLICT(session_id,item_record_id) DO UPDATE SET
+                raw_value=excluded.raw_value,
+                response_time_ms=excluded.response_time_ms,
+                answered_at=excluded.answered_at""",
             (
                 session_id,
                 item["item_record_id"],

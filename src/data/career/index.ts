@@ -11,3 +11,7 @@ export {
 } from "./types";
 
 export { scoreRiasec } from "./scoring";
+export {
+  isRiasecResultContract,
+  type RiasecResultContract,
+} from "./result-contract";

@@ -36,7 +36,8 @@
     "scaffold:personality": "node scripts/scaffold-personality-report.mjs",
     "validate:riasec-question-bank": "tsx scripts/validate-riasec-question-bank.ts",
     "validate:riasec-scoring": "tsx scripts/validate-riasec-scoring.ts",
-    "validate:assessment-engine-boundaries": "tsx scripts/validate-assessment-engine-boundaries.ts"
+    "validate:assessment-engine-boundaries": "tsx scripts/validate-assessment-engine-boundaries.ts",
+    "validate:riasec-result-contract": "tsx scripts/validate-riasec-result-contract.ts"
   },
   "dependencies": {
     "next": "16.2.11",

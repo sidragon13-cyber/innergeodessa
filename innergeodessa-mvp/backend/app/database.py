@@ -8,9 +8,11 @@ ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = ROOT / "innergeodessa.db"
 SCHEMA_PATH = ROOT / "schema.sql"
 ITEMS_PATH = ROOT / "data" / "items.json"
+RIASEC_ITEMS_PATH = ROOT / "data" / "riasec-items.json"
 
 LEGACY_BANK_VERSION = "personality-legacy-v1"
 CURRENT_BANK_VERSION = "personality-v1.0.0"
+RIASEC_BANK_VERSION = "riasec-v0.1.0"
 
 
 def connect(db_path: Path = DB_PATH) -> sqlite3.Connection:
@@ -24,20 +26,24 @@ def connect(db_path: Path = DB_PATH) -> sqlite3.Connection:
 def initialize(
     db_path: Path = DB_PATH,
     items_path: Path = ITEMS_PATH,
+    riasec_items_path: Path = RIASEC_ITEMS_PATH,
 ) -> None:
     items = _load_current_items(items_path)
+    riasec_items = _load_riasec_items(riasec_items_path)
 
     with connect(db_path) as conn:
         conn.execute("BEGIN IMMEDIATE")
         try:
             _apply_schema(conn)
             _ensure_session_version_column(conn)
+            _ensure_session_module_column(conn)
             _register_question_banks(conn)
             _capture_legacy_items(conn)
             _backfill_legacy_sessions(conn)
             _create_missing_session_snapshots(conn)
             _migrate_legacy_responses(conn)
             _upsert_current_items(conn, items)
+            _upsert_riasec_items(conn, riasec_items)
             _verify_migration(conn)
         except Exception:
             conn.rollback()
@@ -61,6 +67,18 @@ def _ensure_session_version_column(conn: sqlite3.Connection) -> None:
     if "question_bank_version" not in columns:
         conn.execute(
             "ALTER TABLE sessions ADD COLUMN question_bank_version TEXT"
+        )
+
+
+def _ensure_session_module_column(conn: sqlite3.Connection) -> None:
+    columns = {
+        row["name"]
+        for row in conn.execute("PRAGMA table_info(sessions)").fetchall()
+    }
+    if "module" not in columns:
+        conn.execute(
+            """ALTER TABLE sessions
+               ADD COLUMN module TEXT NOT NULL DEFAULT 'personality'"""
         )
 
 
@@ -93,6 +111,28 @@ def _load_current_items(items_path: Path) -> list[dict]:
     return parsed
 
 
+def _load_riasec_items(items_path: Path) -> list[dict]:
+    parsed = json.loads(items_path.read_text(encoding="utf-8"))
+    if not isinstance(parsed, list) or len(parsed) != 36:
+        raise ValueError("RIASEC items must contain exactly 36 rows")
+
+    required = {
+        "source_item_id",
+        "dimension",
+        "wording",
+        "master_order",
+    }
+    dimensions = {"R", "I", "A", "S", "E", "C"}
+    for index, item in enumerate(parsed):
+        if not isinstance(item, dict) or not required.issubset(item):
+            raise ValueError(f"RIASEC item {index} is invalid")
+        if item["dimension"] not in dimensions:
+            raise ValueError(
+                f"RIASEC item {index} has an invalid dimension"
+            )
+    return parsed
+
+
 def _register_question_banks(conn: sqlite3.Connection) -> None:
     conn.execute(
         """INSERT INTO question_banks(question_bank_version, status)
@@ -106,6 +146,13 @@ def _register_question_banks(conn: sqlite3.Connection) -> None:
            ON CONFLICT(question_bank_version) DO UPDATE SET
            status=excluded.status""",
         (CURRENT_BANK_VERSION,),
+    )
+    conn.execute(
+        """INSERT INTO question_banks(question_bank_version, status)
+           VALUES (?, 'draft')
+           ON CONFLICT(question_bank_version) DO UPDATE SET
+           status=excluded.status""",
+        (RIASEC_BANK_VERSION,),
     )
 
 
@@ -217,6 +264,36 @@ def _upsert_current_items(
     )
 
 
+def _upsert_riasec_items(
+    conn: sqlite3.Connection,
+    items: list[dict],
+) -> None:
+    conn.executemany(
+        """INSERT INTO riasec_question_items(
+             question_bank_version, source_item_id, dimension,
+             wording, language, version, status, master_order
+           )
+           VALUES (?, ?, ?, ?, 'en', '0.1.0', 'draft', ?)
+           ON CONFLICT(question_bank_version, source_item_id) DO UPDATE SET
+             dimension=excluded.dimension,
+             wording=excluded.wording,
+             language=excluded.language,
+             version=excluded.version,
+             status=excluded.status,
+             master_order=excluded.master_order""",
+        [
+            (
+                RIASEC_BANK_VERSION,
+                item["source_item_id"],
+                item["dimension"],
+                item["wording"],
+                item["master_order"],
+            )
+            for item in items
+        ],
+    )
+
+
 def _verify_migration(conn: sqlite3.Connection) -> None:
     unversioned_sessions = conn.execute(
         """SELECT COUNT(*) FROM sessions
@@ -225,6 +302,14 @@ def _verify_migration(conn: sqlite3.Connection) -> None:
     ).fetchone()[0]
     if unversioned_sessions:
         raise ValueError("Every session must have a question bank version")
+
+    invalid_session_modules = conn.execute(
+        """SELECT COUNT(*) FROM sessions
+           WHERE module IS NULL
+              OR module NOT IN ('personality', 'riasec')"""
+    ).fetchone()[0]
+    if invalid_session_modules:
+        raise ValueError("Every session must have a supported module")
 
     orphaned_responses = conn.execute(
         """SELECT COUNT(*) FROM responses r

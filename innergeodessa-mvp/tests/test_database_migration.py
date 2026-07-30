@@ -81,7 +81,7 @@ def test_non_destructive_versioned_migration_is_idempotent(tmp_path):
             "sessions": 2,
             "responses": 2,
             "results": 1,
-            "question_banks": 2,
+            "question_banks": 3,
             "question_bank_items": LEGACY_ITEM_COUNT + 72,
             "session_question_items": 2 * LEGACY_ITEM_COUNT,
             "session_responses": 2,
@@ -184,3 +184,48 @@ def test_failed_migration_rolls_back_schema_and_data(tmp_path):
 
         assert "question_banks" not in table_names
         assert "question_bank_version" not in session_columns
+
+
+def test_legacy_migration_adds_riasec_persistence_idempotently(
+    tmp_path,
+):
+    database_path = tmp_path / "riasec-migration.db"
+    create_legacy_database(
+        database_path,
+        SCHEMA_PATH,
+        ITEMS_PATH,
+    )
+
+    initialize(db_path=database_path, items_path=ITEMS_PATH)
+    initialize(db_path=database_path, items_path=ITEMS_PATH)
+
+    with sqlite3.connect(database_path) as connection:
+        tables = {
+            row[0]
+            for row in connection.execute(
+                "SELECT name FROM sqlite_master WHERE type='table'"
+            )
+        }
+        assert {
+            "riasec_question_items",
+            "riasec_session_question_items",
+            "riasec_session_responses",
+            "riasec_results",
+        }.issubset(tables)
+        assert fetch_value(
+            connection,
+            """SELECT COUNT(*) FROM question_banks
+               WHERE question_bank_version='riasec-v0.1.0'""",
+        ) == 1
+        assert fetch_value(
+            connection,
+            "SELECT COUNT(*) FROM riasec_question_items",
+        ) == 36
+        assert fetch_value(
+            connection,
+            """SELECT COUNT(*) FROM sessions
+               WHERE module='personality'""",
+        ) == 2
+        assert connection.execute(
+            "PRAGMA foreign_key_check"
+        ).fetchall() == []
