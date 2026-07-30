@@ -15,3 +15,8 @@ export {
   isRiasecResultContract,
   type RiasecResultContract,
 } from "./result-contract";
+
+export {
+  fetchRiasecResult,
+  RiasecResultRequestError,
+} from "./api";
