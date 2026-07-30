@@ -4,25 +4,25 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import {
+  AssessmentAnswerScale,
+  AssessmentNavigation,
+  AssessmentProgress,
+  AssessmentQuestion,
+  AssessmentShell,
+  type AssessmentAnswerOption,
+  type AssessmentAnswerRecord,
+  type AssessmentDisplayItem,
+  type AssessmentViewStatus,
+} from "@/components/assessment";
+import {
   fetchPersonalityResult,
   type PersonalityResultContract,
 } from "@/data/assessment/scoring/personality";
 
-type AssessmentItem = {
-  item_id: string;
-  wording: string;
-  master_order: number;
-};
-
 type ItemsResponse = {
   count: number;
-  items: AssessmentItem[];
+  items: AssessmentDisplayItem[];
   error?: string;
-};
-
-type AnswerRecord = {
-  value: number;
-  responseTimeMs: number;
 };
 
 type SessionResponse = {
@@ -47,18 +47,19 @@ const answerOptions = [
   { value: 3, label: "Neither agree nor disagree" },
   { value: 4, label: "Agree" },
   { value: 5, label: "Strongly agree" },
-];
+] as const satisfies readonly AssessmentAnswerOption[];
 
 export default function PersonalityTestPage() {
   const router = useRouter();
-  const [items, setItems] = useState<AssessmentItem[]>([]);
+  const [items, setItems] = useState<AssessmentDisplayItem[]>([]);
   const [sessionId, setSessionId] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, AnswerRecord>>({});
+  const [answers, setAnswers] = useState<
+    Record<string, AssessmentAnswerRecord>
+  >({});
   const questionStartedAt = useRef<number | null>(null);
-  const [status, setStatus] = useState<"loading" | "ready" | "error">(
-    "loading",
-  );
+  const [status, setStatus] =
+    useState<AssessmentViewStatus>("loading");
   const [errorMessage, setErrorMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
@@ -123,18 +124,27 @@ export default function PersonalityTestPage() {
 
   if (status === "loading") {
     return (
-      <main className="min-h-screen p-20">
-        <h1 className="text-4xl">Loading assessment…</h1>
-      </main>
+      <AssessmentShell
+        status={status}
+        errorMessage=""
+        currentIndex={0}
+        itemCount={0}
+      >
+        {null}
+      </AssessmentShell>
     );
   }
 
   if (status === "error") {
     return (
-      <main className="min-h-screen p-20">
-        <h1 className="mb-4 text-4xl">Unable to load assessment</h1>
-        <p>{errorMessage}</p>
-      </main>
+      <AssessmentShell
+        status={status}
+        errorMessage={errorMessage}
+        currentIndex={0}
+        itemCount={0}
+      >
+        {null}
+      </AssessmentShell>
     );
   }
 
@@ -142,7 +152,6 @@ export default function PersonalityTestPage() {
   const selectedValue = answers[currentItem.item_id]?.value;
   const isFirstQuestion = currentIndex === 0;
   const isLastQuestion = currentIndex === items.length - 1;
-  const progress = ((currentIndex + 1) / items.length) * 100;
 
   function selectAnswer(
     value: number,
@@ -265,128 +274,55 @@ export default function PersonalityTestPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f1eee5] text-[#20231d]">
-      <header className="border-b border-black/20">
-        <div className="mx-auto flex min-h-20 w-[min(100%-40px,1000px)] items-center justify-between">
-          <span className="font-serif text-xl font-bold">
-            Inner<span className="italic text-[#a64a2c]">Geodessa</span>
-          </span>
+    <AssessmentShell
+      status={status}
+      errorMessage={errorMessage}
+      currentIndex={currentIndex}
+      itemCount={items.length}
+    >
+      <AssessmentProgress
+        currentIndex={currentIndex}
+        itemCount={items.length}
+      />
+      <AssessmentQuestion
+        eyebrow="Personality assessment"
+        wording={currentItem.wording}
+      />
+      <AssessmentAnswerScale
+        options={answerOptions}
+        selectedValue={selectedValue}
+        onSelect={selectAnswer}
+      />
+      <AssessmentNavigation
+        answeredCount={Object.keys(answers).length}
+        itemCount={items.length}
+        sessionId={sessionId}
+        isFirstQuestion={isFirstQuestion}
+        isLastQuestion={isLastQuestion}
+        hasSelectedAnswer={selectedValue !== undefined}
+        isSaving={isSaving}
+        isComplete={completionResult !== null}
+        saveMessage={saveMessage}
+        onPrevious={goToPreviousQuestion}
+        onNext={goToNextQuestion}
+        completionContent={
+          completionResult ? (
+            <div className="mt-8 border border-[#c8c2b5] bg-[#f7f4ec] p-6">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6d746b]">
+                Assessment Complete
+              </p>
 
-          <span className="text-xs font-bold uppercase tracking-[0.16em]">
-            Question {currentIndex + 1} of {items.length}
-          </span>
-        </div>
-      </header>
+              <h2 className="mt-3 text-2xl font-semibold text-[#26372d]">
+                Result generated successfully
+              </h2>
 
-      <section className="mx-auto w-[min(100%-40px,760px)] py-16 md:py-24">
-        <div className="mb-14 h-px bg-black/15">
-          <div
-            className="h-px bg-[#a64a2c] transition-all duration-300"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-
-        <p className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-[#a64a2c]">
-          Personality assessment
-        </p>
-
-        <h1 className="mb-12 font-serif text-4xl leading-tight md:text-5xl">
-          {currentItem.wording}
-        </h1>
-
-        <div className="grid gap-3">
-          {answerOptions.map((option) => {
-            const selected = selectedValue === option.value;
-
-            return (
-              <button
-                key={option.value}
-                type="button"
-                onClick={(event) =>
-                  selectAnswer(option.value, event.timeStamp)
-                }
-                className={`flex min-h-16 items-center justify-between border px-5 text-left transition ${
-                  selected
-                    ? "border-[#a64a2c] bg-[#a64a2c] text-[#f1eee5]"
-                    : "border-black/20 hover:border-[#a64a2c]"
-                }`}
-              >
-                <span>{option.label}</span>
-                <span className="text-sm">{option.value}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="mt-10 flex items-center justify-between border-t border-black/20 pt-8">
-          <button
-            type="button"
-            onClick={goToPreviousQuestion}
-            disabled={isFirstQuestion}
-            className="min-h-12 px-5 text-xs font-bold uppercase tracking-[0.14em] disabled:opacity-30"
-          >
-            ← Previous
-          </button>
-
-          <div className="text-center text-xs text-black/50">
-            <p>
-              Answered {Object.keys(answers).length} of {items.length}
-            </p>
-            <p className="mt-1">
-              Session {sessionId.slice(0, 8)}…
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={goToNextQuestion}
-            disabled={
-              selectedValue === undefined ||
-              isSaving ||
-              completionResult !== null
-            }
-            className="min-h-12 bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] disabled:cursor-not-allowed disabled:opacity-30"
-          >
-            {isSaving
-              ? isLastQuestion
-                ? "Generating result…"
-                : "Saving…"
-              : completionResult
-                ? "Assessment complete"
-                : isLastQuestion
-                  ? "Save final answer"
-                  : "Next question →"}
-          </button>
-        </div>
-
-        {completionResult && (
-          <div className="mt-8 border border-[#c8c2b5] bg-[#f7f4ec] p-6">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6d746b]">
-              Assessment Complete
-            </p>
-
-            <h2 className="mt-3 text-2xl font-semibold text-[#26372d]">
-              Result generated successfully
-            </h2>
-
-            <pre className="mt-5 max-h-96 overflow-auto whitespace-pre-wrap break-words bg-white p-4 text-xs leading-6 text-[#34483a]">
-              {JSON.stringify(completionResult, null, 2)}
-            </pre>
-          </div>
-        )}
-
-        {saveMessage && (
-          <p
-            className={`mt-5 text-center text-sm ${
-              saveMessage.startsWith("Final")
-                ? "text-[#34483a]"
-                : "text-[#a64a2c]"
-            }`}
-          >
-            {saveMessage}
-          </p>
-        )}
-      </section>
-    </main>
+              <pre className="mt-5 max-h-96 overflow-auto whitespace-pre-wrap break-words bg-white p-4 text-xs leading-6 text-[#34483a]">
+                {JSON.stringify(completionResult, null, 2)}
+              </pre>
+            </div>
+          ) : undefined
+        }
+      />
+    </AssessmentShell>
   );
 }
