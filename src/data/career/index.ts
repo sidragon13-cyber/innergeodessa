@@ -10,7 +10,6 @@ export {
   type ScoreRiasecInput,
 } from "./types";
 
-export { scoreRiasec } from "./scoring";
 export {
   isRiasecResultContract,
   type RiasecResultContract,
@@ -20,3 +19,11 @@ export {
   fetchRiasecResult,
   RiasecResultRequestError,
 } from "./api";
+
+export {
+  RIASEC_DIMENSION_PROFILES,
+  getRiasecDimensionProfile,
+  type RiasecDimensionProfile,
+} from "./dimensions";
+
+export { scoreRiasec } from "./scoring";
