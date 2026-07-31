@@ -40,7 +40,8 @@
     "validate:riasec-result-contract": "tsx scripts/validate-riasec-result-contract.ts",
     "validate:zodiac-core": "tsx scripts/validate-zodiac-core.ts",
     "validate:zodiac-timezone": "tsx scripts/validate-zodiac-timezone.ts",
-    "validate:zodiac-astronomy": "tsx scripts/validate-zodiac-astronomy.ts"
+    "validate:zodiac-astronomy": "tsx scripts/validate-zodiac-astronomy.ts",
+    "validate:zodiac-utc": "tsx scripts/validate-zodiac-utc-conversion.ts"
   },
   "dependencies": {
     "astronomy-engine": "2.1.19",
