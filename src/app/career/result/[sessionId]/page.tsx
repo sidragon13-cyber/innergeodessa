@@ -91,9 +91,17 @@ export default function CareerResultPage() {
           return;
         }
 
+        const storageKey =
+          `innergeodessa-career-result-${sessionId}`;
+        const serializedResult = JSON.stringify(fetchedResult);
+
         window.sessionStorage.setItem(
-          `innergeodessa-career-result-${sessionId}`,
-          JSON.stringify(fetchedResult),
+          storageKey,
+          serializedResult,
+        );
+        window.localStorage.setItem(
+          storageKey,
+          serializedResult,
         );
 
         setResult(fetchedResult);
@@ -336,17 +344,56 @@ export default function CareerResultPage() {
           </div>
         </section>
 
-        <div className="mt-10 flex flex-wrap gap-4">
+        <section className="mt-14 rounded-3xl bg-[#34483a] p-8 text-[#f1eee5] sm:p-10 print:hidden">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c7d0c8]">
+            Detailed Career Report
+          </p>
+
+          <h2 className="mt-4 text-3xl font-semibold">
+            Explore your complete {result.code} career profile
+          </h2>
+
+          <p className="mt-5 max-w-3xl leading-8 text-[#d6ddd6]">
+            Review your interest combination, work style, preferred
+            environment, strengths, development risks, career fields,
+            example roles, skills roadmap, and 90-day action plan.
+          </p>
+
+          <Link
+            href={`/career/report/${sessionId}`}
+            className="mt-8 inline-flex min-h-12 items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] transition-colors hover:bg-[#f1eee5] hover:text-[#34483a]"
+          >
+            View complete {result.code} career report
+          </Link>
+        </section>
+
+        <div className="mt-10 flex flex-wrap gap-4 print:hidden">
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#17231d] px-7 py-3 font-semibold"
+          >
+            <span className="text-[#f7f4ee]">Save as PDF</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#17231d] bg-white px-7 py-3 font-semibold text-[#17231d]"
+          >
+            Print report
+          </button>
+
           <Link
             href="/career/test"
-            className="inline-flex rounded-full bg-[#17231d] px-6 py-3 font-semibold text-white"
+            className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#17231d] px-7 py-3 font-semibold"
           >
-            Retake assessment
+            <span className="text-[#f7f4ee]">Retake assessment</span>
           </Link>
 
           <Link
             href="/career"
-            className="inline-flex rounded-full border border-[#aaa69d] px-6 py-3 font-semibold"
+            className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#aaa69d] bg-transparent px-7 py-3 font-semibold text-[#17231d]"
           >
             Back to career overview
           </Link>

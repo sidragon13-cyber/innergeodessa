@@ -1,0 +1,2864 @@
+
+
+============================================================
+1. AUDIT METADATA
+============================================================
+2026年 7月30日 星期四 14时29分11秒 SAST
+Repository: /Users/dupei/Documents/Jinlong/Web/innergeodessa
+Report: /Users/dupei/Documents/Jinlong/Web/innergeodessa/innergeo-full-audit-20260730-142911.txt
+
+
+============================================================
+2. GIT BASELINE
+============================================================
+
+--- Current branch ---
+work/personality-system-audit
+
+--- Current commit ---
+be13916 (HEAD -> work/personality-system-audit) feat(riasec): add initial bilingual question bank
+
+--- Tracking branch ---
+## work/personality-system-audit...origin/work/personality-system-audit [ahead 1]
+ M innergeodessa-mvp/backend/app/routers/session.py
+ M innergeodessa-mvp/backend/app/schemas/session.py
+?? innergeo-full-audit-20260730-142911.txt
+?? innergeodessa-mvp/backend/app/assessment_modules.py
+?? riasec-session-api-probe.txt
+
+--- Working tree status ---
+ M innergeodessa-mvp/backend/app/routers/session.py
+ M innergeodessa-mvp/backend/app/schemas/session.py
+?? innergeo-full-audit-20260730-142911.txt
+?? innergeodessa-mvp/backend/app/assessment_modules.py
+?? riasec-session-api-probe.txt
+
+--- Recent 20 commits ---
+be13916 (HEAD -> work/personality-system-audit) feat(riasec): add initial bilingual question bank
+5aaef1d (tag: v1.0.0-personality, origin/work/personality-system-audit) feat(personality): polish assessment landing experience
+e9086da docs(roadmap): establish InnerGeo platform master roadmap
+f58be2c docs(reports): complete Phase 6G editorial review
+8201b58 test(reports): complete Phase 6F sixteen-type audit
+1a5273e feat(reports): complete Phase 6E Explorers family
+062f40e feat(reports): complete Phase 6D Sentinels family
+96d4d15 docs(architecture): standardize personality report system
+aa99353 feat(reports): complete Phase 6B Diplomats batch
+7ee3a54 feat(reports): complete Phase 6A Analysts batch
+901c455 (tag: personality-phase5-expansion-standard-complete) feat(personality): standardize report expansion workflow
+ef2778c (tag: personality-phase4-1a-recipient-name-complete) feat(report): add recipient name field
+47852ed (tag: personality-phase4-template-complete) refactor(report): standardize reusable report template
+d9c4d30 (tag: personality-phase3-navigation-complete) feat(report): add table of contents and section navigation
+6f71d23 (tag: personality-phase2b-print-layout-complete) fix(report): improve print pagination and layout
+515cf1f feat(report): add browser print and PDF export
+3ffb8e0 (tag: personality-phase1-browser-acceptance-complete) fix(report): standardize phase 1 report CTA copy
+43aa0f6 (tag: personality-phase1-report-frontend-complete) test(report): add phase 1 frontend validation
+6b374d5 feat(report): integrate phase 1 complete report frontend
+6461a3c (tag: personality-phase1-isfj-entj-complete) feat(report): complete ENTJ report and dynamic rules
+
+--- Local branches ---
+  main                          932b4c1 [origin/main] feat: version personality question banks and preserve session snapshots
+* work/personality-system-audit be13916 [origin/work/personality-system-audit: ahead 1] feat(riasec): add initial bilingual question bank
+
+--- Tags ---
+v1.0.0-personality
+personality-phase5-expansion-standard-complete
+personality-phase4-1a-recipient-name-complete
+personality-phase4-template-complete
+personality-phase3-navigation-complete
+personality-phase2b-print-layout-complete
+personality-phase1-browser-acceptance-complete
+personality-phase1-report-frontend-complete
+personality-phase1-isfj-entj-complete
+
+
+============================================================
+3. TODAY'S UNCOMMITTED CHANGES
+============================================================
+
+--- Changed files ---
+M	innergeodessa-mvp/backend/app/routers/session.py
+M	innergeodessa-mvp/backend/app/schemas/session.py
+
+--- Staged files ---
+
+--- Diff statistics ---
+ innergeodessa-mvp/backend/app/routers/session.py | 46 ++++++++++++++++++------
+ innergeodessa-mvp/backend/app/schemas/session.py |  2 ++
+ 2 files changed, 38 insertions(+), 10 deletions(-)
+
+--- Complete unstaged diff ---
+diff --git a/innergeodessa-mvp/backend/app/routers/session.py b/innergeodessa-mvp/backend/app/routers/session.py
+index 2ad2486..ea458d4 100644
+--- a/innergeodessa-mvp/backend/app/routers/session.py
++++ b/innergeodessa-mvp/backend/app/routers/session.py
+@@ -1,141 +1,167 @@
+ from __future__ import annotations
+ 
+ from datetime import datetime, timezone
+ import uuid
+ 
+ from fastapi import APIRouter, HTTPException
+ 
+-from ..database import (
+-    CURRENT_BANK_VERSION,
+-    connect,
+-)
++from ..assessment_modules import get_assessment_module_config
++from ..database import connect
+ from ..schemas.session import AnswerRequest, StartRequest
+ from ..scoring import TIE_RULE
+ from ..session_completion import complete_session_assessment
+ 
+ 
+ router = APIRouter()
+ 
+ 
+ @router.post("/api/sessions")
+ def start_session(payload: StartRequest):
+     if not payload.consent:
+         raise HTTPException(400, "Consent is required.")
++
++    try:
++        module_config = get_assessment_module_config(payload.module)
++    except ValueError as error:
++        raise HTTPException(400, str(error)) from error
++
+     session_id = str(uuid.uuid4())
+     now = datetime.now(timezone.utc).isoformat()
++
+     with connect() as conn:
+         conn.execute(
+             """INSERT INTO sessions(
+                  session_id, consent, language, started_at,
+                  question_bank_version
+                )
+                VALUES (?,1,?,?,?)""",
+             (
+                 session_id,
+                 payload.language,
+                 now,
+-                CURRENT_BANK_VERSION,
++                module_config.question_bank_version,
+             ),
+         )
+         conn.execute(
+             """INSERT INTO session_question_items(
+                  session_id, item_record_id, display_order
+                )
+                SELECT ?, item_record_id, master_order
+                FROM question_bank_items
+                WHERE question_bank_version=?""",
+-            (session_id, CURRENT_BANK_VERSION),
++            (
++                session_id,
++                module_config.question_bank_version,
++            ),
+         )
++
+         snapshot_count = conn.execute(
+-            "SELECT COUNT(*) FROM session_question_items WHERE session_id=?",
++            """SELECT COUNT(*)
++               FROM session_question_items
++               WHERE session_id=?""",
+             (session_id,),
+         ).fetchone()[0]
+-        if snapshot_count != 72:
++
++        if snapshot_count != module_config.expected_item_count:
+             raise HTTPException(
+                 503,
+-                "Current personality question bank is unavailable.",
++                detail={
++                    "message": (
++                        "Assessment question bank is unavailable."
++                    ),
++                    "module": module_config.module,
++                    "question_bank_version": (
++                        module_config.question_bank_version
++                    ),
++                    "expected": module_config.expected_item_count,
++                    "actual": snapshot_count,
++                },
+             )
++
+     return {
+         "session_id": session_id,
+         "started_at": now,
+-        "question_bank_version": CURRENT_BANK_VERSION,
++        "module": module_config.module,
++        "question_bank_version": (
++            module_config.question_bank_version
++        ),
+     }
+ 
+ 
+ @router.get("/api/sessions/{session_id}/items")
+ def get_session_items(session_id: str):
+     with connect() as conn:
+         session = conn.execute(
+             "SELECT question_bank_version FROM sessions WHERE session_id=?",
+             (session_id,),
+         ).fetchone()
+         if not session:
+             raise HTTPException(404, "Session not found.")
+ 
+         rows = conn.execute(
+             """SELECT qbi.source_item_id AS item_id,
+                       qbi.dimension,
+                       qbi.subdimension,
+                       qbi.keyed_pole,
+                       qbi.form,
+                       qbi.wording,
+                       sqi.display_order AS master_order,
+                       qbi.question_bank_version
+                FROM session_question_items sqi
+                JOIN question_bank_items qbi
+                  ON qbi.item_record_id=sqi.item_record_id
+                WHERE sqi.session_id=?
+                ORDER BY sqi.display_order""",
+             (session_id,),
+         ).fetchall()
+     return [dict(row) for row in rows]
+ 
+ 
+ @router.get("/api/sessions/{session_id}/result")
+ def get_session_result(session_id: str):
+     with connect() as conn:
+         session = conn.execute(
+             """SELECT status, question_bank_version, completed_at
+                FROM sessions
+                WHERE session_id=?""",
+             (session_id,),
+         ).fetchone()
+         if not session:
+             raise HTTPException(404, "Session not found.")
+         if session["status"] != "completed":
+             raise HTTPException(409, "Session is not completed.")
+ 
+         result = conn.execute(
+             """SELECT personality_type,
+                       ei_score, sn_score, tf_score, jp_score,
+                       ei_confidence, sn_confidence,
+                       tf_confidence, jp_confidence,
+                       calculated_at
+                FROM results
+                WHERE session_id=?""",
+             (session_id,),
+         ).fetchone()
+         if not result:
+             raise HTTPException(
+                 500,
+                 "Completed session result is missing.",
+             )
+ 
+     return {
+         "sessionId": session_id,
+         "status": "completed",
+         "type": result["personality_type"],
+         "scores": {
+             "EI": result["ei_score"],
+             "SN": result["sn_score"],
+             "TF": result["tf_score"],
+             "JP": result["jp_score"],
+         },
+         "confidence": {
+             "EI": result["ei_confidence"],
+             "SN": result["sn_confidence"],
+             "TF": result["tf_confidence"],
+             "JP": result["jp_confidence"],
+         },
+         "answered": {
+             "EI": 18,
+diff --git a/innergeodessa-mvp/backend/app/schemas/session.py b/innergeodessa-mvp/backend/app/schemas/session.py
+index 8120dc8..c3288e9 100644
+--- a/innergeodessa-mvp/backend/app/schemas/session.py
++++ b/innergeodessa-mvp/backend/app/schemas/session.py
+@@ -1,16 +1,18 @@
+ from __future__ import annotations
+ 
+ from typing import Optional
+ 
+ from pydantic import BaseModel, Field, StrictInt
+ 
+ 
+ class StartRequest(BaseModel):
+     consent: bool
+     language: str = "en"
++    module: str | None = None
++    module: str | None = None
+ 
+ 
+ class AnswerRequest(BaseModel):
+     item_id: str
+     value: StrictInt = Field(ge=1, le=5)
+     response_time_ms: Optional[int] = Field(default=None, ge=0)
+
+--- Complete staged diff ---
+
+--- Untracked files ---
+innergeo-full-audit-20260730-142911.txt
+innergeodessa-mvp/backend/app/assessment_modules.py
+riasec-session-api-probe.txt
+
+
+============================================================
+4. ENVIRONMENT BASELINE
+============================================================
+
+--- macOS ---
+ProductName:		macOS
+ProductVersion:		26.5.2
+BuildVersion:		25F84
+
+--- System Python ---
+Python 3.9.6
+/usr/bin/python3
+
+--- Backend virtualenv Python ---
+Python 3.9.6
+Executable: /Users/dupei/Documents/Jinlong/Web/innergeodessa/innergeodessa-mvp/backend/.venv/bin/python
+Version info: 3.9.6 (default, Apr 17 2026, 18:15:52) 
+[Clang 21.0.0 (clang-2100.1.1.101)]
+FastAPI: 0.128.8
+Pydantic: 2.13.4
+Pytest: 8.4.2
+
+--- Node and npm ---
+v24.17.0
+11.13.0
+
+
+============================================================
+5. REPOSITORY STRUCTURE
+============================================================
+
+--- Root files ---
+.
+./.DS_Store
+./.next
+./.next/app-path-routes-manifest.json
+./.next/build
+./.next/BUILD_ID
+./.next/build-manifest.json
+./.next/cache
+./.next/dev
+./.next/diagnostics
+./.next/export-marker.json
+./.next/fallback-build-manifest.json
+./.next/images-manifest.json
+./.next/next-minimal-server.js.nft.json
+./.next/next-server.js.nft.json
+./.next/package.json
+./.next/prerender-manifest.json
+./.next/required-server-files.js
+./.next/required-server-files.json
+./.next/routes-manifest.json
+./.next/server
+./.next/static
+./.next/trace
+./.next/trace-build
+./.next/turbopack
+./.next/types
+./.venv
+./.venv/bin
+./.venv/include
+./.venv/lib
+./.venv/pyvenv.cfg
+./AGENTS.md
+./backups
+./backups/page.before-storage-fix.tsx.bak
+./backups/personality-result-before-profile.tsx.bak
+./CLAUDE.md
+./docs
+./docs/adr
+./docs/audits
+./docs/checklists
+./docs/engineering
+./docs/InnerGeodessa_Master_Item_Bank_V1.0.xlsx
+./docs/InnerGeodessa_Pilot72_Booklet_V1.0.md
+./docs/InnerGeodessa_Scoring_Engine_V1.0.md
+./docs/personality-assessment-spec-v1.md
+./docs/personality-candidate-items-ei-v1.md
+./docs/personality-candidate-items-jp-v0.1.md
+./docs/personality-candidate-items-sn-v1.md
+./docs/personality-candidate-items-tf-v0.1.md
+./docs/personality-expansion-standard.md
+./docs/personality-iir-ei-candidate-v1.1.md
+./docs/personality-iir-jp-candidate-v1.1.md
+./docs/personality-iir-sn-candidate-v1.1.md
+./docs/personality-iir-tf-candidate-v1.1.md
+./docs/personality-pilot-administration-ei.md
+./docs/personality-pilot-administration-jp.md
+./docs/personality-pilot-administration-sn.md
+./docs/personality-pilot-item-key-ei.csv
+./docs/personality-pilot-items-ei-v1.2.md
+./docs/personality-pilot-items-jp-v1.2.md
+./docs/personality-pilot-items-sn-v1.2.md
+./docs/personality-pilot-items-tf-v1.2.md
+./docs/personality-pilot-response-template-ei.csv
+./docs/personality-pilot-response-template-jp.csv
+./docs/personality-pilot-response-template-jp.xlsx
+./docs/personality-pilot-response-template-sn.csv
+./docs/personality-pilot-response-template-sn.xlsx
+./docs/personality-question-bank-blueprint-v1.md
+./docs/project
+./docs/roadmap
+./docs/superpowers
+./eslint.config.mjs
+./innergeo-full-audit-20260730-142911.txt
+./innergeodessa-mvp
+./innergeodessa-mvp-v0.1.zip
+./innergeodessa-mvp/.pytest_cache
+./innergeodessa-mvp/backend
+./innergeodessa-mvp/frontend
+./innergeodessa-mvp/README.md
+./innergeodessa-mvp/tests
+./next-env.d.ts
+./next.config.ts
+./package-lock.json
+./package.json
+./postcss.config.mjs
+./public
+./public/file.svg
+./public/globe.svg
+./public/next.svg
+./public/vercel.svg
+./public/window.svg
+./README.md
+./riasec-existing-foundation.txt
+./riasec-next-session-routes-audit.txt
+./riasec-session-api-probe.txt
+./riasec-session-boundary-audit.txt
+./riasec-session-focused-audit.txt
+./riasec-stage-audit.txt
+./scripts
+./scripts/audit
+./scripts/scaffold-personality-report.mjs
+./scripts/sync-personality-items.ts
+./scripts/validate-entj-report-generator.ts
+./scripts/validate-isfj-report.ts
+./scripts/validate-isfj-rules.ts
+./scripts/validate-personalities.ts
+./scripts/validate-personality-bank-contract.ts
+./scripts/validate-personality-expansion-standard.ts
+./scripts/validate-personality-interpreter.ts
+./scripts/validate-personality-parity.ts
+./scripts/validate-personality-scoring.ts
+./scripts/validate-personality-sync.ts
+./scripts/validate-personality-types.ts
+./scripts/validate-question-bank.ts
+./scripts/validate-report-frontend.ts
+./scripts/validate-report-generator-boundaries.ts
+./scripts/validate-report-generator.ts
+./scripts/validate-report-navigation.ts
+./scripts/validate-report-print.ts
+./scripts/validate-report-recipient-name.ts
+./scripts/validate-report-standard.ts
+./scripts/validate-report-template.ts
+./scripts/validate-riasec-question-bank.ts
+./src
+./src/app
+./src/components
+./src/data
+./tsconfig.json
+./tsconfig.tsbuildinfo
+
+--- Backend application files ---
+innergeodessa-mvp/backend/app/__init__.py
+innergeodessa-mvp/backend/app/assessment_modules.py
+innergeodessa-mvp/backend/app/database.py
+innergeodessa-mvp/backend/app/main.py
+innergeodessa-mvp/backend/app/routers/__init__.py
+innergeodessa-mvp/backend/app/routers/health.py
+innergeodessa-mvp/backend/app/routers/items.py
+innergeodessa-mvp/backend/app/routers/session.py
+innergeodessa-mvp/backend/app/routers/session.py.save
+innergeodessa-mvp/backend/app/schemas/__init__.py
+innergeodessa-mvp/backend/app/schemas/session.py
+innergeodessa-mvp/backend/app/scoring_cli.py
+innergeodessa-mvp/backend/app/scoring.py
+innergeodessa-mvp/backend/app/session_completion.py
+
+--- Python tests ---
+innergeodessa-mvp/tests/legacy_fixture.py
+innergeodessa-mvp/tests/test_database_migration.py
+innergeodessa-mvp/tests/test_scoring.py
+innergeodessa-mvp/tests/test_session_completion.py
+innergeodessa-mvp/tests/test_session_flow.py
+
+--- Frontend app routes ---
+find: innergeodessa-mvp/src/app: No such file or directory
+
+--- Assessment data files ---
+find: innergeodessa-mvp/src/data: No such file or directory
+
+
+============================================================
+6. ASSESSMENT ARCHITECTURE SEARCH
+============================================================
+
+--- Search: assessment_modules ---
+innergeodessa-mvp/backend/app/routers/session.py:8:from ..assessment_modules import get_assessment_module_config
+
+--- Search: get_assessment_module_config ---
+innergeodessa-mvp/backend/app/routers/session.py:8:from ..assessment_modules import get_assessment_module_config
+innergeodessa-mvp/backend/app/routers/session.py:24:        module_config = get_assessment_module_config(payload.module)
+innergeodessa-mvp/backend/app/assessment_modules.py:32:def get_assessment_module_config(
+
+--- Search: CURRENT_BANK_VERSION ---
+innergeodessa-mvp/tests/test_session_completion.py:11:from app.database import CURRENT_BANK_VERSION, connect, initialize
+innergeodessa-mvp/tests/test_session_completion.py:47:                CURRENT_BANK_VERSION,
+innergeodessa-mvp/tests/test_session_completion.py:57:            (session_id, CURRENT_BANK_VERSION),
+innergeodessa-mvp/tests/test_session_completion.py:195:            (CURRENT_BANK_VERSION,),
+innergeodessa-mvp/backend/app/routers/session.py.save:33:                CURRENT_BANK_VERSION,
+innergeodessa-mvp/backend/app/routers/session.py.save:43:            (session_id, CURRENT_BANK_VERSION),
+innergeodessa-mvp/backend/app/routers/session.py.save:57:        "question_bank_version": CURRENT_BANK_VERSION,
+innergeodessa-mvp/backend/app/routers/items.py:3:from ..database import CURRENT_BANK_VERSION, connect
+innergeodessa-mvp/backend/app/routers/items.py:19:            (CURRENT_BANK_VERSION,),
+innergeodessa-mvp/backend/app/database.py:13:CURRENT_BANK_VERSION = "personality-v1.0.0"
+innergeodessa-mvp/backend/app/database.py:89:        if item["question_bank_version"] != CURRENT_BANK_VERSION:
+innergeodessa-mvp/backend/app/database.py:108:        (CURRENT_BANK_VERSION,),
+
+--- Search: personality-v1 ---
+innergeodessa-mvp/tests/test_session_flow.py:99:               WHERE current.question_bank_version='personality-v1.0.0'
+innergeodessa-mvp/tests/test_session_flow.py:127:    assert session["question_bank_version"] == "personality-v1.0.0"
+innergeodessa-mvp/tests/test_session_flow.py:137:    } == {"personality-v1.0.0"}
+innergeodessa-mvp/tests/test_database_migration.py:110:            "WHERE question_bank_version='personality-v1.0.0'",
+innergeodessa-mvp/tests/test_database_migration.py:151:    } == {"personality-v1.0.0"}
+innergeodessa-mvp/backend/app/database.py:13:CURRENT_BANK_VERSION = "personality-v1.0.0"
+innergeodessa-mvp/backend/app/assessment_modules.py:17:        question_bank_version="personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:13:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:28:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:43:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:58:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:73:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:88:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:103:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:118:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:133:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:148:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:163:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:178:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:193:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:208:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:223:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:238:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:253:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:268:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:283:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:298:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:313:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:328:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:343:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:358:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:373:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:388:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:403:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:418:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:433:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:448:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:463:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:478:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:493:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:508:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:523:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:538:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:553:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:568:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:583:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:598:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:613:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:628:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:643:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:658:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:673:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:688:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:703:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:718:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:733:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:748:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:763:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:778:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:793:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:808:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:823:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:838:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:853:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:868:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:883:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:898:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:913:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:928:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:943:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:958:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:973:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:988:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:1003:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:1018:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:1033:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:1048:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:1063:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:1078:    "question_bank_version": "personality-v1.0.0",
+
+--- Search: riasec-v ---
+innergeodessa-mvp/backend/app/assessment_modules.py:23:        question_bank_version="riasec-v0.1.0",
+
+--- Search: zodiac ---
+
+--- Search: expected_item_count ---
+innergeodessa-mvp/backend/app/routers/session.py:65:        if snapshot_count != module_config.expected_item_count:
+innergeodessa-mvp/backend/app/routers/session.py:76:                    "expected": module_config.expected_item_count,
+innergeodessa-mvp/backend/app/assessment_modules.py:10:    expected_item_count: int
+innergeodessa-mvp/backend/app/assessment_modules.py:18:        expected_item_count=72,
+innergeodessa-mvp/backend/app/assessment_modules.py:24:        expected_item_count=36,
+
+--- Search: question_bank_version ---
+innergeodessa-mvp/tests/test_session_completion.py:40:                 status, question_bank_version
+innergeodessa-mvp/tests/test_session_completion.py:56:               WHERE question_bank_version=?""",
+innergeodessa-mvp/tests/test_session_completion.py:187:               WHERE question_bank_version='personality-legacy-v1'
+innergeodessa-mvp/tests/test_session_completion.py:191:                   WHERE question_bank_version=?
+innergeodessa-mvp/tests/test_session_flow.py:47:            "AND question_bank_version='personality-legacy-v1' "
+innergeodessa-mvp/tests/test_session_flow.py:89:        item["question_bank_version"] for item in items
+innergeodessa-mvp/tests/test_session_flow.py:97:                 ON legacy.question_bank_version='personality-legacy-v1'
+innergeodessa-mvp/tests/test_session_flow.py:99:               WHERE current.question_bank_version='personality-v1.0.0'
+innergeodessa-mvp/tests/test_session_flow.py:127:    assert session["question_bank_version"] == "personality-v1.0.0"
+innergeodessa-mvp/tests/test_session_flow.py:136:        item["question_bank_version"] for item in items
+innergeodessa-mvp/tests/test_session_flow.py:223:        "questionBankVersion": session["question_bank_version"],
+innergeodessa-mvp/tests/test_database_migration.py:94:            "WHERE question_bank_version='personality-legacy-v1'",
+innergeodessa-mvp/tests/test_database_migration.py:99:            "WHERE question_bank_version IS NULL "
+innergeodessa-mvp/tests/test_database_migration.py:100:            "OR trim(question_bank_version)=''",
+innergeodessa-mvp/tests/test_database_migration.py:105:            "WHERE question_bank_version='personality-legacy-v1'",
+innergeodessa-mvp/tests/test_database_migration.py:110:            "WHERE question_bank_version='personality-v1.0.0'",
+innergeodessa-mvp/tests/test_database_migration.py:150:        item["question_bank_version"] for item in items
+innergeodessa-mvp/tests/test_database_migration.py:186:        assert "question_bank_version" not in session_columns
+innergeodessa-mvp/backend/app/routers/session.py.save:26:                 question_bank_version
+innergeodessa-mvp/backend/app/routers/session.py.save:42:               WHERE question_bank_version=?""",
+innergeodessa-mvp/backend/app/routers/session.py.save:57:        "question_bank_version": CURRENT_BANK_VERSION,
+innergeodessa-mvp/backend/app/routers/session.py.save:65:            "SELECT question_bank_version FROM sessions WHERE session_id=?",
+innergeodessa-mvp/backend/app/routers/session.py.save:79:                      qbi.question_bank_version
+innergeodessa-mvp/backend/app/routers/session.py.save:94:            """SELECT status, question_bank_version, completed_at
+innergeodessa-mvp/backend/app/routers/session.py.save:143:        "questionBankVersion": session["question_bank_version"],
+innergeodessa-mvp/backend/app/routers/session.py:35:                 question_bank_version
+innergeodessa-mvp/backend/app/routers/session.py:42:                module_config.question_bank_version,
+innergeodessa-mvp/backend/app/routers/session.py:51:               WHERE question_bank_version=?""",
+innergeodessa-mvp/backend/app/routers/session.py:54:                module_config.question_bank_version,
+innergeodessa-mvp/backend/app/routers/session.py:73:                    "question_bank_version": (
+innergeodessa-mvp/backend/app/routers/session.py:74:                        module_config.question_bank_version
+innergeodessa-mvp/backend/app/routers/session.py:85:        "question_bank_version": (
+innergeodessa-mvp/backend/app/routers/session.py:86:            module_config.question_bank_version
+innergeodessa-mvp/backend/app/routers/session.py:95:            "SELECT question_bank_version FROM sessions WHERE session_id=?",
+innergeodessa-mvp/backend/app/routers/session.py:109:                      qbi.question_bank_version
+innergeodessa-mvp/backend/app/routers/session.py:124:            """SELECT status, question_bank_version, completed_at
+innergeodessa-mvp/backend/app/routers/session.py:173:        "questionBankVersion": session["question_bank_version"],
+innergeodessa-mvp/backend/app/routers/items.py:15:                      question_bank_version
+innergeodessa-mvp/backend/app/routers/items.py:17:               WHERE question_bank_version=?
+innergeodessa-mvp/backend/app/database.py:61:    if "question_bank_version" not in columns:
+innergeodessa-mvp/backend/app/database.py:63:            "ALTER TABLE sessions ADD COLUMN question_bank_version TEXT"
+innergeodessa-mvp/backend/app/database.py:81:        "question_bank_version",
+innergeodessa-mvp/backend/app/database.py:89:        if item["question_bank_version"] != CURRENT_BANK_VERSION:
+innergeodessa-mvp/backend/app/database.py:98:        """INSERT INTO question_banks(question_bank_version, status)
+innergeodessa-mvp/backend/app/database.py:100:           ON CONFLICT(question_bank_version) DO NOTHING""",
+innergeodessa-mvp/backend/app/database.py:104:        """INSERT INTO question_banks(question_bank_version, status)
+innergeodessa-mvp/backend/app/database.py:106:           ON CONFLICT(question_bank_version) DO UPDATE SET
+innergeodessa-mvp/backend/app/database.py:115:             question_bank_version, source_item_id, dimension, subdimension,
+innergeodessa-mvp/backend/app/database.py:127:           ON CONFLICT(question_bank_version, source_item_id) DO NOTHING""",
+innergeodessa-mvp/backend/app/database.py:135:           SET question_bank_version=?
+innergeodessa-mvp/backend/app/database.py:136:           WHERE question_bank_version IS NULL
+innergeodessa-mvp/backend/app/database.py:137:              OR trim(question_bank_version)=''""",
+innergeodessa-mvp/backend/app/database.py:150:             ON qbi.question_bank_version=s.question_bank_version
+innergeodessa-mvp/backend/app/database.py:184:             question_bank_version, source_item_id, dimension, subdimension,
+innergeodessa-mvp/backend/app/database.py:189:           ON CONFLICT(question_bank_version, source_item_id) DO UPDATE SET
+innergeodessa-mvp/backend/app/database.py:202:                item["question_bank_version"],
+innergeodessa-mvp/backend/app/database.py:223:           WHERE question_bank_version IS NULL
+innergeodessa-mvp/backend/app/database.py:224:              OR trim(question_bank_version)=''"""
+innergeodessa-mvp/backend/app/database.py:232:             ON qbi.question_bank_version=?
+innergeodessa-mvp/backend/app/assessment_modules.py:9:    question_bank_version: str
+innergeodessa-mvp/backend/app/assessment_modules.py:17:        question_bank_version="personality-v1.0.0",
+innergeodessa-mvp/backend/app/assessment_modules.py:23:        question_bank_version="riasec-v0.1.0",
+innergeodessa-mvp/backend/app/session_completion.py:13:        "SELECT status, question_bank_version FROM sessions WHERE session_id=?",
+innergeodessa-mvp/backend/app/session_completion.py:68:            session["question_bank_version"] != LEGACY_BANK_VERSION
+innergeodessa-mvp/backend/schema.sql:52:  question_bank_version TEXT PRIMARY KEY,
+innergeodessa-mvp/backend/schema.sql:59:  question_bank_version TEXT NOT NULL,
+innergeodessa-mvp/backend/schema.sql:71:  FOREIGN KEY (question_bank_version)
+innergeodessa-mvp/backend/schema.sql:72:    REFERENCES question_banks(question_bank_version),
+innergeodessa-mvp/backend/schema.sql:73:  UNIQUE (question_bank_version, source_item_id),
+innergeodessa-mvp/backend/schema.sql:74:  UNIQUE (question_bank_version, master_order)
+innergeodessa-mvp/backend/data/items.json:13:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:28:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:43:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:58:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:73:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:88:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:103:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:118:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:133:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:148:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:163:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:178:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:193:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:208:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:223:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:238:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:253:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:268:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:283:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:298:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:313:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:328:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:343:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:358:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:373:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:388:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:403:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:418:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:433:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:448:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:463:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:478:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:493:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:508:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:523:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:538:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:553:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:568:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:583:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:598:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:613:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:628:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:643:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:658:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:673:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:688:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:703:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:718:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:733:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:748:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:763:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:778:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:793:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:808:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:823:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:838:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:853:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:868:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:883:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:898:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:913:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:928:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:943:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:958:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:973:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:988:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:1003:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:1018:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:1033:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:1048:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:1063:    "question_bank_version": "personality-v1.0.0",
+innergeodessa-mvp/backend/data/items.json:1078:    "question_bank_version": "personality-v1.0.0",
+
+--- Search: len(rows) == 72 ---
+
+--- Search: == 72 ---
+innergeodessa-mvp/tests/test_session_flow.py:87:    assert len(items) == 72
+innergeodessa-mvp/tests/test_session_flow.py:134:    assert len(items) == 72
+innergeodessa-mvp/tests/test_session_flow.py:164:        ).fetchone()[0] == 72
+innergeodessa-mvp/tests/test_database_migration.py:111:        ) == 72
+innergeodessa-mvp/tests/test_database_migration.py:148:    assert len(items) == 72
+
+--- Search: 36 ---
+innergeodessa-mvp/tests/test_scoring.py:50:    assert first["scores"] == {"EI": 36, "SN": 36, "TF": 36, "JP": 36}
+innergeodessa-mvp/tests/test_scoring.py:60:        "EI": -36,
+innergeodessa-mvp/tests/test_scoring.py:61:        "SN": -36,
+innergeodessa-mvp/tests/test_scoring.py:62:        "TF": -36,
+innergeodessa-mvp/tests/test_scoring.py:63:        "JP": -36,
+innergeodessa-mvp/backend/app/assessment_modules.py:24:        expected_item_count=36,
+innergeodessa-mvp/backend/data/items.json:535:    "master_order": 36,
+
+--- Search: personality_type ---
+innergeodessa-mvp/tests/test_session_completion.py:116:            "SELECT personality_type FROM results WHERE session_id=?",
+innergeodessa-mvp/tests/test_session_completion.py:121:    assert saved_result["personality_type"] == "ESTJ"
+innergeodessa-mvp/tests/legacy_fixture.py:94:                 session_id, personality_type,
+innergeodessa-mvp/backend/app/routers/session.py.save:105:            """SELECT personality_type,
+innergeodessa-mvp/backend/app/routers/session.py.save:123:        "type": result["personality_type"],
+innergeodessa-mvp/backend/app/routers/session.py:135:            """SELECT personality_type,
+innergeodessa-mvp/backend/app/routers/session.py:153:        "type": result["personality_type"],
+innergeodessa-mvp/backend/app/session_completion.py:75:           (session_id, personality_type, ei_score, sn_score, tf_score, jp_score,
+innergeodessa-mvp/backend/app/session_completion.py:79:             personality_type=excluded.personality_type,
+innergeodessa-mvp/backend/schema.sql:38:  personality_type TEXT NOT NULL,
+
+--- Search: complete_session_assessment ---
+innergeodessa-mvp/tests/test_session_completion.py:12:from app.session_completion import complete_session_assessment
+innergeodessa-mvp/tests/test_session_completion.py:93:        result = complete_session_assessment(connection, session_id)
+innergeodessa-mvp/tests/test_session_completion.py:127:            complete_session_assessment(connection, "unknown-session")
+innergeodessa-mvp/tests/test_session_completion.py:148:            complete_session_assessment(connection, session_id)
+innergeodessa-mvp/tests/test_session_completion.py:168:            complete_session_assessment(connection, session_id)
+innergeodessa-mvp/tests/test_session_completion.py:212:            complete_session_assessment(connection, session_id)
+innergeodessa-mvp/tests/test_session_completion.py:246:            complete_session_assessment(connection, session_id)
+innergeodessa-mvp/tests/test_session_completion.py:275:            complete_session_assessment(connection, session_id)
+innergeodessa-mvp/tests/test_session_completion.py:316:            complete_session_assessment(connection, session_id)
+innergeodessa-mvp/backend/app/routers/session.py.save:10:from ..session_completion import complete_session_assessment
+innergeodessa-mvp/backend/app/routers/session.py.save:195:        return complete_session_assessment(conn, session_id)
+innergeodessa-mvp/backend/app/routers/session.py:12:from ..session_completion import complete_session_assessment
+innergeodessa-mvp/backend/app/routers/session.py:225:        return complete_session_assessment(conn, session_id)
+innergeodessa-mvp/backend/app/session_completion.py:11:def complete_session_assessment(conn, session_id: str):
+
+--- Search: StartRequest ---
+innergeodessa-mvp/backend/app/routers/session.py.save:8:from ..schemas.session import AnswerRequest, StartRequest
+innergeodessa-mvp/backend/app/routers/session.py.save:17:def start_session(payload: StartRequest):
+innergeodessa-mvp/backend/app/routers/session.py:10:from ..schemas.session import AnswerRequest, StartRequest
+innergeodessa-mvp/backend/app/routers/session.py:19:def start_session(payload: StartRequest):
+innergeodessa-mvp/backend/app/schemas/session.py:8:class StartRequest(BaseModel):
+innergeodessa-mvp/backend/app/schemas/__init__.py:1:from .session import AnswerRequest, StartRequest
+innergeodessa-mvp/backend/app/schemas/__init__.py:3:__all__ = ["StartRequest", "AnswerRequest"]
+
+--- Search: module: ---
+innergeodessa-mvp/backend/app/assessment_modules.py:8:    module: str
+innergeodessa-mvp/backend/app/assessment_modules.py:33:    module: str | None,
+innergeodessa-mvp/backend/app/assessment_modules.py:41:            f'Unsupported assessment module: "{resolved_module}"'
+innergeodessa-mvp/backend/app/schemas/session.py:11:    module: str | None = None
+innergeodessa-mvp/backend/app/schemas/session.py:12:    module: str | None = None
+
+
+============================================================
+7. RELEVANT BACKEND SOURCE
+============================================================
+
+
+-------------------- innergeodessa-mvp/backend/app/assessment_modules.py --------------------
+     1	from __future__ import annotations
+     2	
+     3	from dataclasses import dataclass
+     4	
+     5	
+     6	@dataclass(frozen=True)
+     7	class AssessmentModuleConfig:
+     8	    module: str
+     9	    question_bank_version: str
+    10	    expected_item_count: int
+    11	    scoring_strategy: str
+    12	
+    13	
+    14	ASSESSMENT_MODULES = {
+    15	    "personality": AssessmentModuleConfig(
+    16	        module="personality",
+    17	        question_bank_version="personality-v1.0.0",
+    18	        expected_item_count=72,
+    19	        scoring_strategy="personality",
+    20	    ),
+    21	    "riasec": AssessmentModuleConfig(
+    22	        module="riasec",
+    23	        question_bank_version="riasec-v0.1.0",
+    24	        expected_item_count=36,
+    25	        scoring_strategy="riasec",
+    26	    ),
+    27	}
+    28	
+    29	DEFAULT_ASSESSMENT_MODULE = "personality"
+    30	
+    31	
+    32	def get_assessment_module_config(
+    33	    module: str | None,
+    34	) -> AssessmentModuleConfig:
+    35	    resolved_module = module or DEFAULT_ASSESSMENT_MODULE
+    36	
+    37	    try:
+    38	        return ASSESSMENT_MODULES[resolved_module]
+    39	    except KeyError as error:
+    40	        raise ValueError(
+    41	            f'Unsupported assessment module: "{resolved_module}"'
+    42	        ) from error
+
+
+-------------------- innergeodessa-mvp/backend/app/database.py --------------------
+     1	from __future__ import annotations
+     2	import json
+     3	import sqlite3
+     4	from pathlib import Path
+     5	from typing import Optional
+     6	
+     7	ROOT = Path(__file__).resolve().parents[1]
+     8	DB_PATH = ROOT / "innergeodessa.db"
+     9	SCHEMA_PATH = ROOT / "schema.sql"
+    10	ITEMS_PATH = ROOT / "data" / "items.json"
+    11	
+    12	LEGACY_BANK_VERSION = "personality-legacy-v1"
+    13	CURRENT_BANK_VERSION = "personality-v1.0.0"
+    14	
+    15	
+    16	def connect(db_path: Path = DB_PATH) -> sqlite3.Connection:
+    17	    conn = sqlite3.connect(db_path)
+    18	    conn.row_factory = sqlite3.Row
+    19	    conn.execute("PRAGMA foreign_keys = ON")
+    20	    return conn
+    21	
+    22	
+    23	
+    24	def initialize(
+    25	    db_path: Path = DB_PATH,
+    26	    items_path: Path = ITEMS_PATH,
+    27	) -> None:
+    28	    items = _load_current_items(items_path)
+    29	
+    30	    with connect(db_path) as conn:
+    31	        conn.execute("BEGIN IMMEDIATE")
+    32	        try:
+    33	            _apply_schema(conn)
+    34	            _ensure_session_version_column(conn)
+    35	            _register_question_banks(conn)
+    36	            _capture_legacy_items(conn)
+    37	            _backfill_legacy_sessions(conn)
+    38	            _create_missing_session_snapshots(conn)
+    39	            _migrate_legacy_responses(conn)
+    40	            _upsert_current_items(conn, items)
+    41	            _verify_migration(conn)
+    42	        except Exception:
+    43	            conn.rollback()
+    44	            raise
+    45	        else:
+    46	            conn.commit()
+    47	
+    48	
+    49	def _apply_schema(conn: sqlite3.Connection) -> None:
+    50	    statements = SCHEMA_PATH.read_text(encoding="utf-8").split(";")
+    51	    for statement in statements:
+    52	        if statement.strip():
+    53	            conn.execute(statement)
+    54	
+    55	
+    56	def _ensure_session_version_column(conn: sqlite3.Connection) -> None:
+    57	    columns = {
+    58	        row["name"]
+    59	        for row in conn.execute("PRAGMA table_info(sessions)").fetchall()
+    60	    }
+    61	    if "question_bank_version" not in columns:
+    62	        conn.execute(
+    63	            "ALTER TABLE sessions ADD COLUMN question_bank_version TEXT"
+    64	        )
+    65	
+    66	
+    67	def _load_current_items(items_path: Path) -> list[dict]:
+    68	    parsed = json.loads(items_path.read_text(encoding="utf-8"))
+    69	    if not isinstance(parsed, list) or len(parsed) != 72:
+    70	        raise ValueError("Current personality items must contain exactly 72 rows")
+    71	
+    72	    required = {
+    73	        "item_id",
+    74	        "dimension",
+    75	        "subdimension",
+    76	        "key",
+    77	        "form",
+    78	        "wording",
+    79	        "language",
+    80	        "version",
+    81	        "question_bank_version",
+    82	        "status",
+    83	        "master_order",
+    84	        "reverse_scored",
+    85	    }
+    86	    for index, item in enumerate(parsed):
+    87	        if not isinstance(item, dict) or not required.issubset(item):
+    88	            raise ValueError(f"Current personality item {index} is invalid")
+    89	        if item["question_bank_version"] != CURRENT_BANK_VERSION:
+    90	            raise ValueError(
+    91	                f"Current personality item {index} has an unexpected bank version"
+    92	            )
+    93	    return parsed
+    94	
+    95	
+    96	def _register_question_banks(conn: sqlite3.Connection) -> None:
+    97	    conn.execute(
+    98	        """INSERT INTO question_banks(question_bank_version, status)
+    99	           VALUES (?, 'retired')
+   100	           ON CONFLICT(question_bank_version) DO NOTHING""",
+   101	        (LEGACY_BANK_VERSION,),
+   102	    )
+   103	    conn.execute(
+   104	        """INSERT INTO question_banks(question_bank_version, status)
+   105	           VALUES (?, 'pilot')
+   106	           ON CONFLICT(question_bank_version) DO UPDATE SET
+   107	           status=excluded.status""",
+   108	        (CURRENT_BANK_VERSION,),
+   109	    )
+   110	
+   111	
+   112	def _capture_legacy_items(conn: sqlite3.Connection) -> None:
+   113	    conn.execute(
+   114	        """INSERT INTO question_bank_items(
+   115	             question_bank_version, source_item_id, dimension, subdimension,
+   116	             keyed_pole, form, wording, language, version, status,
+   117	             master_order, reverse_scored
+   118	           )
+   119	           SELECT ?, item_id, dimension, subdimension, keyed_pole, form,
+   120	                  wording, language, version, 'retired', master_order,
+   121	                  CASE
+   122	                    WHEN keyed_pole IN ('I','N','F','P') THEN 1
+   123	                    ELSE 0
+   124	                  END
+   125	           FROM items
+   126	           WHERE 1=1
+   127	           ON CONFLICT(question_bank_version, source_item_id) DO NOTHING""",
+   128	        (LEGACY_BANK_VERSION,),
+   129	    )
+   130	
+   131	
+   132	def _backfill_legacy_sessions(conn: sqlite3.Connection) -> None:
+   133	    conn.execute(
+   134	        """UPDATE sessions
+   135	           SET question_bank_version=?
+   136	           WHERE question_bank_version IS NULL
+   137	              OR trim(question_bank_version)=''""",
+   138	        (LEGACY_BANK_VERSION,),
+   139	    )
+   140	
+   141	
+   142	def _create_missing_session_snapshots(conn: sqlite3.Connection) -> None:
+   143	    conn.execute(
+   144	        """INSERT INTO session_question_items(
+   145	             session_id, item_record_id, display_order
+   146	           )
+   147	           SELECT s.session_id, qbi.item_record_id, qbi.master_order
+   148	           FROM sessions s
+   149	           JOIN question_bank_items qbi
+   150	             ON qbi.question_bank_version=s.question_bank_version
+   151	           WHERE 1=1
+   152	           ON CONFLICT(session_id, item_record_id) DO NOTHING"""
+   153	    )
+   154	
+   155	
+   156	def _migrate_legacy_responses(conn: sqlite3.Connection) -> None:
+   157	    conn.execute(
+   158	        """INSERT INTO session_responses(
+   159	             session_id, item_record_id, raw_value,
+   160	             response_time_ms, answered_at
+   161	           )
+   162	           SELECT r.session_id, sqi.item_record_id, r.raw_value,
+   163	                  r.response_time_ms, r.answered_at
+   164	           FROM responses r
+   165	           JOIN session_question_items sqi
+   166	             ON sqi.session_id=r.session_id
+   167	           JOIN question_bank_items qbi
+   168	             ON qbi.item_record_id=sqi.item_record_id
+   169	            AND qbi.source_item_id=r.item_id
+   170	           WHERE 1=1
+   171	           ON CONFLICT(session_id, item_record_id) DO UPDATE SET
+   172	             raw_value=excluded.raw_value,
+   173	             response_time_ms=excluded.response_time_ms,
+   174	             answered_at=excluded.answered_at"""
+   175	    )
+   176	
+   177	
+   178	def _upsert_current_items(
+   179	    conn: sqlite3.Connection,
+   180	    items: list[dict],
+   181	) -> None:
+   182	    conn.executemany(
+   183	        """INSERT INTO question_bank_items(
+   184	             question_bank_version, source_item_id, dimension, subdimension,
+   185	             keyed_pole, form, wording, language, version, status,
+   186	             master_order, reverse_scored
+   187	           )
+   188	           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+   189	           ON CONFLICT(question_bank_version, source_item_id) DO UPDATE SET
+   190	             dimension=excluded.dimension,
+   191	             subdimension=excluded.subdimension,
+   192	             keyed_pole=excluded.keyed_pole,
+   193	             form=excluded.form,
+   194	             wording=excluded.wording,
+   195	             language=excluded.language,
+   196	             version=excluded.version,
+   197	             status=excluded.status,
+   198	             master_order=excluded.master_order,
+   199	             reverse_scored=excluded.reverse_scored""",
+   200	        [
+   201	            (
+   202	                item["question_bank_version"],
+   203	                item["item_id"],
+   204	                item["dimension"],
+   205	                item["subdimension"],
+   206	                item["key"],
+   207	                item["form"],
+   208	                item["wording"],
+   209	                item["language"],
+   210	                item["version"],
+   211	                item["status"],
+   212	                item["master_order"],
+   213	                int(item["reverse_scored"]),
+   214	            )
+   215	            for item in items
+   216	        ],
+   217	    )
+   218	
+   219	
+   220	def _verify_migration(conn: sqlite3.Connection) -> None:
+   221	    unversioned_sessions = conn.execute(
+   222	        """SELECT COUNT(*) FROM sessions
+   223	           WHERE question_bank_version IS NULL
+   224	              OR trim(question_bank_version)=''"""
+   225	    ).fetchone()[0]
+   226	    if unversioned_sessions:
+   227	        raise ValueError("Every session must have a question bank version")
+   228	
+   229	    orphaned_responses = conn.execute(
+   230	        """SELECT COUNT(*) FROM responses r
+   231	           LEFT JOIN question_bank_items qbi
+   232	             ON qbi.question_bank_version=?
+   233	            AND qbi.source_item_id=r.item_id
+   234	           LEFT JOIN session_responses sr
+   235	             ON sr.session_id=r.session_id
+   236	            AND sr.item_record_id=qbi.item_record_id
+   237	           WHERE sr.item_record_id IS NULL""",
+   238	        (LEGACY_BANK_VERSION,),
+   239	    ).fetchone()[0]
+   240	    if orphaned_responses:
+   241	        raise ValueError(
+   242	            f"Migration left {orphaned_responses} legacy responses unlinked"
+   243	        )
+   244	
+   245	    foreign_key_errors = conn.execute(
+   246	        "PRAGMA foreign_key_check"
+   247	    ).fetchall()
+   248	    if foreign_key_errors:
+   249	        raise ValueError("Database contains foreign key errors after migration")
+   250	
+   251	if __name__ == "__main__":
+   252	    initialize()
+   253	    print(f"Initialized {DB_PATH}")
+
+
+-------------------- innergeodessa-mvp/backend/app/schemas/session.py --------------------
+     1	from __future__ import annotations
+     2	
+     3	from typing import Optional
+     4	
+     5	from pydantic import BaseModel, Field, StrictInt
+     6	
+     7	
+     8	class StartRequest(BaseModel):
+     9	    consent: bool
+    10	    language: str = "en"
+    11	    module: str | None = None
+    12	    module: str | None = None
+    13	
+    14	
+    15	class AnswerRequest(BaseModel):
+    16	    item_id: str
+    17	    value: StrictInt = Field(ge=1, le=5)
+    18	    response_time_ms: Optional[int] = Field(default=None, ge=0)
+
+
+-------------------- innergeodessa-mvp/backend/app/routers/session.py --------------------
+     1	from __future__ import annotations
+     2	
+     3	from datetime import datetime, timezone
+     4	import uuid
+     5	
+     6	from fastapi import APIRouter, HTTPException
+     7	
+     8	from ..assessment_modules import get_assessment_module_config
+     9	from ..database import connect
+    10	from ..schemas.session import AnswerRequest, StartRequest
+    11	from ..scoring import TIE_RULE
+    12	from ..session_completion import complete_session_assessment
+    13	
+    14	
+    15	router = APIRouter()
+    16	
+    17	
+    18	@router.post("/api/sessions")
+    19	def start_session(payload: StartRequest):
+    20	    if not payload.consent:
+    21	        raise HTTPException(400, "Consent is required.")
+    22	
+    23	    try:
+    24	        module_config = get_assessment_module_config(payload.module)
+    25	    except ValueError as error:
+    26	        raise HTTPException(400, str(error)) from error
+    27	
+    28	    session_id = str(uuid.uuid4())
+    29	    now = datetime.now(timezone.utc).isoformat()
+    30	
+    31	    with connect() as conn:
+    32	        conn.execute(
+    33	            """INSERT INTO sessions(
+    34	                 session_id, consent, language, started_at,
+    35	                 question_bank_version
+    36	               )
+    37	               VALUES (?,1,?,?,?)""",
+    38	            (
+    39	                session_id,
+    40	                payload.language,
+    41	                now,
+    42	                module_config.question_bank_version,
+    43	            ),
+    44	        )
+    45	        conn.execute(
+    46	            """INSERT INTO session_question_items(
+    47	                 session_id, item_record_id, display_order
+    48	               )
+    49	               SELECT ?, item_record_id, master_order
+    50	               FROM question_bank_items
+    51	               WHERE question_bank_version=?""",
+    52	            (
+    53	                session_id,
+    54	                module_config.question_bank_version,
+    55	            ),
+    56	        )
+    57	
+    58	        snapshot_count = conn.execute(
+    59	            """SELECT COUNT(*)
+    60	               FROM session_question_items
+    61	               WHERE session_id=?""",
+    62	            (session_id,),
+    63	        ).fetchone()[0]
+    64	
+    65	        if snapshot_count != module_config.expected_item_count:
+    66	            raise HTTPException(
+    67	                503,
+    68	                detail={
+    69	                    "message": (
+    70	                        "Assessment question bank is unavailable."
+    71	                    ),
+    72	                    "module": module_config.module,
+    73	                    "question_bank_version": (
+    74	                        module_config.question_bank_version
+    75	                    ),
+    76	                    "expected": module_config.expected_item_count,
+    77	                    "actual": snapshot_count,
+    78	                },
+    79	            )
+    80	
+    81	    return {
+    82	        "session_id": session_id,
+    83	        "started_at": now,
+    84	        "module": module_config.module,
+    85	        "question_bank_version": (
+    86	            module_config.question_bank_version
+    87	        ),
+    88	    }
+    89	
+    90	
+    91	@router.get("/api/sessions/{session_id}/items")
+    92	def get_session_items(session_id: str):
+    93	    with connect() as conn:
+    94	        session = conn.execute(
+    95	            "SELECT question_bank_version FROM sessions WHERE session_id=?",
+    96	            (session_id,),
+    97	        ).fetchone()
+    98	        if not session:
+    99	            raise HTTPException(404, "Session not found.")
+   100	
+   101	        rows = conn.execute(
+   102	            """SELECT qbi.source_item_id AS item_id,
+   103	                      qbi.dimension,
+   104	                      qbi.subdimension,
+   105	                      qbi.keyed_pole,
+   106	                      qbi.form,
+   107	                      qbi.wording,
+   108	                      sqi.display_order AS master_order,
+   109	                      qbi.question_bank_version
+   110	               FROM session_question_items sqi
+   111	               JOIN question_bank_items qbi
+   112	                 ON qbi.item_record_id=sqi.item_record_id
+   113	               WHERE sqi.session_id=?
+   114	               ORDER BY sqi.display_order""",
+   115	            (session_id,),
+   116	        ).fetchall()
+   117	    return [dict(row) for row in rows]
+   118	
+   119	
+   120	@router.get("/api/sessions/{session_id}/result")
+   121	def get_session_result(session_id: str):
+   122	    with connect() as conn:
+   123	        session = conn.execute(
+   124	            """SELECT status, question_bank_version, completed_at
+   125	               FROM sessions
+   126	               WHERE session_id=?""",
+   127	            (session_id,),
+   128	        ).fetchone()
+   129	        if not session:
+   130	            raise HTTPException(404, "Session not found.")
+   131	        if session["status"] != "completed":
+   132	            raise HTTPException(409, "Session is not completed.")
+   133	
+   134	        result = conn.execute(
+   135	            """SELECT personality_type,
+   136	                      ei_score, sn_score, tf_score, jp_score,
+   137	                      ei_confidence, sn_confidence,
+   138	                      tf_confidence, jp_confidence,
+   139	                      calculated_at
+   140	               FROM results
+   141	               WHERE session_id=?""",
+   142	            (session_id,),
+   143	        ).fetchone()
+   144	        if not result:
+   145	            raise HTTPException(
+   146	                500,
+   147	                "Completed session result is missing.",
+   148	            )
+   149	
+   150	    return {
+   151	        "sessionId": session_id,
+   152	        "status": "completed",
+   153	        "type": result["personality_type"],
+   154	        "scores": {
+   155	            "EI": result["ei_score"],
+   156	            "SN": result["sn_score"],
+   157	            "TF": result["tf_score"],
+   158	            "JP": result["jp_score"],
+   159	        },
+   160	        "confidence": {
+   161	            "EI": result["ei_confidence"],
+   162	            "SN": result["sn_confidence"],
+   163	            "TF": result["tf_confidence"],
+   164	            "JP": result["jp_confidence"],
+   165	        },
+   166	        "answered": {
+   167	            "EI": 18,
+   168	            "SN": 18,
+   169	            "TF": 18,
+   170	            "JP": 18,
+   171	        },
+   172	        "tie_rule": TIE_RULE,
+   173	        "questionBankVersion": session["question_bank_version"],
+   174	        "completedAt": session["completed_at"],
+   175	        "calculatedAt": result["calculated_at"],
+   176	    }
+   177	
+   178	
+   179	@router.put("/api/sessions/{session_id}/answers")
+   180	def save_answer(session_id: str, payload: AnswerRequest):
+   181	    now = datetime.now(timezone.utc).isoformat()
+   182	    with connect() as conn:
+   183	        session = conn.execute("SELECT status FROM sessions WHERE session_id=?", (session_id,)).fetchone()
+   184	        if not session:
+   185	            raise HTTPException(404, "Session not found.")
+   186	        if session["status"] != "active":
+   187	            raise HTTPException(409, "Session is not active.")
+   188	        item = conn.execute(
+   189	            """SELECT sqi.item_record_id
+   190	               FROM session_question_items sqi
+   191	               JOIN question_bank_items qbi
+   192	                 ON qbi.item_record_id=sqi.item_record_id
+   193	               WHERE sqi.session_id=? AND qbi.source_item_id=?""",
+   194	            (session_id, payload.item_id),
+   195	        ).fetchone()
+   196	        if not item:
+   197	            raise HTTPException(
+   198	                404,
+   199	                "Item is not part of this session's question snapshot.",
+   200	            )
+   201	        conn.execute(
+   202	            """INSERT INTO session_responses(
+   203	                 session_id, item_record_id, raw_value,
+   204	                 response_time_ms, answered_at
+   205	               )
+   206	               VALUES (?,?,?,?,?)
+   207	               ON CONFLICT(session_id,item_record_id) DO UPDATE SET
+   208	               raw_value=excluded.raw_value,
+   209	               response_time_ms=excluded.response_time_ms,
+   210	               answered_at=excluded.answered_at""",
+   211	            (
+   212	                session_id,
+   213	                item["item_record_id"],
+   214	                payload.value,
+   215	                payload.response_time_ms,
+   216	                now,
+   217	            ),
+   218	        )
+   219	    return {"saved": True}
+   220	
+   221	
+   222	@router.post("/api/sessions/{session_id}/complete")
+   223	def complete_session(session_id: str):
+   224	    with connect() as conn:
+   225	        return complete_session_assessment(conn, session_id)
+
+
+-------------------- innergeodessa-mvp/backend/app/session_completion.py --------------------
+     1	from __future__ import annotations
+     2	
+     3	from datetime import datetime, timezone
+     4	
+     5	from fastapi import HTTPException
+     6	
+     7	from .database import LEGACY_BANK_VERSION
+     8	from .scoring import Item, score_assessment
+     9	
+    10	
+    11	def complete_session_assessment(conn, session_id: str):
+    12	    session = conn.execute(
+    13	        "SELECT status, question_bank_version FROM sessions WHERE session_id=?",
+    14	        (session_id,),
+    15	    ).fetchone()
+    16	    if not session:
+    17	        raise HTTPException(404, "Session not found.")
+    18	    if session["status"] != "active":
+    19	        raise HTTPException(409, "Session is not active.")
+    20	
+    21	    rows = conn.execute(
+    22	        """SELECT qbi.source_item_id AS item_id,
+    23	                  qbi.dimension,
+    24	                  qbi.keyed_pole,
+    25	                  sr.raw_value
+    26	           FROM session_question_items sqi
+    27	           JOIN question_bank_items qbi
+    28	             ON qbi.item_record_id=sqi.item_record_id
+    29	           LEFT JOIN session_responses sr
+    30	             ON sr.session_id=sqi.session_id
+    31	            AND sr.item_record_id=sqi.item_record_id
+    32	           WHERE sqi.session_id=?
+    33	           ORDER BY sqi.display_order""",
+    34	        (session_id,),
+    35	    ).fetchall()
+    36	    if len(rows) != 72:
+    37	        raise HTTPException(
+    38	            400,
+    39	            detail={
+    40	                "message": "Session question snapshot is invalid",
+    41	                "expected": 72,
+    42	                "actual": len(rows),
+    43	            },
+    44	        )
+    45	
+    46	    outside_snapshot_count = conn.execute(
+    47	        """SELECT COUNT(*)
+    48	           FROM session_responses sr
+    49	           LEFT JOIN session_question_items sqi
+    50	             ON sqi.session_id=sr.session_id
+    51	            AND sqi.item_record_id=sr.item_record_id
+    52	           WHERE sr.session_id=? AND sqi.item_record_id IS NULL""",
+    53	        (session_id,),
+    54	    ).fetchone()[0]
+    55	    if outside_snapshot_count:
+    56	        raise HTTPException(
+    57	            400,
+    58	            "Session contains responses outside its question snapshot.",
+    59	        )
+    60	
+    61	    missing = [r["item_id"] for r in rows if r["raw_value"] is None]
+    62	    if missing:
+    63	        raise HTTPException(400, detail={"message": "Assessment incomplete", "missing": missing})
+    64	    result = score_assessment(
+    65	        [Item(r["item_id"], r["dimension"], r["keyed_pole"]) for r in rows],
+    66	        {r["item_id"]: r["raw_value"] for r in rows},
+    67	        require_balanced_poles=(
+    68	            session["question_bank_version"] != LEGACY_BANK_VERSION
+    69	        ),
+    70	    )
+    71	    now = datetime.now(timezone.utc).isoformat()
+    72	    s, c = result["scores"], result["confidence"]
+    73	    conn.execute(
+    74	        """INSERT INTO results
+    75	           (session_id, personality_type, ei_score, sn_score, tf_score, jp_score,
+    76	            ei_confidence, sn_confidence, tf_confidence, jp_confidence, calculated_at)
+    77	           VALUES (?,?,?,?,?,?,?,?,?,?,?)
+    78	           ON CONFLICT(session_id) DO UPDATE SET
+    79	             personality_type=excluded.personality_type,
+    80	             ei_score=excluded.ei_score,
+    81	             sn_score=excluded.sn_score,
+    82	             tf_score=excluded.tf_score,
+    83	             jp_score=excluded.jp_score,
+    84	             ei_confidence=excluded.ei_confidence,
+    85	             sn_confidence=excluded.sn_confidence,
+    86	             tf_confidence=excluded.tf_confidence,
+    87	             jp_confidence=excluded.jp_confidence,
+    88	             calculated_at=excluded.calculated_at""",
+    89	        (session_id, result["type"], s["EI"], s["SN"], s["TF"], s["JP"],
+    90	         c["EI"], c["SN"], c["TF"], c["JP"], now),
+    91	    )
+    92	    conn.execute(
+    93	        "UPDATE sessions SET completed_at=?, status='completed' WHERE session_id=?",
+    94	        (now, session_id),
+    95	    )
+    96	    return result
+
+
+-------------------- innergeodessa-mvp/backend/app/scoring.py --------------------
+     1	from __future__ import annotations
+     2	from dataclasses import dataclass
+     3	from typing import Iterable, Mapping
+     4	
+     5	DIMENSIONS = {
+     6	    "EI": ("E", "I"),
+     7	    "SN": ("S", "N"),
+     8	    "TF": ("T", "F"),
+     9	    "JP": ("J", "P"),
+    10	}
+    11	
+    12	TIE_RULE = (
+    13	    "A zero score resolves to the first pole and must be "
+    14	    "reported as low differentiation."
+    15	)
+    16	
+    17	@dataclass(frozen=True)
+    18	class Item:
+    19	    item_id: str
+    20	    dimension: str
+    21	    key: str
+    22	
+    23	def score_assessment(
+    24	    items: Iterable[Item],
+    25	    responses: Mapping[str, int],
+    26	    *,
+    27	    require_balanced_poles: bool = True,
+    28	) -> dict:
+    29	    item_list = list(items)
+    30	    _validate_items(item_list, require_balanced_poles)
+    31	    _validate_responses(item_list, responses)
+    32	
+    33	    signed = {dimension: 0 for dimension in DIMENSIONS}
+    34	    answered = {dimension: 0 for dimension in DIMENSIONS}
+    35	
+    36	    for item in item_list:
+    37	        raw = responses[item.item_id]
+    38	
+    39	        first, second = DIMENSIONS[item.dimension]
+    40	        contribution = raw - 3 if item.key == first else 3 - raw
+    41	        signed[item.dimension] += contribution
+    42	        answered[item.dimension] += 1
+    43	
+    44	    letters = []
+    45	    confidence = {}
+    46	    for dimension, (first, second) in DIMENSIONS.items():
+    47	        value = signed[dimension]
+    48	        letters.append(first if value >= 0 else second)
+    49	        max_abs = answered[dimension] * 2
+    50	        confidence[dimension] = round(abs(value) / max_abs, 4) if max_abs else 0.0
+    51	
+    52	    return {
+    53	        "type": "".join(letters),
+    54	        "scores": signed,
+    55	        "confidence": confidence,
+    56	        "answered": answered,
+    57	        "tie_rule": TIE_RULE,
+    58	    }
+    59	
+    60	
+    61	def _validate_items(
+    62	    items: list[Item],
+    63	    require_balanced_poles: bool,
+    64	) -> None:
+    65	    item_ids: set[str] = set()
+    66	
+    67	    for item in items:
+    68	        if not item.item_id:
+    69	            raise ValueError("item_id must not be empty")
+    70	        if item.item_id in item_ids:
+    71	            raise ValueError(f"Duplicate item_id: {item.item_id}")
+    72	        item_ids.add(item.item_id)
+    73	
+    74	    if len(items) != 72:
+    75	        raise ValueError(
+    76	            f"Personality assessment must contain exactly 72 items; found {len(items)}"
+    77	        )
+    78	
+    79	    pole_counts = {
+    80	        dimension: {first: 0, second: 0}
+    81	        for dimension, (first, second) in DIMENSIONS.items()
+    82	    }
+    83	
+    84	    for item in items:
+    85	        if item.dimension not in DIMENSIONS:
+    86	            raise ValueError(f"Unsupported dimension: {item.dimension}")
+    87	
+    88	        first, second = DIMENSIONS[item.dimension]
+    89	        if item.key not in (first, second):
+    90	            raise ValueError(
+    91	                f"Invalid key {item.key} for dimension {item.dimension}; "
+    92	                f"expected {first} or {second}"
+    93	            )
+    94	
+    95	        pole_counts[item.dimension][item.key] += 1
+    96	
+    97	    for dimension, (first, second) in DIMENSIONS.items():
+    98	        first_count = pole_counts[dimension][first]
+    99	        second_count = pole_counts[dimension][second]
+   100	        dimension_total = first_count + second_count
+   101	        if dimension_total != 18:
+   102	            raise ValueError(
+   103	                f"{dimension} must contain exactly 18 items; "
+   104	                f"found {dimension_total}"
+   105	            )
+   106	        if (
+   107	            require_balanced_poles
+   108	            and (first_count != 9 or second_count != 9)
+   109	        ):
+   110	            raise ValueError(
+   111	                f"{dimension} must contain 9 {first} and 9 {second} items; "
+   112	                f"found {first_count} and {second_count}"
+   113	            )
+   114	
+   115	
+   116	def _validate_responses(
+   117	    items: list[Item],
+   118	    responses: Mapping[str, int],
+   119	) -> None:
+   120	    item_ids = {item.item_id for item in items}
+   121	    response_ids = set(responses)
+   122	
+   123	    unknown = sorted(response_ids - item_ids)
+   124	    if unknown:
+   125	        raise ValueError(f"Unknown response item: {unknown[0]}")
+   126	
+   127	    missing = sorted(item_ids - response_ids)
+   128	    if missing:
+   129	        raise ValueError(f"Missing response for {missing[0]}")
+   130	
+   131	    for item in items:
+   132	        raw = responses[item.item_id]
+   133	        if type(raw) is not int or raw not in (1, 2, 3, 4, 5):
+   134	            raise ValueError(
+   135	                f"Response for {item.item_id} must be an integer from 1-5"
+   136	            )
+
+
+-------------------- innergeodessa-mvp/backend/app/main.py --------------------
+     1	from __future__ import annotations
+     2	
+     3	from contextlib import asynccontextmanager
+     4	
+     5	from fastapi import FastAPI
+     6	
+     7	from .database import initialize
+     8	from .routers import health_router, items_router, session_router
+     9	
+    10	
+    11	@asynccontextmanager
+    12	async def lifespan(_app: FastAPI):
+    13	    initialize()
+    14	    yield
+    15	
+    16	
+    17	app = FastAPI(
+    18	    title="InnerGeodessa Pilot API",
+    19	    version="0.1.0",
+    20	    lifespan=lifespan,
+    21	)
+    22	
+    23	app.include_router(health_router)
+    24	app.include_router(items_router)
+    25	app.include_router(session_router)
+
+
+============================================================
+8. RELEVANT TEST SOURCE
+============================================================
+
+
+-------------------- innergeodessa-mvp/tests/test_database_migration.py --------------------
+     1	import json
+     2	from pathlib import Path
+     3	import sqlite3
+     4	import sys
+     5	
+     6	import pytest
+     7	
+     8	sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
+     9	
+    10	from app.database import initialize
+    11	from legacy_fixture import (
+    12	    LEGACY_ITEM_COUNT,
+    13	    OVERLAPPING_SOURCE_ID_COUNT,
+    14	    create_legacy_database,
+    15	)
+    16	
+    17	
+    18	ROOT = Path(__file__).resolve().parents[1] / "backend"
+    19	ITEMS_PATH = ROOT / "data" / "items.json"
+    20	SCHEMA_PATH = ROOT / "schema.sql"
+    21	
+    22	
+    23	def fetch_value(connection, sql, parameters=()):
+    24	    row = connection.execute(sql, parameters).fetchone()
+    25	    return row[0]
+    26	
+    27	
+    28	def collect_counts(connection):
+    29	    return {
+    30	        table: fetch_value(connection, f"SELECT COUNT(*) FROM {table}")
+    31	        for table in (
+    32	            "items",
+    33	            "sessions",
+    34	            "responses",
+    35	            "results",
+    36	            "question_banks",
+    37	            "question_bank_items",
+    38	            "session_question_items",
+    39	            "session_responses",
+    40	        )
+    41	    }
+    42	
+    43	
+    44	def collect_legacy_rows(connection):
+    45	    return {
+    46	        "items": connection.execute(
+    47	            "SELECT * FROM items ORDER BY item_id"
+    48	        ).fetchall(),
+    49	        "sessions": connection.execute(
+    50	            """SELECT session_id, consent, language, started_at,
+    51	                      completed_at, status
+    52	               FROM sessions ORDER BY session_id"""
+    53	        ).fetchall(),
+    54	        "responses": connection.execute(
+    55	            """SELECT * FROM responses
+    56	               ORDER BY session_id, item_id"""
+    57	        ).fetchall(),
+    58	        "results": connection.execute(
+    59	            "SELECT * FROM results ORDER BY session_id"
+    60	        ).fetchall(),
+    61	    }
+    62	
+    63	
+    64	def test_non_destructive_versioned_migration_is_idempotent(tmp_path):
+    65	    database_path = tmp_path / "migration.db"
+    66	    create_legacy_database(
+    67	        database_path,
+    68	        SCHEMA_PATH,
+    69	        ITEMS_PATH,
+    70	    )
+    71	
+    72	    with sqlite3.connect(database_path) as connection:
+    73	        before_legacy_rows = collect_legacy_rows(connection)
+    74	
+    75	    initialize(db_path=database_path, items_path=ITEMS_PATH)
+    76	
+    77	    with sqlite3.connect(database_path) as connection:
+    78	        counts = collect_counts(connection)
+    79	        assert counts == {
+    80	            "items": LEGACY_ITEM_COUNT,
+    81	            "sessions": 2,
+    82	            "responses": 2,
+    83	            "results": 1,
+    84	            "question_banks": 2,
+    85	            "question_bank_items": LEGACY_ITEM_COUNT + 72,
+    86	            "session_question_items": 2 * LEGACY_ITEM_COUNT,
+    87	            "session_responses": 2,
+    88	        }
+    89	        assert collect_legacy_rows(connection) == before_legacy_rows
+    90	
+    91	        assert fetch_value(
+    92	            connection,
+    93	            "SELECT COUNT(*) FROM sessions "
+    94	            "WHERE question_bank_version='personality-legacy-v1'",
+    95	        ) == 2
+    96	        assert fetch_value(
+    97	            connection,
+    98	            "SELECT COUNT(*) FROM sessions "
+    99	            "WHERE question_bank_version IS NULL "
+   100	            "OR trim(question_bank_version)=''",
+   101	        ) == 0
+   102	        assert fetch_value(
+   103	            connection,
+   104	            "SELECT COUNT(*) FROM question_bank_items "
+   105	            "WHERE question_bank_version='personality-legacy-v1'",
+   106	        ) == LEGACY_ITEM_COUNT
+   107	        assert fetch_value(
+   108	            connection,
+   109	            "SELECT COUNT(*) FROM question_bank_items "
+   110	            "WHERE question_bank_version='personality-v1.0.0'",
+   111	        ) == 72
+   112	        assert fetch_value(
+   113	            connection,
+   114	            "SELECT COUNT(*) FROM ("
+   115	            "SELECT source_item_id FROM question_bank_items "
+   116	            "GROUP BY source_item_id HAVING COUNT(*)=2"
+   117	            ")",
+   118	        ) == OVERLAPPING_SOURCE_ID_COUNT
+   119	        assert connection.execute(
+   120	            """SELECT session_id, COUNT(*)
+   121	               FROM session_question_items
+   122	               GROUP BY session_id
+   123	               ORDER BY session_id"""
+   124	        ).fetchall() == [
+   125	            ("legacy-active-session", LEGACY_ITEM_COUNT),
+   126	            ("legacy-completed-session", LEGACY_ITEM_COUNT),
+   127	        ]
+   128	        assert fetch_value(
+   129	            connection,
+   130	            "SELECT COUNT(*) FROM session_responses sr "
+   131	            "LEFT JOIN question_bank_items qbi "
+   132	            "ON qbi.item_record_id=sr.item_record_id "
+   133	            "WHERE qbi.item_record_id IS NULL",
+   134	        ) == 0
+   135	        assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
+   136	        assert collect_legacy_rows(connection) == before_legacy_rows
+   137	
+   138	    initialize(db_path=database_path, items_path=ITEMS_PATH)
+   139	
+   140	    with sqlite3.connect(database_path) as connection:
+   141	        assert collect_counts(connection) == counts
+   142	        assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
+   143	
+   144	
+   145	def test_generated_bank_declares_current_version():
+   146	    items = json.loads(ITEMS_PATH.read_text(encoding="utf-8"))
+   147	
+   148	    assert len(items) == 72
+   149	    assert {
+   150	        item["question_bank_version"] for item in items
+   151	    } == {"personality-v1.0.0"}
+   152	
+   153	
+   154	def test_failed_migration_rolls_back_schema_and_data(tmp_path):
+   155	    database_path = tmp_path / "failed-migration.db"
+   156	    invalid_items_path = tmp_path / "invalid-items.json"
+   157	    legacy_schema = SCHEMA_PATH.read_text(encoding="utf-8").split(
+   158	        "CREATE TABLE IF NOT EXISTS question_banks",
+   159	        maxsplit=1,
+   160	    )[0]
+   161	    with sqlite3.connect(database_path) as connection:
+   162	        connection.executescript(legacy_schema)
+   163	    invalid_items_path.write_text("[]", encoding="utf-8")
+   164	
+   165	    with pytest.raises(ValueError):
+   166	        initialize(
+   167	            db_path=database_path,
+   168	            items_path=invalid_items_path,
+   169	        )
+   170	
+   171	    with sqlite3.connect(database_path) as connection:
+   172	        table_names = {
+   173	            row[0]
+   174	            for row in connection.execute(
+   175	                "SELECT name FROM sqlite_master WHERE type='table'"
+   176	            )
+   177	        }
+   178	        session_columns = {
+   179	            row[1]
+   180	            for row in connection.execute(
+   181	                "PRAGMA table_info(sessions)"
+   182	            )
+   183	        }
+   184	
+   185	        assert "question_banks" not in table_names
+   186	        assert "question_bank_version" not in session_columns
+
+
+-------------------- innergeodessa-mvp/tests/test_scoring.py --------------------
+     1	import json
+     2	from pathlib import Path
+     3	import sys
+     4	
+     5	import pytest
+     6	
+     7	sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
+     8	from app.scoring import DIMENSIONS, Item, score_assessment
+     9	
+    10	DATA = Path(__file__).resolve().parents[1] / "backend" / "data" / "items.json"
+    11	items_json = json.loads(DATA.read_text(encoding="utf-8"))
+    12	items = [Item(x["item_id"], x["dimension"], x["key"]) for x in items_json]
+    13	
+    14	
+    15	def responses_for(value):
+    16	    return {item.item_id: value for item in items}
+    17	
+    18	
+    19	def responses_for_pole(use_first):
+    20	    responses = {}
+    21	    for item in items:
+    22	        first, second = DIMENSIONS[item.dimension]
+    23	        wants_high = item.key == (first if use_first else second)
+    24	        responses[item.item_id] = 5 if wants_high else 1
+    25	    return responses
+    26	
+    27	
+    28	def test_neutral_tie_rule():
+    29	    result = score_assessment(items, responses_for(3))
+    30	    assert result["type"] == "ESTJ"
+    31	    assert result["scores"] == {"EI": 0, "SN": 0, "TF": 0, "JP": 0}
+    32	    assert result["confidence"] == {
+    33	        "EI": 0.0,
+    34	        "SN": 0.0,
+    35	        "TF": 0.0,
+    36	        "JP": 0.0,
+    37	    }
+    38	
+    39	
+    40	def test_balanced_bank_all_agree_and_disagree_tie():
+    41	    assert score_assessment(items, responses_for(5))["type"] == "ESTJ"
+    42	    assert score_assessment(items, responses_for(1))["type"] == "ESTJ"
+    43	
+    44	
+    45	def test_maximum_first_and_second_poles():
+    46	    first = score_assessment(items, responses_for_pole(True))
+    47	    second = score_assessment(items, responses_for_pole(False))
+    48	
+    49	    assert first["type"] == "ESTJ"
+    50	    assert first["scores"] == {"EI": 36, "SN": 36, "TF": 36, "JP": 36}
+    51	    assert first["confidence"] == {
+    52	        "EI": 1.0,
+    53	        "SN": 1.0,
+    54	        "TF": 1.0,
+    55	        "JP": 1.0,
+    56	    }
+    57	
+    58	    assert second["type"] == "INFP"
+    59	    assert second["scores"] == {
+    60	        "EI": -36,
+    61	        "SN": -36,
+    62	        "TF": -36,
+    63	        "JP": -36,
+    64	    }
+    65	    assert second["confidence"] == {
+    66	        "EI": 1.0,
+    67	        "SN": 1.0,
+    68	        "TF": 1.0,
+    69	        "JP": 1.0,
+    70	    }
+    71	
+    72	
+    73	@pytest.mark.parametrize("value", [0, 6, "3", 3.0, True, False])
+    74	def test_rejects_invalid_response_values(value):
+    75	    responses = responses_for(3)
+    76	    responses[items[0].item_id] = value
+    77	
+    78	    with pytest.raises(ValueError):
+    79	        score_assessment(items, responses)
+    80	
+    81	
+    82	def test_rejects_missing_response():
+    83	    responses = responses_for(3)
+    84	    responses.pop(items[0].item_id)
+    85	
+    86	    with pytest.raises(ValueError, match="Missing response"):
+    87	        score_assessment(items, responses)
+    88	
+    89	
+    90	def test_rejects_unknown_response_item():
+    91	    responses = responses_for(3)
+    92	    responses["UNKNOWN"] = 3
+    93	
+    94	    with pytest.raises(ValueError, match="Unknown response item"):
+    95	        score_assessment(items, responses)
+    96	
+    97	
+    98	def test_rejects_duplicate_item_id():
+    99	    with pytest.raises(ValueError, match="Duplicate item_id"):
+   100	        score_assessment([*items, items[0]], responses_for(3))
+   101	
+   102	
+   103	def test_rejects_unknown_dimension():
+   104	    malformed = [
+   105	        Item(items[0].item_id, "XX", items[0].key),
+   106	        *items[1:],
+   107	    ]
+   108	
+   109	    with pytest.raises(ValueError, match="Unsupported dimension"):
+   110	        score_assessment(malformed, responses_for(3))
+   111	
+   112	
+   113	def test_rejects_key_that_does_not_match_dimension():
+   114	    malformed = [
+   115	        Item(items[0].item_id, items[0].dimension, "S"),
+   116	        *items[1:],
+   117	    ]
+   118	
+   119	    with pytest.raises(ValueError, match="Invalid key"):
+   120	        score_assessment(malformed, responses_for(3))
+   121	
+   122	
+   123	def test_rejects_wrong_question_count():
+   124	    with pytest.raises(ValueError, match="exactly 72"):
+   125	        score_assessment(items[:-1], responses_for(3))
+   126	
+   127	
+   128	def test_rejects_wrong_dimension_or_pole_distribution():
+   129	    first_ei_index = next(
+   130	        index
+   131	        for index, item in enumerate(items)
+   132	        if item.dimension == "EI" and item.key == "E"
+   133	    )
+   134	    malformed = list(items)
+   135	    original = malformed[first_ei_index]
+   136	    malformed[first_ei_index] = Item(
+   137	        original.item_id,
+   138	        original.dimension,
+   139	        "I",
+   140	    )
+   141	
+   142	    with pytest.raises(ValueError, match="9 E and 9 I"):
+   143	        score_assessment(malformed, responses_for(3))
+   144	
+   145	
+   146	def test_answered_counts_and_confidence_range():
+   147	    result = score_assessment(items, responses_for_pole(True))
+   148	
+   149	    assert result["answered"] == {
+   150	        "EI": 18,
+   151	        "SN": 18,
+   152	        "TF": 18,
+   153	        "JP": 18,
+   154	    }
+   155	    assert all(0.0 <= value <= 1.0 for value in result["confidence"].values())
+
+
+-------------------- innergeodessa-mvp/tests/test_session_completion.py --------------------
+     1	from pathlib import Path
+     2	import sqlite3
+     3	import sys
+     4	
+     5	from fastapi import HTTPException
+     6	import pytest
+     7	
+     8	sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
+     9	
+    10	from app import session_completion
+    11	from app.database import CURRENT_BANK_VERSION, connect, initialize
+    12	from app.session_completion import complete_session_assessment
+    13	from legacy_fixture import create_legacy_database
+    14	
+    15	
+    16	ROOT = Path(__file__).resolve().parents[1] / "backend"
+    17	ITEMS_PATH = ROOT / "data" / "items.json"
+    18	SCHEMA_PATH = ROOT / "schema.sql"
+    19	
+    20	
+    21	@pytest.fixture
+    22	def database_path(tmp_path):
+    23	    path = tmp_path / "session-completion.db"
+    24	    create_legacy_database(path, SCHEMA_PATH, ITEMS_PATH)
+    25	    initialize(db_path=path, items_path=ITEMS_PATH)
+    26	    return path
+    27	
+    28	
+    29	def create_current_session(
+    30	    database_path,
+    31	    *,
+    32	    session_id="current-session",
+    33	    status="active",
+    34	    include_responses=True,
+    35	):
+    36	    with connect(database_path) as connection:
+    37	        connection.execute(
+    38	            """INSERT INTO sessions(
+    39	                 session_id, consent, language, started_at,
+    40	                 status, question_bank_version
+    41	               )
+    42	               VALUES (?, 1, 'en', ?, ?, ?)""",
+    43	            (
+    44	                session_id,
+    45	                "2026-01-03T00:00:00+00:00",
+    46	                status,
+    47	                CURRENT_BANK_VERSION,
+    48	            ),
+    49	        )
+    50	        connection.execute(
+    51	            """INSERT INTO session_question_items(
+    52	                 session_id, item_record_id, display_order
+    53	               )
+    54	               SELECT ?, item_record_id, master_order
+    55	               FROM question_bank_items
+    56	               WHERE question_bank_version=?""",
+    57	            (session_id, CURRENT_BANK_VERSION),
+    58	        )
+    59	        if include_responses:
+    60	            connection.execute(
+    61	                """INSERT INTO session_responses(
+    62	                     session_id, item_record_id, raw_value,
+    63	                     response_time_ms, answered_at
+    64	                   )
+    65	                   SELECT ?, item_record_id, 3, 1000, ?
+    66	                   FROM session_question_items
+    67	                   WHERE session_id=?""",
+    68	                (
+    69	                    session_id,
+    70	                    "2026-01-03T00:01:00+00:00",
+    71	                    session_id,
+    72	                ),
+    73	            )
+    74	    return session_id
+    75	
+    76	
+    77	def assert_http_exception(
+    78	    error,
+    79	    *,
+    80	    status_code,
+    81	    detail,
+    82	):
+    83	    assert error.value.status_code == status_code
+    84	    assert error.value.detail == detail
+    85	
+    86	
+    87	def test_complete_session_saves_result_and_marks_session_completed(
+    88	    database_path,
+    89	):
+    90	    session_id = create_current_session(database_path)
+    91	
+    92	    with connect(database_path) as connection:
+    93	        result = complete_session_assessment(connection, session_id)
+    94	
+    95	    assert result == {
+    96	        "type": "ESTJ",
+    97	        "scores": {"EI": 0, "SN": 0, "TF": 0, "JP": 0},
+    98	        "confidence": {
+    99	            "EI": 0.0,
+   100	            "SN": 0.0,
+   101	            "TF": 0.0,
+   102	            "JP": 0.0,
+   103	        },
+   104	        "answered": {"EI": 18, "SN": 18, "TF": 18, "JP": 18},
+   105	        "tie_rule": (
+   106	            "A zero score resolves to the first pole and must be "
+   107	            "reported as low differentiation."
+   108	        ),
+   109	    }
+   110	    with connect(database_path) as connection:
+   111	        session = connection.execute(
+   112	            "SELECT status, completed_at FROM sessions WHERE session_id=?",
+   113	            (session_id,),
+   114	        ).fetchone()
+   115	        saved_result = connection.execute(
+   116	            "SELECT personality_type FROM results WHERE session_id=?",
+   117	            (session_id,),
+   118	        ).fetchone()
+   119	    assert session["status"] == "completed"
+   120	    assert session["completed_at"]
+   121	    assert saved_result["personality_type"] == "ESTJ"
+   122	
+   123	
+   124	def test_complete_session_rejects_unknown_session(database_path):
+   125	    with pytest.raises(HTTPException) as error:
+   126	        with connect(database_path) as connection:
+   127	            complete_session_assessment(connection, "unknown-session")
+   128	
+   129	    assert_http_exception(
+   130	        error,
+   131	        status_code=404,
+   132	        detail="Session not found.",
+   133	    )
+   134	
+   135	
+   136	@pytest.mark.parametrize("status", ["completed", "invalid"])
+   137	def test_complete_session_rejects_non_active_status(
+   138	    database_path,
+   139	    status,
+   140	):
+   141	    session_id = create_current_session(
+   142	        database_path,
+   143	        status=status,
+   144	    )
+   145	
+   146	    with pytest.raises(HTTPException) as error:
+   147	        with connect(database_path) as connection:
+   148	            complete_session_assessment(connection, session_id)
+   149	
+   150	    assert_http_exception(
+   151	        error,
+   152	        status_code=409,
+   153	        detail="Session is not active.",
+   154	    )
+   155	
+   156	
+   157	def test_complete_session_rejects_invalid_snapshot_count(database_path):
+   158	    session_id = create_current_session(database_path)
+   159	    with connect(database_path) as connection:
+   160	        connection.execute(
+   161	            """DELETE FROM session_question_items
+   162	               WHERE session_id=? AND display_order=72""",
+   163	            (session_id,),
+   164	        )
+   165	
+   166	    with pytest.raises(HTTPException) as error:
+   167	        with connect(database_path) as connection:
+   168	            complete_session_assessment(connection, session_id)
+   169	
+   170	    assert_http_exception(
+   171	        error,
+   172	        status_code=400,
+   173	        detail={
+   174	            "message": "Session question snapshot is invalid",
+   175	            "expected": 72,
+   176	            "actual": 71,
+   177	        },
+   178	    )
+   179	
+   180	
+   181	def test_complete_session_rejects_response_outside_snapshot(database_path):
+   182	    session_id = create_current_session(database_path)
+   183	    with connect(database_path) as connection:
+   184	        legacy_item_record_id = connection.execute(
+   185	            """SELECT item_record_id
+   186	               FROM question_bank_items
+   187	               WHERE question_bank_version='personality-legacy-v1'
+   188	                 AND source_item_id NOT IN (
+   189	                   SELECT source_item_id
+   190	                   FROM question_bank_items
+   191	                   WHERE question_bank_version=?
+   192	                 )
+   193	               ORDER BY master_order
+   194	               LIMIT 1""",
+   195	            (CURRENT_BANK_VERSION,),
+   196	        ).fetchone()[0]
+   197	        connection.execute(
+   198	            """INSERT INTO session_responses(
+   199	                 session_id, item_record_id, raw_value,
+   200	                 response_time_ms, answered_at
+   201	               )
+   202	               VALUES (?, ?, 3, 1000, ?)""",
+   203	            (
+   204	                session_id,
+   205	                legacy_item_record_id,
+   206	                "2026-01-03T00:02:00+00:00",
+   207	            ),
+   208	        )
+   209	
+   210	    with pytest.raises(HTTPException) as error:
+   211	        with connect(database_path) as connection:
+   212	            complete_session_assessment(connection, session_id)
+   213	
+   214	    assert_http_exception(
+   215	        error,
+   216	        status_code=400,
+   217	        detail=(
+   218	            "Session contains responses outside its question snapshot."
+   219	        ),
+   220	    )
+   221	
+   222	
+   223	def test_complete_session_rejects_missing_response(database_path):
+   224	    session_id = create_current_session(database_path)
+   225	    with connect(database_path) as connection:
+   226	        missing_item_id = connection.execute(
+   227	            """SELECT qbi.source_item_id
+   228	               FROM session_question_items sqi
+   229	               JOIN question_bank_items qbi
+   230	                 ON qbi.item_record_id=sqi.item_record_id
+   231	               WHERE sqi.session_id=? AND sqi.display_order=72""",
+   232	            (session_id,),
+   233	        ).fetchone()[0]
+   234	        connection.execute(
+   235	            """DELETE FROM session_responses
+   236	               WHERE session_id=? AND item_record_id=(
+   237	                 SELECT item_record_id
+   238	                 FROM session_question_items
+   239	                 WHERE session_id=? AND display_order=72
+   240	               )""",
+   241	            (session_id, session_id),
+   242	        )
+   243	
+   244	    with pytest.raises(HTTPException) as error:
+   245	        with connect(database_path) as connection:
+   246	            complete_session_assessment(connection, session_id)
+   247	
+   248	    assert_http_exception(
+   249	        error,
+   250	        status_code=400,
+   251	        detail={
+   252	            "message": "Assessment incomplete",
+   253	            "missing": [missing_item_id],
+   254	        },
+   255	    )
+   256	
+   257	
+   258	def test_complete_session_propagates_scoring_error_without_writes(
+   259	    database_path,
+   260	    monkeypatch,
+   261	):
+   262	    session_id = create_current_session(database_path)
+   263	
+   264	    def reject_scoring(*_args, **_kwargs):
+   265	        raise ValueError("Scoring rejected fixture")
+   266	
+   267	    monkeypatch.setattr(
+   268	        session_completion,
+   269	        "score_assessment",
+   270	        reject_scoring,
+   271	    )
+   272	
+   273	    with pytest.raises(ValueError, match="Scoring rejected fixture"):
+   274	        with connect(database_path) as connection:
+   275	            complete_session_assessment(connection, session_id)
+   276	
+   277	    with connect(database_path) as connection:
+   278	        result_count = connection.execute(
+   279	            "SELECT COUNT(*) FROM results WHERE session_id=?",
+   280	            (session_id,),
+   281	        ).fetchone()[0]
+   282	        status = connection.execute(
+   283	            "SELECT status FROM sessions WHERE session_id=?",
+   284	            (session_id,),
+   285	        ).fetchone()[0]
+   286	    assert result_count == 0
+   287	    assert status == "active"
+   288	
+   289	
+   290	@pytest.mark.parametrize(
+   291	    "trigger_sql",
+   292	    [
+   293	        """CREATE TRIGGER fail_result_insert
+   294	           BEFORE INSERT ON results
+   295	           BEGIN
+   296	             SELECT RAISE(ABORT, 'result insert failed');
+   297	           END""",
+   298	        """CREATE TRIGGER fail_session_completion
+   299	           BEFORE UPDATE OF status ON sessions
+   300	           WHEN NEW.status='completed'
+   301	           BEGIN
+   302	             SELECT RAISE(ABORT, 'session update failed');
+   303	           END""",
+   304	    ],
+   305	)
+   306	def test_complete_session_rolls_back_failed_persistence(
+   307	    database_path,
+   308	    trigger_sql,
+   309	):
+   310	    session_id = create_current_session(database_path)
+   311	    with connect(database_path) as connection:
+   312	        connection.execute(trigger_sql)
+   313	
+   314	    with pytest.raises(sqlite3.IntegrityError):
+   315	        with connect(database_path) as connection:
+   316	            complete_session_assessment(connection, session_id)
+   317	
+   318	    with connect(database_path) as connection:
+   319	        result_count = connection.execute(
+   320	            "SELECT COUNT(*) FROM results WHERE session_id=?",
+   321	            (session_id,),
+   322	        ).fetchone()[0]
+   323	        session = connection.execute(
+   324	            "SELECT status, completed_at FROM sessions WHERE session_id=?",
+   325	            (session_id,),
+   326	        ).fetchone()
+   327	    assert result_count == 0
+   328	    assert session["status"] == "active"
+   329	    assert session["completed_at"] is None
+
+
+-------------------- innergeodessa-mvp/tests/test_session_flow.py --------------------
+     1	from pathlib import Path
+     2	import sys
+     3	
+     4	import pytest
+     5	from fastapi.testclient import TestClient
+     6	
+     7	sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
+     8	
+     9	from app import main
+    10	from app import session_completion
+    11	from app.database import connect, initialize
+    12	from app.routers import session as session_router_module
+    13	from legacy_fixture import create_legacy_database
+    14	
+    15	
+    16	ROOT = Path(__file__).resolve().parents[1] / "backend"
+    17	ITEMS_PATH = ROOT / "data" / "items.json"
+    18	SCHEMA_PATH = ROOT / "schema.sql"
+    19	
+    20	
+    21	@pytest.fixture
+    22	def client_and_database(tmp_path, monkeypatch):
+    23	    database_path = tmp_path / "session-flow.db"
+    24	    create_legacy_database(
+    25	        database_path,
+    26	        SCHEMA_PATH,
+    27	        ITEMS_PATH,
+    28	    )
+    29	    initialize(db_path=database_path, items_path=ITEMS_PATH)
+    30	
+    31	    monkeypatch.setattr(
+    32	        session_router_module,
+    33	        "connect",
+    34	        lambda: connect(database_path),
+    35	    )
+    36	    monkeypatch.setattr(main, "initialize", lambda: None)
+    37	
+    38	    with TestClient(main.app) as client:
+    39	        yield client, database_path
+    40	
+    41	
+    42	def get_active_legacy_session(database_path):
+    43	    with connect(database_path) as connection:
+    44	        return connection.execute(
+    45	            "SELECT session_id FROM sessions "
+    46	            "WHERE status='active' "
+    47	            "AND question_bank_version='personality-legacy-v1' "
+    48	            "ORDER BY started_at LIMIT 1"
+    49	        ).fetchone()["session_id"]
+    50	
+    51	
+    52	def answer_all(client, session_id, items, value=3):
+    53	    for item in items:
+    54	        response = client.put(
+    55	            f"/api/sessions/{session_id}/answers",
+    56	            json={"item_id": item["item_id"], "value": value},
+    57	        )
+    58	        assert response.status_code == 200, response.text
+    59	
+    60	
+    61	def complete_new_session(client):
+    62	    session = client.post(
+    63	        "/api/sessions",
+    64	        json={"consent": True, "language": "en"},
+    65	    ).json()
+    66	    session_id = session["session_id"]
+    67	    items = client.get(
+    68	        f"/api/sessions/{session_id}/items"
+    69	    ).json()
+    70	    answer_all(client, session_id, items)
+    71	    completed = client.post(
+    72	        f"/api/sessions/{session_id}/complete"
+    73	    )
+    74	    assert completed.status_code == 200, completed.text
+    75	    return session, completed.json()
+    76	
+    77	
+    78	def test_legacy_active_session_uses_legacy_snapshot_and_can_complete(
+    79	    client_and_database,
+    80	):
+    81	    client, database_path = client_and_database
+    82	    session_id = get_active_legacy_session(database_path)
+    83	
+    84	    items_response = client.get(f"/api/sessions/{session_id}/items")
+    85	    assert items_response.status_code == 200
+    86	    items = items_response.json()
+    87	    assert len(items) == 72
+    88	    assert {
+    89	        item["question_bank_version"] for item in items
+    90	    } == {"personality-legacy-v1"}
+    91	
+    92	    with connect(database_path) as connection:
+    93	        current_only_item = connection.execute(
+    94	            """SELECT current.source_item_id
+    95	               FROM question_bank_items current
+    96	               LEFT JOIN question_bank_items legacy
+    97	                 ON legacy.question_bank_version='personality-legacy-v1'
+    98	                AND legacy.source_item_id=current.source_item_id
+    99	               WHERE current.question_bank_version='personality-v1.0.0'
+   100	                 AND legacy.item_record_id IS NULL
+   101	               ORDER BY current.master_order LIMIT 1"""
+   102	        ).fetchone()["source_item_id"]
+   103	
+   104	    rejected = client.put(
+   105	        f"/api/sessions/{session_id}/answers",
+   106	        json={"item_id": current_only_item, "value": 3},
+   107	    )
+   108	    assert rejected.status_code == 404
+   109	
+   110	    answer_all(client, session_id, items)
+   111	    result = client.post(f"/api/sessions/{session_id}/complete")
+   112	    assert result.status_code == 200
+   113	    assert result.json()["type"] == "ESTJ"
+   114	
+   115	
+   116	def test_new_session_uses_current_snapshot_and_can_complete(
+   117	    client_and_database,
+   118	):
+   119	    client, database_path = client_and_database
+   120	
+   121	    session_response = client.post(
+   122	        "/api/sessions",
+   123	        json={"consent": True, "language": "en"},
+   124	    )
+   125	    assert session_response.status_code == 200
+   126	    session = session_response.json()
+   127	    assert session["question_bank_version"] == "personality-v1.0.0"
+   128	
+   129	    items_response = client.get(
+   130	        f"/api/sessions/{session['session_id']}/items"
+   131	    )
+   132	    assert items_response.status_code == 200
+   133	    items = items_response.json()
+   134	    assert len(items) == 72
+   135	    assert {
+   136	        item["question_bank_version"] for item in items
+   137	    } == {"personality-v1.0.0"}
+   138	
+   139	    answer_all(client, session["session_id"], items)
+   140	    result = client.post(
+   141	        f"/api/sessions/{session['session_id']}/complete"
+   142	    )
+   143	    assert result.status_code == 200
+   144	    assert result.json() == {
+   145	        "type": "ESTJ",
+   146	        "scores": {"EI": 0, "SN": 0, "TF": 0, "JP": 0},
+   147	        "confidence": {
+   148	            "EI": 0.0,
+   149	            "SN": 0.0,
+   150	            "TF": 0.0,
+   151	            "JP": 0.0,
+   152	        },
+   153	        "answered": {"EI": 18, "SN": 18, "TF": 18, "JP": 18},
+   154	        "tie_rule": (
+   155	            "A zero score resolves to the first pole and must be "
+   156	            "reported as low differentiation."
+   157	        ),
+   158	    }
+   159	
+   160	    with connect(database_path) as connection:
+   161	        assert connection.execute(
+   162	            "SELECT COUNT(*) FROM session_question_items WHERE session_id=?",
+   163	            (session["session_id"],),
+   164	        ).fetchone()[0] == 72
+   165	
+   166	
+   167	@pytest.mark.parametrize("value", ["3", 3.0, True, False, 0, 6])
+   168	def test_answer_api_rejects_non_strict_or_out_of_range_values(
+   169	    client_and_database,
+   170	    value,
+   171	):
+   172	    client, _database_path = client_and_database
+   173	    session = client.post(
+   174	        "/api/sessions",
+   175	        json={"consent": True, "language": "en"},
+   176	    ).json()
+   177	    item = client.get(
+   178	        f"/api/sessions/{session['session_id']}/items"
+   179	    ).json()[0]
+   180	
+   181	    response = client.put(
+   182	        f"/api/sessions/{session['session_id']}/answers",
+   183	        json={"item_id": item["item_id"], "value": value},
+   184	    )
+   185	
+   186	    assert response.status_code == 422
+   187	
+   188	
+   189	def test_completed_session_can_retrieve_persisted_result(
+   190	    client_and_database,
+   191	    monkeypatch,
+   192	):
+   193	    client, _database_path = client_and_database
+   194	    session, completed = complete_new_session(client)
+   195	
+   196	    def reject_rescoring(*_args, **_kwargs):
+   197	        raise AssertionError("GET result must not run the scorer")
+   198	
+   199	    monkeypatch.setattr(
+   200	        session_completion,
+   201	        "score_assessment",
+   202	        reject_rescoring,
+   203	    )
+   204	
+   205	    response = client.get(
+   206	        f"/api/sessions/{session['session_id']}/result"
+   207	    )
+   208	
+   209	    assert response.status_code == 200
+   210	    assert response.json() == {
+   211	        "sessionId": session["session_id"],
+   212	        "status": "completed",
+   213	        "type": completed["type"],
+   214	        "scores": completed["scores"],
+   215	        "confidence": completed["confidence"],
+   216	        "answered": {
+   217	            "EI": 18,
+   218	            "SN": 18,
+   219	            "TF": 18,
+   220	            "JP": 18,
+   221	        },
+   222	        "tie_rule": completed["tie_rule"],
+   223	        "questionBankVersion": session["question_bank_version"],
+   224	        "completedAt": response.json()["completedAt"],
+   225	        "calculatedAt": response.json()["calculatedAt"],
+   226	    }
+   227	    assert response.json()["completedAt"]
+   228	    assert response.json()["calculatedAt"]
+   229	
+   230	
+   231	def test_get_result_returns_completed_scoring_values(
+   232	    client_and_database,
+   233	):
+   234	    client, _database_path = client_and_database
+   235	    session, completed = complete_new_session(client)
+   236	
+   237	    response = client.get(
+   238	        f"/api/sessions/{session['session_id']}/result"
+   239	    )
+   240	
+   241	    assert response.status_code == 200
+   242	    persisted = response.json()
+   243	    assert persisted["type"] == completed["type"]
+   244	    assert persisted["scores"] == completed["scores"]
+   245	    assert persisted["confidence"] == completed["confidence"]
+   246	    assert persisted["tie_rule"] == completed["tie_rule"]
+   247	
+   248	
+   249	def test_active_session_result_returns_conflict(
+   250	    client_and_database,
+   251	):
+   252	    client, _database_path = client_and_database
+   253	    session = client.post(
+   254	        "/api/sessions",
+   255	        json={"consent": True, "language": "en"},
+   256	    ).json()
+   257	
+   258	    response = client.get(
+   259	        f"/api/sessions/{session['session_id']}/result"
+   260	    )
+   261	
+   262	    assert response.status_code == 409
+   263	    assert response.json() == {
+   264	        "detail": "Session is not completed."
+   265	    }
+   266	
+   267	
+   268	def test_nonexistent_session_result_returns_not_found(
+   269	    client_and_database,
+   270	):
+   271	    client, _database_path = client_and_database
+   272	
+   273	    response = client.get("/api/sessions/unknown-session/result")
+   274	
+   275	    assert response.status_code == 404
+   276	    assert response.json() == {"detail": "Session not found."}
+   277	
+   278	
+   279	def test_completed_session_without_result_returns_server_error(
+   280	    client_and_database,
+   281	):
+   282	    client, database_path = client_and_database
+   283	    session, _completed = complete_new_session(client)
+   284	
+   285	    with connect(database_path) as connection:
+   286	        connection.execute(
+   287	            "DELETE FROM results WHERE session_id=?",
+   288	            (session["session_id"],),
+   289	        )
+   290	
+   291	    response = client.get(
+   292	        f"/api/sessions/{session['session_id']}/result"
+   293	    )
+   294	
+   295	    assert response.status_code == 500
+   296	    assert response.json() == {
+   297	        "detail": "Completed session result is missing."
+   298	    }
+
+
+============================================================
+9. CAREER / RIASEC SOURCE
+============================================================
+No Career/RIASEC files found.
+
+
+============================================================
+10. ZODIAC SOURCE
+============================================================
+No Zodiac files found.
+
+
+============================================================
+11. CONFIGURATION AND VALIDATION SCRIPTS
+============================================================
+
+--- package.json ---
+     1	{
+     2	  "name": "innergeodessa",
+     3	  "version": "0.1.0",
+     4	  "private": true,
+     5	  "scripts": {
+     6	    "dev": "next dev",
+     7	    "build": "next build",
+     8	    "start": "next start",
+     9	    "lint": "eslint",
+    10	    "typecheck": "tsc --noEmit",
+    11	    "validate:personalities": "tsx scripts/validate-personalities.ts",
+    12	    "validate:question-bank": "tsx scripts/validate-question-bank.ts",
+    13	    "validate:personality-bank-contract": "tsx scripts/validate-personality-bank-contract.ts",
+    14	    "validate:personality-interpreter": "tsx scripts/validate-personality-interpreter.ts",
+    15	    "validate:personality-scoring": "tsx scripts/validate-personality-scoring.ts",
+    16	    "validate:personality-sync": "tsx scripts/validate-personality-sync.ts",
+    17	    "validate:personality-parity": "tsx scripts/validate-personality-parity.ts",
+    18	    "validate:report-standard": "tsx scripts/validate-report-standard.ts",
+    19	    "validate:isfj-report": "tsx scripts/validate-isfj-report.ts",
+    20	    "validate:isfj-rules": "tsx scripts/validate-isfj-rules.ts",
+    21	    "sync:personality-items": "tsx scripts/sync-personality-items.ts",
+    22	    "check:personality-items": "tsx scripts/sync-personality-items.ts --check",
+    23	    "test:python": "cd innergeodessa-mvp && backend/.venv/bin/python -m pytest tests -v",
+    24	    "validate": "npm run validate:question-bank && npm run validate:personality-bank-contract && npm run validate:personalities && npm run validate:personality-interpreter && npm run validate:personality-scoring && npm run validate:personality-sync && npm run check:personality-items && npm run validate:personality-parity && npm run validate:report-standard && npm run validate:isfj-report && npm run validate:isfj-rules && npm run validate:report-generator && npm run validate:report-generator-boundaries && npm run validate:report-frontend && npm run validate:report-print && npm run validate:report-navigation && npm run validate:report-template && npm run validate:report-recipient-name && npm run validate:personality-expansion && npm run validate:personality-all",
+    25	    "validate:report-generator": "tsx scripts/validate-report-generator.ts",
+    26	    "validate:report-generator-boundaries": "tsx scripts/validate-report-generator-boundaries.ts",
+    27	    "validate:report-frontend": "tsx scripts/validate-report-frontend.ts",
+    28	    "validate:report-print": "tsx scripts/validate-report-print.ts",
+    29	    "validate:report-navigation": "tsx scripts/validate-report-navigation.ts",
+    30	    "validate:report-template": "tsx scripts/validate-report-template.ts",
+    31	    "validate:report-recipient-name": "tsx scripts/validate-report-recipient-name.ts",
+    32	    "validate:personality-expansion": "tsx scripts/validate-personality-expansion-standard.ts",
+    33	    "validate:personality": "tsx scripts/validate-personality-types.ts",
+    34	    "validate:personality-family": "tsx scripts/validate-personality-types.ts --family",
+    35	    "validate:personality-all": "tsx scripts/validate-personality-types.ts --all",
+    36	    "scaffold:personality": "node scripts/scaffold-personality-report.mjs",
+    37	    "validate:riasec-question-bank": "tsx scripts/validate-riasec-question-bank.ts"
+    38	  },
+    39	  "dependencies": {
+    40	    "next": "16.2.11",
+    41	    "react": "19.2.4",
+    42	    "react-dom": "19.2.4"
+    43	  },
+    44	  "devDependencies": {
+    45	    "@tailwindcss/postcss": "^4",
+    46	    "@types/node": "^20",
+    47	    "@types/react": "^19",
+    48	    "@types/react-dom": "^19",
+    49	    "babel-plugin-react-compiler": "1.0.0",
+    50	    "eslint": "^9",
+    51	    "eslint-config-next": "16.2.11",
+    52	    "tailwindcss": "^4",
+    53	    "tsx": "^4.23.1",
+    54	    "typescript": "^5"
+    55	  }
+    56	}
+
+--- MVP package.json ---
+
+--- Scripts directories ---
+./scripts/audit/personality-question-directions.ts
+./scripts/scaffold-personality-report.mjs
+./scripts/sync-personality-items.ts
+./scripts/validate-entj-report-generator.ts
+./scripts/validate-isfj-report.ts
+./scripts/validate-isfj-rules.ts
+./scripts/validate-personalities.ts
+./scripts/validate-personality-bank-contract.ts
+./scripts/validate-personality-expansion-standard.ts
+./scripts/validate-personality-interpreter.ts
+./scripts/validate-personality-parity.ts
+./scripts/validate-personality-scoring.ts
+./scripts/validate-personality-sync.ts
+./scripts/validate-personality-types.ts
+./scripts/validate-question-bank.ts
+./scripts/validate-report-frontend.ts
+./scripts/validate-report-generator-boundaries.ts
+./scripts/validate-report-generator.ts
+./scripts/validate-report-navigation.ts
+./scripts/validate-report-print.ts
+./scripts/validate-report-recipient-name.ts
+./scripts/validate-report-standard.ts
+./scripts/validate-report-template.ts
+./scripts/validate-riasec-question-bank.ts
+
+
+============================================================
+12. STATIC PYTHON VALIDATION
+============================================================
+Compile status: 0
+
+
+============================================================
+13. PYTHON TEST BASELINE
+============================================================
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Users/dupei/Documents/Jinlong/Web/innergeodessa/innergeodessa-mvp/backend/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/dupei/Documents/Jinlong/Web/innergeodessa/innergeodessa-mvp
+plugins: anyio-4.12.1
+collecting ... collected 30 items / 1 error
+
+==================================== ERRORS ====================================
+_________________ ERROR collecting tests/test_session_flow.py __________________
+backend/.venv/lib/python3.9/site-packages/pydantic/_internal/_typing_extra.py:511: in _eval_type_backport
+    return _eval_type(value, globalns, localns, type_params)
+backend/.venv/lib/python3.9/site-packages/pydantic/_internal/_typing_extra.py:564: in _eval_type
+    return typing._eval_type(  # type: ignore
+/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/typing.py:290: in _eval_type
+    return t._evaluate(globalns, localns, recursive_guard)
+/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/typing.py:546: in _evaluate
+    eval(self.__forward_code__, globalns, localns),
+<string>:1: in <module>
+    ???
+E   TypeError: unsupported operand type(s) for |: 'type' and 'NoneType'
+
+The above exception was the direct cause of the following exception:
+tests/test_session_flow.py:9: in <module>
+    from app import main
+backend/app/main.py:8: in <module>
+    from .routers import health_router, items_router, session_router
+backend/app/routers/__init__.py:3: in <module>
+    from .session import router as session_router
+backend/app/routers/session.py:10: in <module>
+    from ..schemas.session import AnswerRequest, StartRequest
+backend/app/schemas/__init__.py:1: in <module>
+    from .session import AnswerRequest, StartRequest
+backend/app/schemas/session.py:8: in <module>
+    class StartRequest(BaseModel):
+backend/.venv/lib/python3.9/site-packages/pydantic/_internal/_model_construction.py:243: in __new__
+    set_model_fields(cls, config_wrapper=config_wrapper, ns_resolver=ns_resolver)
+backend/.venv/lib/python3.9/site-packages/pydantic/_internal/_model_construction.py:579: in set_model_fields
+    fields, pydantic_extra_info, class_vars = collect_model_fields(
+backend/.venv/lib/python3.9/site-packages/pydantic/_internal/_fields.py:265: in collect_model_fields
+    type_hints = _typing_extra.get_model_type_hints(cls, ns_resolver=ns_resolver)
+backend/.venv/lib/python3.9/site-packages/pydantic/_internal/_typing_extra.py:368: in get_model_type_hints
+    hints[name] = try_eval_type(value, globalns, localns)
+backend/.venv/lib/python3.9/site-packages/pydantic/_internal/_typing_extra.py:423: in try_eval_type
+    return eval_type_backport(value, globalns, localns), True
+backend/.venv/lib/python3.9/site-packages/pydantic/_internal/_typing_extra.py:474: in eval_type_backport
+    return _eval_type_backport(value, globalns, localns, type_params)
+backend/.venv/lib/python3.9/site-packages/pydantic/_internal/_typing_extra.py:519: in _eval_type_backport
+    raise TypeError(
+E   TypeError: Unable to evaluate type annotation 'str | None'. If you are making use of the new typing syntax (unions using `|` since Python 3.10 or builtins subscripting since Python 3.9), you should either replace the use of new syntax with the existing `typing` constructs or install the `eval_type_backport` package.
+=========================== short test summary info ============================
+ERROR tests/test_session_flow.py - TypeError: Unable to evaluate type annotat...
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+=============================== 1 error in 0.70s ===============================
+
+Pytest status: 2
+
+
+============================================================
+14. FRONTEND VALIDATION
+============================================================
+
+--- Available npm scripts ---
+{
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "eslint",
+  "typecheck": "tsc --noEmit",
+  "validate:personalities": "tsx scripts/validate-personalities.ts",
+  "validate:question-bank": "tsx scripts/validate-question-bank.ts",
+  "validate:personality-bank-contract": "tsx scripts/validate-personality-bank-contract.ts",
+  "validate:personality-interpreter": "tsx scripts/validate-personality-interpreter.ts",
+  "validate:personality-scoring": "tsx scripts/validate-personality-scoring.ts",
+  "validate:personality-sync": "tsx scripts/validate-personality-sync.ts",
+  "validate:personality-parity": "tsx scripts/validate-personality-parity.ts",
+  "validate:report-standard": "tsx scripts/validate-report-standard.ts",
+  "validate:isfj-report": "tsx scripts/validate-isfj-report.ts",
+  "validate:isfj-rules": "tsx scripts/validate-isfj-rules.ts",
+  "sync:personality-items": "tsx scripts/sync-personality-items.ts",
+  "check:personality-items": "tsx scripts/sync-personality-items.ts --check",
+  "test:python": "cd innergeodessa-mvp && backend/.venv/bin/python -m pytest tests -v",
+  "validate": "npm run validate:question-bank && npm run validate:personality-bank-contract && npm run validate:personalities && npm run validate:personality-interpreter && npm run validate:personality-scoring && npm run validate:personality-sync && npm run check:personality-items && npm run validate:personality-parity && npm run validate:report-standard && npm run validate:isfj-report && npm run validate:isfj-rules && npm run validate:report-generator && npm run validate:report-generator-boundaries && npm run validate:report-frontend && npm run validate:report-print && npm run validate:report-navigation && npm run validate:report-template && npm run validate:report-recipient-name && npm run validate:personality-expansion && npm run validate:personality-all",
+  "validate:report-generator": "tsx scripts/validate-report-generator.ts",
+  "validate:report-generator-boundaries": "tsx scripts/validate-report-generator-boundaries.ts",
+  "validate:report-frontend": "tsx scripts/validate-report-frontend.ts",
+  "validate:report-print": "tsx scripts/validate-report-print.ts",
+  "validate:report-navigation": "tsx scripts/validate-report-navigation.ts",
+  "validate:report-template": "tsx scripts/validate-report-template.ts",
+  "validate:report-recipient-name": "tsx scripts/validate-report-recipient-name.ts",
+  "validate:personality-expansion": "tsx scripts/validate-personality-expansion-standard.ts",
+  "validate:personality": "tsx scripts/validate-personality-types.ts",
+  "validate:personality-family": "tsx scripts/validate-personality-types.ts --family",
+  "validate:personality-all": "tsx scripts/validate-personality-types.ts --all",
+  "scaffold:personality": "node scripts/scaffold-personality-report.mjs",
+  "validate:riasec-question-bank": "tsx scripts/validate-riasec-question-bank.ts"
+}
+
+--- TypeScript / lint validation ---
+
+> innergeodessa@0.1.0 typecheck
+> tsc --noEmit
+
+
+Frontend validation status: 0
+
+
+============================================================
+15. FINAL STATUS
+============================================================
+## work/personality-system-audit...origin/work/personality-system-audit [ahead 1]
+ M innergeodessa-mvp/backend/app/routers/session.py
+ M innergeodessa-mvp/backend/app/schemas/session.py
+?? innergeo-full-audit-20260730-142911.txt
+?? innergeodessa-mvp/backend/app/assessment_modules.py
+?? riasec-session-api-probe.txt
+ innergeodessa-mvp/backend/app/routers/session.py | 46 ++++++++++++++++++------
+ innergeodessa-mvp/backend/app/schemas/session.py |  2 ++
+ 2 files changed, 38 insertions(+), 10 deletions(-)
+
+Compile status: 0
+Pytest status: 2
+Frontend validation status: 0
+
+AUDIT REPORT CREATED:
+/Users/dupei/Documents/Jinlong/Web/innergeodessa/innergeo-full-audit-20260730-142911.txt

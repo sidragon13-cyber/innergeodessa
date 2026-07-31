@@ -27,3 +27,10 @@ export {
 } from "./dimensions";
 
 export { scoreRiasec } from "./scoring";
+
+export {
+  generateCareerReportSections,
+  type CareerReportBlock,
+  type CareerReportBlockType,
+  type CareerReportSection,
+} from "./report";
