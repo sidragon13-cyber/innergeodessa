@@ -37,7 +37,9 @@
     "validate:riasec-question-bank": "tsx scripts/validate-riasec-question-bank.ts",
     "validate:riasec-scoring": "tsx scripts/validate-riasec-scoring.ts",
     "validate:assessment-engine-boundaries": "tsx scripts/validate-assessment-engine-boundaries.ts",
-    "validate:riasec-result-contract": "tsx scripts/validate-riasec-result-contract.ts"
+    "validate:riasec-result-contract": "tsx scripts/validate-riasec-result-contract.ts",
+    "validate:zodiac-core": "tsx scripts/validate-zodiac-core.ts",
+    "validate:zodiac-timezone": "tsx scripts/validate-zodiac-timezone.ts"
   },
   "dependencies": {
     "next": "16.2.11",
