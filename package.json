@@ -42,7 +42,8 @@
     "validate:zodiac-timezone": "tsx scripts/validate-zodiac-timezone.ts",
     "validate:zodiac-astronomy": "tsx scripts/validate-zodiac-astronomy.ts",
     "validate:zodiac-utc": "tsx scripts/validate-zodiac-utc-conversion.ts",
-    "validate:zodiac-ascendant": "tsx scripts/validate-zodiac-ascendant.ts"
+    "validate:zodiac-ascendant": "tsx scripts/validate-zodiac-ascendant.ts",
+    "validate:zodiac-chart": "tsx scripts/validate-zodiac-chart-calculator.ts"
   },
   "dependencies": {
     "astronomy-engine": "2.1.19",
