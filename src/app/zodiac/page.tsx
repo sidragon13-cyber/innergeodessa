@@ -133,14 +133,6 @@ const futureConcepts = [
   "Shared-interest spaces",
 ];
 
-function ComingSoonAction({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="primary-button disabled-button" aria-disabled="true">
-      {children}
-      <span>Coming Soon</span>
-    </span>
-  );
-}
 
 function ZodiacOrbit() {
   return (
@@ -186,7 +178,7 @@ export default function ZodiacPage() {
             <li>No right or wrong identity</li>
           </ul>
           <div className="zodiac-actions">
-            <ComingSoonAction>Explore Your Sign</ComingSoonAction>
+            <a className="primary-button" href="/zodiac/test">Explore Your Birth Chart</a>
             <a className="secondary-link" href="#signs">
               Meet the Twelve Signs <span aria-hidden="true">↓</span>
             </a>
@@ -404,7 +396,7 @@ export default function ZodiacPage() {
             yourself.
           </p>
           <div className="zodiac-final-actions">
-            <ComingSoonAction>Explore Zodiac Identity</ComingSoonAction>
+            <a className="primary-button light-primary" href="/zodiac/test">Create Your Birth Chart</a>
             <a className="secondary-link light-secondary" href="/career">
               Explore Career Interests <span aria-hidden="true">↗</span>
             </a>

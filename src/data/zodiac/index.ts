@@ -5,4 +5,5 @@ export * from "./birth-contract";
 export * from "./result-contract";
 export * from "./validation";
 export * from "./web-contract";
+export * from "./locations";
 export * from "./calculation";
