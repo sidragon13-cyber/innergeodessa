@@ -46,24 +46,24 @@
       },
       "ascendant": {
         "sign": "sagittarius",
-        "degree": 18,
-        "minute": 49,
-        "second": 15,
-        "absoluteLongitude": 258.82075215630493
+        "degree": 19,
+        "minute": 11,
+        "second": 33,
+        "absoluteLongitude": 259.19241560471085
       },
       "midheaven": {
         "sign": "virgo",
-        "degree": 3,
-        "minute": 56,
-        "second": 24,
-        "absoluteLongitude": 153.93999855584957
+        "degree": 4,
+        "minute": 18,
+        "second": 52,
+        "absoluteLongitude": 154.31441223213073
       }
     },
     "engine": {
       "name": "Astronomy Engine",
       "version": "2.1.19"
     },
-    "generatedAt": "2026-08-01T11:14:31.436Z"
+    "generatedAt": "2026-08-01T12:15:07.549Z"
   },
   {
     "caseId": "london-summer-time",
@@ -114,22 +114,22 @@
         "sign": "sagittarius",
         "degree": 8,
         "minute": 1,
-        "second": 40,
-        "absoluteLongitude": 248.0276843197022
+        "second": 50,
+        "absoluteLongitude": 248.03050979743193
       },
       "midheaven": {
         "sign": "libra",
         "degree": 6,
         "minute": 45,
-        "second": 11,
-        "absoluteLongitude": 186.7530448953745
+        "second": 21,
+        "absoluteLongitude": 186.7557950023106
       }
     },
     "engine": {
       "name": "Astronomy Engine",
       "version": "2.1.19"
     },
-    "generatedAt": "2026-08-01T11:14:31.436Z"
+    "generatedAt": "2026-08-01T12:15:07.549Z"
   },
   {
     "caseId": "new-york-summer-time",
@@ -179,22 +179,22 @@
       "ascendant": {
         "sign": "gemini",
         "degree": 4,
-        "minute": 22,
-        "second": 8,
-        "absoluteLongitude": 64.3687544697853
+        "minute": 10,
+        "second": 4,
+        "absoluteLongitude": 64.1676680282792
       },
       "midheaven": {
         "sign": "aquarius",
         "degree": 10,
-        "minute": 39,
-        "second": 49,
-        "absoluteLongitude": 310.6636384724694
+        "minute": 27,
+        "second": 35,
+        "absoluteLongitude": 310.4596744464342
       }
     },
     "engine": {
       "name": "Astronomy Engine",
       "version": "2.1.19"
     },
-    "generatedAt": "2026-08-01T11:14:31.436Z"
+    "generatedAt": "2026-08-01T12:15:07.549Z"
   }
 ]

@@ -2,8 +2,6 @@ import {
   AstroTime,
   Observer,
   RotateVector,
-  Rotation_ECL_HOR,
-  Vector,
 } from "astronomy-engine";
 
 import type {
@@ -23,6 +21,11 @@ import {
 import {
   createZodiacPosition,
 } from "./astronomy-engine-adapter";
+
+import {
+  eclipticOfDateVector,
+  rotationEclipticOfDateToHorizon,
+} from "./coordinate-frames";
 
 const VECTOR_EPSILON = 1e-12;
 const MERIDIAN_EPSILON = 1e-9;
@@ -64,23 +67,6 @@ function validateCoordinates(
   }
 }
 
-function eclipticVector(
-  longitudeDegrees: number,
-  astroTime: AstroTime,
-): Vector {
-  const radians =
-    longitudeDegrees *
-    Math.PI /
-    180;
-
-  return new Vector(
-    Math.cos(radians),
-    Math.sin(radians),
-    0,
-    astroTime,
-  );
-}
-
 /**
  * Finds the two antipodal intersections between the ecliptic
  * and the observer's local meridian.
@@ -93,7 +79,7 @@ function eclipticVector(
  *
  * The local meridian is therefore the plane y = 0.
  *
- * For an ecliptic unit vector:
+ * For a true-ecliptic-of-date unit vector:
  *
  * input = [cos λ, sin λ, 0]
  *
@@ -107,7 +93,7 @@ function eclipticVector(
  */
 function calculateMeridianIntersections(
   rotation: ReturnType<
-    typeof Rotation_ECL_HOR
+    typeof rotationEclipticOfDateToHorizon
   >,
 ): readonly [number, number] {
   const a =
@@ -164,7 +150,7 @@ function calculateMidheaven(
     new AstroTime(utcDate);
 
   const eclipticToHorizon =
-    Rotation_ECL_HOR(
+    rotationEclipticOfDateToHorizon(
       utcDate,
       observer,
     );
@@ -180,7 +166,7 @@ function calculateMidheaven(
         const horizon =
           RotateVector(
             eclipticToHorizon,
-            eclipticVector(
+            eclipticOfDateVector(
               candidate,
               astroTime,
             ),

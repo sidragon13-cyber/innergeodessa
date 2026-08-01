@@ -4,6 +4,11 @@ import {
   normalizeLongitude,
 } from "../src/data/zodiac";
 
+import {
+  Observer,
+  Rotation_ECL_HOR,
+} from "astronomy-engine";
+
 function assert(
   condition: unknown,
   message: string,
@@ -30,6 +35,148 @@ function angularDistance(
   );
 }
 
+const MINUTE_QUANTIZATION_DEGREES =
+  1 / 120;
+
+const CHART_ANGLE_TOLERANCE_DEGREES =
+  0.15;
+
+function assertAngleInvariants(
+  label: string,
+  utcDate: Date,
+  latitude: number,
+  longitude: number,
+): void {
+  const first = calculateChartAngles(
+    utcDate,
+    latitude,
+    longitude,
+  );
+
+  const repeated = calculateChartAngles(
+    utcDate,
+    latitude,
+    longitude,
+  );
+
+  const later = calculateChartAngles(
+    new Date(
+      utcDate.getTime() +
+        5 * 60 * 1000,
+    ),
+    latitude,
+    longitude,
+  );
+
+  for (const point of [
+    first.ascendant,
+    first.midheaven,
+  ]) {
+    assert(
+      Number.isFinite(
+        point.zodiac.absoluteLongitude,
+      ) &&
+        point.zodiac.absoluteLongitude >= 0 &&
+        point.zodiac.absoluteLongitude < 360,
+      `${label} ${point.point} must be finite and normalized.`,
+    );
+  }
+
+  assert(
+    angularDistance(
+      first.ascendant.zodiac.absoluteLongitude,
+      first.descendant.zodiac.absoluteLongitude,
+    ) === 180,
+    `${label} ASC/DSC must be exactly opposite.`,
+  );
+
+  assert(
+    angularDistance(
+      first.midheaven.zodiac.absoluteLongitude,
+      first.imumCoeli.zodiac.absoluteLongitude,
+    ) === 180,
+    `${label} MC/IC must be exactly opposite.`,
+  );
+
+  assert(
+    first.ascendant.zodiac.absoluteLongitude ===
+      repeated.ascendant.zodiac.absoluteLongitude &&
+      first.midheaven.zodiac.absoluteLongitude ===
+        repeated.midheaven.zodiac.absoluteLongitude,
+    `${label} angle calculation must be deterministic.`,
+  );
+
+  for (const point of [
+    "ascendant",
+    "midheaven",
+  ] as const) {
+    const movement = angularDistance(
+      first[point].zodiac.absoluteLongitude,
+      later[point].zodiac.absoluteLongitude,
+    );
+
+    assert(
+      movement > 0 && movement < 5,
+      `${label} ${point} must vary continuously over five minutes; moved ${movement}°.`,
+    );
+  }
+}
+
+function legacyFrameIntersections(
+  utcDate: Date,
+  latitude: number,
+  longitude: number,
+): {
+  ascendant: readonly [number, number];
+  midheaven: readonly [number, number];
+} {
+  const rotation = Rotation_ECL_HOR(
+    utcDate,
+    new Observer(
+      latitude,
+      longitude,
+      0,
+    ),
+  );
+
+  const solve = (
+    planeAxis: 1 | 2,
+  ): readonly [number, number] => {
+    const first = normalizeLongitude(
+      Math.atan2(
+        -rotation.rot[0][planeAxis],
+        rotation.rot[1][planeAxis],
+      ) * 180 / Math.PI,
+    );
+
+    return [
+      first,
+      normalizeLongitude(first + 180),
+    ];
+  };
+
+  return {
+    ascendant: solve(2),
+    midheaven: solve(1),
+  };
+}
+
+function nearestCorrection(
+  fixed: number,
+  legacyCandidates:
+    readonly [number, number],
+): number {
+  return Math.min(
+    ...legacyCandidates.map(
+      (candidate) =>
+        angularDistance(
+          candidate,
+          fixed,
+        ),
+    ),
+  );
+}
+
 const conversion =
   convertLocalBirthTimeToUtc(
     {
@@ -52,6 +199,32 @@ const angles =
     -26.2041,
     28.0473,
   );
+
+const astroSeekAscendant =
+  240 + 19 + 11 / 60;
+
+const astroSeekMidheaven =
+  150 + 4 + 19 / 60;
+
+const effectiveExternalThreshold =
+  CHART_ANGLE_TOLERANCE_DEGREES +
+  MINUTE_QUANTIZATION_DEGREES;
+
+assert(
+  angularDistance(
+    angles.ascendant.zodiac.absoluteLongitude,
+    astroSeekAscendant,
+  ) <= effectiveExternalThreshold,
+  "Johannesburg Ascendant must agree with the Astro-Seek minute display within the configured tolerance and quantization allowance.",
+);
+
+assert(
+  angularDistance(
+    angles.midheaven.zodiac.absoluteLongitude,
+    astroSeekMidheaven,
+  ) <= effectiveExternalThreshold,
+  "Johannesburg Midheaven must agree with the Astro-Seek minute display within the configured tolerance and quantization allowance.",
+);
 
 assert(
   angles.ascendant.point ===
@@ -85,8 +258,8 @@ assert(
 
 assert(
   angles.ascendant.zodiac.degree ===
-    18,
-  "Expected ascendant at 18° Sagittarius.",
+    19,
+  "Expected ascendant at 19° Sagittarius.",
 );
 
 assert(
@@ -242,3 +415,79 @@ console.table([
         .absoluteLongitude,
   },
 ]);
+
+assertAngleInvariants(
+  "Johannesburg",
+  conversion.utcDate,
+  -26.2041,
+  28.0473,
+);
+
+assertAngleInvariants(
+  "London",
+  new Date("2000-07-01T17:45:00.000Z"),
+  51.5074,
+  -0.1278,
+);
+
+assertAngleInvariants(
+  "New York",
+  new Date("1985-08-21T03:50:00.000Z"),
+  40.7128,
+  -74.006,
+);
+
+const frameRegressionCases = [
+  {
+    utcDate: conversion.utcDate,
+    latitude: -26.2041,
+    longitude: 28.0473,
+  },
+  {
+    utcDate:
+      new Date("2000-07-01T17:45:00.000Z"),
+    latitude: 51.5074,
+    longitude: -0.1278,
+  },
+  {
+    utcDate:
+      new Date("1985-08-21T03:50:00.000Z"),
+    latitude: 40.7128,
+    longitude: -74.006,
+  },
+] as const;
+
+const frameCorrections =
+  frameRegressionCases.flatMap(
+    (testCase) => {
+      const fixed = calculateChartAngles(
+        testCase.utcDate,
+        testCase.latitude,
+        testCase.longitude,
+      );
+
+      const legacy = legacyFrameIntersections(
+        testCase.utcDate,
+        testCase.latitude,
+        testCase.longitude,
+      );
+
+      return [
+        nearestCorrection(
+          fixed.ascendant.zodiac.absoluteLongitude,
+          legacy.ascendant,
+        ),
+        nearestCorrection(
+          fixed.midheaven.zodiac.absoluteLongitude,
+          legacy.midheaven,
+        ),
+      ];
+    },
+  );
+
+assert(
+  Math.max(...frameCorrections) -
+    Math.min(...frameCorrections) >
+      0.1,
+  "Coordinate-frame correction must vary by epoch and must not be a fixed 0.36° offset.",
+);

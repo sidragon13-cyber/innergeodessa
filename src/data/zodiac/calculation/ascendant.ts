@@ -2,13 +2,16 @@ import {
   AstroTime,
   Observer,
   RotateVector,
-  Rotation_ECL_HOR,
-  Vector,
 } from "astronomy-engine";
 
 import {
   createZodiacPosition,
 } from "./astronomy-engine-adapter";
+
+import {
+  eclipticOfDateVector,
+  rotationEclipticOfDateToHorizon,
+} from "./coordinate-frames";
 
 import type {
   AscendantPosition,
@@ -63,23 +66,6 @@ function normalizeDegrees(
   ) % 360;
 }
 
-function eclipticVector(
-  longitudeDegrees: number,
-  astroTime: AstroTime,
-): Vector {
-  const radians =
-    longitudeDegrees *
-    Math.PI /
-    180;
-
-  return new Vector(
-    Math.cos(radians),
-    Math.sin(radians),
-    0,
-    astroTime,
-  );
-}
-
 /**
  * Astronomy Engine stores rotation coefficients so that RotateVector
  * evaluates:
@@ -94,7 +80,7 @@ function eclipticVector(
  *   rot[1][2] * input.y +
  *   rot[2][2] * input.z
  *
- * For an ecliptic-plane vector:
+ * For a true-ecliptic-of-date plane vector:
  *
  * input = [cos λ, sin λ, 0]
  *
@@ -105,7 +91,7 @@ function eclipticVector(
  */
 function calculateHorizonIntersections(
   rotation: ReturnType<
-    typeof Rotation_ECL_HOR
+    typeof rotationEclipticOfDateToHorizon
   >,
 ): readonly [number, number] {
   const a =
@@ -178,7 +164,7 @@ export function calculateAscendant(
     );
 
   const eclipticToHorizon =
-    Rotation_ECL_HOR(
+    rotationEclipticOfDateToHorizon(
       utcDate,
       observer,
     );
@@ -194,7 +180,7 @@ export function calculateAscendant(
         const horizon =
           RotateVector(
             eclipticToHorizon,
-            eclipticVector(
+            eclipticOfDateVector(
               candidate,
               astroTime,
             ),

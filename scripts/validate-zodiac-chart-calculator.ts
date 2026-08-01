@@ -191,8 +191,8 @@ assert(
 
 assert(
   result.ascendant.zodiac.degree ===
-    18,
-  "Expected ascendant at 18° Sagittarius.",
+    19,
+  "Expected ascendant at 19° Sagittarius.",
 );
 
 assert(
@@ -215,8 +215,8 @@ assert(
 
 assert(
   result.angles.midheaven.zodiac.degree ===
-    3,
-  "Expected Midheaven at 3° Virgo.",
+    4,
+  "Expected Midheaven at 4° Virgo.",
 );
 
 assert(
@@ -227,8 +227,8 @@ assert(
 
 assert(
   result.angles.imumCoeli.zodiac.degree ===
-    3,
-  "Expected Imum Coeli at 3° Pisces.",
+    4,
+  "Expected Imum Coeli at 4° Pisces.",
 );
 
 assert(
