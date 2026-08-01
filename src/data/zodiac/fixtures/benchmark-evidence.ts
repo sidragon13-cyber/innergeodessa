@@ -264,4 +264,75 @@ export const ZODIAC_BENCHMARK_EVIDENCE:
         midheaven: evidencePosition("libra", 6, 45, 24, 0.15),
       },
     },
+    {
+      caseId: "new-york-summer-time",
+      source: "astro-seek",
+      checkedAt: "2026-08-01T13:40:10.000Z",
+      sourceLabel: "Astro-Seek Free Birth Chart Calculator",
+      displayPrecision: "minute",
+      evidenceNote:
+        "Astro-Seek displayed the New York chart to whole arcminutes only. Seconds were unavailable, so second is recorded as 0 solely for longitude conversion; the validator applies the minute-display quantization allowance.",
+      settings: {
+        zodiacType: "Tropical",
+        coordinateMode: "Geocentric",
+        houseSystem: "Placidus",
+        daylightSavingApplied: true,
+        displayedLocation:
+          "New York, United States (40°43′N, 74°00′W)",
+        displayedUtcOffset:
+          "GMT-05:00 with DST observed / UTC-04:00 EDT",
+      },
+      utcDateTime: "1985-08-21T03:50:00.000Z",
+      offsetMinutes: -240,
+      positions: {
+        sun: evidencePosition("leo", 28, 2, 0, 0.05),
+        moon: evidencePosition("scorpio", 1, 10, 0, 0.1),
+        mercury: evidencePosition("leo", 13, 13, 0, 0.05),
+        venus: evidencePosition("cancer", 21, 45, 0, 0.05),
+        mars: evidencePosition("leo", 17, 20, 0, 0.05),
+        ascendant: evidencePosition("gemini", 4, 10, 0, 0.15),
+        midheaven: evidencePosition(
+          "aquarius",
+          10,
+          27,
+          0,
+          0.15,
+        ),
+      },
+    },
+    {
+      caseId: "new-york-summer-time",
+      source: "swiss-ephemeris",
+      checkedAt: "2026-08-01T13:40:10.000Z",
+      sourceLabel: "Astrodienst Swiss Ephemeris swetest",
+      displayPrecision: "second",
+      evidenceNote:
+        "Astrodienst official online swetest 2.10.03, using compressed Swiss Ephemeris DE441 (-eswe), tropical geocentric positions from explicit UTC input; Placidus was used only for ASC and MC. The complete New York command and raw output are recorded in docs/audits/evidence/zodiac-new-york-swiss-ephemeris-command.txt.",
+      settings: {
+        zodiacType: "Tropical",
+        coordinateMode: "Geocentric",
+        houseSystem: "Placidus",
+        daylightSavingApplied: true,
+        displayedLocation:
+          "Longitude 74.006000°W, latitude 40.712800°N",
+        displayedUtcOffset: "UTC-04:00 / -240 minutes EDT",
+      },
+      utcDateTime: "1985-08-21T03:50:00.000Z",
+      offsetMinutes: -240,
+      positions: {
+        sun: evidencePosition("leo", 28, 2, 32, 0.05),
+        moon: evidencePosition("scorpio", 1, 10, 51, 0.1),
+        mercury: evidencePosition("leo", 13, 13, 0, 0.05),
+        venus: evidencePosition("cancer", 21, 45, 12, 0.05),
+        mars: evidencePosition("leo", 17, 20, 8, 0.05),
+        ascendant: evidencePosition("gemini", 4, 10, 12, 0.15),
+        midheaven: evidencePosition(
+          "aquarius",
+          10,
+          27,
+          42,
+          0.15,
+        ),
+      },
+    },
   ];

@@ -1,0 +1,76 @@
+New York Zodiac benchmark — Astrodienst official online swetest
+Execution date: 2026-08-01
+Client platform: Darwin x86_64
+Official tool page: https://www.astro.com/swisseph/swetest.htm?lang=e
+swetest version: 2.10.03
+Swiss Ephemeris mode: -eswe, compressed DE441
+Ephemeris files: Astrodienst server-managed compressed DE441 files; individual filenames are not exposed by the online interface
+Input UTC: 1985-08-21 03:50:00 UTC
+Input longitude: -74.006 degrees (West)
+Input latitude: 40.7128 degrees North
+Zodiac: tropical (default; no -sid option)
+Coordinate mode: geocentric (default; no -hel, -bary, or -topo option)
+House system: P (Placidus), used for ASC and MC
+Display precision: whole arcseconds (-roundsec)
+
+Official help confirmation for -house:
+-house[long,lat,hsys] takes longitude first and latitude second as decimal
+degrees; the help states that positive values are east and north. The New York
+west longitude is therefore supplied as -74.006. The result confirms
+geo. long -74.006000 and lat 40.712800.
+
+Command displayed by the official Astrodienst result page:
+/ulb/swetest -b21.8.1985 -n1 -s1 -fPLZ -p01234 -eswe -utc03:50:00 -roundsec -house-74.006,40.7128,P
+
+Reproduction URL:
+https://www.astro.com/cgi/swetest.cgi?b=21.8.1985&n=1&s=1&p=01234&e=-eswe&f=PLZ&arg=-utc03%3A50%3A00%20-roundsec%20-house-74.006%2C40.7128%2CP
+
+HTTP retrieval command used to independently preserve the response:
+curl -fsS --max-time 30 "https://www.astro.com/cgi/swetest.cgi?b=21.8.1985&n=1&s=1&p=01234&e=-eswe&f=PLZ&arg=-utc03%3A50%3A00%20-roundsec%20-house-74.006%2C40.7128%2CP" -o /tmp/innergeo-swetest-new-york-online.html
+
+HTTP retrieval stdout:
+(empty; response body was written to /tmp/innergeo-swetest-new-york-online.html)
+
+HTTP retrieval stderr:
+(empty)
+
+HTTP retrieval exit code: 0
+
+The official online interface does not expose the server-side swetest process
+stderr or process exit code. It returned the following complete swetest stdout;
+the successful HTTP retrieval above exited 0.
+
+swetest stdout:
+/ulb/swetest -b21.8.1985 -n1 -s1 -fPLZ -p01234 -eswe -utc03:50:00 -roundsec -house-74.006,40.7128,P
+date (dmy) 21.8.1985 greg.   3:50:00.499 UT        version 2.10.03
+UT:  2446298.659728001     delta t: 54.684668 sec
+TT:  2446298.660360926
+geo. long -74.006000, lat 40.712800, alt 0.000000
+Epsilon (t/m)     23°26'35"   23°26'28"
+Nutation          -0° 0'11"    0° 0' 7"
+Houses system P (Placidus) for long= -74° 0'22", lat=  40°42'46"
+Sun              148° 2'32" 28 le  2'32"
+Moon             211°10'51"  1 sc 10'51"
+Mercury          133°13' 0" 13 le 13' 0"
+Venus            111°45'12" 21 cn 45'12"
+Mars             137°20' 8" 17 le 20' 8"
+house  1          64°10'12"  4 ge 10'12"
+house  2          87°42'38" 27 ge 42'38"
+house  3         108°14'47" 18 cn 14'47"
+house  4         130°27'42" 10 le 27'42"
+house  5         158°55'40"  8 vi 55'40"
+house  6         198°33'15" 18 li 33'15"
+house  7         244°10'12"  4 sa 10'12"
+house  8         267°42'38" 27 sa 42'38"
+house  9         288°14'47" 18 cp 14'47"
+house 10         310°27'42" 10 aq 27'42"
+house 11         338°55'40"  8 pi 55'40"
+house 12          18°33'15" 18 ar 33'15"
+Ascendant         64°10'12"  4 ge 10'12"
+MC               310°27'42" 10 aq 27'42"
+ARMC             312°54'45" 12 aq 54'45"
+Vertex           210°58'33"  0 sc 58'33"
+equat. Asc.       45°22'43" 15 ta 22'43"
+co-Asc. W.Koch    33°52'23"  3 ta 52'23"
+co-Asc Munkasey   72°53'18" 12 ge 53'18"
+Polar Asc.       213°52'23"  3 sc 52'23"
