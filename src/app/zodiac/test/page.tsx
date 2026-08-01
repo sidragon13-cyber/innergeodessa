@@ -6,17 +6,20 @@ import {
 } from "next/navigation";
 import {
   FormEvent,
-  useMemo,
+  useEffect,
   useState,
 } from "react";
 
 import {
-  getZodiacLocationOption,
   writeStoredZodiacChart,
-  ZODIAC_LOCATION_OPTIONS,
   type BirthDataInput,
   type ZodiacChartApiResponse,
 } from "@/data/zodiac";
+import {
+  searchLocations,
+  STATIC_LOCATION_RECORDS,
+  type LocationRecord,
+} from "@/shared/location";
 
 type FormStatus =
   | "idle"
@@ -83,12 +86,20 @@ export default function ZodiacTestPage() {
     "exact" | "approximate"
   >("exact");
 
-  const [
-    locationId,
-    setLocationId,
-  ] = useState(
-    "johannesburg-za",
+  const [locationQuery, setLocationQuery] = useState(
+    "Johannesburg, South Africa",
   );
+
+  const [selectedLocation, setSelectedLocation] =
+    useState<LocationRecord | null>(
+      STATIC_LOCATION_RECORDS[0] ?? null,
+    );
+
+  const [locationResults, setLocationResults] =
+    useState<readonly LocationRecord[]>([]);
+
+  const [isLocationSearchOpen, setIsLocationSearchOpen] =
+    useState(false);
 
   const [locale, setLocale] =
     useState<"en" | "zh">("en");
@@ -101,14 +112,26 @@ export default function ZodiacTestPage() {
     setErrorMessage,
   ] = useState("");
 
-  const selectedLocation =
-    useMemo(
-      () =>
-        getZodiacLocationOption(
-          locationId,
-        ),
-      [locationId],
-    );
+  useEffect(() => {
+    let active = true;
+
+    if (!locationQuery.trim()) {
+      setLocationResults([]);
+      return () => {
+        active = false;
+      };
+    }
+
+    void searchLocations(locationQuery).then((results) => {
+      if (active) {
+        setLocationResults(results.slice(0, 8));
+      }
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [locationQuery]);
 
   async function handleSubmit(
     event:
@@ -142,8 +165,14 @@ export default function ZodiacTestPage() {
           timePrecision,
       },
 
-      location:
-        selectedLocation.location,
+      location: {
+        displayName: selectedLocation.displayName,
+        city: selectedLocation.city,
+        region: selectedLocation.region,
+        countryCode: selectedLocation.countryCode,
+        latitude: selectedLocation.latitude,
+        longitude: selectedLocation.longitude,
+      },
 
       timeZone:
         selectedLocation.timeZone,
@@ -417,32 +446,69 @@ export default function ZodiacTestPage() {
               Birth city
             </h2>
 
-            <label className="mt-5 grid gap-2">
-              <span className="text-sm font-semibold">
-                City
-              </span>
-
-              <select
-                value={locationId}
-                onChange={(event) =>
-                  setLocationId(
-                    event.target.value,
-                  )
-                }
-                className="rounded-xl border border-[#cfc9bd] bg-white px-4 py-3"
+            <div className="relative mt-5 grid gap-2">
+              <label
+                htmlFor="birth-city-search"
+                className="text-sm font-semibold"
               >
-                {ZODIAC_LOCATION_OPTIONS.map(
-                  (option) => (
-                    <option
-                      key={option.id}
-                      value={option.id}
-                    >
-                      {option.label}
-                    </option>
-                  ),
-                )}
-              </select>
-            </label>
+                City
+              </label>
+
+              <input
+                id="birth-city-search"
+                type="search"
+                value={locationQuery}
+                placeholder="Search by city, alias, or country"
+                autoComplete="off"
+                role="combobox"
+                aria-expanded={isLocationSearchOpen}
+                aria-controls="location-search-results"
+                aria-autocomplete="list"
+                onFocus={() => setIsLocationSearchOpen(true)}
+                onChange={(event) => {
+                  setLocationQuery(event.target.value);
+                  setSelectedLocation(null);
+                  setIsLocationSearchOpen(true);
+                }}
+                className="rounded-xl border border-[#cfc9bd] bg-white px-4 py-3"
+              />
+
+              {isLocationSearchOpen && locationQuery.trim() ? (
+                <div
+                  id="location-search-results"
+                  role="listbox"
+                  className="absolute left-0 right-0 top-full z-10 mt-2 max-h-72 overflow-y-auto rounded-2xl border border-[#cfc9bd] bg-white p-2 shadow-lg"
+                >
+                  {locationResults.length > 0 ? (
+                    locationResults.map((location) => (
+                      <button
+                        key={location.id}
+                        type="button"
+                        role="option"
+                        aria-selected={selectedLocation?.id === location.id}
+                        onClick={() => {
+                          setSelectedLocation(location);
+                          setLocationQuery(location.displayName);
+                          setIsLocationSearchOpen(false);
+                        }}
+                        className="block w-full rounded-xl px-3 py-3 text-left hover:bg-[#f7f4ee] focus:bg-[#f7f4ee]"
+                      >
+                        <span className="block font-semibold">
+                          {location.displayName}
+                        </span>
+                        <span className="mt-1 block text-xs text-[#68756d]">
+                          {location.region} · {location.timeZone}
+                        </span>
+                      </button>
+                    ))
+                  ) : (
+                    <p className="px-3 py-4 text-sm text-[#68756d]">
+                      No matching cities.
+                    </p>
+                  )}
+                </div>
+              ) : null}
+            </div>
 
             {selectedLocation ? (
               <div className="mt-4 rounded-2xl bg-[#f7f4ee] p-4 text-sm leading-6 text-[#58645d]">
@@ -455,13 +521,11 @@ export default function ZodiacTestPage() {
                 <p>
                   Coordinates:{" "}
                   {
-                    selectedLocation
-                      .location.latitude
+                    selectedLocation.latitude
                   }
                   ,{" "}
                   {
-                    selectedLocation
-                      .location.longitude
+                    selectedLocation.longitude
                   }
                 </p>
               </div>
