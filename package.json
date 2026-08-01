@@ -48,7 +48,8 @@
     "validate:zodiac-web-contract": "tsx scripts/validate-zodiac-web-contract.ts",
     "validate:zodiac-report-foundation": "tsx scripts/validate-zodiac-report-foundation.ts",
     "validate:zodiac-report-generator": "tsx scripts/validate-zodiac-report-generator.ts",
-    "validate:zodiac-storage": "tsx scripts/validate-zodiac-storage.ts"
+    "validate:zodiac-storage": "tsx scripts/validate-zodiac-storage.ts",
+    "validate:zodiac-benchmarks": "tsx scripts/validate-zodiac-benchmark-fixtures.ts"
   },
   "dependencies": {
     "astronomy-engine": "2.1.19",
