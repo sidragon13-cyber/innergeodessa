@@ -193,4 +193,75 @@ export const ZODIAC_BENCHMARK_EVIDENCE:
         midheaven: evidencePosition("virgo", 4, 18, 57, 0.15),
       },
     },
+    {
+      caseId: "london-summer-time",
+      source: "astro-seek",
+      checkedAt: "2026-08-01T13:26:49.000Z",
+      sourceLabel: "Astro-Seek Free Birth Chart Calculator",
+      displayPrecision: "minute",
+      evidenceNote:
+        "Astro-Seek displayed the London chart to whole arcminutes only. Seconds were unavailable, so second is recorded as 0 solely for longitude conversion; the validator applies the minute-display quantization allowance.",
+      settings: {
+        zodiacType: "Tropical",
+        coordinateMode: "Geocentric",
+        houseSystem: "Placidus",
+        daylightSavingApplied: true,
+        displayedLocation:
+          "London, United Kingdom (51°30′N, 0°08′W)",
+        displayedUtcOffset:
+          "GMT+00:00 with DST observed / UTC+01:00 BST",
+      },
+      utcDateTime: "2000-07-01T17:45:00.000Z",
+      offsetMinutes: 60,
+      positions: {
+        sun: evidencePosition("cancer", 10, 10, 0, 0.05),
+        moon: evidencePosition("cancer", 9, 14, 0, 0.1),
+        mercury: evidencePosition("cancer", 17, 31, 0, 0.05),
+        venus: evidencePosition("cancer", 15, 44, 0, 0.05),
+        mars: evidencePosition("cancer", 10, 8, 0, 0.05),
+        ascendant: evidencePosition(
+          "sagittarius",
+          8,
+          1,
+          0,
+          0.15,
+        ),
+        midheaven: evidencePosition("libra", 6, 44, 0, 0.15),
+      },
+    },
+    {
+      caseId: "london-summer-time",
+      source: "swiss-ephemeris",
+      checkedAt: "2026-08-01T13:26:49.000Z",
+      sourceLabel: "Astrodienst Swiss Ephemeris swetest",
+      displayPrecision: "second",
+      evidenceNote:
+        "Astrodienst official online swetest 2.10.03, using compressed Swiss Ephemeris DE441 (-eswe), tropical geocentric positions from explicit UTC input; Placidus was used only for ASC and MC. The complete London command and raw output are recorded in docs/audits/evidence/zodiac-london-swiss-ephemeris-command.txt.",
+      settings: {
+        zodiacType: "Tropical",
+        coordinateMode: "Geocentric",
+        houseSystem: "Placidus",
+        daylightSavingApplied: true,
+        displayedLocation:
+          "Longitude 0.127800°W, latitude 51.507400°N",
+        displayedUtcOffset: "UTC+01:00 / 60 minutes BST",
+      },
+      utcDateTime: "2000-07-01T17:45:00.000Z",
+      offsetMinutes: 60,
+      positions: {
+        sun: evidencePosition("cancer", 10, 10, 21, 0.05),
+        moon: evidencePosition("cancer", 9, 14, 1, 0.1),
+        mercury: evidencePosition("cancer", 17, 31, 12, 0.05),
+        venus: evidencePosition("cancer", 15, 44, 42, 0.05),
+        mars: evidencePosition("cancer", 10, 8, 57, 0.05),
+        ascendant: evidencePosition(
+          "sagittarius",
+          8,
+          1,
+          52,
+          0.15,
+        ),
+        midheaven: evidencePosition("libra", 6, 45, 24, 0.15),
+      },
+    },
   ];
