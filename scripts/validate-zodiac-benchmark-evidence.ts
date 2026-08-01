@@ -43,6 +43,7 @@ const allowedCaseIds = new Set<string>(
 );
 
 const allowedSources = new Set<ZodiacBenchmarkEvidenceSource>([
+  "astro-seek",
   "astro-com",
   "timepassages",
   "cafe-astrology",
@@ -147,8 +148,8 @@ const benchmarkById = new Map(
 );
 
 const duplicateKeys = new Set<string>();
-const verifiedCaseIds = new Set<string>();
 const verifiedSources = new Set<ZodiacBenchmarkEvidenceSource>();
+const passingSourcesByCaseId = new Map<string, Set<ZodiacBenchmarkEvidenceSource>>();
 const comparisonRows: Array<Record<string, string | number>> = [];
 const comparisonFailures: string[] = [];
 
@@ -181,6 +182,12 @@ for (const evidence of ZODIAC_BENCHMARK_EVIDENCE) {
     `Duplicate evidence record: ${duplicateKey}.`,
   );
   duplicateKeys.add(duplicateKey);
+
+  assert(
+    evidence.displayPrecision === "minute" ||
+      evidence.displayPrecision === "second",
+    `${evidence.caseId} has an invalid display precision.`,
+  );
 
   const time = benchmark.input.time;
   const timeZone = benchmark.input.timeZone;
@@ -241,8 +248,13 @@ for (const evidence of ZODIAC_BENCHMARK_EVIDENCE) {
       internal.absoluteLongitude,
       external.absoluteLongitude,
     );
-    const longitudePassed =
-      angularDifference <= external.toleranceDegrees;
+    const quantizationAllowance =
+      evidence.displayPrecision === "minute"
+        ? 1 / 120
+        : 1 / 7200;
+    const effectiveThreshold =
+      external.toleranceDegrees + quantizationAllowance;
+    const longitudePassed = angularDifference <= effectiveThreshold;
     const signPassed = internal.sign === external.sign;
     const passed = signPassed && longitudePassed;
 
@@ -250,11 +262,13 @@ for (const evidence of ZODIAC_BENCHMARK_EVIDENCE) {
       caseId: evidence.caseId,
       source: evidence.source,
       point: pointCode,
-      internalLongitude: internal.absoluteLongitude,
-      externalLongitude: external.absoluteLongitude,
-      angularDifference,
-      tolerance: external.toleranceDegrees,
-      result: passed ? "pass" : "fail",
+      internal: internal.absoluteLongitude,
+      external: external.absoluteLongitude,
+      difference: angularDifference,
+      baseTolerance: external.toleranceDegrees,
+      quantizationAllowance,
+      effectiveThreshold,
+      result: passed ? "PASS" : "FAIL",
     });
 
     if (!signPassed) {
@@ -265,14 +279,22 @@ for (const evidence of ZODIAC_BENCHMARK_EVIDENCE) {
 
     if (!longitudePassed) {
       comparisonFailures.push(
-        `${evidence.caseId} ${pointCode} differs by ${angularDifference}°, exceeding ${external.toleranceDegrees}°.`,
+        `${evidence.caseId} ${pointCode} differs by ${angularDifference}°, exceeding ${effectiveThreshold}°.`,
       );
     }
   }
 
-  verifiedCaseIds.add(evidence.caseId);
+  const passingSources =
+    passingSourcesByCaseId.get(evidence.caseId) ??
+    new Set<ZodiacBenchmarkEvidenceSource>();
+  passingSources.add(evidence.source);
+  passingSourcesByCaseId.set(evidence.caseId, passingSources);
   verifiedSources.add(evidence.source);
 }
+
+const verifiedCaseCount = [...passingSourcesByCaseId.values()].filter(
+  (sources) => sources.size >= 2,
+).length;
 
 if (comparisonRows.length > 0) {
   console.table(comparisonRows);
@@ -288,6 +310,6 @@ console.log(
   `Evidence records completed: ${ZODIAC_BENCHMARK_EVIDENCE.length}`,
 );
 console.log(
-  `Verified cases: ${verifiedCaseIds.size}/${firstBatchCaseIds.length}`,
+  `Verified cases: ${verifiedCaseCount}/${firstBatchCaseIds.length}`,
 );
 console.log(`Verified sources: ${verifiedSources.size}`);

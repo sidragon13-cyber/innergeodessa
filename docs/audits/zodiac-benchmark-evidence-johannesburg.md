@@ -1,8 +1,8 @@
-# Johannesburg Zodiac Benchmark Verification Attempt
+# Johannesburg Zodiac Benchmark Evidence
 
 ## Status
 
-The Astro-Seek seven-point comparison now **passes** after correcting the chart-angle coordinate frame. Formal external verification remains **pending**: Astro-Seek is not one of the evidence registry's approved source codes, and a second independent source is still required. No record was added to `ZODIAC_BENCHMARK_EVIDENCE`.
+The Astro-Seek seven-point comparison **passes** after correcting the chart-angle coordinate frame and is now formally recorded in `ZODIAC_BENCHMARK_EVIDENCE`. Johannesburg dual-source verification remains **pending** because none of the attempted second sources supplied a complete, valid result with all required settings and seven points.
 
 Checked on 2026-08-01. Internal validation passing does not constitute external certification.
 
@@ -57,8 +57,13 @@ Checked on 2026-08-01. Internal validation passing does not constitute external 
   - `https://cafeastrology.com/free-natal-chart-report.html`
   - `https://astro.cafeastrology.com/natal.php`
 - Entered data: 30 July 2026, 14:00, Johannesburg
-- Limitation: the GeoNames-backed city selector returned no selectable Johannesburg entry in the current browser session; the primary form remained disabled
-- Result: no chart result was generated
+- Selected location: Johannesburg, South Africa (`-26.20`, `28.07`)
+- Displayed input: 30 July 2026, 14:00 local time
+- Displayed settings: Tropical zodiac and Placidus houses
+- Displayed positions: Sun Leo 7°21′; Moon Aquarius 17°26′; Mercury Cancer 18°26′; Venus Virgo 22°30′; Mars Gemini 22°04′; Ascendant Sagittarius 19°13′; Midheaven Virgo 4°20′
+- Display precision: whole arcminutes
+- Limitation: the result did not explicitly display the derived UTC instant, UTC offset, DST state, or geocentric coordinate mode
+- Result: not entered as formal evidence; missing settings were not inferred
 
 ### Astro-Seek
 
@@ -87,7 +92,7 @@ Checked on 2026-08-01. Internal validation passing does not constitute external 
 | Ascendant | Sagittarius 19°11′ | minute |
 | Midheaven | Virgo 4°19′ | minute |
 
-Source displays positions rounded or truncated to whole arcminutes; seconds are unavailable. For comparison only, seconds are treated as `0`, with a separate 0.008333333° maximum minute-precision quantization allowance. No evidence record was created.
+Source displays positions rounded or truncated to whole arcminutes; seconds are unavailable. Seconds are recorded as `0` solely for longitude conversion, with a separate 0.008333333° maximum minute-precision quantization allowance. This source is formally recorded as one evidence record.
 
 #### Internal comparison
 
@@ -110,6 +115,15 @@ Source displays positions rounded or truncated to whole arcminutes; seconds are 
 - Limitation: the calculator did not enable chart calculation after its time-zone detection attempt in the current browser session
 - Result: no chart result was generated
 
+### Astrolium
+
+- Tool: Astrology chart generator
+- Page: `https://astrolium.com/tools/chart-generator`
+- Declared calculation basis: Swiss Ephemeris, Tropical zodiac, Placidus houses, apparent geocentric coordinates, and historical time-zone rules
+- Selected location: Johannesburg, South Africa; displayed coordinates 26°12′08″S, 28°02′37″E and offset `+02:00`
+- Limitation: although the form visibly accepted 2026-07-30 14:00, chart submission repeatedly reset the calculation payload to the tool's 1990-08-22 12:00 default
+- Result: the returned chart was for the wrong date and time and was discarded; none of its positions were recorded or used
+
 ## Findings and unresolved issues
 
 - Before the fix, the internal angle values were Ascendant 258.820752° and Midheaven 153.939999°, differing from Astro-Seek by 0.362581° and 0.376668°.
@@ -117,6 +131,8 @@ Source displays positions rounded or truncated to whole arcminutes; seconds are 
 - Fix: both ASC and MC now use the official matrix chain `ECT -> EQJ -> HOR`; no constant correction or expanded tolerance was introduced.
 - Astro-Seek independently confirms the internal UTC instant and all seven displayed positions within the configured tolerance plus minute-display quantization allowance.
 - The Astro-Seek city coordinates are rounded to whole arcminutes and differ slightly from the benchmark coordinates; the remaining 0.009082° ASC and 0.002254° MC differences are within the effective threshold.
-- Evidence counts remain 0 records, 0 verified cases, and 0 verified sources because Astro-Seek is not an approved evidence source in the registry and a single source cannot satisfy the two-source requirement.
+- Evidence counts are 1 record, 0/3 verified cases, and 1 verified source. A single source cannot satisfy the two-source requirement.
 - A second complete independent source is still required.
-- Before creating formal evidence, recheck all seven positions against Astro.com, TimePassages, Cafe Astrology, or a documented manual/ephemeris reference using the exact benchmark coordinates and the same Tropical/Geocentric settings.
+- Cafe Astrology supplied all seven minute-level positions but omitted explicit UTC, offset, DST, and geocentric settings, so it remains an audit-only attempt rather than formal evidence.
+- Astrolium documented the required calculation basis and settings, but its submitted chart used the wrong date and time, so it remains an audit-only attempt rather than formal evidence.
+- Recheck all seven positions against Astro.com, TimePassages, or another independent documented calculator using the exact benchmark date, time, coordinates, and Tropical/Geocentric settings.

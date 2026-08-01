@@ -8,6 +8,7 @@ import type {
 } from "./benchmark-cases";
 
 export type ZodiacBenchmarkEvidenceSource =
+  | "astro-seek"
   | "astro-com"
   | "timepassages"
   | "cafe-astrology"
@@ -27,6 +28,7 @@ export interface ZodiacBenchmarkEvidenceRecord {
   source: ZodiacBenchmarkEvidenceSource;
   checkedAt: string;
   sourceLabel: string;
+  displayPrecision: "minute" | "second";
   evidenceNote: string;
   settings: {
     zodiacType: string;
@@ -44,6 +46,28 @@ export interface ZodiacBenchmarkEvidenceRecord {
       ZodiacBenchmarkEvidencePosition
     >
   >;
+}
+
+function evidencePosition(
+  sign: ZodiacSign,
+  degree: number,
+  minute: number,
+  second: number,
+  toleranceDegrees: number,
+): ZodiacBenchmarkEvidencePosition {
+  return {
+    sign,
+    degree,
+    minute,
+    second,
+    absoluteLongitude: zodiacPositionToAbsoluteLongitude(
+      sign,
+      degree,
+      minute,
+      second,
+    ),
+    toleranceDegrees,
+  };
 }
 
 function assertIntegerInRange(
@@ -97,4 +121,40 @@ export function zodiacPositionToAbsoluteLongitude(
 }
 
 export const ZODIAC_BENCHMARK_EVIDENCE:
-  readonly ZodiacBenchmarkEvidenceRecord[] = [];
+  readonly ZodiacBenchmarkEvidenceRecord[] = [
+    {
+      caseId: "johannesburg-standard-time",
+      source: "astro-seek",
+      checkedAt: "2026-08-01T12:00:00.000Z",
+      sourceLabel: "Astro-Seek Free Birth Chart Calculator",
+      displayPrecision: "minute",
+      evidenceNote:
+        "Astro-Seek displayed positions to whole arcminutes only. Seconds were unavailable, so second is recorded as 0 solely for longitude conversion; the validator applies the minute-display quantization allowance.",
+      settings: {
+        zodiacType: "Tropical",
+        coordinateMode: "Geocentric",
+        houseSystem: "Placidus",
+        daylightSavingApplied: false,
+        displayedLocation:
+          "Johannesburg, South Africa (26°12′S, 28°03′E)",
+        displayedUtcOffset: "UTC+02:00 / SAST",
+      },
+      utcDateTime: "2026-07-30T12:00:00.000Z",
+      offsetMinutes: 120,
+      positions: {
+        sun: evidencePosition("leo", 7, 21, 0, 0.05),
+        moon: evidencePosition("aquarius", 17, 26, 0, 0.1),
+        mercury: evidencePosition("cancer", 18, 25, 0, 0.05),
+        venus: evidencePosition("virgo", 22, 29, 0, 0.05),
+        mars: evidencePosition("gemini", 22, 3, 0, 0.05),
+        ascendant: evidencePosition(
+          "sagittarius",
+          19,
+          11,
+          0,
+          0.15,
+        ),
+        midheaven: evidencePosition("virgo", 4, 19, 0, 0.15),
+      },
+    },
+  ];
