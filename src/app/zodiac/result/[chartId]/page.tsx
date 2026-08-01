@@ -871,24 +871,33 @@ export default function ZodiacResultPage() {
 
         <section className="mt-16 rounded-[2rem] bg-[#e7ddd0] p-7 sm:p-10">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#8a4f43]">
-            Next Stage
+            Complete Report
           </p>
 
           <h2 className="mt-3 text-3xl font-semibold">
-            Your detailed Zodiac report
-            is the next layer.
+            Continue to your detailed
+            Zodiac report.
           </h2>
 
           <p className="mt-4 max-w-3xl leading-7 text-[#58645d]">
-            The professional report will
-            combine these positions into
-            structured sections covering
-            identity, emotional patterns,
+            The complete report combines
+            these calculated positions
+            into sixteen structured
+            sections covering identity,
+            emotional patterns,
             communication, relationships,
             motivation, chart angles,
-            strengths, challenges, and
-            development themes.
+            strengths, development risks,
+            career themes, and a 90-day
+            reflection plan.
           </p>
+
+          <Link
+            href={`/zodiac/report/${chartId}`}
+            className="mt-7 inline-flex min-h-12 items-center justify-center rounded-full bg-[#17231d] px-7 py-3 font-semibold text-white"
+          >
+            View complete Zodiac report
+          </Link>
         </section>
 
         <footer className="mt-14 border-t border-[#d8d2c6] pt-8 text-sm leading-6 text-[#68756d]">

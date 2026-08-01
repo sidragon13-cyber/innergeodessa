@@ -6,4 +6,5 @@ export * from "./result-contract";
 export * from "./validation";
 export * from "./web-contract";
 export * from "./locations";
+export * from "./report";
 export * from "./calculation";
