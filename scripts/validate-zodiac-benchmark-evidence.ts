@@ -44,6 +44,7 @@ const allowedCaseIds = new Set<string>(
 
 const allowedSources = new Set<ZodiacBenchmarkEvidenceSource>([
   "astro-seek",
+  "swiss-ephemeris",
   "astro-com",
   "timepassages",
   "cafe-astrology",
@@ -251,7 +252,7 @@ for (const evidence of ZODIAC_BENCHMARK_EVIDENCE) {
     const quantizationAllowance =
       evidence.displayPrecision === "minute"
         ? 1 / 120
-        : 1 / 7200;
+        : 0;
     const effectiveThreshold =
       external.toleranceDegrees + quantizationAllowance;
     const longitudePassed = angularDifference <= effectiveThreshold;

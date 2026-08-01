@@ -2,7 +2,7 @@
 
 ## Status
 
-The Astro-Seek seven-point comparison **passes** after correcting the chart-angle coordinate frame and is now formally recorded in `ZODIAC_BENCHMARK_EVIDENCE`. Johannesburg dual-source verification remains **pending** because none of the attempted second sources supplied a complete, valid result with all required settings and seven points.
+The Astro-Seek and Astrodienst Swiss Ephemeris `swetest` seven-point comparisons both **pass** after correcting the chart-angle coordinate frame. Both are formally recorded in `ZODIAC_BENCHMARK_EVIDENCE`, so Johannesburg dual-source verification is complete.
 
 Checked on 2026-08-01. Internal validation passing does not constitute external certification.
 
@@ -124,6 +124,20 @@ Source displays positions rounded or truncated to whole arcminutes; seconds are 
 - Limitation: although the form visibly accepted 2026-07-30 14:00, chart submission repeatedly reset the calculation payload to the tool's 1990-08-22 12:00 default
 - Result: the returned chart was for the wrong date and time and was discarded; none of its positions were recorded or used
 
+### Astrodienst Swiss Ephemeris swetest
+
+- Official tool: online Swiss Ephemeris Test Page
+- Page: `https://www.astro.com/swisseph/swetest.htm?lang=e`
+- Version: `swetest` 2.10.03
+- Ephemeris mode: compressed DE441 (`-eswe`)
+- Input: 30 July 2026, `-utc12:00:00`, longitude 28.0473°E, latitude -26.2041°
+- Settings: Tropical, geocentric; Placidus (`P`) used for ASC and MC
+- Display precision: whole arcseconds (`-roundsec`)
+- Raw values: Sun Leo 7°21′18″; Moon Aquarius 17°26′53″; Mercury Cancer 18°25′46″; Venus Virgo 22°29′50″; Mars Gemini 22°03′13″; Ascendant Sagittarius 19°11′38″; Midheaven Virgo 4°18′57″
+- Result: all seven points pass their existing base tolerances with a 0° display allowance
+- Full audit: `docs/audits/zodiac-benchmark-evidence-swiss-ephemeris.md`
+- Raw command and output: `docs/audits/evidence/zodiac-johannesburg-swiss-ephemeris-command.txt`
+
 ## Findings and unresolved issues
 
 - Before the fix, the internal angle values were Ascendant 258.820752° and Midheaven 153.939999°, differing from Astro-Seek by 0.362581° and 0.376668°.
@@ -131,8 +145,8 @@ Source displays positions rounded or truncated to whole arcminutes; seconds are 
 - Fix: both ASC and MC now use the official matrix chain `ECT -> EQJ -> HOR`; no constant correction or expanded tolerance was introduced.
 - Astro-Seek independently confirms the internal UTC instant and all seven displayed positions within the configured tolerance plus minute-display quantization allowance.
 - The Astro-Seek city coordinates are rounded to whole arcminutes and differ slightly from the benchmark coordinates; the remaining 0.009082° ASC and 0.002254° MC differences are within the effective threshold.
-- Evidence counts are 1 record, 0/3 verified cases, and 1 verified source. A single source cannot satisfy the two-source requirement.
-- A second complete independent source is still required.
+- Evidence counts are 2 records, 1/3 verified cases, and 2 verified sources.
+- Astro-Seek and the Astrodienst official `swetest` service are independent external sources, so Johannesburg satisfies the dual-source requirement.
 - Cafe Astrology supplied all seven minute-level positions but omitted explicit UTC, offset, DST, and geocentric settings, so it remains an audit-only attempt rather than formal evidence.
 - Astrolium documented the required calculation basis and settings, but its submitted chart used the wrong date and time, so it remains an audit-only attempt rather than formal evidence.
-- Recheck all seven positions against Astro.com, TimePassages, or another independent documented calculator using the exact benchmark date, time, coordinates, and Tropical/Geocentric settings.
+- Remaining benchmark cases still require their own independent external evidence before broader RC coverage requirements are met.

@@ -9,6 +9,7 @@ import type {
 
 export type ZodiacBenchmarkEvidenceSource =
   | "astro-seek"
+  | "swiss-ephemeris"
   | "astro-com"
   | "timepassages"
   | "cafe-astrology"
@@ -155,6 +156,41 @@ export const ZODIAC_BENCHMARK_EVIDENCE:
           0.15,
         ),
         midheaven: evidencePosition("virgo", 4, 19, 0, 0.15),
+      },
+    },
+    {
+      caseId: "johannesburg-standard-time",
+      source: "swiss-ephemeris",
+      checkedAt: "2026-08-01T13:04:11.000Z",
+      sourceLabel: "Astrodienst Swiss Ephemeris swetest",
+      displayPrecision: "second",
+      evidenceNote:
+        "Astrodienst official online swetest 2.10.03, using compressed Swiss Ephemeris DE441 (-eswe), tropical geocentric positions from explicit UTC input; Placidus was used only for ASC and MC. The complete command and raw output are recorded in docs/audits/evidence/zodiac-johannesburg-swiss-ephemeris-command.txt.",
+      settings: {
+        zodiacType: "Tropical",
+        coordinateMode: "Geocentric",
+        houseSystem: "Placidus",
+        daylightSavingApplied: false,
+        displayedLocation:
+          "Longitude 28.047300°E, latitude 26.204100°S",
+        displayedUtcOffset: "UTC+02:00 / 120 minutes",
+      },
+      utcDateTime: "2026-07-30T12:00:00.000Z",
+      offsetMinutes: 120,
+      positions: {
+        sun: evidencePosition("leo", 7, 21, 18, 0.05),
+        moon: evidencePosition("aquarius", 17, 26, 53, 0.1),
+        mercury: evidencePosition("cancer", 18, 25, 46, 0.05),
+        venus: evidencePosition("virgo", 22, 29, 50, 0.05),
+        mars: evidencePosition("gemini", 22, 3, 13, 0.05),
+        ascendant: evidencePosition(
+          "sagittarius",
+          19,
+          11,
+          38,
+          0.15,
+        ),
+        midheaven: evidencePosition("virgo", 4, 18, 57, 0.15),
       },
     },
   ];
