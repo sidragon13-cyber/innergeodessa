@@ -196,6 +196,42 @@ assert(
 );
 
 assert(
+  result.angles.ascendant ===
+    result.ascendant,
+  "Legacy ascendant must reference angles.ascendant.",
+);
+
+assert(
+  result.angles.descendant.zodiac.sign ===
+    "gemini",
+  "Expected Gemini descendant.",
+);
+
+assert(
+  result.angles.midheaven.zodiac.sign ===
+    "virgo",
+  "Expected Virgo Midheaven.",
+);
+
+assert(
+  result.angles.midheaven.zodiac.degree ===
+    3,
+  "Expected Midheaven at 3° Virgo.",
+);
+
+assert(
+  result.angles.imumCoeli.zodiac.sign ===
+    "pisces",
+  "Expected Pisces Imum Coeli.",
+);
+
+assert(
+  result.angles.imumCoeli.zodiac.degree ===
+    3,
+  "Expected Imum Coeli at 3° Pisces.",
+);
+
+assert(
   result.limitations.length ===
     0,
   "Exact input should have no limitations.",

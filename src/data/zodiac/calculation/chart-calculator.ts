@@ -19,8 +19,8 @@ import {
 } from "./astronomy-engine-adapter";
 
 import {
-  calculateAscendant,
-} from "./ascendant";
+  calculateChartAngles,
+} from "./chart-angles";
 
 import {
   convertLocalBirthTimeToUtc,
@@ -237,8 +237,8 @@ export function calculateBirthChart(
       conversion.utcDate,
     );
 
-  const ascendant =
-    calculateAscendant(
+  const angles =
+    calculateChartAngles(
       conversion.utcDate,
       location.latitude,
       location.longitude,
@@ -276,7 +276,14 @@ export function calculateBirthChart(
     }),
 
     planets,
-    ascendant,
+
+    /**
+     * Retained for consumers using the original V1 result shape.
+     */
+    ascendant:
+      angles.ascendant,
+
+    angles,
 
     limitations:
       createLimitations(input),

@@ -38,6 +38,28 @@ export interface AscendantPosition {
   zodiac: ZodiacPosition;
 }
 
+export interface DescendantPosition {
+  point: "descendant";
+  zodiac: ZodiacPosition;
+}
+
+export interface MidheavenPosition {
+  point: "midheaven";
+  zodiac: ZodiacPosition;
+}
+
+export interface ImumCoeliPosition {
+  point: "imum-coeli";
+  zodiac: ZodiacPosition;
+}
+
+export interface ChartAngles {
+  ascendant: AscendantPosition;
+  descendant: DescendantPosition;
+  midheaven: MidheavenPosition;
+  imumCoeli: ImumCoeliPosition;
+}
+
 export interface AstrologyCalculationInput {
   localDateTime: string;
   utcDateTime: string | null;
@@ -65,7 +87,12 @@ export interface AstrologyResultContract {
     Record<AstrologyBodyCode, PlanetPosition>
   >;
 
+  /**
+   * Backward-compatible alias for angles.ascendant.
+   */
   ascendant: AscendantPosition | null;
+
+  angles: ChartAngles;
 
   limitations: readonly string[];
 
