@@ -8,10 +8,11 @@ import {
   useState,
 } from "react";
 
-import type {
-  AstrologyResultContract,
-  ZodiacPosition,
-  ZodiacSign,
+import {
+  readStoredZodiacChart,
+  type AstrologyResultContract,
+  type ZodiacPosition,
+  type ZodiacSign,
 } from "@/data/zodiac";
 
 type ResultStatus =
@@ -174,99 +175,6 @@ const POSITION_DETAILS = {
   },
 } as const;
 
-function storageKey(
-  chartId: string,
-): string {
-  return `innergeodessa-zodiac-result-${chartId}`;
-}
-
-function isRecord(
-  value: unknown,
-): value is Record<string, unknown> {
-  return (
-    typeof value === "object" &&
-    value !== null &&
-    !Array.isArray(value)
-  );
-}
-
-function isAstrologyResultContract(
-  value: unknown,
-): value is AstrologyResultContract {
-  if (
-    !isRecord(value) ||
-    value.schemaVersion !== "1.0.0" ||
-    value.module !== "zodiac" ||
-    value.calculationType !==
-      "natal-chart" ||
-    !isRecord(value.input) ||
-    !isRecord(value.planets) ||
-    !isRecord(value.angles) ||
-    !isRecord(value.engine)
-  ) {
-    return false;
-  }
-
-  const planets = value.planets;
-  const angles = value.angles;
-
-  return (
-    isRecord(planets.sun) &&
-    isRecord(planets.moon) &&
-    isRecord(planets.mercury) &&
-    isRecord(planets.venus) &&
-    isRecord(planets.mars) &&
-    isRecord(angles.ascendant) &&
-    isRecord(angles.descendant) &&
-    isRecord(angles.midheaven) &&
-    isRecord(angles.imumCoeli)
-  );
-}
-
-function readStoredResult(
-  chartId: string,
-): AstrologyResultContract | null {
-  try {
-    const key = storageKey(chartId);
-
-    const raw =
-      window.sessionStorage.getItem(key) ??
-      window.localStorage.getItem(key);
-
-    if (!raw) {
-      return null;
-    }
-
-    const parsed: unknown =
-      JSON.parse(raw);
-
-    if (
-      !isAstrologyResultContract(
-        parsed,
-      )
-    ) {
-      window.sessionStorage.removeItem(
-        key,
-      );
-
-      window.localStorage.removeItem(
-        key,
-      );
-
-      return null;
-    }
-
-    window.sessionStorage.setItem(
-      key,
-      raw,
-    );
-
-    return parsed;
-  } catch {
-    return null;
-  }
-}
-
 function formatPosition(
   position: ZodiacPosition,
 ): string {
@@ -409,7 +317,7 @@ export default function ZodiacResultPage() {
     }
 
     const storedResult =
-      readStoredResult(chartId);
+      readStoredZodiacChart(chartId);
 
     if (!storedResult) {
       setErrorMessage(

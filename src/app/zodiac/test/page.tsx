@@ -12,6 +12,7 @@ import {
 
 import {
   getZodiacLocationOption,
+  writeStoredZodiacChart,
   ZODIAC_LOCATION_OPTIONS,
   type BirthDataInput,
   type ZodiacChartApiResponse,
@@ -191,20 +192,9 @@ export default function ZodiacTestPage() {
         );
       }
 
-      const storageKey =
-        `innergeodessa-zodiac-result-${data.chartId}`;
-
-      const serializedResult =
-        JSON.stringify(data.result);
-
-      window.sessionStorage.setItem(
-        storageKey,
-        serializedResult,
-      );
-
-      window.localStorage.setItem(
-        storageKey,
-        serializedResult,
+      writeStoredZodiacChart(
+        data.chartId,
+        data.result,
       );
 
       router.push(

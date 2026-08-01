@@ -11,6 +11,7 @@ import {
 import {
   generateZodiacReportSections,
   getZodiacSignName,
+  readStoredZodiacChart,
   type AstrologyResultContract,
 } from "@/data/zodiac";
 
@@ -26,100 +27,6 @@ function createAnchor(
   return `zodiac-report-${String(
     order,
   ).padStart(2, "0")}-${id}`;
-}
-
-function storageKey(
-  chartId: string,
-): string {
-  return `innergeodessa-zodiac-result-${chartId}`;
-}
-
-function isRecord(
-  value: unknown,
-): value is Record<string, unknown> {
-  return (
-    typeof value === "object" &&
-    value !== null &&
-    !Array.isArray(value)
-  );
-}
-
-function isAstrologyResultContract(
-  value: unknown,
-): value is AstrologyResultContract {
-  if (
-    !isRecord(value) ||
-    value.schemaVersion !== "1.0.0" ||
-    value.module !== "zodiac" ||
-    value.calculationType !==
-      "natal-chart" ||
-    !isRecord(value.input) ||
-    !isRecord(value.planets) ||
-    !isRecord(value.angles) ||
-    !isRecord(value.engine)
-  ) {
-    return false;
-  }
-
-  const planets = value.planets;
-  const angles = value.angles;
-
-  return (
-    isRecord(planets.sun) &&
-    isRecord(planets.moon) &&
-    isRecord(planets.mercury) &&
-    isRecord(planets.venus) &&
-    isRecord(planets.mars) &&
-    isRecord(angles.ascendant) &&
-    isRecord(angles.descendant) &&
-    isRecord(angles.midheaven) &&
-    isRecord(angles.imumCoeli)
-  );
-}
-
-function readStoredResult(
-  chartId: string,
-): AstrologyResultContract | null {
-  try {
-    const key =
-      storageKey(chartId);
-
-    const raw =
-      sessionStorage.getItem(key) ??
-      localStorage.getItem(key);
-
-    if (!raw) {
-      return null;
-    }
-
-    const parsed: unknown =
-      JSON.parse(raw);
-
-    if (
-      !isAstrologyResultContract(
-        parsed,
-      )
-    ) {
-      sessionStorage.removeItem(key);
-      localStorage.removeItem(key);
-
-      return null;
-    }
-
-    sessionStorage.setItem(
-      key,
-      raw,
-    );
-
-    localStorage.setItem(
-      key,
-      raw,
-    );
-
-    return parsed;
-  } catch {
-    return null;
-  }
 }
 
 function formatCalculatedAt(
@@ -224,7 +131,7 @@ export default function ZodiacReportPage() {
     }
 
     const storedResult =
-      readStoredResult(chartId);
+      readStoredZodiacChart(chartId);
 
     if (!storedResult) {
       setErrorMessage(
