@@ -213,12 +213,13 @@ export default function CareerPage() {
       </Container>
 
       <section className="riasec-section" id="riasec">
-        <div className="shell">
+        <Container>
           <div className="career-section-heading">
             <div>
               <p className="eyebrow">The RIASEC framework</p>
               <h2>Six dimensions of interest</h2>
             </div>
+
             <p>
               Most people combine several dimensions. None is more valuable
               than another, and no single dimension defines your future.
@@ -232,8 +233,10 @@ export default function CareerPage() {
                   <span>0{index + 1}</span>
                   <strong aria-hidden="true">{dimension.code}</strong>
                 </div>
+
                 <h3>{dimension.title}</h3>
                 <p>{dimension.theme}</p>
+
                 <ul>
                   {dimension.examples.map((example) => (
                     <li key={example}>{example}</li>
@@ -242,7 +245,7 @@ export default function CareerPage() {
               </article>
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
       <section className="interest-pattern shell">
