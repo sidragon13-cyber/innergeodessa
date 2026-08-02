@@ -1,5 +1,6 @@
 export * from "./report-content-block";
 export * from "./report-header";
+export * from "./report-metadata";
 export * from "./report-navigation";
 export * from "./report-section";
 export * from "./report-shell";
