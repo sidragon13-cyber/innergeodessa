@@ -71,6 +71,14 @@ export default function PersonalityTestPage() {
       try {
         const sessionResponse = await fetch("/api/sessions", {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            consent: true,
+            language: "en",
+            module: "personality",
+          }),
         });
 
         const sessionData: SessionResponse = await sessionResponse.json();
