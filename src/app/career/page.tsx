@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CompassMark, SiteFooter, SiteHeader } from "@/components/home";
+
+import {
+  CompassMark,
+  SiteFooter,
+  SiteHeader,
+} from "@/components/home";
+
+import {
+  Container,
+} from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Career Interest Assessment | InnerGeodessa",
@@ -136,31 +145,45 @@ export default function CareerPage() {
     <main id="top">
       <SiteHeader homePath="/" />
 
-      <section className="career-hero shell">
+      <Container
+        as="section"
+        size="full"
+        className="career-hero max-w-[1400px] px-0 sm:px-0 lg:px-0"
+      >
         <div className="career-hero-copy">
           <p className="eyebrow">Career Interest Assessment</p>
-          <h1>Discover the work that feels meaningful to you.</h1>
+
+          <h1>
+            Discover the work that feels meaningful to you.
+          </h1>
+
           <p className="career-intro">
             Explore the environments, activities, and challenges that
             naturally hold your attention. Your interests can help reveal
             career directions worth investigating—not a single job you must
             choose.
           </p>
+
           <ul className="assessment-meta" aria-label="Assessment details">
             <li>Six interest dimensions</li>
             <li>Approximately 8–12 minutes</li>
             <li>Designed for career exploration</li>
             <li>No right or wrong answers</li>
           </ul>
+
           <div className="career-actions">
-            <ComingSoonAction>Start Assessment</ComingSoonAction>
+            <ComingSoonAction>
+              Start Assessment
+            </ComingSoonAction>
+
             <a className="secondary-link" href="#riasec">
               Explore the Six Dimensions <span aria-hidden="true">↓</span>
             </a>
           </div>
         </div>
+
         <CareerMap />
-      </section>
+      </Container>
 
       <section className="career-context shell">
         <div className="career-context-heading">
