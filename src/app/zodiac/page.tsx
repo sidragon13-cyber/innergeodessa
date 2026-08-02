@@ -210,17 +210,22 @@ export default function ZodiacPage() {
         <ZodiacOrbit />
       </Container>
 
-      <section className="zodiac-meaning shell">
+      <Container
+        as="section"
+        className="zodiac-meaning"
+      >
         <div>
           <p className="eyebrow">Our approach</p>
           <h2>What zodiac identity means here</h2>
         </div>
+
         <div className="zodiac-meaning-copy">
           <p>
             Zodiac signs can act as cultural and symbolic reference points for
             thinking about traits, patterns, hopes, contradictions, and
             relationships. A sign does not fully describe a person.
           </p>
+
           <p>
             You may identify with some themes and reject others. The value lies
             in reflection and conversation rather than certainty—playful,
@@ -228,7 +233,7 @@ export default function ZodiacPage() {
             classification.
           </p>
         </div>
-      </section>
+      </Container>
 
       <section className="signs-section" id="signs">
         <div className="shell">
