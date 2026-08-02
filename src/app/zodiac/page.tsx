@@ -371,7 +371,10 @@ export default function ZodiacPage() {
         </Container>
       </section>
 
-      <section className="guardian-section shell">
+      <Container
+        as="section"
+        className="guardian-section"
+      >
         <div className="guardian-copy">
           <p className="eyebrow">Future Geodessa connection</p>
           <h2>A symbolic story world, still to come</h2>
@@ -382,11 +385,13 @@ export default function ZodiacPage() {
             cultural, aesthetic, and storytelling objects only—not healing or
             medical tools.
           </p>
+
           <p className="future-status">
             All concepts shown here are future possibilities and are not yet
             available.
           </p>
         </div>
+
         <div className="guardian-concepts" aria-label="Future concepts">
           {futureConcepts.map((concept, index) => (
             <span key={concept}>
@@ -395,7 +400,7 @@ export default function ZodiacPage() {
             </span>
           ))}
         </div>
-      </section>
+      </Container>
 
       <section className="zodiac-community">
         <div className="zodiac-community-inner shell">
