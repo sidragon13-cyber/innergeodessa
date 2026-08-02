@@ -6,6 +6,10 @@ import {
   SiteHeader,
 } from "@/components/home";
 
+import {
+  Container,
+} from "@/components/ui";
+
 export const metadata: Metadata = {
   title: "Personality Test — InnerGeodessa",
   description:
@@ -94,34 +98,44 @@ export default function PersonalityPage() {
     <main id="top">
       <SiteHeader homePath="/" />
 
-      <section className="personality-hero shell">
+      <Container
+        as="section"
+        size="full"
+        className="personality-hero max-w-[1400px] px-0 sm:px-0 lg:px-0"
+      >
         <div className="personality-hero-copy">
           <p className="eyebrow">Personality</p>
+
           <h1>
             Understand the patterns behind how you think, decide, and engage
             with the world.
           </h1>
+
           <p className="personality-intro">
             This reflective assessment explores four broad personality
             dimensions and combines them into one of sixteen descriptive
             profiles.
           </p>
+
           <ul className="assessment-meta" aria-label="Assessment details">
             <li>72 questions</li>
             <li>8–12 minutes</li>
             <li>No account required</li>
           </ul>
+
           <div className="personality-actions">
             <PrimaryButton href="/personality/test">
               Begin the Assessment
             </PrimaryButton>
+
             <a className="secondary-link" href="#dimensions">
               How the assessment works <span aria-hidden="true">↓</span>
             </a>
           </div>
         </div>
+
         <PersonalityContour />
-      </section>
+      </Container>
 
       <section className="dimensions-section shell" id="dimensions">
         <div className="personality-section-heading">
