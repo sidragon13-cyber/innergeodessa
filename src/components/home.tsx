@@ -1,5 +1,9 @@
 import Link from "next/link";
 
+import {
+  ButtonLink,
+} from "@/components/ui";
+
 export type Product = {
   number: string;
   id: string;
@@ -68,10 +72,18 @@ export function PrimaryButton({
   const isPageAnchor = href.startsWith("#");
 
   return (
-    <Link className="primary-button" href={href}>
-      {children}
-      <span aria-hidden="true">{isPageAnchor ? "↓" : "→"}</span>
-    </Link>
+    <ButtonLink
+      href={href}
+      size="large"
+      className="primary-button"
+    >
+      <span className="inline-flex items-center gap-8">
+        {children}
+        <span aria-hidden="true">
+          {isPageAnchor ? "↓" : "→"}
+        </span>
+      </span>
+    </ButtonLink>
   );
 }
 
