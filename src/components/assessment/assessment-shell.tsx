@@ -1,6 +1,12 @@
 import type { ReactNode } from "react";
 
-import type { AssessmentViewStatus } from "./types";
+import {
+  Container,
+} from "@/components/ui";
+
+import type {
+  AssessmentViewStatus,
+} from "./types";
 
 export interface AssessmentShellProps {
   status: AssessmentViewStatus;
@@ -8,6 +14,39 @@ export interface AssessmentShellProps {
   currentIndex: number;
   itemCount: number;
   children: ReactNode;
+}
+
+function AssessmentStatusShell({
+  eyebrow,
+  title,
+  message,
+}: {
+  eyebrow: string;
+  title: string;
+  message?: string;
+}) {
+  return (
+    <main className="min-h-screen bg-[#f1eee5] text-[#20231d]">
+      <Container
+        size="content"
+        className="flex min-h-screen flex-col justify-center py-20"
+      >
+        <p className="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-[#a64a2c]">
+          {eyebrow}
+        </p>
+
+        <h1 className="font-serif text-4xl font-normal leading-tight tracking-[-0.04em] md:text-5xl">
+          {title}
+        </h1>
+
+        {message ? (
+          <p className="mt-6 max-w-2xl text-base leading-8 text-black/65">
+            {message}
+          </p>
+        ) : null}
+      </Container>
+    </main>
+  );
 }
 
 export function AssessmentShell({
@@ -19,38 +58,54 @@ export function AssessmentShell({
 }: AssessmentShellProps) {
   if (status === "loading") {
     return (
-      <main className="min-h-screen p-20">
-        <h1 className="text-4xl">Loading assessment…</h1>
-      </main>
+      <AssessmentStatusShell
+        eyebrow="Assessment"
+        title="Loading your assessment…"
+        message="Your questions and assessment session are being prepared."
+      />
     );
   }
 
   if (status === "error") {
     return (
-      <main className="min-h-screen p-20">
-        <h1 className="mb-4 text-4xl">Unable to load assessment</h1>
-        <p>{errorMessage}</p>
-      </main>
+      <AssessmentStatusShell
+        eyebrow="Unable to continue"
+        title="The assessment could not be loaded."
+        message={
+          errorMessage ||
+          "Please refresh the page and try again."
+        }
+      />
     );
   }
 
   return (
     <main className="min-h-screen bg-[#f1eee5] text-[#20231d]">
       <header className="border-b border-black/20">
-        <div className="mx-auto flex min-h-20 w-[min(100%-40px,1000px)] items-center justify-between">
-          <span className="font-serif text-xl font-bold">
-            Inner<span className="italic text-[#a64a2c]">Geodessa</span>
+        <Container
+          className="flex min-h-20 items-center justify-between gap-6"
+        >
+          <span className="font-serif text-xl font-bold tracking-[-0.04em]">
+            Inner
+            <span className="italic text-[#a64a2c]">
+              Geo
+            </span>
+            dessa
           </span>
 
-          <span className="text-xs font-bold uppercase tracking-[0.16em]">
+          <span className="text-right text-xs font-bold uppercase tracking-[0.16em]">
             Question {currentIndex + 1} of {itemCount}
           </span>
-        </div>
+        </Container>
       </header>
 
-      <section className="mx-auto w-[min(100%-40px,760px)] py-16 md:py-24">
+      <Container
+        as="section"
+        size="content"
+        className="py-16 md:py-24"
+      >
         {children}
-      </section>
+      </Container>
     </main>
   );
 }
