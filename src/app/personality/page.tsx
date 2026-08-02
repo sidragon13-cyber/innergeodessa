@@ -236,16 +236,29 @@ export default function PersonalityPage() {
         </Container>
       </section>
 
-      <section className="personality-final-cta" id="assessment">
-        <div className="shell">
+      <section
+        className="personality-final-cta"
+        id="assessment"
+      >
+        <Container>
           <CompassMark />
-          <p className="eyebrow">Personality assessment</p>
-          <h2>Ready to explore your personality?</h2>
-          <PrimaryButton href="/personality/test">Begin the Assessment</PrimaryButton>
+
+          <p className="eyebrow">
+            Personality assessment
+          </p>
+
+          <h2>
+            Ready to explore your personality?
+          </h2>
+
+          <PrimaryButton href="/personality/test">
+            Begin the Assessment
+          </PrimaryButton>
+
           <p className="final-cta-note">
             72 questions · approximately 8–12 minutes
           </p>
-        </div>
+        </Container>
       </section>
 
       <SiteFooter homePath="/" />
