@@ -272,28 +272,34 @@ export default function ZodiacPage() {
         </Container>
       </section>
 
-      <section className="more-than-sign shell">
+      <Container
+        as="section"
+        className="more-than-sign"
+      >
         <div>
           <p className="eyebrow">Leave room for complexity</p>
           <h2>More than one label</h2>
         </div>
+
         <div className="more-than-sign-copy">
           <p>
             Personality develops through biology, upbringing, culture,
             education, relationships, choices, and experience. Zodiac
             symbolism is only one possible reflective lens.
           </p>
+
           <p>
             It is normal to connect with several signs or themes—and equally
             normal to disagree with a description. You should never reshape
             yourself to fit a label.
           </p>
+
           <p className="tradition-note">
             Broader traditions may discuss moon signs, rising signs, and birth
             charts. Those calculations are outside this experience.
           </p>
         </div>
-      </section>
+      </Container>
 
       <section className="zodiac-profile-preview">
         <div className="shell">
