@@ -8,14 +8,14 @@ export function AssessmentQuestion({
   wording,
 }: AssessmentQuestionProps) {
   return (
-    <>
-      <p className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-[#a64a2c]">
+    <header className="mb-12">
+      <p className="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-[#a64a2c]">
         {eyebrow}
       </p>
 
-      <h1 className="mb-12 font-serif text-4xl leading-tight md:text-5xl">
+      <h1 className="max-w-3xl font-serif text-4xl font-normal leading-tight tracking-[-0.04em] md:text-5xl">
         {wording}
       </h1>
-    </>
+    </header>
   );
 }
