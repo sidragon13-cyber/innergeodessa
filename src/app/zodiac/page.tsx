@@ -236,12 +236,13 @@ export default function ZodiacPage() {
       </Container>
 
       <section className="signs-section" id="signs">
-        <div className="shell">
+        <Container>
           <div className="zodiac-section-heading">
             <div>
               <p className="eyebrow">Symbolic identities</p>
               <h2>Meet the twelve signs</h2>
             </div>
+
             <p>
               Each sign is often associated with a family of themes. Use them
               as invitations to reflect, not rules about how anyone must be.
@@ -255,9 +256,11 @@ export default function ZodiacPage() {
                   <span>{String(index + 1).padStart(2, "0")}</span>
                   <strong aria-hidden="true">{sign.code}</strong>
                 </div>
+
                 <p className="sign-dates">{sign.dates}</p>
                 <h3>{sign.name}</h3>
                 <p className="sign-theme">{sign.theme}</p>
+
                 <ul>
                   {sign.qualities.map((quality) => (
                     <li key={quality}>{quality}</li>
@@ -266,7 +269,7 @@ export default function ZodiacPage() {
               </article>
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
       <section className="more-than-sign shell">
