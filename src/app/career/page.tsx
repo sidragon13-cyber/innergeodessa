@@ -411,7 +411,7 @@ export default function CareerPage() {
       </Container>
 
       <section className="career-final-cta">
-        <div className="shell">
+        <Container>
           <p className="eyebrow">Your next direction</p>
           <h2>
             Your direction becomes clearer when you understand what draws you
@@ -428,7 +428,7 @@ export default function CareerPage() {
               Explore Personality <span aria-hidden="true">↗</span>
             </a>
           </div>
-        </div>
+        </Container>
       </section>
 
       <SiteFooter homePath="/" />
