@@ -15,6 +15,7 @@ import {
 import {
   ReportHeader,
   ReportMetadata,
+  ReportNavigation,
   ReportPrintButton,
   ReportSection,
   ReportShell,
@@ -252,21 +253,16 @@ export default function CareerReportPage() {
           ))}
         </div>
 
-        <div className="report-interactive-only mt-12 flex flex-wrap gap-4 border-t border-[#c8c2b5] pt-8">
-          <Link
-            href={`/career/result/${sessionId}`}
-            className="inline-flex min-h-12 items-center justify-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5]"
-          >
-            Back to career result
-          </Link>
-
-          <Link
-            href="/career"
-            className="inline-flex min-h-12 items-center justify-center border border-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em]"
-          >
-            Career overview
-          </Link>
-        </div>
+        <ReportNavigation
+          primary={{
+            href: `/career/result/${sessionId}`,
+            label: "Back to career result",
+          }}
+          secondary={{
+            href: "/career",
+            label: "Career overview",
+          }}
+        />
     </ReportShell>
   );
 }
