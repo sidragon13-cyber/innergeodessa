@@ -222,17 +222,18 @@ export default function PersonalityPage() {
       </Container>
 
       <section className="limitation-section">
-        <div className="limitation-inner shell">
+        <Container className="limitation-inner">
           <div>
             <p className="eyebrow">Use with perspective</p>
             <h2>A tool for reflection, not diagnosis.</h2>
           </div>
+
           <ul>
             {limitations.map((limitation) => (
               <li key={limitation}>{limitation}</li>
             ))}
           </ul>
-        </div>
+        </Container>
       </section>
 
       <section className="personality-final-cta" id="assessment">
