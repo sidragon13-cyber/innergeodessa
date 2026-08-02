@@ -215,7 +215,10 @@ export function ProductGrid({ products }: { products: Product[] }) {
 export function SiteFooter({ homePath = "" }: { homePath?: string }) {
   return (
     <footer className="site-footer">
-      <div className="site-footer-inner shell">
+      <Container
+        size="full"
+        className="site-footer-inner max-w-[1400px]"
+      >
         <div>
           <Link
             className="wordmark footer-wordmark"
@@ -224,8 +227,10 @@ export function SiteFooter({ homePath = "" }: { homePath?: string }) {
           >
             <Wordmark />
           </Link>
+
           <p>Self-discovery, thoughtfully mapped.</p>
         </div>
+
         <nav aria-label="Footer navigation">
           <Link href="/personality">Personality</Link>
           <Link href="/career">Career</Link>
@@ -233,7 +238,7 @@ export function SiteFooter({ homePath = "" }: { homePath?: string }) {
           <Link href={`${homePath}#trust`}>Privacy</Link>
           <Link href={`${homePath}#trust`}>Terms</Link>
         </nav>
-      </div>
+      </Container>
     </footer>
   );
 }
