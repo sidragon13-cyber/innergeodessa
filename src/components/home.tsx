@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import {
   ButtonLink,
+  Container,
 } from "@/components/ui";
 
 export type Product = {
@@ -135,25 +136,36 @@ function IdentityMap() {
 
 export function Hero() {
   return (
-    <section className="hero shell">
+    <Container
+      as="section"
+      size="full"
+      className="hero max-w-[1400px] px-0 sm:px-0 lg:px-0"
+    >
       <div className="hero-copy">
         <p className="eyebrow">Your inner coordinates</p>
+
         <h1>
           Discover who you are.
           <br />
           <em>Find where you may thrive.</em>
         </h1>
+
         <p className="hero-intro">
           Explore your personality, career interests, and zodiac identity
           through three thoughtful self-discovery experiences.
         </p>
+
         <div className="hero-action">
-          <PrimaryButton href="#explore">Start Exploring</PrimaryButton>
+          <PrimaryButton href="#explore">
+            Start Exploring
+          </PrimaryButton>
+
           <p>Begin with any test. No account required.</p>
         </div>
       </div>
+
       <IdentityMap />
-    </section>
+    </Container>
   );
 }
 
