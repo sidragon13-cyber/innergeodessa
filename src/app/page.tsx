@@ -7,6 +7,12 @@ import {
   type Product,
 } from "@/components/home";
 
+import {
+  Container,
+  Section,
+  SectionHeading,
+} from "@/components/ui";
+
 const products: Product[] = [
   {
     number: "01",
@@ -77,19 +83,27 @@ export default function Home() {
       <SiteHeader />
       <Hero />
 
-      <section className="explore-section shell" id="explore">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">Explore yourself</p>
-            <h2>Three ways to understand yourself</h2>
-          </div>
-          <p>
-            Start anywhere. Each experience offers a different lens on what
-            makes you, you.
-          </p>
-        </div>
-        <ProductGrid products={products} />
-      </section>
+      <Section
+        id="explore"
+        spacing="large"
+        className="explore-section"
+      >
+        <Container>
+          <SectionHeading
+            eyebrow="Explore yourself"
+            title="Three ways to understand yourself"
+            description={
+              <p>
+                Start anywhere. Each experience offers a different lens on what
+                makes you, you.
+              </p>
+            }
+            className="mb-14"
+          />
+
+          <ProductGrid products={products} />
+        </Container>
+      </Section>
 
       <section className="profile-section" id="how-it-works">
         <div className="profile-inner shell">
