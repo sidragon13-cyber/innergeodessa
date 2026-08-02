@@ -202,11 +202,15 @@ export default function PersonalityPage() {
         </Container>
       </section>
 
-      <section className="guidance-section shell">
+      <Container
+        as="section"
+        className="guidance-section"
+      >
         <div className="guidance-heading">
           <p className="eyebrow">Before you begin</p>
           <h2>Answer as you usually are</h2>
         </div>
+
         <div className="guidance-grid">
           {guidance.map((item, index) => (
             <article key={item}>
@@ -215,7 +219,7 @@ export default function PersonalityPage() {
             </article>
           ))}
         </div>
-      </section>
+      </Container>
 
       <section className="limitation-section">
         <div className="limitation-inner shell">
