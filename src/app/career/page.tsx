@@ -185,11 +185,15 @@ export default function CareerPage() {
         <CareerMap />
       </Container>
 
-      <section className="career-context shell">
+      <Container
+        as="section"
+        className="career-context"
+      >
         <div className="career-context-heading">
           <p className="eyebrow">Look beyond the title</p>
           <h2>Why career interests matter</h2>
         </div>
+
         <div className="career-context-copy">
           <p>
             Career decisions are shaped by more than job titles. Sustained
@@ -197,6 +201,7 @@ export default function CareerPage() {
             you want to solve, and the environments where your attention feels
             naturally engaged.
           </p>
+
           <p>
             You may prefer working with people, systems, ideas, creativity,
             structure, or practical action—and those interests may develop
@@ -205,7 +210,7 @@ export default function CareerPage() {
             experience.
           </p>
         </div>
-      </section>
+      </Container>
 
       <section className="riasec-section" id="riasec">
         <div className="shell">
