@@ -382,7 +382,10 @@ export default function CareerPage() {
         </Container>
       </section>
 
-      <section className="future-profile shell">
+      <Container
+        as="section"
+        className="future-profile"
+      >
         <div className="future-profile-copy">
           <p className="eyebrow">Future InnerGeodessa connection</p>
           <h2>More perspectives, brought together</h2>
@@ -405,7 +408,7 @@ export default function CareerPage() {
           ))}
           <CompassMark />
         </div>
-      </section>
+      </Container>
 
       <section className="career-final-cta">
         <div className="shell">
