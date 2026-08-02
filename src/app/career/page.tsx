@@ -354,11 +354,12 @@ export default function CareerPage() {
       </section>
 
       <section className="career-disclaimer">
-        <div className="career-disclaimer-inner shell">
+        <Container className="career-disclaimer-inner">
           <div>
             <p className="eyebrow">Professional context</p>
             <h2>Exploration, not a career decision</h2>
           </div>
+
           <div>
             <p>
               This assessment is designed for education, self-reflection, and
@@ -366,17 +367,19 @@ export default function CareerPage() {
               psychological, educational, recruitment, or employment
               decision.
             </p>
+
             <p>
               Career choices should also consider abilities, values,
               qualifications, personal circumstances, labour-market
               conditions, and professional guidance where appropriate.
             </p>
+
             <p className="disclaimer-source">
               Inspired by widely used RIASEC career-interest concepts. No
               endorsement by an external organisation is implied.
             </p>
           </div>
-        </div>
+        </Container>
       </section>
 
       <section className="future-profile shell">
