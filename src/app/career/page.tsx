@@ -281,7 +281,7 @@ export default function CareerPage() {
       </Container>
 
       <section className="career-results">
-        <div className="career-results-inner shell">
+        <Container className="career-results-inner">
           <div className="career-results-heading">
             <p className="eyebrow">Future result preview</p>
             <h2>What your result may include</h2>
@@ -290,6 +290,7 @@ export default function CareerPage() {
               to identify your perfect career.
             </p>
           </div>
+
           <ol>
             {resultPreview.map((item, index) => (
               <li key={item}>
@@ -298,7 +299,7 @@ export default function CareerPage() {
               </li>
             ))}
           </ol>
-        </div>
+        </Container>
       </section>
 
       <section className="beyond-section shell">
