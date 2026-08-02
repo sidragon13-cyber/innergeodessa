@@ -323,7 +323,10 @@ export default function ZodiacPage() {
         </Container>
       </section>
 
-      <section className="reflection-section shell">
+      <Container
+        as="section"
+        className="reflection-section"
+      >
         <div className="reflection-heading">
           <p className="eyebrow">Reflection, not prediction</p>
           <h2>Questions over fortune-telling</h2>
@@ -333,6 +336,7 @@ export default function ZodiacPage() {
             legal outcomes, safety, or major life decisions.
           </p>
         </div>
+
         <div className="reflection-questions">
           {reflectionQuestions.map((question, index) => (
             <p key={question}>
@@ -341,7 +345,7 @@ export default function ZodiacPage() {
             </p>
           ))}
         </div>
-      </section>
+      </Container>
 
       <section className="culture-section">
         <div className="culture-inner shell">
