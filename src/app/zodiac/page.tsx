@@ -417,7 +417,10 @@ export default function ZodiacPage() {
         </Container>
       </section>
 
-      <section className="zodiac-disclaimer shell">
+      <Container
+        as="section"
+        className="zodiac-disclaimer"
+      >
         <div>
           <p className="eyebrow">Responsible use</p>
           <h2>A reflective experience, not evidence or advice</h2>
