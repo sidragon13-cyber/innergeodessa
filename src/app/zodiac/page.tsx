@@ -1,5 +1,14 @@
 import type { Metadata } from "next";
-import { CompassMark, SiteFooter, SiteHeader } from "@/components/home";
+
+import {
+  CompassMark,
+  SiteFooter,
+  SiteHeader,
+} from "@/components/home";
+
+import {
+  Container,
+} from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Zodiac Identity | InnerGeodessa",
@@ -161,31 +170,45 @@ export default function ZodiacPage() {
     <main id="top">
       <SiteHeader homePath="/" />
 
-      <section className="zodiac-hero shell">
+      <Container
+        as="section"
+        size="full"
+        className="zodiac-hero max-w-[1400px] px-0 sm:px-0 lg:px-0"
+      >
         <div className="zodiac-hero-copy">
           <p className="eyebrow">Zodiac Identity</p>
-          <h1>Explore the stories you see in yourself.</h1>
+
+          <h1>
+            Explore the stories you see in yourself.
+          </h1>
+
           <p className="zodiac-intro">
             Zodiac traditions have connected people with symbols, seasons,
             stories, and shared identities for centuries. InnerGeodessa
             approaches them as a reflective language—not a fixed definition of
             who you are.
           </p>
+
           <ul className="assessment-meta" aria-label="Experience details">
             <li>Twelve zodiac identities</li>
             <li>Symbolic and story-based</li>
             <li>Reflection and entertainment</li>
             <li>No right or wrong identity</li>
           </ul>
+
           <div className="zodiac-actions">
-            <a className="primary-button" href="/zodiac/test">Explore Your Birth Chart</a>
+            <a className="primary-button" href="/zodiac/test">
+              Explore Your Birth Chart
+            </a>
+
             <a className="secondary-link" href="#signs">
               Meet the Twelve Signs <span aria-hidden="true">↓</span>
             </a>
           </div>
         </div>
+
         <ZodiacOrbit />
-      </section>
+      </Container>
 
       <section className="zodiac-meaning shell">
         <div>
