@@ -191,12 +191,18 @@ export default function Home() {
         </Container>
       </Section>
 
-      <section className="trust-section" id="trust">
-        <div className="trust-inner shell">
-          <div className="trust-heading">
-            <p className="eyebrow">A considered approach</p>
-            <h2>Designed for reflection, not diagnosis.</h2>
-          </div>
+      <Section
+        id="trust"
+        spacing="large"
+        className="trust-section"
+      >
+        <Container className="trust-inner">
+          <SectionHeading
+            eyebrow="A considered approach"
+            title="Designed for reflection, not diagnosis."
+            className="trust-heading"
+          />
+
           <ul>
             {trustPoints.map((point, index) => (
               <li key={point}>
@@ -205,8 +211,8 @@ export default function Home() {
               </li>
             ))}
           </ul>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       <SiteFooter />
     </main>
