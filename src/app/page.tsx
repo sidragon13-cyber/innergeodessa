@@ -159,31 +159,37 @@ export default function Home() {
         </Container>
       </Section>
 
-      <section className="value-section shell" id="about">
-        <div className="value-heading">
-          <p className="eyebrow">Thoughtful by design</p>
-          <h2>More than a label</h2>
-          <p>
-            Results are starting points for reflection—not boxes to put
-            yourself in.
+      <Section
+        id="about"
+        spacing="large"
+        className="value-section"
+      >
+        <Container>
+          <div className="value-heading">
+            <p className="eyebrow">Thoughtful by design</p>
+            <h2>More than a label</h2>
+            <p>
+              Results are starting points for reflection—not boxes to put
+              yourself in.
+            </p>
+          </div>
+
+          <div className="value-grid">
+            {values.map((value) => (
+              <article key={value.number}>
+                <span className="value-number">{value.number}</span>
+                <h3>{value.title}</h3>
+                <p>{value.description}</p>
+              </article>
+            ))}
+          </div>
+
+          <p className="future-note">
+            <span aria-hidden="true">○</span>
+            Community features are planned for a later phase.
           </p>
-        </div>
-
-        <div className="value-grid">
-          {values.map((value) => (
-            <article key={value.number}>
-              <span className="value-number">{value.number}</span>
-              <h3>{value.title}</h3>
-              <p>{value.description}</p>
-            </article>
-          ))}
-        </div>
-
-        <p className="future-note">
-          <span aria-hidden="true">○</span>
-          Community features are planned for a later phase.
-        </p>
-      </section>
+        </Container>
+      </Section>
 
       <section className="trust-section" id="trust">
         <div className="trust-inner shell">
