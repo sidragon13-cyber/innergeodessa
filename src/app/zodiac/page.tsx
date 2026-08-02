@@ -348,11 +348,12 @@ export default function ZodiacPage() {
       </Container>
 
       <section className="culture-section">
-        <div className="culture-inner shell">
+        <Container className="culture-inner">
           <div>
             <p className="eyebrow">Culture and shared stories</p>
             <h2>Traditions shaped across time and place</h2>
           </div>
+
           <div>
             <p>
               Zodiac systems developed through long historical and cultural
@@ -360,13 +361,14 @@ export default function ZodiacPage() {
               content often combines history, popular culture, storytelling,
               identity, and entertainment.
             </p>
+
             <p>
               InnerGeodessa aims to approach these traditions respectfully,
               without claiming that one simplified description represents
               every historical practice or cultural perspective.
             </p>
           </div>
-        </div>
+        </Container>
       </section>
 
       <section className="guardian-section shell">
