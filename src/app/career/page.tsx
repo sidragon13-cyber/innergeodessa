@@ -331,7 +331,7 @@ export default function CareerPage() {
       </Container>
 
       <section className="career-guidance">
-        <div className="shell">
+        <Container>
           <div className="career-section-heading">
             <div>
               <p className="eyebrow">Assessment guidance</p>
@@ -350,7 +350,7 @@ export default function CareerPage() {
               </article>
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
       <section className="career-disclaimer">
