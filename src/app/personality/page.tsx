@@ -176,7 +176,7 @@ export default function PersonalityPage() {
       </Container>
 
       <section className="result-section">
-        <div className="result-inner shell">
+        <Container className="result-inner">
           <div className="result-heading">
             <p className="eyebrow">Your result</p>
             <h2>What you will receive</h2>
@@ -185,6 +185,7 @@ export default function PersonalityPage() {
               you can carry into work, learning, and everyday life.
             </p>
           </div>
+
           <ol className="result-list">
             {resultDetails.map((detail, index) => (
               <li key={detail}>
@@ -193,11 +194,12 @@ export default function PersonalityPage() {
               </li>
             ))}
           </ol>
+
           <p className="result-note">
             Your result is generated immediately after completion. No account
             or sign-in is required.
           </p>
-        </div>
+        </Container>
       </section>
 
       <section className="guidance-section shell">
