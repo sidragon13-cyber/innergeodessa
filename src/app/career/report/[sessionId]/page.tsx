@@ -12,6 +12,10 @@ import {
   type RiasecResultContract,
 } from "@/data/career";
 
+import {
+  ReportState,
+} from "@/components/report";
+
 type LoadStatus = "loading" | "ready" | "error";
 
 function createAnchor(order: number, id: string): string {
@@ -29,48 +33,6 @@ function formatDate(value: string): string {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(date);
-}
-
-function ReportState({
-  title,
-  message,
-  sessionId,
-}: {
-  title: string;
-  message: string;
-  sessionId: string;
-}) {
-  return (
-    <main className="min-h-screen bg-[#efede5] px-6 py-20 text-[#26372d]">
-      <section className="mx-auto max-w-3xl border border-[#c8c2b5] bg-[#f7f4ec] p-8 md:p-12">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-          Career Interest Report
-        </p>
-
-        <h1 className="mt-4 text-3xl font-semibold">{title}</h1>
-
-        <p className="mt-5 leading-7 text-[#596158]">{message}</p>
-
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link
-            href={`/career/result/${sessionId}`}
-            className="inline-flex min-h-12 items-center justify-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em]"
-          >
-            <span className="text-[#f1eee5]">
-            Back to result
-            </span>
-          </Link>
-
-          <Link
-            href="/career/test"
-            className="inline-flex min-h-12 items-center border border-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em]"
-          >
-            New assessment
-          </Link>
-        </div>
-      </section>
-    </main>
-  );
 }
 
 export default function CareerReportPage() {
@@ -161,9 +123,20 @@ export default function CareerReportPage() {
   if (status === "loading") {
     return (
       <ReportState
+        eyebrow="Career Interest Report"
         title="Preparing your detailed career report…"
         message="Loading your completed RIASEC result and generating the report."
-        sessionId={sessionId}
+        actions={[
+          {
+            href: `/career/result/${sessionId}`,
+            label: "Back to result",
+          },
+          {
+            href: "/career/test",
+            label: "New assessment",
+            variant: "secondary",
+          },
+        ]}
       />
     );
   }
@@ -171,9 +144,23 @@ export default function CareerReportPage() {
   if (status === "error" || !result) {
     return (
       <ReportState
+        eyebrow="Career Interest Report"
         title="Your career report could not be loaded."
-        message={errorMessage}
-        sessionId={sessionId}
+        message={
+          errorMessage ||
+          "The completed career result is unavailable."
+        }
+        actions={[
+          {
+            href: `/career/result/${sessionId}`,
+            label: "Back to result",
+          },
+          {
+            href: "/career/test",
+            label: "New assessment",
+            variant: "secondary",
+          },
+        ]}
       />
     );
   }
