@@ -46,7 +46,11 @@ function Wordmark() {
 
 export function SiteHeader({ homePath = "" }: { homePath?: string }) {
   return (
-    <header className="site-header shell">
+    <Container
+      as="header"
+      size="full"
+      className="site-header max-w-[1400px]"
+    >
       <Link
         className="wordmark"
         href={homePath || "#top"}
@@ -54,12 +58,13 @@ export function SiteHeader({ homePath = "" }: { homePath?: string }) {
       >
         <Wordmark />
       </Link>
+
       <nav aria-label="Primary navigation">
         <Link href={`${homePath}#explore`}>Explore</Link>
         <Link href={`${homePath}#how-it-works`}>How It Works</Link>
         <Link href="/about">About</Link>
       </nav>
-    </header>
+    </Container>
   );
 }
 
