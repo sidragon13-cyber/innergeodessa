@@ -137,7 +137,11 @@ export default function PersonalityPage() {
         <PersonalityContour />
       </Container>
 
-      <section className="dimensions-section shell" id="dimensions">
+      <Container
+        as="section"
+        id="dimensions"
+        className="dimensions-section"
+      >
         <div className="personality-section-heading">
           <p className="eyebrow">The framework</p>
           <h2>Four dimensions. One profile.</h2>
@@ -151,11 +155,16 @@ export default function PersonalityPage() {
           {dimensions.map((dimension) => (
             <article className="dimension-row" key={dimension.name}>
               <span className="dimension-number">{dimension.number}</span>
+
               <div className="dimension-name">
                 <p>{dimension.name}</p>
                 <h3>{dimension.spectrum}</h3>
               </div>
-              <p className="dimension-description">{dimension.description}</p>
+
+              <p className="dimension-description">
+                {dimension.description}
+              </p>
+
               <div className="dimension-initials" aria-hidden="true">
                 <span>{dimension.initials[0]}</span>
                 <i />
@@ -164,7 +173,7 @@ export default function PersonalityPage() {
             </article>
           ))}
         </div>
-      </section>
+      </Container>
 
       <section className="result-section">
         <div className="result-inner shell">
