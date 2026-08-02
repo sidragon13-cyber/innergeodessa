@@ -436,7 +436,7 @@ export default function ZodiacPage() {
       </section>
 
       <section className="zodiac-final-cta">
-        <div className="shell">
+        <Container>
           <p className="eyebrow">Another reflective lens</p>
           <h2>
             A symbol does not define you. It can give you another way to
@@ -456,7 +456,7 @@ export default function ZodiacPage() {
               Explore Personality
             </a>
           </div>
-        </div>
+        </Container>
       </section>
 
       <SiteFooter homePath="/" />
