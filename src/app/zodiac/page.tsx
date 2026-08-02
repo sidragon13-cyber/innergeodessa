@@ -302,7 +302,7 @@ export default function ZodiacPage() {
       </Container>
 
       <section className="zodiac-profile-preview">
-        <div className="shell">
+        <Container>
           <div className="zodiac-profile-heading">
             <p className="eyebrow">Future profile preview</p>
             <h2>What a zodiac profile may include</h2>
@@ -311,6 +311,7 @@ export default function ZodiacPage() {
               personalised result or a promise of prediction accuracy.
             </p>
           </div>
+
           <ol>
             {profilePreview.map((item, index) => (
               <li key={item}>
@@ -319,7 +320,7 @@ export default function ZodiacPage() {
               </li>
             ))}
           </ol>
-        </div>
+        </Container>
       </section>
 
       <section className="reflection-section shell">
