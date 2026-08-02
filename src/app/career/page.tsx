@@ -248,7 +248,10 @@ export default function CareerPage() {
         </Container>
       </section>
 
-      <section className="interest-pattern shell">
+      <Container
+        as="section"
+        className="interest-pattern"
+      >
         <div className="interest-pattern-heading">
           <p className="eyebrow">Your interest pattern</p>
           <h2>A combination, not a rigid label</h2>
@@ -275,7 +278,7 @@ export default function CareerPage() {
             career you should pursue.
           </p>
         </div>
-      </section>
+      </Container>
 
       <section className="career-results">
         <div className="career-results-inner shell">
