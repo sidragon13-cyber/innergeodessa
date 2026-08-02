@@ -13,6 +13,7 @@ import {
 } from "@/data/career";
 
 import {
+  ReportShell,
   ReportState,
 } from "@/components/report";
 
@@ -171,8 +172,7 @@ export default function CareerReportPage() {
     .join(" · ");
 
   return (
-    <main className="personality-report min-h-screen bg-[#efede5] px-6 py-12 text-[#26372d] md:py-20">
-      <div className="personality-report-container mx-auto max-w-6xl">
+    <ReportShell>
         <header className="personality-report-header border-b border-[#c8c2b5] pb-10">
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6d746b]">
             InnerGeodessa Complete Career Interest Report
@@ -326,7 +326,6 @@ export default function CareerReportPage() {
             Career overview
           </Link>
         </div>
-      </div>
-    </main>
+    </ReportShell>
   );
 }
