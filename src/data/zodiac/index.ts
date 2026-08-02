@@ -3,6 +3,7 @@ export * from "./signs";
 export * from "./bodies";
 export * from "./birth-contract";
 export * from "./result-contract";
+export * from "./partial-result-contract";
 export * from "./validation";
 export * from "./web-contract";
 export * from "./locations";

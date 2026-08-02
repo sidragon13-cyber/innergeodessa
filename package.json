@@ -53,7 +53,8 @@
     "generate:zodiac-benchmark-snapshots": "tsx scripts/generate-zodiac-benchmark-snapshots.ts",
     "validate:zodiac-benchmark-evidence": "tsx scripts/validate-zodiac-benchmark-evidence.ts",
     "validate:zodiac-core-freeze": "tsx scripts/validate-zodiac-core-freeze.ts",
-    "validate-location-search": "tsx scripts/validate-location-search.ts"
+    "validate-location-search": "tsx scripts/validate-location-search.ts",
+    "validate:zodiac-partial-contract": "tsx scripts/validate-zodiac-partial-contract.ts"
   },
   "dependencies": {
     "astronomy-engine": "2.1.19",
