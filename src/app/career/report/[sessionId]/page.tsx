@@ -18,6 +18,7 @@ import {
   ReportPrintButton,
   ReportShell,
   ReportState,
+  ReportTableOfContents,
 } from "@/components/report";
 
 type LoadStatus = "loading" | "ready" | "error";
@@ -214,41 +215,19 @@ export default function CareerReportPage() {
           actions={<ReportPrintButton />}
         />
 
-        <nav
+        <ReportTableOfContents
           id="career-report-table-of-contents"
-          aria-label="Career report table of contents"
-          className="report-table-of-contents mt-10 border border-[#c8c2b5] bg-[#f7f4ec] p-7 md:p-9"
-        >
-          <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-            Table of contents
-          </h2>
-
-          <p className="mt-3 leading-7 text-[#596158]">
-            Navigate directly to any section of your report.
-          </p>
-
-          <ol className="mt-7 grid gap-px bg-[#d8d2c6] sm:grid-cols-2">
-            {sections.map((section) => (
-              <li key={section.id} className="bg-[#f7f4ec]">
-                <a
-                  href={`#${createAnchor(
-                    section.order,
-                    section.id,
-                  )}`}
-                  className="grid min-h-16 grid-cols-[auto_1fr] items-center gap-4 px-4 py-3"
-                >
-                  <span className="text-xs font-bold tabular-nums tracking-[0.12em] text-[#7c684d]">
-                    {String(section.order).padStart(2, "0")}
-                  </span>
-
-                  <span className="font-semibold">
-                    {section.title}
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ol>
-        </nav>
+          ariaLabel="Career report table of contents"
+          items={sections.map((section) => ({
+            id: section.id,
+            anchor: createAnchor(
+              section.order,
+              section.id,
+            ),
+            order: section.order,
+            title: section.title,
+          }))}
+        />
 
         <div className="personality-report-sections mt-12 space-y-12">
           {sections.map((section) => (
