@@ -13,6 +13,9 @@ import {
 } from "@/data/career";
 
 import {
+  ReportHeader,
+  ReportMetadata,
+  ReportPrintButton,
   ReportShell,
   ReportState,
 } from "@/components/report";
@@ -173,51 +176,43 @@ export default function CareerReportPage() {
 
   return (
     <ReportShell>
-        <header className="personality-report-header border-b border-[#c8c2b5] pb-10">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6d746b]">
-            InnerGeodessa Complete Career Interest Report
-          </p>
-
-          <div className="mt-7 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div>
-              <p className="text-sm text-[#6d746b]">
-                RIASEC professional report
-              </p>
-
-              <h1 className="mt-3 text-6xl font-semibold tracking-[0.12em] md:text-8xl">
-                {result.code}
-              </h1>
-
-              <p className="mt-5 text-xl font-semibold">
+        <ReportHeader
+          eyebrow="InnerGeodessa Complete Career Interest Report"
+          subtitle="RIASEC professional report"
+          title={result.code}
+          description={
+            <>
+              <p className="text-xl font-semibold text-[#26372d]">
                 {topNames}
               </p>
 
-              <p className="mt-4 max-w-3xl text-lg leading-8 text-[#596158]">
+              <p className="mt-4">
                 A detailed interpretation of your six career-interest
                 dimensions, preferred work environment, career fields,
                 skills, risks, and next actions.
               </p>
-            </div>
-
-            <div className="report-print-compact-block text-sm leading-6 text-[#6d746b] lg:text-right">
-              <p>Completed: {formatDate(result.completedAt)}</p>
-              <p>Question bank: {result.questionBankVersion}</p>
-              <p>Session: {sessionId.slice(0, 8)}…</p>
-
-              <button
-                type="button"
-                onClick={() => window.print()}
-                className="report-interactive-only mt-6 inline-flex min-h-12 items-center justify-center border border-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-[#34483a] hover:text-[#f1eee5]"
-              >
-                Print / Save as PDF
-              </button>
-
-              <p className="report-interactive-only mt-3 max-w-xs text-xs leading-5">
-                Disable browser headers and footers for a clean PDF.
-              </p>
-            </div>
-          </div>
-        </header>
+            </>
+          }
+          metadata={
+            <ReportMetadata
+              items={[
+                {
+                  label: "Completed",
+                  value: formatDate(result.completedAt),
+                },
+                {
+                  label: "Question bank",
+                  value: result.questionBankVersion,
+                },
+                {
+                  label: "Session",
+                  value: `${sessionId.slice(0, 8)}…`,
+                },
+              ]}
+            />
+          }
+          actions={<ReportPrintButton />}
+        />
 
         <nav
           id="career-report-table-of-contents"
