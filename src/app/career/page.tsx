@@ -302,27 +302,33 @@ export default function CareerPage() {
         </Container>
       </section>
 
-      <section className="beyond-section shell">
+      <Container
+        as="section"
+        className="beyond-section"
+      >
         <div className="beyond-heading">
           <p className="eyebrow">Flexible directions</p>
           <h2>Beyond job titles</h2>
         </div>
+
         <div className="beyond-grid">
           <p>
             One interest pattern can connect to many occupations, and the same
             occupation can feel very different across industries.
           </p>
+
           <p>
             Work environment and role design may matter as much as the title
             printed on a job description.
           </p>
+
           <p>
             People can combine interests through portfolio careers,
             entrepreneurship, interdisciplinary work, and changing roles over
             time.
           </p>
         </div>
-      </section>
+      </Container>
 
       <section className="career-guidance">
         <div className="shell">
