@@ -433,7 +433,7 @@ export default function ZodiacPage() {
           decisions should be based on reliable evidence, individual
           circumstances, and qualified professional advice where appropriate.
         </p>
-      </section>
+      </Container>
 
       <section className="zodiac-final-cta">
         <Container>
