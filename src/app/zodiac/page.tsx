@@ -403,7 +403,7 @@ export default function ZodiacPage() {
       </Container>
 
       <section className="zodiac-community">
-        <div className="zodiac-community-inner shell">
+        <Container className="zodiac-community-inner">
           <div>
             <p className="eyebrow">Future community concept</p>
             <h2>Shared signs, different stories</h2>
@@ -414,7 +414,7 @@ export default function ZodiacPage() {
             zodiac themes with personality and career interests. Community
             accounts, profiles, and discussion spaces are not yet available.
           </p>
-        </div>
+        </Container>
       </section>
 
       <section className="zodiac-disclaimer shell">
