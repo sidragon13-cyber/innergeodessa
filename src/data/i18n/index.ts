@@ -18,3 +18,12 @@ export {
 export type {
   UiDictionary,
 } from "./ui";
+
+export {
+  getPersonalityLandingDictionary,
+  personalityLandingDictionaries,
+} from "./personality";
+
+export type {
+  PersonalityLandingDictionary,
+} from "./personality";
