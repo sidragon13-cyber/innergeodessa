@@ -1,6 +1,9 @@
 import Link from "next/link";
 
 import {
+  LocaleSwitcher,
+} from "@/components/locale";
+import {
   ButtonLink,
   Container,
 } from "@/components/ui";
@@ -39,7 +42,7 @@ export function CompassMark() {
 function Wordmark() {
   return (
     <>
-      Inner<span>Geo</span>dessa
+      Inner<span>Geo</span>
     </>
   );
 }
@@ -59,11 +62,15 @@ export function SiteHeader({ homePath = "" }: { homePath?: string }) {
         <Wordmark />
       </Link>
 
-      <nav aria-label="Primary navigation">
-        <Link href={`${homePath}#explore`}>Explore</Link>
-        <Link href={`${homePath}#how-it-works`}>How It Works</Link>
-        <Link href="/about">About</Link>
-      </nav>
+      <div className="flex items-center gap-4">
+        <nav aria-label="Primary navigation">
+          <Link href={`${homePath}#explore`}>Explore</Link>
+          <Link href={`${homePath}#how-it-works`}>How It Works</Link>
+          <Link href="/about">About</Link>
+        </nav>
+
+        <LocaleSwitcher />
+      </div>
     </Container>
   );
 }
