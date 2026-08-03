@@ -17,6 +17,7 @@ import {
 
 import {
   ResultHeader,
+  ResultNavigation,
   ResultShell,
   ResultState,
 } from "@/components/result";
@@ -791,7 +792,18 @@ export default function ZodiacResultPage() {
           </Link>
         </section>
 
-        <footer className="mt-14 border-t border-[#d8d2c6] pt-8 text-sm leading-6 text-[#68756d]">
+        <ResultNavigation
+          primary={{
+            href: "/zodiac/test",
+            label: "Create another chart",
+          }}
+          secondary={{
+            href: "/zodiac",
+            label: "Back to Zodiac Identity",
+          }}
+        />
+
+        <footer className="mt-10 border-t border-[#d8d2c6] pt-8 text-sm leading-6 text-[#68756d]">
           Astrology content is intended
           for reflection, culture, and
           entertainment. It is not
