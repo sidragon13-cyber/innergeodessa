@@ -71,6 +71,11 @@ export type UiDictionary = {
       }[];
       futureNote: string;
     };
+    trust: {
+      eyebrow: string;
+      title: string;
+      points: readonly string[];
+    };
   };
   home: {
     hero: {
@@ -212,6 +217,16 @@ export const uiDictionaries: Record<
         futureNote:
           "Community features are planned for a later phase.",
       },
+      trust: {
+        eyebrow: "A considered approach",
+        title: "Designed for reflection, not diagnosis.",
+        points: [
+          "Results are designed for self-exploration and personal reflection.",
+          "InnerGeo does not provide medical or psychological diagnosis.",
+          "No account is required for the initial experience.",
+          "Privacy and user control will guide future development.",
+        ],
+      },
     },
     footer: {
       navigationLabel: "Footer navigation",
@@ -334,6 +349,16 @@ export const uiDictionaries: Record<
         ],
         futureNote:
           "社区功能计划在后续阶段开放。",
+      },
+      trust: {
+        eyebrow: "审慎而清晰的方法",
+        title: "用于自我反思，而不是医学诊断。",
+        points: [
+          "测评结果用于自我探索与个人反思。",
+          "InnerGeo 不提供医学或心理诊断。",
+          "初次体验无需注册账户。",
+          "未来开发将以隐私保护和用户控制为核心原则。",
+        ],
       },
     },
     footer: {

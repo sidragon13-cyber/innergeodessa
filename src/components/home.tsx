@@ -382,3 +382,36 @@ export function HomeValuesSection() {
     </Section>
   );
 }
+
+export function HomeTrustSection() {
+  const { locale } = useLocale();
+  const dictionary = getUiDictionary(locale);
+  const trust = dictionary.home.trust;
+
+  return (
+    <Section
+      id="trust"
+      spacing="large"
+      className="trust-section"
+    >
+      <Container className="trust-inner">
+        <SectionHeading
+          eyebrow={trust.eyebrow}
+          title={trust.title}
+          className="trust-heading"
+        />
+
+        <ul>
+          {trust.points.map((point, index) => (
+            <li key={point}>
+              <span aria-hidden="true">
+                0{index + 1}
+              </span>
+              {point}
+            </li>
+          ))}
+        </ul>
+      </Container>
+    </Section>
+  );
+}
