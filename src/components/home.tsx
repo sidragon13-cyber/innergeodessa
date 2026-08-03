@@ -1,8 +1,14 @@
+"use client";
+
 import Link from "next/link";
 
 import {
   LocaleSwitcher,
+  useLocale,
 } from "@/components/locale";
+import {
+  getUiDictionary,
+} from "@/data/i18n";
 import {
   ButtonLink,
   Container,
@@ -48,6 +54,9 @@ function Wordmark() {
 }
 
 export function SiteHeader({ homePath = "" }: { homePath?: string }) {
+  const { locale } = useLocale();
+  const dictionary = getUiDictionary(locale);
+
   return (
     <Container
       as="header"
@@ -57,16 +66,22 @@ export function SiteHeader({ homePath = "" }: { homePath?: string }) {
       <Link
         className="wordmark"
         href={homePath || "#top"}
-        aria-label="InnerGeo home"
+        aria-label={dictionary.accessibility.homeLabel}
       >
         <Wordmark />
       </Link>
 
       <div className="flex items-center gap-4">
-        <nav aria-label="Primary navigation">
-          <Link href={`${homePath}#explore`}>Explore</Link>
-          <Link href={`${homePath}#how-it-works`}>How It Works</Link>
-          <Link href="/about">About</Link>
+        <nav aria-label={dictionary.navigation.primaryLabel}>
+          <Link href={`${homePath}#explore`}>
+            {dictionary.navigation.explore}
+          </Link>
+          <Link href={`${homePath}#how-it-works`}>
+            {dictionary.navigation.howItWorks}
+          </Link>
+          <Link href="/about">
+            {dictionary.navigation.about}
+          </Link>
         </nav>
 
         <LocaleSwitcher />
