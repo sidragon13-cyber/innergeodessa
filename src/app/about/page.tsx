@@ -5,6 +5,7 @@ import {
 } from "@/components/home";
 import {
   AboutApproach,
+  AboutBoundaries,
   AboutFramework,
   AboutHero,
   AboutName,
@@ -18,17 +19,6 @@ export const metadata: Metadata = {
   description:
     "Learn how InnerGeo brings personality, career interests, symbolic identity, reflection, and future community experiences into one thoughtful self-exploration platform.",
 };
-
-const boundaries = [
-  "Diagnose mental-health or medical conditions",
-  "Replace qualified professional advice",
-  "Guarantee career or relationship outcomes",
-  "Predict future events",
-  "Determine who should be hired, promoted, accepted, or rejected",
-  "Reduce a person to a fixed label",
-  "Present symbolic content as scientific fact",
-  "Claim certainty where evidence is limited",
-];
 
 const responsibleDesign = [
   "Transparent limitations",
@@ -62,24 +52,7 @@ export default function AboutPage() {
 
       <AboutFramework />
 
-      <section className="boundaries-section shell">
-        <div className="boundaries-heading">
-          <p className="eyebrow">Clear boundaries</p>
-          <h2>What InnerGeo will not do</h2>
-          <p>
-            Trust begins with being direct about what a self-exploration
-            platform cannot responsibly claim.
-          </p>
-        </div>
-        <ul>
-          {boundaries.map((boundary, index) => (
-            <li key={boundary}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              {boundary}
-            </li>
-          ))}
-        </ul>
-      </section>
+      <AboutBoundaries />
 
       <section className="about-community">
         <div className="about-community-inner shell">

@@ -1,4 +1,5 @@
 export * from "./about-approach";
+export * from "./about-boundaries";
 export * from "./about-framework";
 export * from "./about-hero";
 export * from "./about-name";
