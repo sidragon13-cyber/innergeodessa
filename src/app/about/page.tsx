@@ -6,6 +6,7 @@ import {
 import {
   AboutApproach,
   AboutBoundaries,
+  AboutCommunity,
   AboutFramework,
   AboutHero,
   AboutName,
@@ -54,31 +55,7 @@ export default function AboutPage() {
 
       <AboutBoundaries />
 
-      <section className="about-community">
-        <div className="about-community-inner shell">
-          <div>
-            <p className="eyebrow">Future community vision</p>
-            <h2>Shared experiences, not automatic compatibility</h2>
-          </div>
-          <div>
-            <p>
-              Future connections may bring together people with similar
-              preferences, interests, goals, values, zodiac signs, or
-              development challenges.
-            </p>
-            <p>
-              Community could support comparing experiences, discussing
-              interpretations, sharing resources, supporting projects, and
-              learning from similarities and differences. Matching labels
-              alone would never guarantee meaningful compatibility.
-            </p>
-            <p className="community-status">
-              Community accounts, profiles, comments, chat, groups, and
-              messaging are not yet available.
-            </p>
-          </div>
-        </div>
-      </section>
+      <AboutCommunity />
 
       <section className="responsible-section shell">
         <div>
