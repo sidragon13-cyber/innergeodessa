@@ -15,6 +15,10 @@ import {
   type ZodiacSign,
 } from "@/data/zodiac";
 
+import {
+  ResultState,
+} from "@/components/result";
+
 type ResultStatus =
   | "loading"
   | "ready"
@@ -455,23 +459,11 @@ export default function ZodiacResultPage() {
 
   if (status === "loading") {
     return (
-      <main className="min-h-screen bg-[#f7f4ee] px-6 py-20 text-[#17231d]">
-        <div className="mx-auto max-w-5xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#8a4f43]">
-            Birth Chart Profile
-          </p>
-
-          <h1 className="mt-4 text-4xl font-semibold">
-            Preparing your chart…
-          </h1>
-
-          <p className="mt-4 max-w-2xl leading-7 text-[#58645d]">
-            Your planetary positions
-            and chart angles are being
-            loaded.
-          </p>
-        </div>
-      </main>
+      <ResultState
+        eyebrow="Birth Chart Profile"
+        title="Preparing your chart…"
+        message="Your planetary positions and chart angles are being loaded."
+      />
     );
   }
 
@@ -480,29 +472,20 @@ export default function ZodiacResultPage() {
     !result
   ) {
     return (
-      <main className="min-h-screen bg-[#f7f4ee] px-6 py-20 text-[#17231d]">
-        <div className="mx-auto max-w-3xl rounded-[2rem] border border-[#ddd8cd] bg-white p-8 shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#8a4f43]">
-            Chart unavailable
-          </p>
-
-          <h1 className="mt-4 text-3xl font-semibold">
-            We could not load this
-            birth chart.
-          </h1>
-
-          <p className="mt-4 leading-7 text-[#58645d]">
-            {errorMessage}
-          </p>
-
-          <Link
-            href="/zodiac/test"
-            className="mt-8 inline-flex rounded-full bg-[#17231d] px-6 py-3 font-semibold text-white"
-          >
-            Generate a new chart
-          </Link>
-        </div>
-      </main>
+      <ResultState
+        eyebrow="Chart unavailable"
+        title="We could not load this birth chart."
+        message={
+          errorMessage ||
+          "The calculated birth chart is unavailable."
+        }
+        actions={[
+          {
+            href: "/zodiac/test",
+            label: "Generate a new chart",
+          },
+        ]}
+      />
     );
   }
 
