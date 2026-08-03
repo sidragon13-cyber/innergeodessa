@@ -26,6 +26,7 @@ import {
 
 import {
   ResultHeader,
+  ResultNavigation,
   ResultShell,
   ResultState,
 } from "@/components/result";
@@ -628,21 +629,17 @@ export default function PersonalityResultPage() {
           </>
         )}
 
-        <div className="mt-12 flex flex-col gap-4 sm:flex-row">
-          <Link
-            href="/personality"
-            className="inline-flex min-h-12 items-center justify-center border border-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em]"
-          >
-            Personality overview
-          </Link>
-
-          <Link
-            href="/personality/test"
-            className="inline-flex min-h-12 items-center justify-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5]"
-          >
-            Take assessment again
-          </Link>
-        </div>
+        <ResultNavigation
+          className="mt-12"
+          primary={{
+            href: "/personality/test",
+            label: "Take assessment again",
+          }}
+          secondary={{
+            href: "/personality",
+            label: "Personality overview",
+          }}
+        />
     </ResultShell>
   );
 }
