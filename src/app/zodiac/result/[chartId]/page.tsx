@@ -16,6 +16,7 @@ import {
 } from "@/data/zodiac";
 
 import {
+  ResultShell,
   ResultState,
 } from "@/components/result";
 
@@ -490,8 +491,7 @@ export default function ZodiacResultPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f7f4ee] px-6 py-14 text-[#17231d]">
-      <div className="mx-auto max-w-6xl">
+    <ResultShell>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <Link
             href="/zodiac"
@@ -799,7 +799,6 @@ export default function ZodiacResultPage() {
           financial, or psychological
           advice.
         </footer>
-      </div>
-    </main>
+    </ResultShell>
   );
 }
