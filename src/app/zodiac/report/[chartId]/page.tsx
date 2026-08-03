@@ -15,6 +15,10 @@ import {
   type AstrologyResultContract,
 } from "@/data/zodiac";
 
+import {
+  ReportState,
+} from "@/components/report";
+
 type LoadStatus =
   | "loading"
   | "ready"
@@ -50,50 +54,6 @@ function formatCalculatedAt(
       timeStyle: "short",
     },
   ).format(date);
-}
-
-function ReportState({
-  title,
-  message,
-  chartId,
-}: {
-  title: string;
-  message: string;
-  chartId: string;
-}) {
-  return (
-    <main className="min-h-screen bg-[#efede5] px-6 py-20 text-[#26372d]">
-      <section className="mx-auto max-w-3xl border border-[#c8c2b5] bg-[#f7f4ec] p-8 md:p-12">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-          Zodiac Birth Chart Report
-        </p>
-
-        <h1 className="mt-4 text-3xl font-semibold">
-          {title}
-        </h1>
-
-        <p className="mt-5 leading-7 text-[#596158]">
-          {message}
-        </p>
-
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link
-            href={`/zodiac/result/${chartId}`}
-            className="inline-flex min-h-12 items-center justify-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5]"
-          >
-            Back to result
-          </Link>
-
-          <Link
-            href="/zodiac/test"
-            className="inline-flex min-h-12 items-center justify-center border border-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em]"
-          >
-            New birth chart
-          </Link>
-        </div>
-      </section>
-    </main>
-  );
 }
 
 export default function ZodiacReportPage() {
@@ -160,9 +120,20 @@ export default function ZodiacReportPage() {
   if (status === "loading") {
     return (
       <ReportState
+        eyebrow="Zodiac Birth Chart Report"
         title="Preparing your detailed Zodiac report…"
         message="Loading your calculated birth chart and generating the structured report."
-        chartId={chartId}
+        actions={[
+          {
+            href: `/zodiac/result/${chartId}`,
+            label: "Back to result",
+          },
+          {
+            href: "/zodiac/test",
+            label: "New birth chart",
+            variant: "secondary",
+          },
+        ]}
       />
     );
   }
@@ -173,9 +144,23 @@ export default function ZodiacReportPage() {
   ) {
     return (
       <ReportState
+        eyebrow="Zodiac Birth Chart Report"
         title="Your Zodiac report could not be loaded."
-        message={errorMessage}
-        chartId={chartId}
+        message={
+          errorMessage ||
+          "The calculated birth chart is unavailable."
+        }
+        actions={[
+          {
+            href: `/zodiac/result/${chartId}`,
+            label: "Back to result",
+          },
+          {
+            href: "/zodiac/test",
+            label: "New birth chart",
+            variant: "secondary",
+          },
+        ]}
       />
     );
   }
