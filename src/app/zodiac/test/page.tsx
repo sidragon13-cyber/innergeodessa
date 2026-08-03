@@ -7,14 +7,24 @@ import {
 import {
   FormEvent,
   useEffect,
+  useRef,
   useState,
 } from "react";
 
+import {
+  useLocale,
+} from "@/components/locale";
+import {
+  getZodiacTestDictionary,
+} from "@/data/i18n";
 import {
   writeStoredZodiacChart,
   type BirthDataInput,
   type ZodiacChartApiResponse,
 } from "@/data/zodiac";
+import type {
+  SupportedLocale,
+} from "@/data/shared";
 import {
   searchLocations,
   STATIC_LOCATION_RECORDS,
@@ -46,23 +56,11 @@ function createYearOptions(): number[] {
 const yearOptions =
   createYearOptions();
 
-const monthOptions = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
 export default function ZodiacTestPage() {
   const router = useRouter();
+  const { locale } = useLocale();
+  const dictionary =
+    getZodiacTestDictionary(locale);
 
   const [year, setYear] =
     useState("1990");
@@ -87,7 +85,7 @@ export default function ZodiacTestPage() {
   >("exact");
 
   const [locationQuery, setLocationQuery] = useState(
-    "Johannesburg, South Africa",
+    STATIC_LOCATION_RECORDS[0]?.displayName ?? "",
   );
 
   const [selectedLocation, setSelectedLocation] =
@@ -101,8 +99,11 @@ export default function ZodiacTestPage() {
   const [isLocationSearchOpen, setIsLocationSearchOpen] =
     useState(false);
 
-  const [locale, setLocale] =
-    useState<"en" | "zh">("en");
+  const [reportLocale, setReportLocale] =
+    useState<SupportedLocale>(locale);
+
+  const reportLocaleWasChanged =
+    useRef(false);
 
   const [status, setStatus] =
     useState<FormStatus>("idle");
@@ -111,6 +112,12 @@ export default function ZodiacTestPage() {
     errorMessage,
     setErrorMessage,
   ] = useState("");
+
+  useEffect(() => {
+    if (!reportLocaleWasChanged.current) {
+      setReportLocale(locale);
+    }
+  }, [locale]);
 
   useEffect(() => {
     let active = true;
@@ -145,7 +152,7 @@ export default function ZodiacTestPage() {
     if (!selectedLocation) {
       setStatus("error");
       setErrorMessage(
-        "Please select a valid birth city.",
+        dictionary.errors.invalidBirthCity,
       );
       return;
     }
@@ -177,8 +184,10 @@ export default function ZodiacTestPage() {
       timeZone:
         selectedLocation.timeZone,
 
-      locale,
+      locale: reportLocale,
     };
+
+    let apiErrorMessage: string | null = null;
 
     try {
       const response = await fetch(
@@ -212,13 +221,13 @@ export default function ZodiacTestPage() {
                 .join(" ")}`
             : "";
 
-        throw new Error(
-          `${
+        apiErrorMessage = `${
             !data.ok
               ? data.error
-              : "The chart could not be generated."
-          }${details}`,
-        );
+              : dictionary.errors.chartGenerationFailed
+          }${details}`;
+
+        throw new Error(apiErrorMessage);
       }
 
       writeStoredZodiacChart(
@@ -229,12 +238,11 @@ export default function ZodiacTestPage() {
       router.push(
         `/zodiac/result/${data.chartId}`,
       );
-    } catch (error) {
+    } catch {
       setStatus("error");
       setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : "The chart could not be generated.",
+        apiErrorMessage ??
+          dictionary.errors.chartGenerationFailed,
       );
     }
   }
@@ -246,25 +254,20 @@ export default function ZodiacTestPage() {
           href="/zodiac"
           className="text-sm font-semibold text-[#68756d]"
         >
-          ← Back to Zodiac Identity
+          ← {dictionary.backToZodiac}
         </Link>
 
         <div className="mt-10">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#8a4f43]">
-            Birth Chart Profile
+            {dictionary.eyebrow}
           </p>
 
           <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">
-            Enter your birth information
+            {dictionary.title}
           </h1>
 
           <p className="mt-5 max-w-2xl text-base leading-7 text-[#58645d]">
-            Your date, local birth
-            time, city, coordinates,
-            and historical time zone
-            are used to calculate your
-            Sun, Moon, personal planets,
-            Ascendant, and Midheaven.
+            {dictionary.description}
           </p>
         </div>
 
@@ -274,13 +277,13 @@ export default function ZodiacTestPage() {
         >
           <section>
             <h2 className="text-xl font-semibold">
-              Birth date
+              {dictionary.birthDate}
             </h2>
 
             <div className="mt-5 grid gap-4 sm:grid-cols-3">
               <label className="grid gap-2">
                 <span className="text-sm font-semibold">
-                  Year
+                  {dictionary.year}
                 </span>
                 <select
                   value={year}
@@ -306,7 +309,7 @@ export default function ZodiacTestPage() {
 
               <label className="grid gap-2">
                 <span className="text-sm font-semibold">
-                  Month
+                  {dictionary.month}
                 </span>
                 <select
                   value={month}
@@ -317,7 +320,7 @@ export default function ZodiacTestPage() {
                   }
                   className="rounded-xl border border-[#cfc9bd] bg-white px-4 py-3"
                 >
-                  {monthOptions.map(
+                  {dictionary.months.map(
                     (
                       option,
                       index,
@@ -335,7 +338,7 @@ export default function ZodiacTestPage() {
 
               <label className="grid gap-2">
                 <span className="text-sm font-semibold">
-                  Day
+                  {dictionary.day}
                 </span>
                 <input
                   type="number"
@@ -355,13 +358,13 @@ export default function ZodiacTestPage() {
 
           <section className="mt-9 border-t border-[#ece7dc] pt-9">
             <h2 className="text-xl font-semibold">
-              Birth time
+              {dictionary.birthTime}
             </h2>
 
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               <label className="grid gap-2">
                 <span className="text-sm font-semibold">
-                  Hour
+                  {dictionary.hour}
                 </span>
                 <input
                   type="number"
@@ -379,7 +382,7 @@ export default function ZodiacTestPage() {
 
               <label className="grid gap-2">
                 <span className="text-sm font-semibold">
-                  Minute
+                  {dictionary.minute}
                 </span>
                 <input
                   type="number"
@@ -398,7 +401,7 @@ export default function ZodiacTestPage() {
 
             <fieldset className="mt-5">
               <legend className="text-sm font-semibold">
-                Time accuracy
+                {dictionary.timeAccuracy}
               </legend>
 
               <div className="mt-3 flex flex-wrap gap-5">
@@ -417,7 +420,7 @@ export default function ZodiacTestPage() {
                       )
                     }
                   />
-                  Exact time
+                  {dictionary.exactTime}
                 </label>
 
                 <label className="flex items-center gap-2">
@@ -435,7 +438,7 @@ export default function ZodiacTestPage() {
                       )
                     }
                   />
-                  Approximate time
+                  {dictionary.approximateTime}
                 </label>
               </div>
             </fieldset>
@@ -443,7 +446,7 @@ export default function ZodiacTestPage() {
 
           <section className="mt-9 border-t border-[#ece7dc] pt-9">
             <h2 className="text-xl font-semibold">
-              Birth city
+              {dictionary.birthCity}
             </h2>
 
             <div className="relative mt-5 grid gap-2">
@@ -451,14 +454,14 @@ export default function ZodiacTestPage() {
                 htmlFor="birth-city-search"
                 className="text-sm font-semibold"
               >
-                City
+                {dictionary.city}
               </label>
 
               <input
                 id="birth-city-search"
                 type="search"
                 value={locationQuery}
-                placeholder="Search by city, alias, or country"
+                placeholder={dictionary.citySearchPlaceholder}
                 autoComplete="off"
                 role="combobox"
                 aria-expanded={isLocationSearchOpen}
@@ -503,7 +506,7 @@ export default function ZodiacTestPage() {
                     ))
                   ) : (
                     <p className="px-3 py-4 text-sm text-[#68756d]">
-                      No matching cities.
+                      {dictionary.noMatchingCities}
                     </p>
                   )}
                 </div>
@@ -513,13 +516,13 @@ export default function ZodiacTestPage() {
             {selectedLocation ? (
               <div className="mt-4 rounded-2xl bg-[#f7f4ee] p-4 text-sm leading-6 text-[#58645d]">
                 <p>
-                  Time zone:{" "}
+                  {dictionary.timeZone}:{" "}
                   {
                     selectedLocation.timeZone
                   }
                 </p>
                 <p>
-                  Coordinates:{" "}
+                  {dictionary.coordinates}:{" "}
                   {
                     selectedLocation.latitude
                   }
@@ -534,34 +537,36 @@ export default function ZodiacTestPage() {
 
           <section className="mt-9 border-t border-[#ece7dc] pt-9">
             <h2 className="text-xl font-semibold">
-              Report language
+              {dictionary.reportLanguage}
             </h2>
 
             <div className="mt-4 flex flex-wrap gap-5">
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
-                  name="locale"
+                  name="reportLocale"
                   value="en"
-                  checked={locale === "en"}
-                  onChange={() =>
-                    setLocale("en")
-                  }
+                  checked={reportLocale === "en"}
+                  onChange={() => {
+                    reportLocaleWasChanged.current = true;
+                    setReportLocale("en");
+                  }}
                 />
-                English
+                {dictionary.english}
               </label>
 
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
-                  name="locale"
+                  name="reportLocale"
                   value="zh"
-                  checked={locale === "zh"}
-                  onChange={() =>
-                    setLocale("zh")
-                  }
+                  checked={reportLocale === "zh"}
+                  onChange={() => {
+                    reportLocaleWasChanged.current = true;
+                    setReportLocale("zh");
+                  }}
                 />
-                中文
+                {dictionary.chinese}
               </label>
             </div>
           </section>
@@ -582,17 +587,12 @@ export default function ZodiacTestPage() {
               className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#17231d] px-7 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
             >
               {status === "submitting"
-                ? "Calculating…"
-                : "Generate Birth Chart"}
+                ? dictionary.calculating
+                : dictionary.generateBirthChart}
             </button>
 
             <p className="max-w-xl text-sm leading-6 text-[#68756d]">
-              Astrology content is
-              intended for reflection,
-              culture, and entertainment.
-              It is not scientific,
-              medical, legal, financial,
-              or psychological advice.
+              {dictionary.disclaimer}
             </p>
           </div>
         </form>

@@ -99,3 +99,12 @@ export {
 export type {
   ZodiacLandingDictionary,
 } from "./zodiac";
+
+export {
+  getZodiacTestDictionary,
+  zodiacTestDictionaries,
+} from "./zodiac-test";
+
+export type {
+  ZodiacTestDictionary,
+} from "./zodiac-test";
