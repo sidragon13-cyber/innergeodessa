@@ -42,6 +42,27 @@ export type AssessmentDictionary = {
     ) => string;
     sessionLabel: (sessionId: string) => string;
   };
+
+  personalityTest: {
+    eyebrow: string;
+    answerOptions: readonly {
+      value: number;
+      label: string;
+    }[];
+    errors: {
+      createSession: string;
+      loadItems: string;
+      incompleteQuestionBank: string;
+      loadAssessment: string;
+      saveAnswer: string;
+      generateResult: string;
+    };
+    completion: {
+      successMessage: string;
+      eyebrow: string;
+      title: string;
+    };
+  };
 };
 
 export const assessmentDictionaries: Record<
@@ -91,6 +112,52 @@ export const assessmentDictionaries: Record<
       sessionLabel: (sessionId) =>
         `Session ${sessionId.slice(0, 8)}…`,
     },
+
+    personalityTest: {
+      eyebrow: "Personality assessment",
+      answerOptions: [
+        {
+          value: 1,
+          label: "Strongly disagree",
+        },
+        {
+          value: 2,
+          label: "Disagree",
+        },
+        {
+          value: 3,
+          label: "Neither agree nor disagree",
+        },
+        {
+          value: 4,
+          label: "Agree",
+        },
+        {
+          value: 5,
+          label: "Strongly agree",
+        },
+      ],
+      errors: {
+        createSession:
+          "Unable to create assessment session.",
+        loadItems:
+          "Unable to load assessment items.",
+        incompleteQuestionBank:
+          "The assessment did not return all 72 questions.",
+        loadAssessment:
+          "The assessment could not be loaded.",
+        saveAnswer:
+          "The answer could not be saved.",
+        generateResult:
+          "The assessment result could not be generated.",
+      },
+      completion: {
+        successMessage:
+          "Assessment completed and result generated successfully.",
+        eyebrow: "Assessment Complete",
+        title: "Result generated successfully",
+      },
+    },
   },
 
   zh: {
@@ -135,6 +202,52 @@ export const assessmentDictionaries: Record<
       ) => `已回答 ${answeredCount} / ${itemCount}`,
       sessionLabel: (sessionId) =>
         `会话 ${sessionId.slice(0, 8)}…`,
+    },
+
+    personalityTest: {
+      eyebrow: "人格类型测评",
+      answerOptions: [
+        {
+          value: 1,
+          label: "非常不同意",
+        },
+        {
+          value: 2,
+          label: "不同意",
+        },
+        {
+          value: 3,
+          label: "既不同意也不赞同",
+        },
+        {
+          value: 4,
+          label: "同意",
+        },
+        {
+          value: 5,
+          label: "非常同意",
+        },
+      ],
+      errors: {
+        createSession:
+          "无法创建测评会话。",
+        loadItems:
+          "无法加载测评题目。",
+        incompleteQuestionBank:
+          "测评没有返回完整的72道题目。",
+        loadAssessment:
+          "测评暂时无法加载。",
+        saveAnswer:
+          "答案保存失败。",
+        generateResult:
+          "暂时无法生成测评结果。",
+      },
+      completion: {
+        successMessage:
+          "测评已经完成，结果已成功生成。",
+        eyebrow: "测评完成",
+        title: "结果已成功生成",
+      },
     },
   },
 };

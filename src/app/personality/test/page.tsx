@@ -15,6 +15,12 @@ import {
   type AssessmentViewStatus,
 } from "@/components/assessment";
 import {
+  useLocale,
+} from "@/components/locale";
+import {
+  getAssessmentDictionary,
+} from "@/data/i18n";
+import {
   fetchPersonalityResult,
   type PersonalityResultContract,
 } from "@/data/assessment/scoring/personality";
@@ -41,16 +47,14 @@ type CompleteResponse = {
   error?: string;
 };
 
-const answerOptions = [
-  { value: 1, label: "Strongly disagree" },
-  { value: 2, label: "Disagree" },
-  { value: 3, label: "Neither agree nor disagree" },
-  { value: 4, label: "Agree" },
-  { value: 5, label: "Strongly agree" },
-] as const satisfies readonly AssessmentAnswerOption[];
-
 export default function PersonalityTestPage() {
   const router = useRouter();
+  const { locale } = useLocale();
+  const dictionary = getAssessmentDictionary(locale);
+  const initialLocale = useRef(locale);
+  const initialDictionary = useRef(dictionary);
+  const answerOptions: readonly AssessmentAnswerOption[] =
+    dictionary.personalityTest.answerOptions;
   const [items, setItems] = useState<AssessmentDisplayItem[]>([]);
   const [sessionId, setSessionId] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -76,7 +80,7 @@ export default function PersonalityTestPage() {
           },
           body: JSON.stringify({
             consent: true,
-            language: "en",
+            language: initialLocale.current,
             module: "personality",
           }),
         });
@@ -85,7 +89,9 @@ export default function PersonalityTestPage() {
 
         if (!sessionResponse.ok || !sessionData.session_id) {
           throw new Error(
-            sessionData.error ?? "Unable to create assessment session.",
+            sessionData.error ??
+              initialDictionary.current.personalityTest.errors
+                .createSession,
           );
         }
 
@@ -97,11 +103,18 @@ export default function PersonalityTestPage() {
         const data: ItemsResponse = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.error ?? "Unable to load assessment items.");
+          throw new Error(
+            data.error ??
+              initialDictionary.current.personalityTest.errors
+                .loadItems,
+          );
         }
 
         if (!Array.isArray(data.items) || data.count !== 72) {
-          throw new Error("The assessment did not return all 72 questions.");
+          throw new Error(
+            initialDictionary.current.personalityTest.errors
+              .incompleteQuestionBank,
+          );
         }
 
         const sortedItems = [...data.items].sort(
@@ -115,7 +128,8 @@ export default function PersonalityTestPage() {
         setErrorMessage(
           error instanceof Error
             ? error.message
-            : "The assessment could not be loaded.",
+            : initialDictionary.current.personalityTest.errors
+                .loadAssessment,
         );
         setStatus("error");
       }
@@ -222,7 +236,8 @@ export default function PersonalityTestPage() {
 
       if (!response.ok || data.saved !== true) {
         throw new Error(
-          data.error ?? "The answer could not be saved.",
+          data.error ??
+            dictionary.personalityTest.errors.saveAnswer,
         );
       }
 
@@ -240,7 +255,7 @@ export default function PersonalityTestPage() {
         if (!completeResponse.ok) {
           throw new Error(
             completeData.error ??
-              "The assessment result could not be generated.",
+              dictionary.personalityTest.errors.generateResult,
           );
         }
 
@@ -249,7 +264,7 @@ export default function PersonalityTestPage() {
 
         setCompletionResult(persistedResult);
         setSaveMessage(
-          "Assessment completed and result generated successfully.",
+          dictionary.personalityTest.completion.successMessage,
         );
 
         sessionStorage.setItem(
@@ -266,7 +281,7 @@ export default function PersonalityTestPage() {
       setSaveMessage(
         error instanceof Error
           ? error.message
-          : "The answer could not be saved.",
+          : dictionary.personalityTest.errors.saveAnswer,
       );
     } finally {
       setIsSaving(false);
@@ -293,7 +308,7 @@ export default function PersonalityTestPage() {
         itemCount={items.length}
       />
       <AssessmentQuestion
-        eyebrow="Personality assessment"
+        eyebrow={dictionary.personalityTest.eyebrow}
         wording={currentItem.wording}
       />
       <AssessmentAnswerScale
@@ -317,11 +332,11 @@ export default function PersonalityTestPage() {
           completionResult ? (
             <div className="mt-8 border border-[#c8c2b5] bg-[#f7f4ec] p-6">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6d746b]">
-                Assessment Complete
+                {dictionary.personalityTest.completion.eyebrow}
               </p>
 
               <h2 className="mt-3 text-2xl font-semibold text-[#26372d]">
-                Result generated successfully
+                {dictionary.personalityTest.completion.title}
               </h2>
 
               <pre className="mt-5 max-h-96 overflow-auto whitespace-pre-wrap break-words bg-white p-4 text-xs leading-6 text-[#34483a]">
