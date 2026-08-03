@@ -64,10 +64,15 @@ assert(
   /\bcreateReportSectionAnchor\b/.test(
     reportDocumentSource,
   ) &&
-    /<ReportTableOfContents\b/.test(
+    /<(?:Shared)?ReportTableOfContents\b/.test(
       reportDocumentSource,
     ) &&
-    /<ReportSection\b/.test(reportDocumentSource),
+    /<(?:Shared)?ReportSection\b/.test(
+      reportDocumentSource,
+    ) &&
+    /id\s*=\s*\{\s*anchor\s*\}/.test(
+      reportDocumentSource,
+    ),
   "ReportDocument must share stable anchors with the TOC and rendered sections.",
 );
 
