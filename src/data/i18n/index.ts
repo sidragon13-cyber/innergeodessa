@@ -54,3 +54,12 @@ export {
 export type {
   PersonalityReportDictionary,
 } from "./personality-report";
+
+export {
+  careerLandingDictionaries,
+  getCareerLandingDictionary,
+} from "./career";
+
+export type {
+  CareerLandingDictionary,
+} from "./career";
