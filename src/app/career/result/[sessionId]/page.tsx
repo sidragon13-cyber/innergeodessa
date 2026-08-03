@@ -13,6 +13,7 @@ import {
 } from "@/data/career";
 
 import {
+  ResultHeader,
   ResultShell,
   ResultState,
 } from "@/components/result";
@@ -176,32 +177,31 @@ export default function CareerResultPage() {
 
   return (
     <ResultShell>
-        <header>
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#68756d]">
-            Career Interest Assessment
-          </p>
-
-          <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div>
-              <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-                Your Career Interest Code
-              </h1>
-              <p className="mt-4 max-w-3xl text-lg leading-8 text-[#58645d]">
-                Your result reflects the activities, environments, and
-                kinds of work that currently attract your interest.
-              </p>
-            </div>
-
-            <div className="rounded-3xl border border-[#d5d0c4] bg-white px-10 py-7 text-center shadow-sm">
+        <ResultHeader
+          eyebrow="Career Interest Assessment"
+          title={
+            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+              Your Career Interest Code
+            </h1>
+          }
+          description={
+            <p>
+              Your result reflects the activities, environments, and
+              kinds of work that currently attract your interest.
+            </p>
+          }
+          metadata={
+            <div className="border border-[#d5d0c4] bg-[#f7f4ec] px-10 py-7 text-center">
               <span className="block text-xs font-semibold uppercase tracking-[0.24em] text-[#68756d]">
                 RIASEC code
               </span>
-              <strong className="mt-2 block text-6xl tracking-[0.12em]">
+
+              <strong className="mt-2 block text-6xl tracking-[0.12em] text-[#26372d]">
                 {result.code}
               </strong>
             </div>
-          </div>
-        </header>
+          }
+        />
 
         <section className="mt-14">
           <div>
