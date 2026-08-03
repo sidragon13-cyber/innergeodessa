@@ -16,6 +16,7 @@ import {
 } from "@/data/zodiac";
 
 import {
+  ResultHeader,
   ResultShell,
   ResultState,
 } from "@/components/result";
@@ -508,78 +509,77 @@ export default function ZodiacResultPage() {
           </Link>
         </div>
 
-        <header className="mt-12 rounded-[2.25rem] bg-[#17231d] px-7 py-10 text-white sm:px-10 sm:py-14">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#d9b7aa]">
-            Your Birth Chart
-          </p>
-
-          <h1 className="mt-4 max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
-            {
-              SIGN_NAMES[
-                result.planets.sun
-                  .zodiac.sign
-              ]
-            }{" "}
-            Sun,{" "}
-            {
-              SIGN_NAMES[
-                result.planets.moon
-                  .zodiac.sign
-              ]
-            }{" "}
-            Moon,{" "}
-            {
-              SIGN_NAMES[
-                result.angles
-                  .ascendant.zodiac
-                  .sign
-              ]
-            }{" "}
-            Rising
-          </h1>
-
-          <p className="mt-6 max-w-3xl text-base leading-8 text-[#d8dfdb]">
-            This page presents the
-            astronomical positions used
-            by the InnerGeo Zodiac
-            system. Interpretive reports
-            will build on these verified
-            chart coordinates.
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-3">
-            <span className="rounded-full bg-white/10 px-4 py-2 text-sm">
-              Sun:{" "}
+        <ResultHeader
+          eyebrow="Your Birth Chart"
+          className="mt-12 border-0 bg-[#17231d] px-7 py-10 text-white sm:px-10 sm:py-14"
+          title={
+            <h1 className="max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
               {
                 SIGN_NAMES[
                   result.planets.sun
                     .zodiac.sign
                 ]
-              }
-            </span>
-
-            <span className="rounded-full bg-white/10 px-4 py-2 text-sm">
-              Moon:{" "}
+              }{" "}
+              Sun,{" "}
               {
                 SIGN_NAMES[
                   result.planets.moon
                     .zodiac.sign
                 ]
-              }
-            </span>
-
-            <span className="rounded-full bg-white/10 px-4 py-2 text-sm">
-              Rising:{" "}
+              }{" "}
+              Moon,{" "}
               {
                 SIGN_NAMES[
                   result.angles
                     .ascendant.zodiac
                     .sign
                 ]
-              }
-            </span>
-          </div>
-        </header>
+              }{" "}
+              Rising
+            </h1>
+          }
+          description={
+            <p className="text-[#d8dfdb]">
+              This page presents the astronomical positions used by the
+              InnerGeo Zodiac system. Interpretive reports will build on
+              these verified chart coordinates.
+            </p>
+          }
+          badges={
+            <div className="flex flex-wrap gap-3">
+              <span className="bg-white/10 px-4 py-2 text-sm">
+                Sun:{" "}
+                {
+                  SIGN_NAMES[
+                    result.planets.sun
+                      .zodiac.sign
+                  ]
+                }
+              </span>
+
+              <span className="bg-white/10 px-4 py-2 text-sm">
+                Moon:{" "}
+                {
+                  SIGN_NAMES[
+                    result.planets.moon
+                      .zodiac.sign
+                  ]
+                }
+              </span>
+
+              <span className="bg-white/10 px-4 py-2 text-sm">
+                Rising:{" "}
+                {
+                  SIGN_NAMES[
+                    result.angles
+                      .ascendant.zodiac
+                      .sign
+                  ]
+                }
+              </span>
+            </div>
+          }
+        />
 
         <section className="mt-14">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#8a4f43]">
