@@ -15,6 +15,15 @@ import {
   type AssessmentViewStatus,
 } from "@/components/assessment";
 import {
+  useLocale,
+} from "@/components/locale";
+import {
+  getCareerTestDictionary,
+} from "@/data/i18n";
+import {
+  riasecQuestionBank,
+} from "@/data/assessment/questions/riasec";
+import {
   fetchRiasecResult,
   type RiasecResultContract,
 } from "@/data/career";
@@ -43,16 +52,14 @@ type CompleteResponse = {
   error?: string;
 };
 
-const answerOptions = [
-  { value: 1, label: "Strongly disagree" },
-  { value: 2, label: "Disagree" },
-  { value: 3, label: "Neither agree nor disagree" },
-  { value: 4, label: "Agree" },
-  { value: 5, label: "Strongly agree" },
-] as const satisfies readonly AssessmentAnswerOption[];
-
 export default function CareerTestPage() {
   const router = useRouter();
+  const { locale } = useLocale();
+  const dictionary = getCareerTestDictionary(locale);
+  const initialLocale = useRef(locale);
+  const initialDictionary = useRef(dictionary);
+  const answerOptions: readonly AssessmentAnswerOption[] =
+    dictionary.answerOptions;
   const [items, setItems] = useState<AssessmentDisplayItem[]>([]);
   const [sessionId, setSessionId] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -78,7 +85,7 @@ export default function CareerTestPage() {
           },
           body: JSON.stringify({
             consent: true,
-            language: "en",
+            language: initialLocale.current,
             module: "riasec",
           }),
         });
@@ -87,7 +94,9 @@ export default function CareerTestPage() {
 
         if (!sessionResponse.ok || !sessionData.session_id) {
           throw new Error(
-            sessionData.error ?? "Unable to create assessment session.",
+            sessionData.error ??
+              initialDictionary.current.errors
+                .createSession,
           );
         }
 
@@ -102,12 +111,17 @@ export default function CareerTestPage() {
 
         if (!response.ok) {
           throw new Error(
-            responseError ?? "Unable to load assessment items.",
+            responseError ??
+              initialDictionary.current.errors
+                .loadItems,
           );
         }
 
         if (!Array.isArray(responseItems) || responseItems.length !== 36) {
-          throw new Error("The assessment did not return all 36 questions.");
+          throw new Error(
+            initialDictionary.current.errors
+              .incompleteQuestionBank,
+          );
         }
 
         const sortedItems = [...responseItems].sort(
@@ -121,7 +135,8 @@ export default function CareerTestPage() {
         setErrorMessage(
           error instanceof Error
             ? error.message
-            : "The assessment could not be loaded.",
+            : initialDictionary.current.errors
+                .loadAssessment,
         );
         setStatus("error");
       }
@@ -163,7 +178,19 @@ export default function CareerTestPage() {
   }
 
   const currentItem = items[currentIndex];
-  const selectedValue = answers[currentItem.item_id]?.value;
+
+  const localizedQuestion =
+    riasecQuestionBank.find(
+      (question) =>
+        question.order === currentItem.master_order,
+    );
+
+  const currentWording =
+    localizedQuestion?.prompt[locale] ??
+    currentItem.wording;
+
+  const selectedValue =
+    answers[currentItem.item_id]?.value;
   const isFirstQuestion = currentIndex === 0;
   const isLastQuestion = currentIndex === items.length - 1;
 
@@ -228,7 +255,8 @@ export default function CareerTestPage() {
 
       if (!response.ok || data.saved !== true) {
         throw new Error(
-          data.error ?? "The answer could not be saved.",
+          data.error ??
+            dictionary.errors.saveAnswer,
         );
       }
 
@@ -246,7 +274,7 @@ export default function CareerTestPage() {
         if (!completeResponse.ok) {
           throw new Error(
             completeData.error ??
-              "The assessment result could not be generated.",
+              dictionary.errors.generateResult,
           );
         }
 
@@ -255,7 +283,7 @@ export default function CareerTestPage() {
 
         setCompletionResult(persistedResult);
         setSaveMessage(
-          "Assessment completed and result generated successfully.",
+          dictionary.completion.successMessage,
         );
 
         sessionStorage.setItem(
@@ -272,7 +300,7 @@ export default function CareerTestPage() {
       setSaveMessage(
         error instanceof Error
           ? error.message
-          : "The answer could not be saved.",
+          : dictionary.errors.saveAnswer,
       );
     } finally {
       setIsSaving(false);
@@ -299,8 +327,8 @@ export default function CareerTestPage() {
         itemCount={items.length}
       />
       <AssessmentQuestion
-        eyebrow="Career interest assessment"
-        wording={currentItem.wording}
+        eyebrow={dictionary.eyebrow}
+        wording={currentWording}
       />
       <AssessmentAnswerScale
         options={answerOptions}
@@ -323,11 +351,11 @@ export default function CareerTestPage() {
           completionResult ? (
             <div className="mt-8 border border-[#c8c2b5] bg-[#f7f4ec] p-6">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6d746b]">
-                Assessment Complete
+                {dictionary.completion.eyebrow}
               </p>
 
               <h2 className="mt-3 text-2xl font-semibold text-[#26372d]">
-                Result generated successfully
+                {dictionary.completion.title}
               </h2>
 
               <pre className="mt-5 max-h-96 overflow-auto whitespace-pre-wrap break-words bg-white p-4 text-xs leading-6 text-[#34483a]">

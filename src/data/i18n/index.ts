@@ -63,3 +63,12 @@ export {
 export type {
   CareerLandingDictionary,
 } from "./career";
+
+export {
+  careerTestDictionaries,
+  getCareerTestDictionary,
+} from "./career-test";
+
+export type {
+  CareerTestDictionary,
+} from "./career-test";
