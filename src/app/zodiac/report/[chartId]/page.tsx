@@ -16,6 +16,9 @@ import {
 } from "@/data/zodiac";
 
 import {
+  ReportHeader,
+  ReportMetadata,
+  ReportPrintButton,
   ReportShell,
   ReportState,
 } from "@/components/report";
@@ -186,88 +189,52 @@ export default function ZodiacReportPage() {
 
   return (
     <ReportShell>
-        <header className="personality-report-header border-b border-[#c8c2b5] pb-10">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6d746b]">
-            InnerGeodessa Complete Zodiac Birth Chart Report
-          </p>
-
-          <div className="mt-7 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div>
-              <p className="text-sm text-[#6d746b]">
-                Professional symbolic
-                birth chart report
-              </p>
-
-              <h1 className="mt-3 text-4xl font-semibold leading-tight md:text-6xl">
-                {sunName} Sun
-                <br />
-                {moonName} Moon
-                <br />
-                {risingName} Rising
-              </h1>
-
-              <p className="mt-5 max-w-3xl text-lg leading-8 text-[#596158]">
-                A structured interpretation
-                of your calculated planetary
-                positions, personal planets,
-                chart angles, potential
-                strengths, development risks,
-                relationship themes, career
-                prompts, and reflection plan.
-              </p>
-            </div>
-
-            <div className="report-print-compact-block text-sm leading-6 text-[#6d746b] lg:text-right">
-              <p>
-                Calculated:{" "}
-                {formatCalculatedAt(
-                  result.calculatedAt,
-                )}
-              </p>
-
-              <p>
-                Local birth time:{" "}
+        <ReportHeader
+          eyebrow="InnerGeodessa Complete Zodiac Birth Chart Report"
+          subtitle="Professional symbolic birth chart report"
+          title={
+            <>
+              {sunName} Sun
+              <br />
+              {moonName} Moon
+              <br />
+              {risingName} Rising
+            </>
+          }
+          description={
+            <p>
+              A structured interpretation of your calculated planetary
+              positions, personal planets, chart angles, potential strengths,
+              development risks, relationship themes, career prompts, and
+              reflection plan.
+            </p>
+          }
+          metadata={
+            <ReportMetadata
+              items={[
                 {
-                  result.input
-                    .localDateTime
-                }
-              </p>
-
-              <p>
-                Time zone:{" "}
+                  label: "Calculated",
+                  value: formatCalculatedAt(
+                    result.calculatedAt,
+                  ),
+                },
                 {
-                  result.input
-                    .timeZone
-                }
-              </p>
-
-              <p>
-                Chart:{" "}
-                {chartId.slice(
-                  0,
-                  8,
-                )}
-                …
-              </p>
-
-              <button
-                type="button"
-                onClick={() =>
-                  window.print()
-                }
-                className="report-interactive-only mt-6 inline-flex min-h-12 items-center justify-center border border-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-[#34483a] hover:text-[#f1eee5]"
-              >
-                Print / Save as PDF
-              </button>
-
-              <p className="report-interactive-only mt-3 max-w-xs text-xs leading-5">
-                Disable browser headers
-                and footers for a cleaner
-                PDF.
-              </p>
-            </div>
-          </div>
-        </header>
+                  label: "Local birth time",
+                  value: result.input.localDateTime,
+                },
+                {
+                  label: "Time zone",
+                  value: result.input.timeZone,
+                },
+                {
+                  label: "Chart",
+                  value: `${chartId.slice(0, 8)}…`,
+                },
+              ]}
+            />
+          }
+          actions={<ReportPrintButton />}
+        />
 
         <nav
           id="zodiac-report-table-of-contents"
