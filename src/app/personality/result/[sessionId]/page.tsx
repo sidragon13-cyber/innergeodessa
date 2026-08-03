@@ -21,7 +21,6 @@ import {
 import {
   getLocalizedStringList,
   getLocalizedText,
-  type SupportedLocale,
 } from "@/data/shared";
 
 import {
@@ -30,15 +29,18 @@ import {
   ResultShell,
   ResultState,
 } from "@/components/result";
+import {
+  useLocale,
+} from "@/components/locale";
+import {
+  getPersonalityResultDictionary,
+} from "@/data/i18n";
 
-const dimensionLabels = {
-  EI: "Extraversion — Introversion",
-  SN: "Sensing — Intuition",
-  TF: "Thinking — Feeling",
-  JP: "Judging — Perceiving",
-} as const;
-
-type DimensionKey = keyof typeof dimensionLabels;
+type DimensionKey =
+  | "EI"
+  | "SN"
+  | "TF"
+  | "JP";
 
 const dimensions: DimensionKey[] = ["EI", "SN", "TF", "JP"];
 
@@ -100,8 +102,9 @@ function getFailureState(error: unknown): ResultLoadState {
 export default function PersonalityResultPage() {
   const params = useParams<{ sessionId: string }>();
   const sessionId = params.sessionId;
-
-  const locale: SupportedLocale = "en";
+  const { locale } = useLocale();
+  const dictionary =
+    getPersonalityResultDictionary(locale);
   const storageKey = `innergeodessa-result-${sessionId}`;
   const storedResult = useSyncExternalStore(
     subscribeToSessionStorage,
@@ -169,9 +172,9 @@ export default function PersonalityResultPage() {
   if (loadState === "loading" && !displayResult) {
     return (
       <ResultState
-        eyebrow="Loading result"
-        title="Loading your personality result…"
-        message="Retrieving the completed assessment from the result service."
+        eyebrow={dictionary.states.loading.eyebrow}
+        title={dictionary.states.loading.title}
+        message={dictionary.states.loading.message}
       />
     );
   }
@@ -179,13 +182,13 @@ export default function PersonalityResultPage() {
   if (loadState === "not-found") {
     return (
       <ResultState
-        eyebrow="Result not found"
-        title="This result could not be found."
-        message="Check the result link or complete a new personality assessment."
+        eyebrow={dictionary.states.notFound.eyebrow}
+        title={dictionary.states.notFound.title}
+        message={dictionary.states.notFound.message}
         actions={[
           {
             href: "/personality/test",
-            label: "Start assessment",
+            label: dictionary.states.error.action,
           },
         ]}
       />
@@ -195,13 +198,13 @@ export default function PersonalityResultPage() {
   if (loadState === "not-completed") {
     return (
       <ResultState
-        eyebrow="Assessment not completed"
-        title="This assessment has not been completed."
-        message="Return to the assessment and answer all questions before viewing the result."
+        eyebrow={dictionary.states.notCompleted.eyebrow}
+        title={dictionary.states.notCompleted.title}
+        message={dictionary.states.notCompleted.message}
         actions={[
           {
             href: "/personality/test",
-            label: "Continue assessment",
+            label: dictionary.states.notCompleted.action,
           },
         ]}
       />
@@ -211,9 +214,9 @@ export default function PersonalityResultPage() {
   if (loadState === "error" || !displayResult) {
     return (
       <ResultState
-        eyebrow="Unable to load result"
-        title="Your result could not be loaded."
-        message="The result service is temporarily unavailable. Please try again later."
+        eyebrow={dictionary.states.error.eyebrow}
+        title={dictionary.states.error.title}
+        message={dictionary.states.error.message}
         actions={[
           {
             href: "/personality/test",
@@ -249,8 +252,8 @@ export default function PersonalityResultPage() {
   return (
     <ResultShell>
         <ResultHeader
-          eyebrow="InnerGeo Personality Assessment"
-          subtitle="Your personality type"
+          eyebrow={dictionary.header.eyebrow}
+          subtitle={dictionary.header.subtitle}
           title={
             <div className="flex flex-wrap items-end gap-x-5 gap-y-2">
               <h1 className="text-6xl font-semibold tracking-tight md:text-8xl">
@@ -281,8 +284,11 @@ export default function PersonalityResultPage() {
           }
           metadata={
             <>
-              <p>Assessment completed</p>
-              <p>Session {sessionId.slice(0, 8)}…</p>
+              <p>{dictionary.header.completed}</p>
+              <p>
+                {dictionary.header.sessionLabel}{" "}
+                {sessionId.slice(0, 8)}…
+              </p>
             </>
           }
           badges={
@@ -306,7 +312,7 @@ export default function PersonalityResultPage() {
             <section className="mt-12 grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-                  Personality Overview
+                  {dictionary.sections.overview}
                 </p>
 
                 <h2 className="mt-4 text-3xl font-semibold leading-tight md:text-4xl">
@@ -333,7 +339,7 @@ export default function PersonalityResultPage() {
 
             <section className="mt-14">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-                Core Personality Traits
+                {dictionary.sections.coreTraits}
               </p>
 
               <div className="mt-5 grid gap-px border border-[#c8c2b5] bg-[#c8c2b5] md:grid-cols-2">
@@ -360,24 +366,22 @@ export default function PersonalityResultPage() {
         ) : (
           <section className="mt-12 border border-[#c8c2b5] bg-[#f7f4ec] p-8 md:p-10">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-              Profile in development
+              {dictionary.sections.profileInDevelopment}
             </p>
 
             <h2 className="mt-4 text-3xl font-semibold">
-              Your assessment has been scored successfully.
+              {dictionary.sections.scoredSuccessfully}
             </h2>
 
             <p className="mt-5 max-w-3xl leading-7 text-[#596158]">
-              The detailed English profile for this personality type is
-              currently being prepared. Your dimension scores remain
-              available below.
+              {dictionary.sections.profileInDevelopmentMessage}
             </p>
           </section>
         )}
 
         <section className="mt-14">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-            Dimension Overview
+            {dictionary.sections.dimensionOverview}
           </p>
 
           <div className="mt-5 grid gap-px border border-[#c8c2b5] bg-[#c8c2b5] md:grid-cols-2">
@@ -393,7 +397,7 @@ export default function PersonalityResultPage() {
                     </p>
 
                     <h2 className="mt-2 text-lg font-semibold">
-                      {dimensionLabels[dimension]}
+                      {dictionary.dimensions[dimension]}
                     </h2>
                   </div>
 
@@ -404,7 +408,7 @@ export default function PersonalityResultPage() {
 
                 <div className="mt-7 flex items-center justify-between border-t border-[#d8d2c6] pt-4 text-sm">
                   <span className="text-[#6d746b]">
-                    Confidence
+                    {dictionary.sections.confidence}
                   </span>
 
                   <span className="font-semibold">
@@ -424,7 +428,7 @@ export default function PersonalityResultPage() {
               <div className="grid gap-8 lg:grid-cols-2">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-                    Key Strengths
+                    {dictionary.sections.strengths}
                   </p>
 
                   <div className="mt-5 space-y-px border border-[#c8c2b5] bg-[#c8c2b5]">
@@ -453,7 +457,7 @@ export default function PersonalityResultPage() {
 
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-                    Growth Risks
+                    {dictionary.sections.growthRisks}
                   </p>
 
                   <div className="mt-5 space-y-px border border-[#c8c2b5] bg-[#c8c2b5]">
@@ -478,7 +482,7 @@ export default function PersonalityResultPage() {
 
                         <div className="mt-4 border-l-2 border-[#8d7552] pl-4">
                           <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#7c684d]">
-                            Development focus
+                            {dictionary.sections.developmentFocus}
                           </p>
 
                           <p className="mt-2 leading-7 text-[#596158]">
@@ -497,7 +501,7 @@ export default function PersonalityResultPage() {
 
             <section className="mt-14">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-                Career Directions
+                {dictionary.sections.careerDirections}
               </p>
 
               <div className="mt-5 grid gap-5 md:grid-cols-2">
@@ -553,7 +557,7 @@ export default function PersonalityResultPage() {
               <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c9d1c9]">
-                    Premium Report
+                    {dictionary.sections.premiumReport}
                   </p>
 
                   <h2 className="mt-4 text-3xl font-semibold md:text-4xl">
@@ -577,7 +581,9 @@ export default function PersonalityResultPage() {
                       href={`/personality/report/${sessionId}`}
                       className="mt-8 inline-flex min-h-12 items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-[#f1eee5] hover:text-[#34483a]"
                     >
-                      VIEW COMPLETE {displayResult.type} REPORT
+                      {dictionary.premium.viewCompleteReport(
+                        displayResult.type,
+                      )}
                     </Link>
                   ) : (
                     <>
@@ -593,8 +599,7 @@ export default function PersonalityResultPage() {
                       </button>
 
                       <p className="mt-3 text-xs text-[#bdc7be]">
-                        Premium reports will be introduced in a later
-                        development stage.
+                        {dictionary.sections.premiumLaterMessage}
                       </p>
                     </>
                   )}
@@ -633,11 +638,11 @@ export default function PersonalityResultPage() {
           className="mt-12"
           primary={{
             href: "/personality/test",
-            label: "Take assessment again",
+            label: dictionary.navigation.retake,
           }}
           secondary={{
             href: "/personality",
-            label: "Personality overview",
+            label: dictionary.navigation.overview,
           }}
         />
     </ResultShell>

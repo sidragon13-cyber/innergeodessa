@@ -36,3 +36,12 @@ export {
 export type {
   AssessmentDictionary,
 } from "./assessment";
+
+export {
+  getPersonalityResultDictionary,
+  personalityResultDictionaries,
+} from "./personality-result";
+
+export type {
+  PersonalityResultDictionary,
+} from "./personality-result";
