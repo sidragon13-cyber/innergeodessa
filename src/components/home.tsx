@@ -235,6 +235,9 @@ export function ProductGrid({ products }: { products: Product[] }) {
 }
 
 export function SiteFooter({ homePath = "" }: { homePath?: string }) {
+  const { locale } = useLocale();
+  const dictionary = getUiDictionary(locale);
+
   return (
     <footer className="site-footer">
       <Container
@@ -250,15 +253,25 @@ export function SiteFooter({ homePath = "" }: { homePath?: string }) {
             <Wordmark />
           </Link>
 
-          <p>Self-discovery, thoughtfully mapped.</p>
+          <p>{dictionary.footer.tagline}</p>
         </div>
 
-        <nav aria-label="Footer navigation">
-          <Link href="/personality">Personality</Link>
-          <Link href="/career">Career</Link>
-          <Link href="/zodiac">Zodiac</Link>
-          <Link href={`${homePath}#trust`}>Privacy</Link>
-          <Link href={`${homePath}#trust`}>Terms</Link>
+        <nav aria-label={dictionary.footer.navigationLabel}>
+          <Link href="/personality">
+            {dictionary.footer.personality}
+          </Link>
+          <Link href="/career">
+            {dictionary.footer.career}
+          </Link>
+          <Link href="/zodiac">
+            {dictionary.footer.zodiac}
+          </Link>
+          <Link href={`${homePath}#trust`}>
+            {dictionary.footer.privacy}
+          </Link>
+          <Link href={`${homePath}#trust`}>
+            {dictionary.footer.terms}
+          </Link>
         </nav>
       </Container>
     </footer>
