@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import {
-  CompassMark,
-  PrimaryButton,
   SiteFooter,
   SiteHeader,
 } from "@/components/home";
+import {
+  AboutHero,
+} from "@/components/about";
 
 export const metadata: Metadata = {
   title: "About InnerGeo | Self-Exploration and Growth",
@@ -163,60 +164,12 @@ const responsibleDesign = [
   "Continued review as the platform develops",
 ];
 
-function AboutMap() {
-  return (
-    <div className="about-map" aria-hidden="true">
-      <svg viewBox="0 0 640 640" fill="none">
-        <path d="M-30 507c126-21 170-108 246-151 83-47 151-28 215-96 58-62 86-147 84-274" />
-        <path d="M-5 562c143-25 193-113 270-158 78-46 142-37 205-99 70-69 103-167 101-305" />
-        <path d="M78 640c103-53 153-116 219-154 72-41 126-48 183-102 83-78 124-195 119-384" />
-        <circle cx="342" cy="315" r="165" />
-        <circle cx="342" cy="315" r="96" />
-      </svg>
-      <div className="about-map-center">
-        <CompassMark />
-        <span>Inner layers</span>
-      </div>
-      <span className="about-map-label about-map-label-one">Identity</span>
-      <span className="about-map-label about-map-label-two">Direction</span>
-      <span className="about-map-label about-map-label-three">Growth</span>
-    </div>
-  );
-}
-
 export default function AboutPage() {
   return (
     <main id="top">
       <SiteHeader homePath="/" />
 
-      <section className="about-hero shell">
-        <div className="about-hero-copy">
-          <p className="eyebrow">About InnerGeo</p>
-          <h1>
-            Understanding yourself is not a final answer. It is a lifelong
-            practice.
-          </h1>
-          <p className="about-intro">
-            InnerGeo brings together structured assessments, reflective
-            tools, symbolic stories, and future community experiences to help
-            people explore who they are, what draws them forward, and how they
-            may continue growing.
-          </p>
-          <ul className="assessment-meta" aria-label="Platform principles">
-            <li>Self-exploration, not diagnosis</li>
-            <li>Multiple perspectives</li>
-            <li>Evidence and context</li>
-            <li>Lifelong development</li>
-          </ul>
-          <div className="about-actions">
-            <PrimaryButton href="#platform">Explore the Platform</PrimaryButton>
-            <a className="secondary-link" href="/personality">
-              Explore Personality <span aria-hidden="true">↗</span>
-            </a>
-          </div>
-        </div>
-        <AboutMap />
-      </section>
+      <AboutHero />
 
       <section className="about-purpose shell">
         <div>
