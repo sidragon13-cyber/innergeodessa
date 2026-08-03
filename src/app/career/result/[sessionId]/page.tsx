@@ -14,6 +14,7 @@ import {
 
 import {
   ResultHeader,
+  ResultNavigation,
   ResultShell,
   ResultState,
 } from "@/components/result";
@@ -358,36 +359,36 @@ export default function CareerResultPage() {
           </Link>
         </section>
 
-        <div className="mt-10 flex flex-wrap gap-4 print:hidden">
-          <button
-            type="button"
-            onClick={() => window.print()}
-            className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#17231d] px-7 py-3 font-semibold"
-          >
-            <span className="text-[#f7f4ee]">Save as PDF</span>
-          </button>
+        <div className="mt-10 print:hidden">
+          <div className="flex flex-wrap gap-4">
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="inline-flex min-h-12 items-center justify-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5]"
+            >
+              Save as PDF
+            </button>
 
-          <button
-            type="button"
-            onClick={() => window.print()}
-            className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#17231d] bg-white px-7 py-3 font-semibold text-[#17231d]"
-          >
-            Print report
-          </button>
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="inline-flex min-h-12 items-center justify-center border border-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#26372d]"
+            >
+              Print report
+            </button>
+          </div>
 
-          <Link
-            href="/career/test"
-            className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#17231d] px-7 py-3 font-semibold"
-          >
-            <span className="text-[#f7f4ee]">Retake assessment</span>
-          </Link>
-
-          <Link
-            href="/career"
-            className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#aaa69d] bg-transparent px-7 py-3 font-semibold text-[#17231d]"
-          >
-            Back to career overview
-          </Link>
+          <ResultNavigation
+            className="mt-6"
+            primary={{
+              href: "/career/test",
+              label: "Retake assessment",
+            }}
+            secondary={{
+              href: "/career",
+              label: "Back to career overview",
+            }}
+          />
         </div>
     </ResultShell>
   );
