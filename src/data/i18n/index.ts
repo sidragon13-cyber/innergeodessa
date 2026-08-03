@@ -72,3 +72,12 @@ export {
 export type {
   CareerTestDictionary,
 } from "./career-test";
+
+export {
+  careerResultDictionaries,
+  getCareerResultDictionary,
+} from "./career-result";
+
+export type {
+  CareerResultDictionary,
+} from "./career-result";
