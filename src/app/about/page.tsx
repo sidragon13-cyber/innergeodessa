@@ -4,6 +4,7 @@ import {
   SiteHeader,
 } from "@/components/home";
 import {
+  AboutApproach,
   AboutHero,
   AboutName,
   AboutPurpose,
@@ -14,45 +15,6 @@ export const metadata: Metadata = {
   description:
     "Learn how InnerGeo brings personality, career interests, symbolic identity, reflection, and future community experiences into one thoughtful self-exploration platform.",
 };
-
-const principles = [
-  {
-    number: "01",
-    title: "Explore from multiple perspectives",
-    description:
-      "No single test, sign, result, or label can fully explain a person.",
-  },
-  {
-    number: "02",
-    title: "Use results as starting points",
-    description:
-      "Results should generate questions, observations, and experiments rather than final verdicts.",
-  },
-  {
-    number: "03",
-    title: "Separate preference from ability",
-    description:
-      "What you enjoy, what you can do, and which opportunities exist may overlap without being identical.",
-  },
-  {
-    number: "04",
-    title: "Leave room for change",
-    description:
-      "People develop over time and should never feel trapped by an old result.",
-  },
-  {
-    number: "05",
-    title: "Connect insight with action",
-    description:
-      "Useful self-understanding should support decisions, learning, communication, and development.",
-  },
-  {
-    number: "06",
-    title: "Respect uncertainty",
-    description:
-      "Responsible exploration acknowledges limitations and avoids false precision.",
-  },
-];
 
 const platformParts = [
   {
@@ -177,27 +139,7 @@ export default function AboutPage() {
 
       <AboutName />
 
-      <section className="approach-section shell">
-        <div className="about-section-heading">
-          <div>
-            <p className="eyebrow">Our approach</p>
-            <h2>Principles for responsible self-exploration</h2>
-          </div>
-          <p>
-            A calm, useful platform needs room for context, contradiction,
-            uncertainty, and change.
-          </p>
-        </div>
-        <div className="approach-grid">
-          {principles.map((principle) => (
-            <article key={principle.number}>
-              <span>{principle.number}</span>
-              <h3>{principle.title}</h3>
-              <p>{principle.description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <AboutApproach />
 
       <section className="platform-section" id="platform">
         <div className="shell">
