@@ -24,6 +24,10 @@ import {
   type SupportedLocale,
 } from "@/data/shared";
 
+import {
+  ResultState,
+} from "@/components/result";
+
 const dimensionLabels = {
   EI: "Extraversion — Introversion",
   SN: "Sensing — Intuition",
@@ -88,41 +92,6 @@ function getFailureState(error: unknown): ResultLoadState {
   }
 
   return "error";
-}
-
-function ResultState({
-  label,
-  title,
-  message,
-}: {
-  label: string;
-  title: string;
-  message: string;
-}) {
-  return (
-    <main className="min-h-screen bg-[#efede5] px-6 py-20 text-[#26372d]">
-      <section className="mx-auto max-w-3xl border border-[#c8c2b5] bg-[#f7f4ec] p-8 md:p-12">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-          {label}
-        </p>
-
-        <h1 className="mt-4 text-3xl font-semibold">
-          {title}
-        </h1>
-
-        <p className="mt-5 leading-7 text-[#596158]">
-          {message}
-        </p>
-
-        <Link
-          href="/personality/test"
-          className="mt-8 inline-flex min-h-12 items-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5]"
-        >
-          Start assessment
-        </Link>
-      </section>
-    </main>
-  );
 }
 
 export default function PersonalityResultPage() {
@@ -197,7 +166,7 @@ export default function PersonalityResultPage() {
   if (loadState === "loading" && !displayResult) {
     return (
       <ResultState
-        label="Loading result"
+        eyebrow="Loading result"
         title="Loading your personality result…"
         message="Retrieving the completed assessment from the result service."
       />
@@ -207,9 +176,15 @@ export default function PersonalityResultPage() {
   if (loadState === "not-found") {
     return (
       <ResultState
-        label="Result not found"
+        eyebrow="Result not found"
         title="This result could not be found."
         message="Check the result link or complete a new personality assessment."
+        actions={[
+          {
+            href: "/personality/test",
+            label: "Start assessment",
+          },
+        ]}
       />
     );
   }
@@ -217,9 +192,15 @@ export default function PersonalityResultPage() {
   if (loadState === "not-completed") {
     return (
       <ResultState
-        label="Assessment not completed"
+        eyebrow="Assessment not completed"
         title="This assessment has not been completed."
         message="Return to the assessment and answer all questions before viewing the result."
+        actions={[
+          {
+            href: "/personality/test",
+            label: "Continue assessment",
+          },
+        ]}
       />
     );
   }
@@ -227,9 +208,15 @@ export default function PersonalityResultPage() {
   if (loadState === "error" || !displayResult) {
     return (
       <ResultState
-        label="Unable to load result"
+        eyebrow="Unable to load result"
         title="Your result could not be loaded."
         message="The result service is temporarily unavailable. Please try again later."
+        actions={[
+          {
+            href: "/personality/test",
+            label: "Start assessment",
+          },
+        ]}
       />
     );
   }
