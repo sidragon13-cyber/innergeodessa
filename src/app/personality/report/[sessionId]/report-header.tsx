@@ -57,7 +57,7 @@ export function ReportHeader({
         <>
           <PrintReportButton />
 
-          <p className="report-print-guidance max-w-xs text-xs leading-5 text-[#6d746b] lg:text-right">
+          <p className="report-interactive-only report-print-guidance max-w-xs text-xs leading-5 text-[#6d746b] lg:text-right">
             For a clean PDF, disable browser headers and
             footers in the print dialog.
           </p>
