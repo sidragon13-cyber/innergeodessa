@@ -21,7 +21,10 @@ const globalStylesSource = readSource("src/app/globals.css");
 assert(
   /import\s+\{\s*PrintReportButton\s*\}\s+from\s+["']\.\/print-report-button["']/.test(
     reportHeaderSource,
-  ) && /<PrintReportButton\s*\/>/.test(reportHeaderSource),
+  ) &&
+    /<PrintReportButton\b[\s\S]*?\/>/.test(
+      reportHeaderSource,
+    ),
   "The complete report page must include the shared print control.",
 );
 
