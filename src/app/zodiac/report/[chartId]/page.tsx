@@ -19,6 +19,7 @@ import {
   ReportHeader,
   ReportMetadata,
   ReportPrintButton,
+  ReportSection,
   ReportShell,
   ReportState,
   ReportTableOfContents,
@@ -252,71 +253,25 @@ export default function ZodiacReportPage() {
         />
 
         <div className="personality-report-sections mt-12 space-y-12">
-          {sections.map(
-            (section) => (
-              <section
-                key={section.id}
-                id={createAnchor(
-                  section.order,
-                  section.id,
-                )}
-                className="personality-report-section border border-[#c8c2b5] bg-[#f7f4ec]"
-              >
-                <header className="personality-report-section-header report-print-section-heading-group border-b border-[#d8d2c6] p-7 md:p-9">
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-                    Section{" "}
-                    {section.order}
-                  </p>
-
-                  <h2 className="mt-4 text-3xl font-semibold">
-                    {section.title}
-                  </h2>
-
-                  <p className="mt-4 max-w-4xl leading-7 text-[#596158]">
-                    {
-                      section.description
-                    }
-                  </p>
-                </header>
-
-                <div className="divide-y divide-[#d8d2c6]">
-                  {section.blocks.map(
-                    (block) => (
-                      <article
-                        key={block.id}
-                        className="personality-report-content-block report-print-flow-block p-7 md:p-9"
-                      >
-                        <div className="report-print-content-heading-group">
-                          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#7c684d]">
-                            {block.type}
-                          </p>
-
-                          <h3 className="mt-3 text-xl font-semibold">
-                            {block.title}
-                          </h3>
-                        </div>
-
-                        <p className="mt-4 max-w-4xl whitespace-pre-line leading-8 text-[#596158]">
-                          {
-                            block.content
-                          }
-                        </p>
-                      </article>
-                    ),
-                  )}
-                </div>
-
-                <div className="report-back-to-contents report-interactive-only border-t border-[#d8d2c6] px-7 py-5 md:px-9">
-                  <a
-                    href="#zodiac-report-table-of-contents"
-                    className="text-xs font-bold uppercase tracking-[0.14em] text-[#6d746b] underline underline-offset-4"
-                  >
-                    Back to contents
-                  </a>
-                </div>
-              </section>
-            ),
-          )}
+          {sections.map((section) => (
+            <ReportSection
+              key={section.id}
+              id={createAnchor(
+                section.order,
+                section.id,
+              )}
+              order={section.order}
+              title={section.title}
+              description={section.description}
+              tableOfContentsId="zodiac-report-table-of-contents"
+              blocks={section.blocks.map((block) => ({
+                id: block.id,
+                label: block.type,
+                title: block.title,
+                content: block.content,
+              }))}
+            />
+          ))}
         </div>
 
         <div className="report-interactive-only mt-12 flex flex-wrap gap-4 border-t border-[#c8c2b5] pt-8">
