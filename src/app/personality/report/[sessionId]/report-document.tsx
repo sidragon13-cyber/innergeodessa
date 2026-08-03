@@ -5,6 +5,7 @@ import type {
 import {
   ReportNavigation as SharedReportNavigation,
   ReportShell,
+  ReportTableOfContents as SharedReportTableOfContents,
 } from "@/components/report";
 import {
   getLocalizedText,
@@ -13,9 +14,8 @@ import {
 
 import { ReportHeader } from "./report-header";
 import { ReportSection } from "./report-section";
-import {
-  ReportTableOfContents,
-  type ReportSectionNavigationItem,
+import type {
+  ReportSectionNavigationItem,
 } from "./report-table-of-contents";
 import { createReportSectionAnchor } from "./section-navigation";
 
@@ -62,7 +62,17 @@ export function ReportDocument({
           version={report.version}
         />
 
-        <ReportTableOfContents items={navigationItems} />
+        <SharedReportTableOfContents
+          id="report-table-of-contents"
+          ariaLabel="Report table of contents"
+          items={navigationItems.map((item) => ({
+            id: item.id,
+            anchor: item.anchor,
+            order: item.order,
+            title: item.title,
+            badge: item.access,
+          }))}
+        />
 
         <div className="personality-report-sections mt-12 space-y-12">
           {sections.map(({ section, title, anchor }) => (
