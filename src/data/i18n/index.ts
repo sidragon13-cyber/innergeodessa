@@ -27,3 +27,12 @@ export {
 export type {
   PersonalityLandingDictionary,
 } from "./personality";
+
+export {
+  assessmentDictionaries,
+  getAssessmentDictionary,
+} from "./assessment";
+
+export type {
+  AssessmentDictionary,
+} from "./assessment";
