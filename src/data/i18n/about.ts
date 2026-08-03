@@ -184,7 +184,7 @@ export const aboutDictionaries: Record<
 
     name: {
       eyebrow: "The meaning behind the name",
-      title: "Inner · Geo · Dessa",
+      title: "Inner · Geo",
       disclaimer:
         "This is the platform's intended symbolic meaning, not a dictionary definition or historical etymology.",
       parts: [
@@ -202,13 +202,13 @@ export const aboutDictionaries: Record<
         },
         {
           number: "03",
-          title: "Dessa",
+          title: "InnerGeo",
           description:
-            "A softer, human, and story-oriented character within the platform name.",
+            "A grounded map of the inner self—connecting personal identity with real-life context, direction, and growth.",
         },
       ],
       summary:
-        "Together, InnerGeo suggests exploring the layers within oneself while remaining grounded in real life.",
+        "InnerGeo represents exploring the layers within oneself while remaining grounded in real life.",
     },
 
     approach: {
@@ -489,7 +489,7 @@ export const aboutDictionaries: Record<
 
     name: {
       eyebrow: "名称背后的含义",
-      title: "Inner · Geo · Dessa",
+      title: "Inner · Geo",
       disclaimer:
         "这是平台所赋予的象征含义，并不是字典定义或历史词源解释。",
       parts: [
@@ -507,9 +507,9 @@ export const aboutDictionaries: Record<
         },
         {
           number: "03",
-          title: "Dessa",
+          title: "InnerGeo",
           description:
-            "为平台名称带来更柔和、更具人性和故事感的表达。",
+            "代表一张立足现实的内在地图，把个人身份、现实情境、发展方向与持续成长连接起来。",
         },
       ],
       summary:

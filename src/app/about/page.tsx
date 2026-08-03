@@ -5,6 +5,7 @@ import {
 } from "@/components/home";
 import {
   AboutHero,
+  AboutName,
   AboutPurpose,
 } from "@/components/about";
 
@@ -174,48 +175,7 @@ export default function AboutPage() {
 
       <AboutPurpose />
 
-      <section className="name-section">
-        <div className="name-inner shell">
-          <div className="name-heading">
-            <p className="eyebrow">The meaning behind the name</p>
-            <h2>Inner · Geo · Dessa</h2>
-            <p>
-              This is the platform&apos;s intended symbolic meaning, not a
-              dictionary definition or historical etymology.
-            </p>
-          </div>
-          <div className="name-parts">
-            <article>
-              <span>01</span>
-              <h3>Inner</h3>
-              <p>
-                The internal world: identity, interests, values, patterns,
-                questions, and potential.
-              </p>
-            </article>
-            <article>
-              <span>02</span>
-              <h3>Geo</h3>
-              <p>
-                Earth, grounding, place, layers, and the environments that
-                shape people.
-              </p>
-            </article>
-            <article>
-              <span>03</span>
-              <h3>Dessa</h3>
-              <p>
-                A softer, human, and story-oriented character within the
-                platform name.
-              </p>
-            </article>
-          </div>
-          <p className="name-summary">
-            Together, InnerGeo suggests exploring the layers within
-            oneself while remaining grounded in real life.
-          </p>
-        </div>
-      </section>
+      <AboutName />
 
       <section className="approach-section shell">
         <div className="about-section-heading">
