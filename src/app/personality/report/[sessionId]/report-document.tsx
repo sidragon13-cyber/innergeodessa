@@ -3,6 +3,7 @@ import type {
 } from "@/data/report";
 
 import {
+  ReportNavigation as SharedReportNavigation,
   ReportShell,
 } from "@/components/report";
 import {
@@ -11,7 +12,6 @@ import {
 } from "@/data/shared";
 
 import { ReportHeader } from "./report-header";
-import { ReportNavigation } from "./report-navigation";
 import { ReportSection } from "./report-section";
 import {
   ReportTableOfContents,
@@ -76,7 +76,16 @@ export function ReportDocument({
           ))}
         </div>
 
-        <ReportNavigation sessionId={report.sessionId} />
+        <SharedReportNavigation
+          primary={{
+            href: `/personality/result/${report.sessionId}`,
+            label: "Back to free result",
+          }}
+          secondary={{
+            href: "/personality",
+            label: "Personality overview",
+          }}
+        />
     </ReportShell>
   );
 }
