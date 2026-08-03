@@ -1,6 +1,10 @@
 import type {
   GeneratedPersonalityReportResult,
 } from "@/data/report";
+
+import {
+  ReportShell,
+} from "@/components/report";
 import {
   getLocalizedText,
   type SupportedLocale,
@@ -46,8 +50,7 @@ export function ReportDocument({
     }));
 
   return (
-    <main className="personality-report min-h-screen bg-[#efede5] px-6 py-12 text-[#26372d] md:py-20">
-      <div className="personality-report-container mx-auto max-w-6xl">
+    <ReportShell>
         <ReportHeader
           appliedRuleCount={
             report.metadata.appliedRuleCount
@@ -74,7 +77,6 @@ export function ReportDocument({
         </div>
 
         <ReportNavigation sessionId={report.sessionId} />
-      </div>
-    </main>
+    </ReportShell>
   );
 }
