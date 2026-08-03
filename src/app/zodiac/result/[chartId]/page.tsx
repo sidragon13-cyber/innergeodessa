@@ -558,7 +558,7 @@ export default function ZodiacResultPage() {
           <p className="mt-6 max-w-3xl text-base leading-8 text-[#d8dfdb]">
             This page presents the
             astronomical positions used
-            by the InnerGeodessa Zodiac
+            by the InnerGeo Zodiac
             system. Interpretive reports
             will build on these verified
             chart coordinates.

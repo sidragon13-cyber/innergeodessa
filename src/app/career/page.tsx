@@ -12,7 +12,7 @@ import {
 } from "@/components/ui";
 
 export const metadata: Metadata = {
-  title: "Career Interest Assessment | InnerGeodessa",
+  title: "Career Interest Assessment | InnerGeo",
   description:
     "Explore your career interests through six balanced dimensions and discover work environments, learning paths, and future directions that may fit you.",
 };
@@ -387,7 +387,7 @@ export default function CareerPage() {
         className="future-profile"
       >
         <div className="future-profile-copy">
-          <p className="eyebrow">Future InnerGeodessa connection</p>
+          <p className="eyebrow">Future InnerGeo connection</p>
           <h2>More perspectives, brought together</h2>
           <p>
             A future integrated profile may connect career interests with

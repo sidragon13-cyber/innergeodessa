@@ -180,7 +180,7 @@ export default function CareerReportPage() {
   return (
     <ReportShell>
         <ReportHeader
-          eyebrow="InnerGeodessa Complete Career Interest Report"
+          eyebrow="InnerGeo Complete Career Interest Report"
           subtitle="RIASEC professional report"
           title={result.code}
           description={

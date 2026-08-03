@@ -30,7 +30,7 @@ export function ReportHeader({
 }: ReportHeaderProps) {
   return (
     <SharedReportHeader
-      eyebrow="InnerGeodessa Complete Personality Report"
+      eyebrow="InnerGeo Complete Personality Report"
       subtitle="Premium report"
       title={personalityType}
       description={

@@ -7,9 +7,9 @@ import {
 } from "@/components/home";
 
 export const metadata: Metadata = {
-  title: "About InnerGeodessa | Self-Exploration and Growth",
+  title: "About InnerGeo | Self-Exploration and Growth",
   description:
-    "Learn how InnerGeodessa brings personality, career interests, symbolic identity, reflection, and future community experiences into one thoughtful self-exploration platform.",
+    "Learn how InnerGeo brings personality, career interests, symbolic identity, reflection, and future community experiences into one thoughtful self-exploration platform.",
 };
 
 const principles = [
@@ -191,13 +191,13 @@ export default function AboutPage() {
 
       <section className="about-hero shell">
         <div className="about-hero-copy">
-          <p className="eyebrow">About InnerGeodessa</p>
+          <p className="eyebrow">About InnerGeo</p>
           <h1>
             Understanding yourself is not a final answer. It is a lifelong
             practice.
           </h1>
           <p className="about-intro">
-            InnerGeodessa brings together structured assessments, reflective
+            InnerGeo brings together structured assessments, reflective
             tools, symbolic stories, and future community experiences to help
             people explore who they are, what draws them forward, and how they
             may continue growing.
@@ -236,7 +236,7 @@ export default function AboutPage() {
             personal choices.
           </p>
           <p>
-            InnerGeodessa aims to connect discovery with reflection, possible
+            InnerGeo aims to connect discovery with reflection, possible
             direction, and continued growth. Better self-understanding should
             support better questions—not close down possibilities.
           </p>
@@ -280,7 +280,7 @@ export default function AboutPage() {
             </article>
           </div>
           <p className="name-summary">
-            Together, InnerGeodessa suggests exploring the layers within
+            Together, InnerGeo suggests exploring the layers within
             oneself while remaining grounded in real life.
           </p>
         </div>
@@ -397,7 +397,7 @@ export default function AboutPage() {
       <section className="boundaries-section shell">
         <div className="boundaries-heading">
           <p className="eyebrow">Clear boundaries</p>
-          <h2>What InnerGeodessa will not do</h2>
+          <h2>What InnerGeo will not do</h2>
           <p>
             Trust begins with being direct about what a self-exploration
             platform cannot responsibly claim.
@@ -464,7 +464,7 @@ export default function AboutPage() {
             <p className="eyebrow">Current platform status</p>
             <h2>Being built in clear stages</h2>
             <p>
-              InnerGeodessa is currently being built in stages. The present
+              InnerGeo is currently being built in stages. The present
               site establishes the platform&apos;s ideas, structure, and
               design before interactive assessments and user systems are
               introduced.
@@ -499,7 +499,7 @@ export default function AboutPage() {
           <p className="eyebrow">Room to change</p>
           <h2>You are more than one result, one role, or one story.</h2>
           <p>
-            InnerGeodessa is being built as a place to explore those layers
+            InnerGeo is being built as a place to explore those layers
             with curiosity, context, and room to change.
           </p>
           <div className="about-final-actions">

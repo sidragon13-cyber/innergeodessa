@@ -11,9 +11,9 @@ import {
 } from "@/components/ui";
 
 export const metadata: Metadata = {
-  title: "Zodiac Identity | InnerGeodessa",
+  title: "Zodiac Identity | InnerGeo",
   description:
-    "Explore zodiac symbolism, personal identity, stories, and reflective themes through a thoughtful and culturally aware InnerGeodessa experience.",
+    "Explore zodiac symbolism, personal identity, stories, and reflective themes through a thoughtful and culturally aware InnerGeo experience.",
 };
 
 const signs = [
@@ -120,7 +120,7 @@ const profilePreview = [
   "Cultural stories",
   "Journaling questions",
   "Connections with personality and interests",
-  "A future InnerGeodessa guardian concept",
+  "A future InnerGeo guardian concept",
 ];
 
 const reflectionQuestions = [
@@ -184,7 +184,7 @@ export default function ZodiacPage() {
 
           <p className="zodiac-intro">
             Zodiac traditions have connected people with symbols, seasons,
-            stories, and shared identities for centuries. InnerGeodessa
+            stories, and shared identities for centuries. InnerGeo
             approaches them as a reflective language—not a fixed definition of
             who you are.
           </p>
@@ -331,7 +331,7 @@ export default function ZodiacPage() {
           <p className="eyebrow">Reflection, not prediction</p>
           <h2>Questions over fortune-telling</h2>
           <p>
-            InnerGeodessa will not use zodiac identity to make definitive
+            InnerGeo will not use zodiac identity to make definitive
             claims about future events, health, money, employment, marriage,
             legal outcomes, safety, or major life decisions.
           </p>
@@ -363,7 +363,7 @@ export default function ZodiacPage() {
             </p>
 
             <p>
-              InnerGeodessa aims to approach these traditions respectfully,
+              InnerGeo aims to approach these traditions respectfully,
               without claiming that one simplified description represents
               every historical practice or cultural perspective.
             </p>
@@ -426,7 +426,7 @@ export default function ZodiacPage() {
           <h2>A reflective experience, not evidence or advice</h2>
         </div>
         <p>
-          InnerGeodessa zodiac content is intended for reflection, culture,
+          InnerGeo zodiac content is intended for reflection, culture,
           storytelling, and entertainment. It is not a scientific personality
           assessment, psychological evaluation, medical service, financial
           guide, or method of predicting future events. Important personal

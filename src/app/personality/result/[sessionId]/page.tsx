@@ -261,7 +261,7 @@ export default function PersonalityResultPage() {
       <div className="mx-auto max-w-6xl">
         <header className="border-b border-[#c8c2b5] pb-10">
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6d746b]">
-            InnerGeodessa Personality Assessment
+            InnerGeo Personality Assessment
           </p>
 
           <div className="mt-7 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">

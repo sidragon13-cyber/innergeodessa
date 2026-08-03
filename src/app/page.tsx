@@ -72,7 +72,7 @@ const values = [
 
 const trustPoints = [
   "Results are designed for self-exploration and personal reflection.",
-  "InnerGeodessa does not provide medical or psychological diagnosis.",
+  "InnerGeo does not provide medical or psychological diagnosis.",
   "No account is required for the initial experience.",
   "Privacy and user control will guide future development.",
 ];
@@ -122,7 +122,7 @@ export default function Home() {
             }
             description={
               <p>
-                Each result becomes part of your InnerGeodessa identity profile,
+                Each result becomes part of your InnerGeo identity profile,
                 helping you understand yourself from different perspectives.
               </p>
             }

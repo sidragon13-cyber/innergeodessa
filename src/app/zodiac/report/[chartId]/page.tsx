@@ -193,7 +193,7 @@ export default function ZodiacReportPage() {
   return (
     <ReportShell>
         <ReportHeader
-          eyebrow="InnerGeodessa Complete Zodiac Birth Chart Report"
+          eyebrow="InnerGeo Complete Zodiac Birth Chart Report"
           subtitle="Professional symbolic birth chart report"
           title={
             <>

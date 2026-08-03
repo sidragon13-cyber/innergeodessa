@@ -54,7 +54,7 @@ export function SiteHeader({ homePath = "" }: { homePath?: string }) {
       <Link
         className="wordmark"
         href={homePath || "#top"}
-        aria-label="InnerGeodessa home"
+        aria-label="InnerGeo home"
       >
         <Wordmark />
       </Link>
@@ -223,7 +223,7 @@ export function SiteFooter({ homePath = "" }: { homePath?: string }) {
           <Link
             className="wordmark footer-wordmark"
             href={homePath || "#top"}
-            aria-label="InnerGeodessa home"
+            aria-label="InnerGeo home"
           >
             <Wordmark />
           </Link>

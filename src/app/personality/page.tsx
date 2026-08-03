@@ -11,7 +11,7 @@ import {
 } from "@/components/ui";
 
 export const metadata: Metadata = {
-  title: "Personality Test — InnerGeodessa",
+  title: "Personality Test — InnerGeo",
   description:
     "Explore four broad personality dimensions through a reflective 72-question self-discovery assessment.",
 };
