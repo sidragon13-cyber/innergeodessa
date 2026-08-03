@@ -1,4 +1,13 @@
+"use client";
+
 import type { ReactNode } from "react";
+
+import {
+  useLocale,
+} from "@/components/locale";
+import {
+  getAssessmentDictionary,
+} from "@/data/i18n";
 
 export interface AssessmentNavigationProps {
   answeredCount: number;
@@ -29,15 +38,18 @@ export function AssessmentNavigation({
   onPrevious,
   onNext,
 }: AssessmentNavigationProps) {
+  const { locale } = useLocale();
+  const dictionary = getAssessmentDictionary(locale);
+
   const nextLabel = isSaving
     ? isLastQuestion
-      ? "Generating result…"
-      : "Saving…"
+      ? dictionary.navigation.generatingResult
+      : dictionary.navigation.saving
     : isComplete
-      ? "Assessment complete"
+      ? dictionary.navigation.assessmentComplete
       : isLastQuestion
-        ? "Save final answer"
-        : "Next question";
+        ? dictionary.navigation.saveFinalAnswer
+        : dictionary.navigation.nextQuestion;
 
   return (
     <>
@@ -58,15 +70,22 @@ export function AssessmentNavigation({
             ].join(" ")}
           >
             <span aria-hidden="true">←</span>
-            <span className="ml-2">Previous</span>
+            <span className="ml-2">
+              {dictionary.navigation.previous}
+            </span>
           </button>
 
           <div className="order-first text-center text-xs leading-5 text-black/50 md:order-none">
             <p>
-              Answered {answeredCount} of {itemCount}
+              {dictionary.navigation.answeredCount(
+                answeredCount,
+                itemCount,
+              )}
             </p>
             <p>
-              Session {sessionId.slice(0, 8)}…
+              {dictionary.navigation.sessionLabel(
+                sessionId,
+              )}
             </p>
           </div>
 

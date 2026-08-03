@@ -1,3 +1,12 @@
+"use client";
+
+import {
+  useLocale,
+} from "@/components/locale";
+import {
+  getAssessmentDictionary,
+} from "@/data/i18n";
+
 import type {
   AssessmentAnswerOption,
 } from "./types";
@@ -16,11 +25,14 @@ export function AssessmentAnswerScale({
   selectedValue,
   onSelect,
 }: AssessmentAnswerScaleProps) {
+  const { locale } = useLocale();
+  const dictionary = getAssessmentDictionary(locale);
+
   return (
     <div
       className="grid gap-3"
       role="radiogroup"
-      aria-label="Answer options"
+      aria-label={dictionary.answerScale.ariaLabel}
     >
       {options.map((option) => {
         const selected =
