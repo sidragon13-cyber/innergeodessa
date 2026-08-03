@@ -4,6 +4,7 @@ import type {
 
 import {
   ReportNavigation as SharedReportNavigation,
+  ReportSection as SharedReportSection,
   ReportShell,
   ReportTableOfContents as SharedReportTableOfContents,
 } from "@/components/report";
@@ -13,7 +14,6 @@ import {
 } from "@/data/shared";
 
 import { ReportHeader } from "./report-header";
-import { ReportSection } from "./report-section";
 import type {
   ReportSectionNavigationItem,
 } from "./report-table-of-contents";
@@ -76,12 +76,35 @@ export function ReportDocument({
 
         <div className="personality-report-sections mt-12 space-y-12">
           {sections.map(({ section, title, anchor }) => (
-            <ReportSection
+            <SharedReportSection
               key={section.id}
-              anchor={anchor}
-              locale={locale}
-              section={section}
+              id={anchor}
+              order={section.order}
               title={title}
+              description={
+                getLocalizedText(
+                  section.description,
+                  locale,
+                )
+              }
+              badge={section.access}
+              tableOfContentsId="report-table-of-contents"
+              blocks={section.contentBlocks.map(
+                (contentBlock) => ({
+                  id: contentBlock.id,
+                  label: contentBlock.type,
+                  title: contentBlock.title
+                    ? getLocalizedText(
+                        contentBlock.title,
+                        locale,
+                      )
+                    : undefined,
+                  content: getLocalizedText(
+                    contentBlock.content,
+                    locale,
+                  ),
+                }),
+              )}
             />
           ))}
         </div>
