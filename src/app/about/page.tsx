@@ -5,6 +5,7 @@ import {
 } from "@/components/home";
 import {
   AboutHero,
+  AboutPurpose,
 } from "@/components/about";
 
 export const metadata: Metadata = {
@@ -171,30 +172,7 @@ export default function AboutPage() {
 
       <AboutHero />
 
-      <section className="about-purpose shell">
-        <div>
-          <p className="eyebrow">Why we exist</p>
-          <h2>Connect discovery with what comes next</h2>
-        </div>
-        <div className="about-purpose-copy">
-          <p>
-            Many people receive isolated labels but little guidance on what to
-            do with them. Personality tests, career tools, interests, values,
-            and identity experiences often sit apart from one another.
-          </p>
-          <p>
-            A result may feel useful for a moment without becoming part of
-            practical reflection or development. Meanwhile, people continue
-            changing through education, work, relationships, environment, and
-            personal choices.
-          </p>
-          <p>
-            InnerGeo aims to connect discovery with reflection, possible
-            direction, and continued growth. Better self-understanding should
-            support better questions—not close down possibilities.
-          </p>
-        </div>
-      </section>
+      <AboutPurpose />
 
       <section className="name-section">
         <div className="name-inner shell">
