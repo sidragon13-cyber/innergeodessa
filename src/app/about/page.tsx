@@ -8,6 +8,7 @@ import {
   AboutHero,
   AboutName,
   AboutPlatform,
+  AboutProfile,
   AboutPurpose,
 } from "@/components/about";
 
@@ -16,19 +17,6 @@ export const metadata: Metadata = {
   description:
     "Learn how InnerGeo brings personality, career interests, symbolic identity, reflection, and future community experiences into one thoughtful self-exploration platform.",
 };
-
-const profileLayers = [
-  "Personality preferences",
-  "Career-interest pattern",
-  "Values",
-  "Strengths",
-  "Learning preferences",
-  "Communication patterns",
-  "Personal goals",
-  "Growth reflections",
-  "Symbolic identity themes",
-  "Saved observations and prompts",
-];
 
 const framework = [
   {
@@ -90,29 +78,7 @@ export default function AboutPage() {
 
       <AboutPlatform />
 
-      <section className="integrated-profile shell">
-        <div className="integrated-profile-copy">
-          <p className="eyebrow">Future product direction</p>
-          <h2>From separate results to one evolving profile</h2>
-          <p>
-            Future profile layers may support comparison and reflection.
-            Contradictions can be useful, behaviour can shift across
-            environments, and every profile should remain open to change.
-            Users should control how they interpret their results.
-          </p>
-          <p className="future-status">
-            Integrated profiles and saved observations are not yet available.
-          </p>
-        </div>
-        <div className="profile-layer-list">
-          {profileLayers.map((layer, index) => (
-            <span key={layer}>
-              <i>{String(index + 1).padStart(2, "0")}</i>
-              {layer}
-            </span>
-          ))}
-        </div>
-      </section>
+      <AboutProfile />
 
       <section className="growth-framework">
         <div className="shell">
