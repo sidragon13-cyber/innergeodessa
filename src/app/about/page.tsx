@@ -7,6 +7,7 @@ import {
   AboutApproach,
   AboutHero,
   AboutName,
+  AboutPlatform,
   AboutPurpose,
 } from "@/components/about";
 
@@ -15,60 +16,6 @@ export const metadata: Metadata = {
   description:
     "Learn how InnerGeo brings personality, career interests, symbolic identity, reflection, and future community experiences into one thoughtful self-exploration platform.",
 };
-
-const platformParts = [
-  {
-    code: "P",
-    title: "Personality",
-    description:
-      "Explore patterns in attention, decision-making, energy, communication, and personal preferences.",
-    status: "Introduction available · Assessment coming later",
-    href: "/personality",
-    available: true,
-  },
-  {
-    code: "C",
-    title: "Career Interests",
-    description:
-      "Explore activities, environments, and problems that hold your interest through six RIASEC dimensions.",
-    status: "Introduction available · Assessment coming later",
-    href: "/career",
-    available: true,
-  },
-  {
-    code: "Z",
-    title: "Zodiac Identity",
-    description:
-      "Explore cultural symbolism, identity themes, stories, and reflective questions without deterministic claims.",
-    status: "Introduction available · Interactive experience coming later",
-    href: "/zodiac",
-    available: true,
-  },
-  {
-    code: "V",
-    title: "Values",
-    description:
-      "Understand the principles and priorities that influence decisions.",
-    status: "Future concept",
-    available: false,
-  },
-  {
-    code: "S",
-    title: "Strengths",
-    description:
-      "Reflect on recurring capabilities, resources, and ways of contributing.",
-    status: "Future concept",
-    available: false,
-  },
-  {
-    code: "L",
-    title: "Learning Style",
-    description:
-      "Explore preferred ways of absorbing, practising, and applying knowledge without rigid categories.",
-    status: "Future concept",
-    available: false,
-  },
-];
 
 const profileLayers = [
   "Personality preferences",
@@ -141,44 +88,7 @@ export default function AboutPage() {
 
       <AboutApproach />
 
-      <section className="platform-section" id="platform">
-        <div className="shell">
-          <div className="about-section-heading">
-            <div>
-              <p className="eyebrow">The platform parts</p>
-              <h2>Several lenses, clearly separated</h2>
-            </div>
-            <p>
-              Current introduction pages are distinct from future interactive
-              features. Each status below reflects what is available now.
-            </p>
-          </div>
-          <div className="platform-grid">
-            {platformParts.map((part) => (
-              <article className="platform-card" key={part.title}>
-                <div>
-                  <span className="platform-code" aria-hidden="true">
-                    {part.code}
-                  </span>
-                  <p>{part.available ? "Current area" : "Future area"}</p>
-                </div>
-                <h3>{part.title}</h3>
-                <p>{part.description}</p>
-                <div className="platform-status">
-                  <span>{part.status}</span>
-                  {part.href ? (
-                    <a href={part.href} aria-label={`Explore ${part.title}`}>
-                      ↗
-                    </a>
-                  ) : (
-                    <i aria-hidden="true">—</i>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+      <AboutPlatform />
 
       <section className="integrated-profile shell">
         <div className="integrated-profile-copy">
