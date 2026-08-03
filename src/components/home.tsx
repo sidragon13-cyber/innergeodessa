@@ -162,6 +162,10 @@ function IdentityMap() {
 }
 
 export function Hero() {
+  const { locale } = useLocale();
+  const dictionary = getUiDictionary(locale);
+  const hero = dictionary.home.hero;
+
   return (
     <Container
       as="section"
@@ -169,29 +173,33 @@ export function Hero() {
       className="hero max-w-[1400px] px-0 sm:px-0 lg:px-0"
     >
       <div className="hero-copy">
-        <p className="eyebrow">Your inner coordinates</p>
+        <p className="eyebrow">{hero.eyebrow}</p>
 
         <h1>
-          Discover who you are.
+          {hero.title}
           <br />
-          <em>Find where you may thrive.</em>
+          <em>{hero.emphasizedTitle}</em>
         </h1>
 
         <p className="hero-intro">
-          Explore your personality, career interests, and zodiac identity
-          through three thoughtful self-discovery experiences.
+          {hero.description}
         </p>
 
         <div className="hero-action">
           <PrimaryButton href="#explore">
-            Start Exploring
+            {hero.primaryAction}
           </PrimaryButton>
 
-          <p>Begin with any test. No account required.</p>
+          <p>{hero.note}</p>
         </div>
       </div>
 
-      <IdentityMap />
+      <IdentityMap
+        personalityLabel={hero.personalityLabel}
+        careerLabel={hero.careerLabel}
+        zodiacLabel={hero.zodiacLabel}
+        youLabel={hero.youLabel}
+      />
     </Container>
   );
 }
