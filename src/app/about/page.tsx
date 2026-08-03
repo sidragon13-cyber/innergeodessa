@@ -13,6 +13,7 @@ import {
   AboutPlatform,
   AboutProfile,
   AboutPurpose,
+  AboutResponsible,
 } from "@/components/about";
 
 export const metadata: Metadata = {
@@ -20,19 +21,6 @@ export const metadata: Metadata = {
   description:
     "Learn how InnerGeo brings personality, career interests, symbolic identity, reflection, and future community experiences into one thoughtful self-exploration platform.",
 };
-
-const responsibleDesign = [
-  "Transparent limitations",
-  "Understandable result explanations",
-  "No false precision",
-  "No manipulative urgency",
-  "No deterministic predictions",
-  "Accessible and readable interfaces",
-  "User control over personal information",
-  "Careful handling of sensitive reflections",
-  "Clear boundaries around professional advice",
-  "Continued review as the platform develops",
-];
 
 export default function AboutPage() {
   return (
@@ -57,24 +45,7 @@ export default function AboutPage() {
 
       <AboutCommunity />
 
-      <section className="responsible-section shell">
-        <div>
-          <p className="eyebrow">Responsible design</p>
-          <h2>Principles for features still to come</h2>
-          <p>
-            These are design intentions, not claims of certifications, audits,
-            or systems that have already been implemented.
-          </p>
-        </div>
-        <div className="responsible-list">
-          {responsibleDesign.map((principle, index) => (
-            <span key={principle}>
-              <i>{String(index + 1).padStart(2, "0")}</i>
-              {principle}
-            </span>
-          ))}
-        </div>
-      </section>
+      <AboutResponsible />
 
       <section className="status-section">
         <div className="status-inner shell">
