@@ -1,10 +1,9 @@
 import {
   CompassMark,
   Hero,
-  ProductGrid,
+  HomeExploreSection,
   SiteFooter,
   SiteHeader,
-  type Product,
 } from "@/components/home";
 
 import {
@@ -12,42 +11,6 @@ import {
   Section,
   SectionHeading,
 } from "@/components/ui";
-
-const products: Product[] = [
-  {
-    number: "01",
-    id: "personality",
-    title: "Personality Test",
-    description:
-      "Understand how you gain energy, process information, make decisions, and approach life.",
-    metadata: "48 questions · 6–8 minutes",
-    cta: "Start Personality Test",
-    symbol: "P",
-    href: "/personality",
-  },
-  {
-    number: "02",
-    id: "career",
-    title: "Career Interest",
-    description:
-      "Discover the activities, environments, and fields that naturally attract you.",
-    metadata: "36 questions · 5–7 minutes",
-    cta: "Explore Career Interests",
-    symbol: "C",
-    href: "/career",
-  },
-  {
-    number: "03",
-    id: "zodiac",
-    title: "Zodiac Identity",
-    description:
-      "Begin with your birth date and discover your zodiac identity.",
-    metadata: "About 1 minute",
-    cta: "Discover Your Sign",
-    symbol: "Z",
-    href: "/zodiac",
-  },
-];
 
 const values = [
   {
@@ -83,27 +46,7 @@ export default function Home() {
       <SiteHeader />
       <Hero />
 
-      <Section
-        id="explore"
-        spacing="large"
-        className="explore-section"
-      >
-        <Container>
-          <SectionHeading
-            eyebrow="Explore yourself"
-            title="Three ways to understand yourself"
-            description={
-              <p>
-                Start anywhere. Each experience offers a different lens on what
-                makes you, you.
-              </p>
-            }
-            className="mb-14"
-          />
-
-          <ProductGrid products={products} />
-        </Container>
-      </Section>
+      <HomeExploreSection />
 
       <Section
         id="how-it-works"
