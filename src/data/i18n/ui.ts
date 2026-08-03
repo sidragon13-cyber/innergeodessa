@@ -47,6 +47,19 @@ export type UiDictionary = {
         };
       };
     };
+    profile: {
+      eyebrow: string;
+      title: string;
+      emphasizedTitle: string;
+      description: string;
+      exampleLabel: string;
+      personalityLabel: string;
+      careerLabel: string;
+      zodiacLabel: string;
+      careerExample: string;
+      zodiacExample: string;
+      note: string;
+    };
   };
   home: {
     hero: {
@@ -145,6 +158,21 @@ export const uiDictionaries: Record<
           },
         },
       },
+      profile: {
+        eyebrow: "How it comes together",
+        title: "One profile.",
+        emphasizedTitle: "Three dimensions.",
+        description:
+          "Each result becomes part of your InnerGeo identity profile, helping you understand yourself from different perspectives.",
+        exampleLabel: "Example identity",
+        personalityLabel: "Personality",
+        careerLabel: "Career interests",
+        zodiacLabel: "Zodiac",
+        careerExample: "Investigative · Artistic",
+        zodiacExample: "Scorpio",
+        note:
+          "A preview of how three perspectives can sit together. Saving profiles is not yet available.",
+      },
     },
     footer: {
       navigationLabel: "Footer navigation",
@@ -224,6 +252,21 @@ export const uiDictionaries: Record<
             cta: "生成个人星盘",
           },
         },
+      },
+      profile: {
+        eyebrow: "三种结果如何结合",
+        title: "一份个人档案。",
+        emphasizedTitle: "三个理解维度。",
+        description:
+          "每一项结果都会成为你的 InnerGeo 身份档案的一部分，帮助你从不同角度理解自己。",
+        exampleLabel: "身份档案示例",
+        personalityLabel: "人格类型",
+        careerLabel: "职业兴趣",
+        zodiacLabel: "星座身份",
+        careerExample: "研究型 · 艺术型",
+        zodiacExample: "天蝎座",
+        note:
+          "这是三种视角组合后的示例。个人档案保存功能尚未开放。",
       },
     },
     footer: {

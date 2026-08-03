@@ -2,6 +2,7 @@ import {
   CompassMark,
   Hero,
   HomeExploreSection,
+  HomeProfileSection,
   SiteFooter,
   SiteHeader,
 } from "@/components/home";
@@ -48,59 +49,7 @@ export default function Home() {
 
       <HomeExploreSection />
 
-      <Section
-        id="how-it-works"
-        spacing="large"
-        className="profile-section"
-      >
-        <Container className="profile-inner">
-          <SectionHeading
-            eyebrow="How it comes together"
-            title={
-              <>
-                One profile.
-                <br />
-                <em>Three dimensions.</em>
-              </>
-            }
-            description={
-              <p>
-                Each result becomes part of your InnerGeo identity profile,
-                helping you understand yourself from different perspectives.
-              </p>
-            }
-            className="profile-intro"
-          />
-
-          <div className="profile-example">
-            <div className="profile-orbit" aria-hidden="true">
-              <CompassMark />
-            </div>
-
-            <p className="example-label">Example identity</p>
-
-            <div className="identity-result">
-              <span>Personality</span>
-              <strong>INTP</strong>
-            </div>
-
-            <div className="identity-result">
-              <span>Career interests</span>
-              <strong>Investigative · Artistic</strong>
-            </div>
-
-            <div className="identity-result">
-              <span>Zodiac</span>
-              <strong>Scorpio</strong>
-            </div>
-
-            <p className="example-note">
-              A preview of how three perspectives can sit together. Saving
-              profiles is not yet available.
-            </p>
-          </div>
-        </Container>
-      </Section>
+      <HomeProfileSection />
 
       <Section
         id="about"

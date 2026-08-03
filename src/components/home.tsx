@@ -285,3 +285,61 @@ export function SiteFooter({ homePath = "" }: { homePath?: string }) {
     </footer>
   );
 }
+
+export function HomeProfileSection() {
+  const { locale } = useLocale();
+  const dictionary = getUiDictionary(locale);
+  const profile = dictionary.home.profile;
+
+  return (
+    <Section
+      id="how-it-works"
+      spacing="large"
+      className="profile-section"
+    >
+      <Container className="profile-inner">
+        <SectionHeading
+          eyebrow={profile.eyebrow}
+          title={
+            <>
+              {profile.title}
+              <br />
+              <em>{profile.emphasizedTitle}</em>
+            </>
+          }
+          description={<p>{profile.description}</p>}
+          className="profile-intro"
+        />
+
+        <div className="profile-example">
+          <div className="profile-orbit" aria-hidden="true">
+            <CompassMark />
+          </div>
+
+          <p className="example-label">
+            {profile.exampleLabel}
+          </p>
+
+          <div className="identity-result">
+            <span>{profile.personalityLabel}</span>
+            <strong>INTP</strong>
+          </div>
+
+          <div className="identity-result">
+            <span>{profile.careerLabel}</span>
+            <strong>{profile.careerExample}</strong>
+          </div>
+
+          <div className="identity-result">
+            <span>{profile.zodiacLabel}</span>
+            <strong>{profile.zodiacExample}</strong>
+          </div>
+
+          <p className="example-note">
+            {profile.note}
+          </p>
+        </div>
+      </Container>
+    </Section>
+  );
+}
