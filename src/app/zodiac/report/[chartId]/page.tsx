@@ -18,6 +18,7 @@ import {
 import {
   ReportHeader,
   ReportMetadata,
+  ReportNavigation,
   ReportPrintButton,
   ReportSection,
   ReportShell,
@@ -274,21 +275,16 @@ export default function ZodiacReportPage() {
           ))}
         </div>
 
-        <div className="report-interactive-only mt-12 flex flex-wrap gap-4 border-t border-[#c8c2b5] pt-8">
-          <Link
-            href={`/zodiac/result/${chartId}`}
-            className="inline-flex min-h-12 items-center justify-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5]"
-          >
-            Back to Zodiac result
-          </Link>
-
-          <Link
-            href="/zodiac/test"
-            className="inline-flex min-h-12 items-center justify-center border border-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em]"
-          >
-            Create another chart
-          </Link>
-        </div>
+        <ReportNavigation
+          primary={{
+            href: `/zodiac/result/${chartId}`,
+            label: "Back to Zodiac result",
+          }}
+          secondary={{
+            href: "/zodiac/test",
+            label: "Create another chart",
+          }}
+        />
 
         <footer className="mt-12 border-t border-[#c8c2b5] pt-8 text-sm leading-6 text-[#6d746b]">
           Astrology content is intended
