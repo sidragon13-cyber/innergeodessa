@@ -25,6 +25,7 @@ import {
 } from "@/data/shared";
 
 import {
+  ResultShell,
   ResultState,
 } from "@/components/result";
 
@@ -244,8 +245,7 @@ export default function PersonalityResultPage() {
     : [];
 
   return (
-    <main className="min-h-screen bg-[#efede5] px-6 py-12 text-[#26372d] md:py-20">
-      <div className="mx-auto max-w-6xl">
+    <ResultShell>
         <header className="border-b border-[#c8c2b5] pb-10">
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6d746b]">
             InnerGeo Personality Assessment
@@ -645,7 +645,6 @@ export default function PersonalityResultPage() {
             Take assessment again
           </Link>
         </div>
-      </div>
-    </main>
+    </ResultShell>
   );
 }
