@@ -1,8 +1,16 @@
+"use client";
+
 import type { ReactNode } from "react";
 
 import {
+  useLocale,
+} from "@/components/locale";
+import {
   Container,
 } from "@/components/ui";
+import {
+  getAssessmentDictionary,
+} from "@/data/i18n";
 
 import type {
   AssessmentViewStatus,
@@ -56,12 +64,16 @@ export function AssessmentShell({
   itemCount,
   children,
 }: AssessmentShellProps) {
+  const { locale } = useLocale();
+  const dictionary = getAssessmentDictionary(locale);
+  const currentQuestion = currentIndex + 1;
+
   if (status === "loading") {
     return (
       <AssessmentStatusShell
-        eyebrow="Assessment"
-        title="Loading your assessment…"
-        message="Your questions and assessment session are being prepared."
+        eyebrow={dictionary.shell.loadingEyebrow}
+        title={dictionary.shell.loadingTitle}
+        message={dictionary.shell.loadingMessage}
       />
     );
   }
@@ -69,11 +81,11 @@ export function AssessmentShell({
   if (status === "error") {
     return (
       <AssessmentStatusShell
-        eyebrow="Unable to continue"
-        title="The assessment could not be loaded."
+        eyebrow={dictionary.shell.errorEyebrow}
+        title={dictionary.shell.errorTitle}
         message={
           errorMessage ||
-          "Please refresh the page and try again."
+          dictionary.shell.errorFallbackMessage
         }
       />
     );
@@ -90,11 +102,13 @@ export function AssessmentShell({
             <span className="italic text-[#a64a2c]">
               Geo
             </span>
-            dessa
           </span>
 
           <span className="text-right text-xs font-bold uppercase tracking-[0.16em]">
-            Question {currentIndex + 1} of {itemCount}
+            {dictionary.shell.questionCounter(
+              currentQuestion,
+              itemCount,
+            )}
           </span>
         </Container>
       </header>
