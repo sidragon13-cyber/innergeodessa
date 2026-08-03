@@ -10,11 +10,14 @@ import {
 
 import {
   generateZodiacReportSections,
-  getZodiacSignName,
+  generateZodiacReportSectionsZh,
   readStoredZodiacChart,
   type AstrologyResultContract,
 } from "@/data/zodiac";
 
+import {
+  useLocale,
+} from "@/components/locale";
 import {
   ReportHeader,
   ReportMetadata,
@@ -25,11 +28,18 @@ import {
   ReportState,
   ReportTableOfContents,
 } from "@/components/report";
+import {
+  getZodiacReportDictionary,
+} from "@/data/i18n";
 
 type LoadStatus =
   | "loading"
   | "ready"
   | "error";
+
+type LoadError =
+  | "missingChartId"
+  | "missingStoredChart";
 
 function createAnchor(
   order: number,
@@ -42,6 +52,7 @@ function createAnchor(
 
 function formatCalculatedAt(
   value: string,
+  dateLocale: "en" | "zh-CN",
 ): string {
   const date =
     new Date(value);
@@ -55,7 +66,7 @@ function formatCalculatedAt(
   }
 
   return new Intl.DateTimeFormat(
-    "en",
+    dateLocale,
     {
       dateStyle: "medium",
       timeStyle: "short",
@@ -64,6 +75,10 @@ function formatCalculatedAt(
 }
 
 export default function ZodiacReportPage() {
+  const { locale } = useLocale();
+  const dictionary =
+    getZodiacReportDictionary(locale);
+
   const params =
     useParams<{
       chartId: string;
@@ -83,15 +98,13 @@ export default function ZodiacReportPage() {
     >(null);
 
   const [
-    errorMessage,
-    setErrorMessage,
-  ] = useState("");
+    loadError,
+    setLoadError,
+  ] = useState<LoadError | null>(null);
 
   useEffect(() => {
     if (!chartId) {
-      setErrorMessage(
-        "The birth chart ID is missing.",
-      );
+      setLoadError("missingChartId");
 
       setStatus("error");
       return;
@@ -101,14 +114,13 @@ export default function ZodiacReportPage() {
       readStoredZodiacChart(chartId);
 
     if (!storedResult) {
-      setErrorMessage(
-        "This chart is no longer available in this browser. Generate a new birth chart to continue.",
-      );
+      setLoadError("missingStoredChart");
 
       setStatus("error");
       return;
     }
 
+    setLoadError(null);
     setResult(storedResult);
     setStatus("ready");
   }, [chartId]);
@@ -117,27 +129,27 @@ export default function ZodiacReportPage() {
     useMemo(
       () =>
         result
-          ? generateZodiacReportSections(
-              result,
-            )
+          ? locale === "zh"
+            ? generateZodiacReportSectionsZh(result)
+            : generateZodiacReportSections(result)
           : [],
-      [result],
+      [locale, result],
     );
 
   if (status === "loading") {
     return (
       <ReportState
-        eyebrow="Zodiac Birth Chart Report"
-        title="Preparing your detailed Zodiac report…"
-        message="Loading your calculated birth chart and generating the structured report."
+        eyebrow={dictionary.loading.eyebrow}
+        title={dictionary.loading.title}
+        message={dictionary.loading.message}
         actions={[
           {
             href: `/zodiac/result/${chartId}`,
-            label: "Back to result",
+            label: dictionary.navigation.backToResult,
           },
           {
             href: "/zodiac/test",
-            label: "New birth chart",
+            label: dictionary.navigation.newBirthChart,
             variant: "secondary",
           },
         ]}
@@ -151,20 +163,21 @@ export default function ZodiacReportPage() {
   ) {
     return (
       <ReportState
-        eyebrow="Zodiac Birth Chart Report"
-        title="Your Zodiac report could not be loaded."
+        eyebrow={dictionary.loading.eyebrow}
+        title={dictionary.errors.unavailable}
         message={
-          errorMessage ||
-          "The calculated birth chart is unavailable."
+          loadError
+            ? dictionary.errors[loadError]
+            : dictionary.errors.fallbackUnavailable
         }
         actions={[
           {
             href: `/zodiac/result/${chartId}`,
-            label: "Back to result",
+            label: dictionary.navigation.backToResult,
           },
           {
             href: "/zodiac/test",
-            label: "New birth chart",
+            label: dictionary.navigation.newBirthChart,
             variant: "secondary",
           },
         ]}
@@ -173,75 +186,77 @@ export default function ZodiacReportPage() {
   }
 
   const sunName =
-    getZodiacSignName(
-      result.planets.sun
-        .zodiac.sign,
-    );
+    dictionary.signNames[
+      result.planets.sun.zodiac.sign
+    ];
 
   const moonName =
-    getZodiacSignName(
-      result.planets.moon
-        .zodiac.sign,
-    );
+    dictionary.signNames[
+      result.planets.moon.zodiac.sign
+    ];
 
   const risingName =
-    getZodiacSignName(
-      result.angles.ascendant
-        .zodiac.sign,
-    );
+    dictionary.signNames[
+      result.angles.ascendant.zodiac.sign
+    ];
 
   return (
     <ReportShell>
         <ReportHeader
-          eyebrow="InnerGeo Complete Zodiac Birth Chart Report"
-          subtitle="Professional symbolic birth chart report"
+          eyebrow={dictionary.header.eyebrow}
+          subtitle={dictionary.header.subtitle}
           title={
             <>
-              {sunName} Sun
+              {sunName}{dictionary.header.sun}
               <br />
-              {moonName} Moon
+              {moonName}{dictionary.header.moon}
               <br />
-              {risingName} Rising
+              {risingName}{dictionary.header.rising}
             </>
           }
           description={
             <p>
-              A structured interpretation of your calculated planetary
-              positions, personal planets, chart angles, potential strengths,
-              development risks, relationship themes, career prompts, and
-              reflection plan.
+              {dictionary.header.description}
             </p>
           }
           metadata={
             <ReportMetadata
               items={[
                 {
-                  label: "Calculated",
+                  label: dictionary.header.calculated,
                   value: formatCalculatedAt(
                     result.calculatedAt,
+                    dictionary.dateLocale,
                   ),
                 },
                 {
-                  label: "Local birth time",
+                  label: dictionary.header.localBirthTime,
                   value: result.input.localDateTime,
                 },
                 {
-                  label: "Time zone",
+                  label: dictionary.header.timeZone,
                   value: result.input.timeZone,
                 },
                 {
-                  label: "Chart",
+                  label: dictionary.header.chart,
                   value: `${chartId.slice(0, 8)}…`,
                 },
               ]}
             />
           }
-          actions={<ReportPrintButton />}
+          actions={
+            <ReportPrintButton
+              label={dictionary.header.print}
+              guidance={dictionary.header.printGuidance}
+            />
+          }
         />
 
         <ReportTableOfContents
           id="zodiac-report-table-of-contents"
-          ariaLabel="Zodiac report table of contents"
+          ariaLabel={dictionary.tableOfContents.ariaLabel}
+          title={dictionary.tableOfContents.title}
+          description={dictionary.tableOfContents.description}
           items={sections.map((section) => ({
             id: section.id,
             anchor: createAnchor(
@@ -267,7 +282,7 @@ export default function ZodiacReportPage() {
               tableOfContentsId="zodiac-report-table-of-contents"
               blocks={section.blocks.map((block) => ({
                 id: block.id,
-                label: block.type,
+                label: dictionary.blockLabels[block.type],
                 title: block.title,
                 content: block.content,
               }))}
@@ -278,22 +293,16 @@ export default function ZodiacReportPage() {
         <ReportNavigation
           primary={{
             href: `/zodiac/result/${chartId}`,
-            label: "Back to Zodiac result",
+            label: dictionary.navigation.backToZodiacResult,
           }}
           secondary={{
             href: "/zodiac/test",
-            label: "Create another chart",
+            label: dictionary.navigation.createAnotherChart,
           }}
         />
 
         <footer className="mt-12 border-t border-[#c8c2b5] pt-8 text-sm leading-6 text-[#6d746b]">
-          Astrology content is intended
-          for reflection, culture, and
-          entertainment. It is not
-          scientific, medical,
-          psychological, legal,
-          financial, educational, or
-          employment advice.
+          {dictionary.footer}
         </footer>
     </ReportShell>
   );

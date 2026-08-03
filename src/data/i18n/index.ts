@@ -118,3 +118,12 @@ export type {
   ZodiacResultDictionary,
   ZodiacResultPositionDetail,
 } from "./zodiac-result";
+
+export {
+  getZodiacReportDictionary,
+  zodiacReportDictionaries,
+} from "./zodiac-report";
+
+export type {
+  ZodiacReportDictionary,
+} from "./zodiac-report";

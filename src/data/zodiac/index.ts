@@ -8,6 +8,7 @@ export * from "./validation";
 export * from "./web-contract";
 export * from "./locations";
 export * from "./report";
+export * from "./report-zh";
 export * from "./storage";
 export * from "./fixtures";
 export * from "./calculation";
