@@ -115,13 +115,13 @@ assert(
 );
 
 assert(
-  normaliseWhitespace(reportHeaderSource).includes(
-    "For a clean PDF, disable browser headers and footers in the print dialog.",
+  /dictionary\.header\.printGuidance/.test(
+    reportHeaderSource,
   ) &&
     /report-interactive-only[^"]*report-print-guidance|report-print-guidance[^"]*report-interactive-only/.test(
       reportHeaderSource,
     ),
-  "The screen-only print guidance must be present and hidden during print.",
+  "The localized screen-only print guidance must be present and hidden during print.",
 );
 
 function readSource(relativePath: string): string {
