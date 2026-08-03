@@ -12,6 +12,10 @@ import {
   type RiasecResultContract,
 } from "@/data/career";
 
+import {
+  ResultState,
+} from "@/components/result";
+
 type ResultStatus = "loading" | "ready" | "error";
 
 function formatDate(value: string): string {
@@ -140,43 +144,30 @@ export default function CareerResultPage() {
 
   if (status === "loading") {
     return (
-      <main className="min-h-screen bg-[#f7f4ee] px-6 py-20 text-[#17231d]">
-        <div className="mx-auto max-w-5xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#68756d]">
-            Career Interest Assessment
-          </p>
-          <h1 className="mt-4 text-4xl font-semibold">
-            Preparing your result…
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-[#58645d]">
-            Your six career-interest dimensions are being loaded.
-          </p>
-        </div>
-      </main>
+      <ResultState
+        eyebrow="Career Interest Assessment"
+        title="Preparing your result…"
+        message="Your six career-interest dimensions are being loaded."
+      />
     );
   }
 
   if (status === "error" || !result) {
     return (
-      <main className="min-h-screen bg-[#f7f4ee] px-6 py-20 text-[#17231d]">
-        <div className="mx-auto max-w-3xl rounded-3xl border border-[#ddd8cd] bg-white p-8 shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#8a4f43]">
-            Result unavailable
-          </p>
-          <h1 className="mt-4 text-3xl font-semibold">
-            We could not load this career result.
-          </h1>
-          <p className="mt-4 leading-7 text-[#58645d]">
-            {errorMessage}
-          </p>
-          <Link
-            href="/career/test"
-            className="mt-8 inline-flex rounded-full bg-[#17231d] px-6 py-3 font-semibold text-white"
-          >
-            Start a new assessment
-          </Link>
-        </div>
-      </main>
+      <ResultState
+        eyebrow="Result unavailable"
+        title="We could not load this career result."
+        message={
+          errorMessage ||
+          "The completed career result is unavailable."
+        }
+        actions={[
+          {
+            href: "/career/test",
+            label: "Start a new assessment",
+          },
+        ]}
+      />
     );
   }
 
