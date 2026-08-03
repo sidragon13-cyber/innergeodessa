@@ -108,3 +108,13 @@ export {
 export type {
   ZodiacTestDictionary,
 } from "./zodiac-test";
+
+export {
+  getZodiacResultDictionary,
+  zodiacResultDictionaries,
+} from "./zodiac-result";
+
+export type {
+  ZodiacResultDictionary,
+  ZodiacResultPositionDetail,
+} from "./zodiac-result";

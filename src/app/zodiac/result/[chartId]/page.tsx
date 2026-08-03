@@ -12,20 +12,30 @@ import {
   readStoredZodiacChart,
   type AstrologyResultContract,
   type ZodiacPosition,
-  type ZodiacSign,
 } from "@/data/zodiac";
 
+import {
+  useLocale,
+} from "@/components/locale";
 import {
   ResultHeader,
   ResultNavigation,
   ResultShell,
   ResultState,
 } from "@/components/result";
+import {
+  getZodiacResultDictionary,
+  type ZodiacResultDictionary,
+} from "@/data/i18n";
 
 type ResultStatus =
   | "loading"
   | "ready"
   | "error";
+
+type ResultError =
+  | "missingChartId"
+  | "missingStoredChart";
 
 type DisplayPosition = {
   id: string;
@@ -37,150 +47,6 @@ type DisplayPosition = {
   position: ZodiacPosition;
   retrograde?: boolean;
 };
-
-const SIGN_NAMES:
-  Readonly<Record<ZodiacSign, string>> = {
-    aries: "Aries",
-    taurus: "Taurus",
-    gemini: "Gemini",
-    cancer: "Cancer",
-    leo: "Leo",
-    virgo: "Virgo",
-    libra: "Libra",
-    scorpio: "Scorpio",
-    sagittarius: "Sagittarius",
-    capricorn: "Capricorn",
-    aquarius: "Aquarius",
-    pisces: "Pisces",
-  };
-
-const POSITION_DETAILS = {
-  sun: {
-    symbol: "☉",
-    label: "Sun",
-    category: "Core Identity",
-    meaning:
-      "The Sun represents identity, purpose, vitality, and the direction through which a person develops a stronger sense of self.",
-    keywords: [
-      "Identity",
-      "Purpose",
-      "Vitality",
-      "Self-expression",
-    ],
-  },
-
-  moon: {
-    symbol: "☽",
-    label: "Moon",
-    category: "Inner World",
-    meaning:
-      "The Moon represents emotional patterns, instinctive responses, security needs, memory, and the private inner world.",
-    keywords: [
-      "Emotion",
-      "Instinct",
-      "Security",
-      "Inner needs",
-    ],
-  },
-
-  mercury: {
-    symbol: "☿",
-    label: "Mercury",
-    category: "Personal Planet",
-    meaning:
-      "Mercury represents thinking, communication, learning, perception, reasoning, and the exchange of information.",
-    keywords: [
-      "Thinking",
-      "Communication",
-      "Learning",
-      "Perception",
-    ],
-  },
-
-  venus: {
-    symbol: "♀",
-    label: "Venus",
-    category: "Personal Planet",
-    meaning:
-      "Venus represents attraction, values, relationships, aesthetics, pleasure, and the way harmony is created.",
-    keywords: [
-      "Values",
-      "Relationships",
-      "Attraction",
-      "Harmony",
-    ],
-  },
-
-  mars: {
-    symbol: "♂",
-    label: "Mars",
-    category: "Personal Planet",
-    meaning:
-      "Mars represents action, drive, courage, assertion, effort, conflict response, and the pursuit of desired outcomes.",
-    keywords: [
-      "Action",
-      "Drive",
-      "Courage",
-      "Assertion",
-    ],
-  },
-
-  ascendant: {
-    symbol: "ASC",
-    label: "Ascendant",
-    category: "Chart Angle",
-    meaning:
-      "The Ascendant is the zodiac point rising on the eastern horizon. It relates to approach, presentation, orientation, and first engagement with life.",
-    keywords: [
-      "Approach",
-      "Presentation",
-      "Orientation",
-      "First impression",
-    ],
-  },
-
-  descendant: {
-    symbol: "DSC",
-    label: "Descendant",
-    category: "Chart Angle",
-    meaning:
-      "The Descendant is opposite the Ascendant. It relates symbolically to partnership, encounter, projection, and qualities recognised through others.",
-    keywords: [
-      "Partnership",
-      "Encounter",
-      "Others",
-      "Projection",
-    ],
-  },
-
-  midheaven: {
-    symbol: "MC",
-    label: "Midheaven",
-    category: "Chart Angle",
-    meaning:
-      "The Midheaven is the upper meridian point of the chart. It relates symbolically to public direction, contribution, visibility, and long-term development.",
-    keywords: [
-      "Direction",
-      "Contribution",
-      "Visibility",
-      "Public role",
-    ],
-  },
-
-  imumCoeli: {
-    symbol: "IC",
-    label: "Imum Coeli",
-    category: "Chart Angle",
-    meaning:
-      "The Imum Coeli is opposite the Midheaven. It relates symbolically to foundations, private life, belonging, roots, and the inner base of development.",
-    keywords: [
-      "Foundations",
-      "Roots",
-      "Belonging",
-      "Private life",
-    ],
-  },
-} as const;
 
 function formatPosition(
   position: ZodiacPosition,
@@ -194,9 +60,11 @@ function formatPosition(
 
 function formatDateTime(
   value: string | null,
+  dateLocale: "en" | "zh-CN",
+  unavailable: string,
 ): string {
   if (!value) {
-    return "Unavailable";
+    return unavailable;
   }
 
   const date = new Date(value);
@@ -210,7 +78,7 @@ function formatDateTime(
   }
 
   return new Intl.DateTimeFormat(
-    "en",
+    dateLocale,
     {
       dateStyle: "medium",
       timeStyle: "medium",
@@ -221,8 +89,10 @@ function formatDateTime(
 
 function PositionCard({
   item,
+  dictionary,
 }: {
   item: DisplayPosition;
+  dictionary: ZodiacResultDictionary;
 }) {
   return (
     <article className="rounded-[1.75rem] border border-[#ddd8cd] bg-white p-6 shadow-sm">
@@ -245,7 +115,7 @@ function PositionCard({
       <div className="mt-7 rounded-2xl bg-[#f7f4ee] p-5">
         <p className="text-2xl font-semibold text-[#17231d]">
           {
-            SIGN_NAMES[
+            dictionary.signNames[
               item.position.sign
             ]
           }
@@ -256,12 +126,12 @@ function PositionCard({
             item.position,
           )}
           {item.retrograde
-            ? " · Retrograde"
+            ? ` · ${dictionary.positionCard.retrograde}`
             : ""}
         </p>
 
         <p className="mt-2 text-xs text-[#7a847e]">
-          Absolute longitude:{" "}
+          {dictionary.positionCard.absoluteLongitude}:{" "}
           {item.position.absoluteLongitude.toFixed(
             6,
           )}
@@ -290,6 +160,10 @@ function PositionCard({
 }
 
 export default function ZodiacResultPage() {
+  const { locale } = useLocale();
+  const dictionary =
+    getZodiacResultDictionary(locale);
+
   const params =
     useParams<{
       chartId: string;
@@ -309,15 +183,13 @@ export default function ZodiacResultPage() {
     >(null);
 
   const [
-    errorMessage,
-    setErrorMessage,
-  ] = useState("");
+    resultError,
+    setResultError,
+  ] = useState<ResultError | null>(null);
 
   useEffect(() => {
     if (!chartId) {
-      setErrorMessage(
-        "The birth chart ID is missing.",
-      );
+      setResultError("missingChartId");
 
       setStatus("error");
       return;
@@ -327,14 +199,13 @@ export default function ZodiacResultPage() {
       readStoredZodiacChart(chartId);
 
     if (!storedResult) {
-      setErrorMessage(
-        "This chart is no longer available in this browser. Generate a new birth chart to continue.",
-      );
+      setResultError("missingStoredChart");
 
       setStatus("error");
       return;
     }
 
+    setResultError(null);
     setResult(storedResult);
     setStatus("ready");
   }, [chartId]);
@@ -350,7 +221,7 @@ export default function ZodiacResultPage() {
       return [
         {
           id: "sun",
-          ...POSITION_DETAILS.sun,
+          ...dictionary.positions.sun,
           position:
             result.planets.sun
               .zodiac,
@@ -360,7 +231,7 @@ export default function ZodiacResultPage() {
         },
         {
           id: "moon",
-          ...POSITION_DETAILS.moon,
+          ...dictionary.positions.moon,
           position:
             result.planets.moon
               .zodiac,
@@ -370,13 +241,13 @@ export default function ZodiacResultPage() {
         },
         {
           id: "ascendant",
-          ...POSITION_DETAILS.ascendant,
+          ...dictionary.positions.ascendant,
           position:
             result.angles
               .ascendant.zodiac,
         },
       ];
-    }, [result]);
+    }, [dictionary.positions, result]);
 
   const personalPlanets =
     useMemo<
@@ -389,7 +260,7 @@ export default function ZodiacResultPage() {
       return [
         {
           id: "mercury",
-          ...POSITION_DETAILS.mercury,
+          ...dictionary.positions.mercury,
           position:
             result.planets.mercury
               .zodiac,
@@ -399,7 +270,7 @@ export default function ZodiacResultPage() {
         },
         {
           id: "venus",
-          ...POSITION_DETAILS.venus,
+          ...dictionary.positions.venus,
           position:
             result.planets.venus
               .zodiac,
@@ -409,7 +280,7 @@ export default function ZodiacResultPage() {
         },
         {
           id: "mars",
-          ...POSITION_DETAILS.mars,
+          ...dictionary.positions.mars,
           position:
             result.planets.mars
               .zodiac,
@@ -418,7 +289,7 @@ export default function ZodiacResultPage() {
               .retrograde,
         },
       ];
-    }, [result]);
+    }, [dictionary.positions, result]);
 
   const chartAngles =
     useMemo<
@@ -431,41 +302,41 @@ export default function ZodiacResultPage() {
       return [
         {
           id: "ascendant",
-          ...POSITION_DETAILS.ascendant,
+          ...dictionary.positions.ascendant,
           position:
             result.angles
               .ascendant.zodiac,
         },
         {
           id: "descendant",
-          ...POSITION_DETAILS.descendant,
+          ...dictionary.positions.descendant,
           position:
             result.angles
               .descendant.zodiac,
         },
         {
           id: "midheaven",
-          ...POSITION_DETAILS.midheaven,
+          ...dictionary.positions.midheaven,
           position:
             result.angles
               .midheaven.zodiac,
         },
         {
           id: "imum-coeli",
-          ...POSITION_DETAILS.imumCoeli,
+          ...dictionary.positions.imumCoeli,
           position:
             result.angles
               .imumCoeli.zodiac,
         },
       ];
-    }, [result]);
+    }, [dictionary.positions, result]);
 
   if (status === "loading") {
     return (
       <ResultState
-        eyebrow="Birth Chart Profile"
-        title="Preparing your chart…"
-        message="Your planetary positions and chart angles are being loaded."
+        eyebrow={dictionary.state.birthChartProfile}
+        title={dictionary.state.preparingTitle}
+        message={dictionary.state.preparingMessage}
       />
     );
   }
@@ -476,16 +347,17 @@ export default function ZodiacResultPage() {
   ) {
     return (
       <ResultState
-        eyebrow="Chart unavailable"
-        title="We could not load this birth chart."
+        eyebrow={dictionary.state.unavailableEyebrow}
+        title={dictionary.state.unavailableTitle}
         message={
-          errorMessage ||
-          "The calculated birth chart is unavailable."
+          resultError
+            ? dictionary.state[resultError]
+            : dictionary.state.fallbackUnavailable
         }
         actions={[
           {
             href: "/zodiac/test",
-            label: "Generate a new chart",
+            label: dictionary.state.generateNewChart,
           },
         ]}
       />
@@ -499,59 +371,59 @@ export default function ZodiacResultPage() {
             href="/zodiac"
             className="text-sm font-semibold text-[#68756d]"
           >
-            ← Zodiac Identity
+            ← {dictionary.navigation.zodiacIdentity}
           </Link>
 
           <Link
             href="/zodiac/test"
             className="rounded-full border border-[#b9b2a5] bg-white px-5 py-2.5 text-sm font-semibold"
           >
-            Create another chart
+            {dictionary.navigation.createAnotherChart}
           </Link>
         </div>
 
         <ResultHeader
-          eyebrow="Your Birth Chart"
+          eyebrow={dictionary.header.eyebrow}
           className="mt-12 border-0 bg-[#17231d] px-7 py-10 text-white sm:px-10 sm:py-14"
           title={
             <h1 className="max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
               {
-                SIGN_NAMES[
+                dictionary.signNames[
                   result.planets.sun
                     .zodiac.sign
                 ]
-              }{" "}
-              Sun,{" "}
+              }
+              {dictionary.header.title.sun}
+              {dictionary.header.title.separator}
               {
-                SIGN_NAMES[
+                dictionary.signNames[
                   result.planets.moon
                     .zodiac.sign
                 ]
-              }{" "}
-              Moon,{" "}
+              }
+              {dictionary.header.title.moon}
+              {dictionary.header.title.separator}
               {
-                SIGN_NAMES[
+                dictionary.signNames[
                   result.angles
                     .ascendant.zodiac
                     .sign
                 ]
-              }{" "}
-              Rising
+              }
+              {dictionary.header.title.rising}
             </h1>
           }
           description={
             <p className="text-[#d8dfdb]">
-              This page presents the astronomical positions used by the
-              InnerGeo Zodiac system. Interpretive reports will build on
-              these verified chart coordinates.
+              {dictionary.header.description}
             </p>
           }
           badges={
             <div className="flex flex-wrap gap-3">
               <span className="bg-white/10 px-4 py-2 text-sm">
-                Sun:{" "}
+                {dictionary.header.badges.sun}:{" "}
                 {
-                  SIGN_NAMES[
+                  dictionary.signNames[
                     result.planets.sun
                       .zodiac.sign
                   ]
@@ -559,9 +431,9 @@ export default function ZodiacResultPage() {
               </span>
 
               <span className="bg-white/10 px-4 py-2 text-sm">
-                Moon:{" "}
+                {dictionary.header.badges.moon}:{" "}
                 {
-                  SIGN_NAMES[
+                  dictionary.signNames[
                     result.planets.moon
                       .zodiac.sign
                   ]
@@ -569,9 +441,9 @@ export default function ZodiacResultPage() {
               </span>
 
               <span className="bg-white/10 px-4 py-2 text-sm">
-                Rising:{" "}
+                {dictionary.header.badges.rising}:{" "}
                 {
-                  SIGN_NAMES[
+                  dictionary.signNames[
                     result.angles
                       .ascendant.zodiac
                       .sign
@@ -584,18 +456,15 @@ export default function ZodiacResultPage() {
 
         <section className="mt-14">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#8a4f43]">
-            Core Identity
+            {dictionary.sections.coreIdentity}
           </p>
 
           <h2 className="mt-3 text-3xl font-semibold">
-            Your central chart pattern
+            {dictionary.sections.coreTitle}
           </h2>
 
           <p className="mt-4 max-w-3xl leading-7 text-[#58645d]">
-            The Sun, Moon, and Ascendant
-            are often used as the first
-            orientation points when
-            reading a natal chart.
+            {dictionary.sections.coreDescription}
           </p>
 
           <div className="mt-7 grid gap-5 lg:grid-cols-3">
@@ -604,6 +473,7 @@ export default function ZodiacResultPage() {
                 <PositionCard
                   key={item.id}
                   item={item}
+                  dictionary={dictionary}
                 />
               ),
             )}
@@ -612,12 +482,11 @@ export default function ZodiacResultPage() {
 
         <section className="mt-16">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#8a4f43]">
-            Personal Planets
+            {dictionary.sections.personalPlanets}
           </p>
 
           <h2 className="mt-3 text-3xl font-semibold">
-            Thinking, relating, and
-            taking action
+            {dictionary.sections.personalPlanetsTitle}
           </h2>
 
           <div className="mt-7 grid gap-5 lg:grid-cols-3">
@@ -626,6 +495,7 @@ export default function ZodiacResultPage() {
                 <PositionCard
                   key={item.id}
                   item={item}
+                  dictionary={dictionary}
                 />
               ),
             )}
@@ -634,11 +504,11 @@ export default function ZodiacResultPage() {
 
         <section className="mt-16">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#8a4f43]">
-            Chart Angles
+            {dictionary.sections.chartAngles}
           </p>
 
           <h2 className="mt-3 text-3xl font-semibold">
-            The four structural axes
+            {dictionary.sections.chartAnglesTitle}
           </h2>
 
           <div className="mt-7 grid gap-5 md:grid-cols-2">
@@ -647,6 +517,7 @@ export default function ZodiacResultPage() {
                 <PositionCard
                   key={item.id}
                   item={item}
+                  dictionary={dictionary}
                 />
               ),
             )}
@@ -655,13 +526,13 @@ export default function ZodiacResultPage() {
 
         <section className="mt-16 rounded-[2rem] border border-[#ddd8cd] bg-white p-7 shadow-sm sm:p-9">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#8a4f43]">
-            Calculation Details
+            {dictionary.calculation.title}
           </p>
 
           <div className="mt-7 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#7a847e]">
-                Local birth time
+                {dictionary.calculation.localBirthTime}
               </p>
 
               <p className="mt-2 font-semibold">
@@ -674,20 +545,22 @@ export default function ZodiacResultPage() {
 
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#7a847e]">
-                UTC time
+                {dictionary.calculation.utcTime}
               </p>
 
               <p className="mt-2 font-semibold">
                 {formatDateTime(
                   result.input
                     .utcDateTime,
+                  dictionary.calculation.dateLocale,
+                  dictionary.calculation.unavailable,
                 )}
               </p>
             </div>
 
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#7a847e]">
-                Time zone
+                {dictionary.calculation.timeZone}
               </p>
 
               <p className="mt-2 font-semibold">
@@ -700,7 +573,7 @@ export default function ZodiacResultPage() {
 
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#7a847e]">
-                Coordinates
+                {dictionary.calculation.coordinates}
               </p>
 
               <p className="mt-2 font-semibold">
@@ -718,20 +591,21 @@ export default function ZodiacResultPage() {
 
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#7a847e]">
-                Time precision
+                {dictionary.calculation.timePrecision}
               </p>
 
               <p className="mt-2 font-semibold capitalize">
                 {
-                  result.input
-                    .timePrecision
+                  dictionary.calculation.precision[
+                    result.input.timePrecision
+                  ]
                 }
               </p>
             </div>
 
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#7a847e]">
-                Calculation engine
+                {dictionary.calculation.calculationEngine}
               </p>
 
               <p className="mt-2 font-semibold">
@@ -745,7 +619,7 @@ export default function ZodiacResultPage() {
           0 ? (
             <div className="mt-8 rounded-2xl border border-[#d8c7a8] bg-[#fffaf0] p-5">
               <p className="font-semibold">
-                Calculation limitations
+                {dictionary.calculation.limitations}
               </p>
 
               <ul className="mt-3 space-y-2 text-sm leading-6 text-[#665d4e]">
@@ -763,53 +637,38 @@ export default function ZodiacResultPage() {
 
         <section className="mt-16 rounded-[2rem] bg-[#e7ddd0] p-7 sm:p-10">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#8a4f43]">
-            Complete Report
+            {dictionary.report.eyebrow}
           </p>
 
           <h2 className="mt-3 text-3xl font-semibold">
-            Continue to your detailed
-            Zodiac report.
+            {dictionary.report.title}
           </h2>
 
           <p className="mt-4 max-w-3xl leading-7 text-[#58645d]">
-            The complete report combines
-            these calculated positions
-            into sixteen structured
-            sections covering identity,
-            emotional patterns,
-            communication, relationships,
-            motivation, chart angles,
-            strengths, development risks,
-            career themes, and a 90-day
-            reflection plan.
+            {dictionary.report.description}
           </p>
 
           <Link
             href={`/zodiac/report/${chartId}`}
             className="mt-7 inline-flex min-h-12 items-center justify-center rounded-full bg-[#17231d] px-7 py-3 font-semibold text-white"
           >
-            View complete Zodiac report
+            {dictionary.report.action}
           </Link>
         </section>
 
         <ResultNavigation
           primary={{
             href: "/zodiac/test",
-            label: "Create another chart",
+            label: dictionary.navigation.createAnotherChart,
           }}
           secondary={{
             href: "/zodiac",
-            label: "Back to Zodiac Identity",
+            label: dictionary.navigation.backToZodiacIdentity,
           }}
         />
 
         <footer className="mt-10 border-t border-[#d8d2c6] pt-8 text-sm leading-6 text-[#68756d]">
-          Astrology content is intended
-          for reflection, culture, and
-          entertainment. It is not
-          scientific, medical, legal,
-          financial, or psychological
-          advice.
+          {dictionary.responsibility}
         </footer>
     </ResultShell>
   );
