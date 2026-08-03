@@ -12,6 +12,8 @@ import {
 import {
   ButtonLink,
   Container,
+  Section,
+  SectionHeading,
 } from "@/components/ui";
 
 export type Product = {
@@ -115,7 +117,19 @@ export function PrimaryButton({
   );
 }
 
-function IdentityMap() {
+interface IdentityMapProps {
+  personalityLabel: string;
+  careerLabel: string;
+  zodiacLabel: string;
+  youLabel: string;
+}
+
+function IdentityMap({
+  personalityLabel,
+  careerLabel,
+  zodiacLabel,
+  youLabel,
+}: IdentityMapProps) {
   return (
     <div className="identity-map" aria-hidden="true">
       <svg
@@ -142,20 +156,20 @@ function IdentityMap() {
 
       <div className="dimension-node dimension-personality">
         <span>P</span>
-        <strong>Personality</strong>
+        <strong>{personalityLabel}</strong>
       </div>
       <div className="dimension-node dimension-career">
         <span>C</span>
-        <strong>Career</strong>
+        <strong>{careerLabel}</strong>
       </div>
       <div className="dimension-node dimension-zodiac">
         <span>Z</span>
-        <strong>Zodiac</strong>
+        <strong>{zodiacLabel}</strong>
       </div>
 
       <div className="map-center">
         <CompassMark />
-        <span>You</span>
+        <span>{youLabel}</span>
       </div>
     </div>
   );
@@ -239,6 +253,65 @@ export function ProductGrid({ products }: { products: Product[] }) {
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
+  );
+}
+
+
+export function HomeExploreSection() {
+  const { locale } = useLocale();
+  const dictionary = getUiDictionary(locale);
+  const explore = dictionary.home.explore;
+
+  const products: Product[] = [
+    {
+      number: "01",
+      id: "personality",
+      title: explore.products.personality.title,
+      description: explore.products.personality.description,
+      metadata: explore.products.personality.metadata,
+      cta: explore.products.personality.cta,
+      symbol: "P",
+      href: "/personality",
+    },
+    {
+      number: "02",
+      id: "career",
+      title: explore.products.career.title,
+      description: explore.products.career.description,
+      metadata: explore.products.career.metadata,
+      cta: explore.products.career.cta,
+      symbol: "C",
+      href: "/career",
+    },
+    {
+      number: "03",
+      id: "zodiac",
+      title: explore.products.zodiac.title,
+      description: explore.products.zodiac.description,
+      metadata: explore.products.zodiac.metadata,
+      cta: explore.products.zodiac.cta,
+      symbol: "Z",
+      href: "/zodiac",
+    },
+  ];
+
+  return (
+    <Section
+      id="explore"
+      spacing="large"
+      className="explore-section"
+    >
+      <Container>
+        <SectionHeading
+          eyebrow={explore.eyebrow}
+          title={explore.title}
+          description={<p>{explore.description}</p>}
+          className="mb-14"
+        />
+
+        <ProductGrid products={products} />
+      </Container>
+    </Section>
   );
 }
 
