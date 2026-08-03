@@ -14,6 +14,7 @@ export interface ReportTableOfContentsProps {
   id: string;
   ariaLabel: string;
   items: readonly ReportTableOfContentsItem[];
+  title?: ReactNode;
   description?: ReactNode;
 }
 
@@ -21,6 +22,7 @@ export function ReportTableOfContents({
   id,
   ariaLabel,
   items,
+  title = "Table of contents",
   description = "Navigate directly to any section of your report.",
 }: ReportTableOfContentsProps) {
   return (
@@ -30,7 +32,7 @@ export function ReportTableOfContents({
       className="report-table-of-contents mt-10 border border-[#c8c2b5] bg-[#f7f4ec] p-7 md:p-9"
     >
       <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-        Table of contents
+        {title}
       </h2>
 
       {description ? (

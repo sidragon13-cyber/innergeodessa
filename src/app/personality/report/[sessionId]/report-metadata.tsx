@@ -1,44 +1,58 @@
 import type {
   ReportVersion,
 } from "@/data/report";
+import type {
+  SupportedLocale,
+} from "@/data/shared";
 
 import {
   ReportMetadata as SharedReportMetadata,
 } from "@/components/report";
+import {
+  getPersonalityReportDictionary,
+} from "@/data/i18n";
 
 export interface ReportMetadataProps {
   appliedRuleCount: number;
   generatedAt: string;
+  locale: SupportedLocale;
   version: ReportVersion;
 }
 
 export function ReportMetadata({
   appliedRuleCount,
   generatedAt,
+  locale,
   version,
 }: ReportMetadataProps) {
+  const dictionary =
+    getPersonalityReportDictionary(locale);
+
   return (
     <SharedReportMetadata
       items={[
         {
-          label: "Report",
+          label: dictionary.metadata.report,
           value: version.reportVersion,
         },
         {
-          label: "Content",
+          label: dictionary.metadata.content,
           value: version.contentVersion,
         },
         {
-          label: "Rules",
+          label: dictionary.metadata.rules,
           value: version.ruleVersion,
         },
         {
-          label: "Applied rules",
+          label: dictionary.metadata.appliedRules,
           value: String(appliedRuleCount),
         },
         {
-          label: "Generated",
-          value: formatGeneratedDate(generatedAt),
+          label: dictionary.metadata.generated,
+          value: formatGeneratedDate(
+            generatedAt,
+            dictionary.metadata.dateLocale,
+          ),
         },
       ]}
     />
@@ -47,6 +61,7 @@ export function ReportMetadata({
 
 function formatGeneratedDate(
   value: string,
+  locale: string,
 ): string {
   const date = new Date(value);
 
@@ -54,7 +69,7 @@ function formatGeneratedDate(
     return value;
   }
 
-  return new Intl.DateTimeFormat("en", {
+  return new Intl.DateTimeFormat(locale, {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(date);

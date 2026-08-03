@@ -45,3 +45,12 @@ export {
 export type {
   PersonalityResultDictionary,
 } from "./personality-result";
+
+export {
+  getPersonalityReportDictionary,
+  personalityReportDictionaries,
+} from "./personality-report";
+
+export type {
+  PersonalityReportDictionary,
+} from "./personality-report";

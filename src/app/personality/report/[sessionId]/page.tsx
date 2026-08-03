@@ -19,6 +19,12 @@ import {
   generatePersonalityReport,
   isPhaseOnePersonalityReportType,
 } from "@/data/report";
+import {
+  useLocale,
+} from "@/components/locale";
+import {
+  getPersonalityReportDictionary,
+} from "@/data/i18n";
 
 import { ReportDocument } from "./report-document";
 
@@ -74,11 +80,15 @@ function ReportState({
   title,
   message,
   sessionId,
+  resultLabel,
+  overviewLabel,
 }: {
   label: string;
   title: string;
   message: string;
   sessionId: string;
+  resultLabel: string;
+  overviewLabel: string;
 }) {
   return (
     <main className="min-h-screen bg-[#efede5] px-6 py-20 text-[#26372d]">
@@ -100,14 +110,14 @@ function ReportState({
             href={`/personality/result/${sessionId}`}
             className="inline-flex min-h-12 items-center justify-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5]"
           >
-            Free result
+            {resultLabel}
           </Link>
 
           <Link
             href="/personality"
             className="inline-flex min-h-12 items-center justify-center border border-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em]"
           >
-            Personality overview
+            {overviewLabel}
           </Link>
         </div>
       </section>
@@ -118,6 +128,9 @@ function ReportState({
 export default function PersonalityReportPage() {
   const params = useParams<{ sessionId: string }>();
   const sessionId = params.sessionId;
+  const { locale } = useLocale();
+  const dictionary =
+    getPersonalityReportDictionary(locale);
   const storageKey = `innergeodessa-result-${sessionId}`;
   const storedResult = useSyncExternalStore(
     subscribeToSessionStorage,
@@ -185,10 +198,12 @@ export default function PersonalityReportPage() {
   if (loadState === "loading" && !displayResult) {
     return (
       <ReportState
-        label="Loading report"
-        title="Loading your complete personality report…"
-        message="Retrieving the completed assessment from the result service."
+        label={dictionary.states.loading.label}
+        title={dictionary.states.loading.title}
+        message={dictionary.states.loading.message}
         sessionId={sessionId}
+        resultLabel={dictionary.states.actions.result}
+        overviewLabel={dictionary.states.actions.overview}
       />
     );
   }
@@ -196,10 +211,12 @@ export default function PersonalityReportPage() {
   if (loadState === "not-found") {
     return (
       <ReportState
-        label="Result not found"
-        title="This report could not be found."
-        message="Check the result link or complete a new personality assessment."
+        label={dictionary.states.notFound.label}
+        title={dictionary.states.notFound.title}
+        message={dictionary.states.notFound.message}
         sessionId={sessionId}
+        resultLabel={dictionary.states.actions.result}
+        overviewLabel={dictionary.states.actions.overview}
       />
     );
   }
@@ -207,10 +224,12 @@ export default function PersonalityReportPage() {
   if (loadState === "not-completed") {
     return (
       <ReportState
-        label="Assessment not completed"
-        title="This assessment has not been completed."
-        message="Return to the assessment and answer all questions before viewing the report."
+        label={dictionary.states.notCompleted.label}
+        title={dictionary.states.notCompleted.title}
+        message={dictionary.states.notCompleted.message}
         sessionId={sessionId}
+        resultLabel={dictionary.states.actions.result}
+        overviewLabel={dictionary.states.actions.overview}
       />
     );
   }
@@ -218,10 +237,12 @@ export default function PersonalityReportPage() {
   if (loadState === "error" || !displayResult) {
     return (
       <ReportState
-        label="Unable to load report"
-        title="Your report could not be loaded."
-        message="The result service is temporarily unavailable. Please try again later."
+        label={dictionary.states.error.label}
+        title={dictionary.states.error.title}
+        message={dictionary.states.error.message}
         sessionId={sessionId}
+        resultLabel={dictionary.states.actions.result}
+        overviewLabel={dictionary.states.actions.overview}
       />
     );
   }
@@ -229,10 +250,14 @@ export default function PersonalityReportPage() {
   if (!isPhaseOnePersonalityReportType(displayResult.type)) {
     return (
       <ReportState
-        label="Complete report unavailable"
-        title={`${displayResult.type} complete reports are not available in Phase 1.`}
-        message="Your free personality result remains available. Complete reports currently support ISFJ and ENTJ while the remaining personality reports complete validation."
+        label={dictionary.states.unavailable.label}
+        title={dictionary.states.unavailable.title(
+          displayResult.type,
+        )}
+        message={dictionary.states.unavailable.message}
         sessionId={sessionId}
+        resultLabel={dictionary.states.actions.result}
+        overviewLabel={dictionary.states.actions.overview}
       />
     );
   }
@@ -250,17 +275,19 @@ export default function PersonalityReportPage() {
   } catch {
     return (
       <ReportState
-        label="Unable to generate report"
-        title="Your complete report could not be generated."
-        message="Your persisted free result is still available. Please try the complete report again later."
+        label={dictionary.states.generationError.label}
+        title={dictionary.states.generationError.title}
+        message={dictionary.states.generationError.message}
         sessionId={sessionId}
+        resultLabel={dictionary.states.actions.result}
+        overviewLabel={dictionary.states.actions.overview}
       />
     );
   }
 
   return (
     <ReportDocument
-      locale="en"
+      locale={locale}
       report={report}
     />
   );

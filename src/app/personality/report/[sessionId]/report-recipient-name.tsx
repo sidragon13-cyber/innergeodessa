@@ -6,19 +6,30 @@ import {
   type ChangeEvent,
 } from "react";
 
+import {
+  getPersonalityReportDictionary,
+} from "@/data/i18n";
+import type {
+  SupportedLocale,
+} from "@/data/shared";
+
 const RECIPIENT_NAME_MAX_LENGTH = 80;
 const RECIPIENT_NAME_CHANGE_EVENT =
   "personality-report-recipient-name-change";
 
 export interface ReportRecipientNameProps {
   initialName?: string;
+  locale: SupportedLocale;
   sessionId: string;
 }
 
 export function ReportRecipientName({
   initialName,
+  locale,
   sessionId,
 }: ReportRecipientNameProps) {
+  const dictionary =
+    getPersonalityReportDictionary(locale);
   const storageKey =
     `personality-report-recipient-name:${sessionId}`;
   const safeInitialName =
@@ -59,7 +70,7 @@ export function ReportRecipientName({
         htmlFor="report-recipient-name"
         className="block text-xs font-bold uppercase tracking-[0.16em] text-[#6d746b]"
       >
-        Prepared for
+        {dictionary.recipient.label}
       </label>
 
       <input
@@ -67,6 +78,7 @@ export function ReportRecipientName({
         name="report-recipient-name"
         type="text"
         autoComplete="name"
+        aria-label={dictionary.recipient.inputAriaLabel}
         maxLength={80}
         value={name}
         onChange={handleChange}
