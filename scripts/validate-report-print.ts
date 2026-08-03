@@ -13,6 +13,9 @@ const reportContentBlockSource = readSource(
 const printButtonSource = readSource(
   "src/app/personality/report/[sessionId]/print-report-button.tsx",
 );
+const sharedPrintButtonSource = readSource(
+  "src/components/report/report-print-button.tsx",
+);
 const globalStylesSource = readSource("src/app/globals.css");
 
 assert(
@@ -23,15 +26,19 @@ assert(
 );
 
 assert(
-  /window\s*\.\s*print\s*\(\s*\)/.test(printButtonSource),
-  "The print control must call window.print().",
+  /window\s*\.\s*print\s*\(\s*\)/.test(
+    sharedPrintButtonSource,
+  ),
+  "The shared print control must call window.print().",
 );
 
 assert(
-  normaliseWhitespace(printButtonSource).includes(
-    "PRINT / SAVE AS PDF",
-  ),
-  "The print control must use the approved label.",
+  normaliseWhitespace(
+    sharedPrintButtonSource,
+  )
+    .toUpperCase()
+    .includes("PRINT / SAVE AS PDF"),
+  "The shared print control must use the approved label.",
 );
 
 assert(
