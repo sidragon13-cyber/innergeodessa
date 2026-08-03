@@ -40,6 +40,15 @@ export function ZodiacLanding() {
             {dictionary.hero.description}
           </p>
 
+          <ul
+            className="assessment-meta"
+            aria-label={dictionary.hero.detailsLabel}
+          >
+            {dictionary.hero.details.map((detail) => (
+              <li key={detail}>{detail}</li>
+            ))}
+          </ul>
+
           <div className="zodiac-actions">
             <a
               className="primary-button"
@@ -72,11 +81,34 @@ export function ZodiacLanding() {
           <div className="zodiac-orbit-center">
             <CompassMark />
             <span>
-              {locale === "zh"
-                ? "自我映照"
-                : "Reflection"}
+              {dictionary.orbitLabel}
             </span>
           </div>
+        </div>
+      </Container>
+
+      <Container
+        as="section"
+        className="zodiac-meaning"
+      >
+        <div>
+          <p className="eyebrow">
+            {dictionary.approach.eyebrow}
+          </p>
+
+          <h2>
+            {dictionary.approach.title}
+          </h2>
+        </div>
+
+        <div className="zodiac-meaning-copy">
+          {dictionary.approach.paragraphs.map(
+            (paragraph) => (
+              <p key={paragraph}>
+                {paragraph}
+              </p>
+            ),
+          )}
         </div>
       </Container>
 
