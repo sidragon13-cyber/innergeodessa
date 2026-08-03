@@ -25,6 +25,7 @@ import {
 } from "@/data/shared";
 
 import {
+  ResultHeader,
   ResultShell,
   ResultState,
 } from "@/components/result";
@@ -246,61 +247,58 @@ export default function PersonalityResultPage() {
 
   return (
     <ResultShell>
-        <header className="border-b border-[#c8c2b5] pb-10">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6d746b]">
-            InnerGeo Personality Assessment
-          </p>
+        <ResultHeader
+          eyebrow="InnerGeo Personality Assessment"
+          subtitle="Your personality type"
+          title={
+            <div className="flex flex-wrap items-end gap-x-5 gap-y-2">
+              <h1 className="text-6xl font-semibold tracking-tight md:text-8xl">
+                {displayResult.type}
+              </h1>
 
-          <div className="mt-7 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div>
-              <p className="text-sm text-[#6d746b]">
-                Your personality type
-              </p>
-
-              <div className="mt-3 flex flex-wrap items-end gap-x-5 gap-y-2">
-                <h1 className="text-6xl font-semibold tracking-tight md:text-8xl">
-                  {displayResult.type}
-                </h1>
-
-                {personalityName && (
-                  <p className="pb-2 text-2xl font-semibold text-[#4f5e53] md:text-3xl">
-                    {personalityName}
-                  </p>
-                )}
-              </div>
-
-              {shortName && (
-                <p className="mt-5 text-lg font-semibold">
+              {personalityName ? (
+                <p className="pb-2 text-2xl font-semibold text-[#4f5e53] md:text-3xl">
+                  {personalityName}
+                </p>
+              ) : null}
+            </div>
+          }
+          description={
+            <>
+              {shortName ? (
+                <p className="font-semibold text-[#26372d]">
                   {shortName}
                 </p>
-              )}
+              ) : null}
 
-              {tagline && (
-                <p className="mt-2 max-w-3xl text-lg leading-8 text-[#596158]">
+              {tagline ? (
+                <p className={shortName ? "mt-2" : ""}>
                   {tagline}
                 </p>
-              )}
-            </div>
-
-            <div className="text-sm leading-7 text-[#6d746b] lg:text-right">
+              ) : null}
+            </>
+          }
+          metadata={
+            <>
               <p>Assessment completed</p>
               <p>Session {sessionId.slice(0, 8)}…</p>
-            </div>
-          </div>
-
-          {keywords.length > 0 && (
-            <div className="mt-8 flex flex-wrap gap-2">
-              {keywords.map((keyword) => (
-                <span
-                  key={keyword}
-                  className="border border-[#c8c2b5] bg-[#f7f4ec] px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em]"
-                >
-                  {keyword}
-                </span>
-              ))}
-            </div>
-          )}
-        </header>
+            </>
+          }
+          badges={
+            keywords.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {keywords.map((keyword) => (
+                  <span
+                    key={keyword}
+                    className="border border-[#c8c2b5] bg-[#f7f4ec] px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em]"
+                  >
+                    {keyword}
+                  </span>
+                ))}
+              </div>
+            ) : null
+          }
+        />
 
         {profile ? (
           <>
