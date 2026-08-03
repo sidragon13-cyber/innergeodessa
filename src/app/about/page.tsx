@@ -5,6 +5,7 @@ import {
 } from "@/components/home";
 import {
   AboutApproach,
+  AboutFramework,
   AboutHero,
   AboutName,
   AboutPlatform,
@@ -17,27 +18,6 @@ export const metadata: Metadata = {
   description:
     "Learn how InnerGeo brings personality, career interests, symbolic identity, reflection, and future community experiences into one thoughtful self-exploration platform.",
 };
-
-const framework = [
-  {
-    number: "01",
-    title: "Discover",
-    description:
-      "Recognise patterns, interests, preferences, values, questions, and possible strengths.",
-  },
-  {
-    number: "02",
-    title: "Understand",
-    description:
-      "Compare results with lived experience, context, feedback, and real-world evidence.",
-  },
-  {
-    number: "03",
-    title: "Grow",
-    description:
-      "Choose experiments, learning paths, conversations, rest, and reconsideration that help test possible directions.",
-  },
-];
 
 const boundaries = [
   "Diagnose mental-health or medical conditions",
@@ -80,28 +60,7 @@ export default function AboutPage() {
 
       <AboutProfile />
 
-      <section className="growth-framework">
-        <div className="shell">
-          <div className="growth-heading">
-            <p className="eyebrow">A practical rhythm</p>
-            <h2>Discovery, direction, and growth</h2>
-          </div>
-          <div className="growth-grid">
-            {framework.map((item) => (
-              <article key={item.number}>
-                <span>{item.number}</span>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </article>
-            ))}
-          </div>
-          <p className="growth-note">
-            Growth does not require constant productivity. Rest,
-            reconsideration, and changing direction are valid parts of the
-            process.
-          </p>
-        </div>
-      </section>
+      <AboutFramework />
 
       <section className="boundaries-section shell">
         <div className="boundaries-heading">
