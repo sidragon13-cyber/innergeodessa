@@ -343,3 +343,42 @@ export function HomeProfileSection() {
     </Section>
   );
 }
+
+export function HomeValuesSection() {
+  const { locale } = useLocale();
+  const dictionary = getUiDictionary(locale);
+  const values = dictionary.home.values;
+
+  return (
+    <Section
+      id="about"
+      spacing="large"
+      className="value-section"
+    >
+      <Container>
+        <div className="value-heading">
+          <p className="eyebrow">{values.eyebrow}</p>
+          <h2>{values.title}</h2>
+          <p>{values.description}</p>
+        </div>
+
+        <div className="value-grid">
+          {values.items.map((value) => (
+            <article key={value.number}>
+              <span className="value-number">
+                {value.number}
+              </span>
+              <h3>{value.title}</h3>
+              <p>{value.description}</p>
+            </article>
+          ))}
+        </div>
+
+        <p className="future-note">
+          <span aria-hidden="true">○</span>
+          {values.futureNote}
+        </p>
+      </Container>
+    </Section>
+  );
+}

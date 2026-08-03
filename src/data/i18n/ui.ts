@@ -60,6 +60,17 @@ export type UiDictionary = {
       zodiacExample: string;
       note: string;
     };
+    values: {
+      eyebrow: string;
+      title: string;
+      description: string;
+      items: readonly {
+        number: string;
+        title: string;
+        description: string;
+      }[];
+      futureNote: string;
+    };
   };
   home: {
     hero: {
@@ -173,6 +184,34 @@ export const uiDictionaries: Record<
         note:
           "A preview of how three perspectives can sit together. Saving profiles is not yet available.",
       },
+      values: {
+        eyebrow: "Thoughtful by design",
+        title: "More than a label",
+        description:
+          "Results are starting points for reflection—not boxes to put yourself in.",
+        items: [
+          {
+            number: "01",
+            title: "Understand your patterns",
+            description:
+              "Notice the preferences and tendencies that shape how you move through everyday life.",
+          },
+          {
+            number: "02",
+            title: "Explore suitable directions",
+            description:
+              "Use your interests and natural inclinations as thoughtful starting points for what comes next.",
+          },
+          {
+            number: "03",
+            title: "Connect through shared identities",
+            description:
+              "See where your perspective overlaps with others as community features develop in a later phase.",
+          },
+        ],
+        futureNote:
+          "Community features are planned for a later phase.",
+      },
     },
     footer: {
       navigationLabel: "Footer navigation",
@@ -267,6 +306,34 @@ export const uiDictionaries: Record<
         zodiacExample: "天蝎座",
         note:
           "这是三种视角组合后的示例。个人档案保存功能尚未开放。",
+      },
+      values: {
+        eyebrow: "经过审慎设计",
+        title: "不只是一个标签",
+        description:
+          "测评结果是反思与探索的起点，而不是限制你的固定框架。",
+        items: [
+          {
+            number: "01",
+            title: "理解自己的模式",
+            description:
+              "观察影响你日常思考、选择与行动方式的倾向和偏好。",
+          },
+          {
+            number: "02",
+            title: "探索适合的方向",
+            description:
+              "把兴趣与自然倾向作为起点，审慎探索未来可能的发展方向。",
+          },
+          {
+            number: "03",
+            title: "通过共同身份建立连接",
+            description:
+              "随着社区功能在后续阶段逐步开放，发现你与他人在观点和身份上的交集。",
+          },
+        ],
+        futureNote:
+          "社区功能计划在后续阶段开放。",
       },
     },
     footer: {
