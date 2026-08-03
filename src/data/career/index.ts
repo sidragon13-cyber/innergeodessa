@@ -34,3 +34,7 @@ export {
   type CareerReportBlockType,
   type CareerReportSection,
 } from "./report";
+
+export {
+  generateCareerReportSectionsZh,
+} from "./report-zh";

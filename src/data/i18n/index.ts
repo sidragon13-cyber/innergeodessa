@@ -81,3 +81,12 @@ export {
 export type {
   CareerResultDictionary,
 } from "./career-result";
+
+export {
+  careerReportDictionaries,
+  getCareerReportDictionary,
+} from "./career-report";
+
+export type {
+  CareerReportDictionary,
+} from "./career-report";

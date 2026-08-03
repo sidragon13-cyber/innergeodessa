@@ -1,17 +1,17 @@
 "use client";
 
-import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import {
+  useParams,
+} from "next/navigation";
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import {
-  fetchRiasecResult,
-  generateCareerReportSections,
-  getRiasecDimensionProfile,
-  isRiasecResultContract,
-  type RiasecResultContract,
-} from "@/data/career";
-
+  useLocale,
+} from "@/components/locale";
 import {
   ReportHeader,
   ReportMetadata,
@@ -22,34 +22,64 @@ import {
   ReportState,
   ReportTableOfContents,
 } from "@/components/report";
+import {
+  fetchRiasecResult,
+  generateCareerReportSections,
+  generateCareerReportSectionsZh,
+  isRiasecResultContract,
+  type RiasecResultContract,
+} from "@/data/career";
+import {
+  getCareerReportDictionary,
+} from "@/data/i18n";
 
-type LoadStatus = "loading" | "ready" | "error";
+type LoadStatus =
+  | "loading"
+  | "ready"
+  | "error";
 
-function createAnchor(order: number, id: string): string {
-  return `career-report-${String(order).padStart(2, "0")}-${id}`;
+function createAnchor(
+  order: number,
+  id: string,
+): string {
+  return `career-report-${String(
+    order,
+  ).padStart(2, "0")}-${id}`;
 }
 
-function formatDate(value: string): string {
+function formatDate(
+  value: string,
+  locale: string,
+): string {
   const date = new Date(value);
 
   if (Number.isNaN(date.getTime())) {
     return value;
   }
 
-  return new Intl.DateTimeFormat("en", {
+  return new Intl.DateTimeFormat(locale, {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(date);
 }
 
 export default function CareerReportPage() {
-  const params = useParams<{ sessionId: string }>();
+  const params =
+    useParams<{ sessionId: string }>();
   const sessionId = params.sessionId;
 
-  const [status, setStatus] = useState<LoadStatus>("loading");
+  const { locale } = useLocale();
+  const dictionary =
+    getCareerReportDictionary(locale);
+
+  const [status, setStatus] =
+    useState<LoadStatus>("loading");
   const [result, setResult] =
-    useState<RiasecResultContract | null>(null);
-  const [errorMessage, setErrorMessage] = useState("");
+    useState<RiasecResultContract | null>(
+      null,
+    );
+  const [errorMessage, setErrorMessage] =
+    useState("");
 
   useEffect(() => {
     let active = true;
@@ -58,31 +88,45 @@ export default function CareerReportPage() {
       try {
         const storageKey =
           `innergeodessa-career-result-${sessionId}`;
+
         const cachedValue =
           sessionStorage.getItem(storageKey) ??
           localStorage.getItem(storageKey);
 
         if (cachedValue) {
           try {
-            const cached: unknown = JSON.parse(cachedValue);
+            const cached: unknown =
+              JSON.parse(cachedValue);
 
             if (
               isRiasecResultContract(cached) &&
               cached.sessionId === sessionId
             ) {
-              sessionStorage.setItem(storageKey, cachedValue);
-              localStorage.setItem(storageKey, cachedValue);
+              sessionStorage.setItem(
+                storageKey,
+                cachedValue,
+              );
+              localStorage.setItem(
+                storageKey,
+                cachedValue,
+              );
+
               setResult(cached);
               setStatus("ready");
               return;
             }
           } catch {
-            sessionStorage.removeItem(storageKey);
-            localStorage.removeItem(storageKey);
+            sessionStorage.removeItem(
+              storageKey,
+            );
+            localStorage.removeItem(
+              storageKey,
+            );
           }
         }
 
-        const fetchedResult = await fetchRiasecResult(sessionId);
+        const fetchedResult =
+          await fetchRiasecResult(sessionId);
 
         if (!active) {
           return;
@@ -99,6 +143,7 @@ export default function CareerReportPage() {
           storageKey,
           serializedResult,
         );
+
         setResult(fetchedResult);
         setStatus("ready");
       } catch (error) {
@@ -109,7 +154,7 @@ export default function CareerReportPage() {
         setErrorMessage(
           error instanceof Error
             ? error.message
-            : "The career report could not be loaded.",
+            : dictionary.errors.loadReport,
         );
         setStatus("error");
       }
@@ -120,27 +165,48 @@ export default function CareerReportPage() {
     return () => {
       active = false;
     };
-  }, [sessionId]);
+  }, [
+    sessionId,
+    dictionary.errors.loadReport,
+  ]);
 
-  const sections = useMemo(
-    () => (result ? generateCareerReportSections(result) : []),
-    [result],
-  );
+  const sections = useMemo(() => {
+    if (!result) {
+      return [];
+    }
+
+    return locale === "zh"
+      ? generateCareerReportSectionsZh(
+          result,
+        )
+      : generateCareerReportSections(
+          result,
+        );
+  }, [locale, result]);
 
   if (status === "loading") {
     return (
       <ReportState
-        eyebrow="Career Interest Report"
-        title="Preparing your detailed career report…"
-        message="Loading your completed RIASEC result and generating the report."
+        eyebrow={
+          dictionary.states.loading.eyebrow
+        }
+        title={
+          dictionary.states.loading.title
+        }
+        message={
+          dictionary.states.loading.message
+        }
         actions={[
           {
             href: `/career/result/${sessionId}`,
-            label: "Back to result",
+            label:
+              dictionary.states.actions.result,
           },
           {
             href: "/career/test",
-            label: "New assessment",
+            label:
+              dictionary.states.actions
+                .newAssessment,
             variant: "secondary",
           },
         ]}
@@ -151,20 +217,28 @@ export default function CareerReportPage() {
   if (status === "error" || !result) {
     return (
       <ReportState
-        eyebrow="Career Interest Report"
-        title="Your career report could not be loaded."
+        eyebrow={
+          dictionary.states.error.eyebrow
+        }
+        title={
+          dictionary.states.error.title
+        }
         message={
           errorMessage ||
-          "The completed career result is unavailable."
+          dictionary.states.error
+            .fallbackMessage
         }
         actions={[
           {
             href: `/career/result/${sessionId}`,
-            label: "Back to result",
+            label:
+              dictionary.states.actions.result,
           },
           {
             href: "/career/test",
-            label: "New assessment",
+            label:
+              dictionary.states.actions
+                .newAssessment,
             variant: "secondary",
           },
         ]}
@@ -172,97 +246,132 @@ export default function CareerReportPage() {
     );
   }
 
-  const topThree = result.ranking.slice(0, 3);
-  const topNames = topThree
-    .map((dimension) => getRiasecDimensionProfile(dimension).name)
+  const topNames = result.ranking
+    .slice(0, 3)
+    .map(
+      (dimension) =>
+        dictionary.dimensionNames[
+          dimension
+        ],
+    )
     .join(" · ");
 
   return (
     <ReportShell>
-        <ReportHeader
-          eyebrow="InnerGeo Complete Career Interest Report"
-          subtitle="RIASEC professional report"
-          title={result.code}
-          description={
-            <>
-              <p className="text-xl font-semibold text-[#26372d]">
-                {topNames}
-              </p>
+      <ReportHeader
+        eyebrow={dictionary.header.eyebrow}
+        subtitle={
+          dictionary.header.subtitle
+        }
+        title={result.code}
+        description={
+          <>
+            <p className="text-xl font-semibold text-[#26372d]">
+              {topNames}
+            </p>
 
-              <p className="mt-4">
-                A detailed interpretation of your six career-interest
-                dimensions, preferred work environment, career fields,
-                skills, risks, and next actions.
-              </p>
-            </>
-          }
-          metadata={
-            <ReportMetadata
-              items={[
-                {
-                  label: "Completed",
-                  value: formatDate(result.completedAt),
-                },
-                {
-                  label: "Question bank",
-                  value: result.questionBankVersion,
-                },
-                {
-                  label: "Session",
-                  value: `${sessionId.slice(0, 8)}…`,
-                },
-              ]}
-            />
-          }
-          actions={<ReportPrintButton />}
-        />
+            <p className="mt-4">
+              {dictionary.header.description}
+            </p>
+          </>
+        }
+        metadata={
+          <ReportMetadata
+            items={[
+              {
+                label:
+                  dictionary.header.completed,
+                value: formatDate(
+                  result.completedAt,
+                  dictionary.dateLocale,
+                ),
+              },
+              {
+                label:
+                  dictionary.header
+                    .questionBank,
+                value:
+                  result.questionBankVersion,
+              },
+              {
+                label:
+                  dictionary.header.session,
+                value: `${sessionId.slice(
+                  0,
+                  8,
+                )}…`,
+              },
+            ]}
+          />
+        }
+        actions={
+          <ReportPrintButton
+            label={dictionary.header.print}
+          />
+        }
+      />
 
-        <ReportTableOfContents
-          id="career-report-table-of-contents"
-          ariaLabel="Career report table of contents"
-          items={sections.map((section) => ({
-            id: section.id,
-            anchor: createAnchor(
+      <ReportTableOfContents
+        id="career-report-table-of-contents"
+        ariaLabel={
+          dictionary.contents.ariaLabel
+        }
+        title={dictionary.contents.title}
+        description={
+          dictionary.contents.description
+        }
+        items={sections.map((section) => ({
+          id: section.id,
+          anchor: createAnchor(
+            section.order,
+            section.id,
+          ),
+          order: section.order,
+          title: section.title,
+        }))}
+      />
+
+      <div className="personality-report-sections mt-12 space-y-12">
+        {sections.map((section) => (
+          <ReportSection
+            key={section.id}
+            id={createAnchor(
               section.order,
               section.id,
-            ),
-            order: section.order,
-            title: section.title,
-          }))}
-        />
-
-        <div className="personality-report-sections mt-12 space-y-12">
-          {sections.map((section) => (
-            <ReportSection
-              key={section.id}
-              id={createAnchor(
-                section.order,
-                section.id,
-              )}
-              order={section.order}
-              title={section.title}
-              description={section.description}
-              tableOfContentsId="career-report-table-of-contents"
-              blocks={section.blocks.map((block) => ({
+            )}
+            order={section.order}
+            title={section.title}
+            description={
+              section.description
+            }
+            tableOfContentsId="career-report-table-of-contents"
+            blocks={section.blocks.map(
+              (block) => ({
                 id: block.id,
-                label: block.type,
+                label:
+                  dictionary.blockLabels[
+                    block.type
+                  ],
                 title: block.title,
                 content: block.content,
-              }))}
-            />
-          ))}
-        </div>
+              }),
+            )}
+          />
+        ))}
+      </div>
 
-        <ReportNavigation
-          primary={{
-            href: `/career/result/${sessionId}`,
-            label: "Back to career result",
-          }}
-          secondary={{
-            href: "/career",
-            label: "Career overview",
-          }}
-        />
+      <ReportNavigation
+        primary={{
+          href: `/career/result/${sessionId}`,
+          label:
+            dictionary.navigation.result,
+        }}
+        secondary={{
+          href: "/career",
+          label:
+            dictionary.navigation.overview,
+        }}
+      />
     </ReportShell>
   );
 }
