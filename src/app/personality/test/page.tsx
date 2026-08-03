@@ -21,6 +21,10 @@ import {
   getAssessmentDictionary,
 } from "@/data/i18n";
 import {
+  personalityQuestionBank,
+  getQuestionIdBySourceItemId,
+} from "@/data/assessment/questions/personality";
+import {
   fetchPersonalityResult,
   type PersonalityResultContract,
 } from "@/data/assessment/scoring/personality";
@@ -171,6 +175,28 @@ export default function PersonalityTestPage() {
   }
 
   const currentItem = items[currentIndex];
+
+  const localizedQuestion = currentItem
+    ? (() => {
+        const questionId =
+          getQuestionIdBySourceItemId(
+            currentItem.item_id,
+          );
+
+        if (!questionId) {
+          return undefined;
+        }
+
+        return personalityQuestionBank.find(
+          (question) => question.id === questionId,
+        );
+      })()
+    : undefined;
+
+  const currentWording =
+    localizedQuestion?.prompt[locale] ??
+    currentItem?.wording ??
+    "";
   const selectedValue = answers[currentItem.item_id]?.value;
   const isFirstQuestion = currentIndex === 0;
   const isLastQuestion = currentIndex === items.length - 1;
@@ -309,7 +335,7 @@ export default function PersonalityTestPage() {
       />
       <AssessmentQuestion
         eyebrow={dictionary.personalityTest.eyebrow}
-        wording={currentItem.wording}
+        wording={currentWording}
       />
       <AssessmentAnswerScale
         options={answerOptions}
