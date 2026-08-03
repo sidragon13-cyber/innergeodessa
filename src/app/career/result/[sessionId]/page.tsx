@@ -13,6 +13,7 @@ import {
 } from "@/data/career";
 
 import {
+  ResultShell,
   ResultState,
 } from "@/components/result";
 
@@ -174,8 +175,7 @@ export default function CareerResultPage() {
   const topThree = result.ranking.slice(0, 3);
 
   return (
-    <main className="min-h-screen bg-[#f7f4ee] px-6 py-16 text-[#17231d]">
-      <div className="mx-auto max-w-6xl">
+    <ResultShell>
         <header>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#68756d]">
             Career Interest Assessment
@@ -389,7 +389,6 @@ export default function CareerResultPage() {
             Back to career overview
           </Link>
         </div>
-      </div>
-    </main>
+    </ResultShell>
   );
 }
