@@ -90,3 +90,12 @@ export {
 export type {
   CareerReportDictionary,
 } from "./career-report";
+
+export {
+  getZodiacLandingDictionary,
+  zodiacLandingDictionaries,
+} from "./zodiac";
+
+export type {
+  ZodiacLandingDictionary,
+} from "./zodiac";
