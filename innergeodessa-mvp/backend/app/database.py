@@ -35,6 +35,7 @@ def initialize(
         conn.execute("BEGIN IMMEDIATE")
         try:
             _apply_schema(conn)
+            _ensure_session_claim_columns(conn)
             _ensure_session_version_column(conn)
             _ensure_session_module_column(conn)
             _register_question_banks(conn)
@@ -80,6 +81,25 @@ def _ensure_session_module_column(conn: sqlite3.Connection) -> None:
             """ALTER TABLE sessions
                ADD COLUMN module TEXT NOT NULL DEFAULT 'personality'"""
         )
+
+
+def _ensure_session_claim_columns(conn: sqlite3.Connection) -> None:
+    columns = {
+        row["name"]
+        for row in conn.execute("PRAGMA table_info(sessions)").fetchall()
+    }
+    if "owner_user_id" not in columns:
+        conn.execute(
+            """ALTER TABLE sessions
+               ADD COLUMN owner_user_id TEXT
+               REFERENCES users(user_id) ON DELETE SET NULL"""
+        )
+    if "claim_secret_hash" not in columns:
+        conn.execute(
+            "ALTER TABLE sessions ADD COLUMN claim_secret_hash TEXT"
+        )
+    if "claimed_at" not in columns:
+        conn.execute("ALTER TABLE sessions ADD COLUMN claimed_at TEXT")
 
 
 def _load_current_items(items_path: Path) -> list[dict]:
@@ -295,6 +315,62 @@ def _upsert_riasec_items(
 
 
 def _verify_migration(conn: sqlite3.Connection) -> None:
+    required_tables = {
+        "users",
+        "auth_sessions",
+        "email_verification_tokens",
+        "zodiac_charts",
+        "report_entitlements",
+    }
+    tables = {
+        row["name"]
+        for row in conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table'"
+        ).fetchall()
+    }
+    missing_tables = required_tables - tables
+    if missing_tables:
+        raise ValueError(
+            "Database is missing required account tables: "
+            + ", ".join(sorted(missing_tables))
+        )
+
+    required_indexes = {
+        "idx_auth_sessions_user_id",
+        "idx_auth_sessions_expires_at",
+        "idx_auth_sessions_revoked_at",
+        "idx_report_entitlements_user_id",
+        "idx_report_entitlements_module_resource",
+        "idx_report_entitlements_status",
+    }
+    indexes = {
+        row["name"]
+        for row in conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='index'"
+        ).fetchall()
+    }
+    missing_indexes = required_indexes - indexes
+    if missing_indexes:
+        raise ValueError(
+            "Database is missing required account indexes: "
+            + ", ".join(sorted(missing_indexes))
+        )
+
+    session_columns = {
+        row["name"]
+        for row in conn.execute("PRAGMA table_info(sessions)").fetchall()
+    }
+    missing_session_columns = {
+        "owner_user_id",
+        "claim_secret_hash",
+        "claimed_at",
+    } - session_columns
+    if missing_session_columns:
+        raise ValueError(
+            "Sessions is missing required claim columns: "
+            + ", ".join(sorted(missing_session_columns))
+        )
+
     unversioned_sessions = conn.execute(
         """SELECT COUNT(*) FROM sessions
            WHERE question_bank_version IS NULL

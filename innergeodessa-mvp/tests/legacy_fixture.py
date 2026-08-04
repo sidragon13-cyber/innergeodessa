@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import re
 import sqlite3
 
 
@@ -25,6 +26,32 @@ def create_legacy_database(
         "CREATE TABLE IF NOT EXISTS question_banks",
         maxsplit=1,
     )[0]
+    for table in (
+        "users",
+        "auth_sessions",
+        "email_verification_tokens",
+        "zodiac_charts",
+        "report_entitlements",
+    ):
+        legacy_schema = re.sub(
+            rf"CREATE TABLE IF NOT EXISTS {table} \([\s\S]*?\);\n",
+            "",
+            legacy_schema,
+        )
+    legacy_schema = re.sub(
+        r"CREATE INDEX IF NOT EXISTS idx_(?:auth_sessions|report_entitlements)_[\s\S]*?;\n",
+        "",
+        legacy_schema,
+    )
+    legacy_schema = legacy_schema.replace(
+        """  status TEXT NOT NULL DEFAULT 'active',
+  owner_user_id TEXT,
+  claim_secret_hash TEXT,
+  claimed_at TEXT,
+  FOREIGN KEY (owner_user_id) REFERENCES users(user_id) ON DELETE SET NULL
+""",
+        "  status TEXT NOT NULL DEFAULT 'active'\n",
+    )
     current_items = json.loads(
         items_path.read_text(encoding="utf-8")
     )

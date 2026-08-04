@@ -1,5 +1,47 @@
 PRAGMA foreign_keys = ON;
 
+CREATE TABLE IF NOT EXISTS users (
+  user_id TEXT PRIMARY KEY,
+  email TEXT NOT NULL,
+  email_normalized TEXT NOT NULL UNIQUE,
+  nickname TEXT NOT NULL,
+  email_verified_at TEXT,
+  status TEXT NOT NULL DEFAULT 'active'
+    CHECK (status IN ('active','disabled','deleted')),
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS auth_sessions (
+  auth_session_id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  token_hash TEXT NOT NULL UNIQUE,
+  created_at TEXT NOT NULL,
+  expires_at TEXT NOT NULL,
+  last_seen_at TEXT,
+  revoked_at TEXT,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_auth_sessions_user_id
+  ON auth_sessions(user_id);
+
+CREATE INDEX IF NOT EXISTS idx_auth_sessions_expires_at
+  ON auth_sessions(expires_at);
+
+CREATE INDEX IF NOT EXISTS idx_auth_sessions_revoked_at
+  ON auth_sessions(revoked_at);
+
+CREATE TABLE IF NOT EXISTS email_verification_tokens (
+  verification_id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  token_hash TEXT NOT NULL UNIQUE,
+  created_at TEXT NOT NULL,
+  expires_at TEXT NOT NULL,
+  consumed_at TEXT,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS items (
   item_id TEXT PRIMARY KEY,
   dimension TEXT NOT NULL CHECK (dimension IN ('EI','SN','TF','JP')),
@@ -21,8 +63,52 @@ CREATE TABLE IF NOT EXISTS sessions (
     CHECK (module IN ('personality','riasec')),
   started_at TEXT NOT NULL,
   completed_at TEXT,
-  status TEXT NOT NULL DEFAULT 'active'
+  status TEXT NOT NULL DEFAULT 'active',
+  owner_user_id TEXT,
+  claim_secret_hash TEXT,
+  claimed_at TEXT,
+  FOREIGN KEY (owner_user_id) REFERENCES users(user_id) ON DELETE SET NULL
 );
+
+CREATE TABLE IF NOT EXISTS zodiac_charts (
+  chart_id TEXT PRIMARY KEY,
+  owner_user_id TEXT,
+  claim_secret_hash TEXT,
+  result_json TEXT NOT NULL,
+  schema_version TEXT NOT NULL,
+  calculated_at TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  claimed_at TEXT,
+  FOREIGN KEY (owner_user_id) REFERENCES users(user_id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS report_entitlements (
+  entitlement_id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  module TEXT NOT NULL
+    CHECK (module IN ('personality','career','zodiac')),
+  resource_id TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending'
+    CHECK (status IN ('pending','unlocked','revoked','refunded')),
+  payment_provider TEXT,
+  payment_reference TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  unlocked_at TEXT,
+  revoked_at TEXT,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  UNIQUE (user_id, module, resource_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_report_entitlements_user_id
+  ON report_entitlements(user_id);
+
+CREATE INDEX IF NOT EXISTS idx_report_entitlements_module_resource
+  ON report_entitlements(module, resource_id);
+
+CREATE INDEX IF NOT EXISTS idx_report_entitlements_status
+  ON report_entitlements(status);
 
 CREATE TABLE IF NOT EXISTS responses (
   session_id TEXT NOT NULL,
