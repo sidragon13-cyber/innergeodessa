@@ -35,6 +35,7 @@ def initialize(
         conn.execute("BEGIN IMMEDIATE")
         try:
             _apply_schema(conn)
+            _ensure_user_password_hash_column(conn)
             _ensure_session_claim_columns(conn)
             _ensure_session_version_column(conn)
             _ensure_session_module_column(conn)
@@ -69,6 +70,15 @@ def _ensure_session_version_column(conn: sqlite3.Connection) -> None:
         conn.execute(
             "ALTER TABLE sessions ADD COLUMN question_bank_version TEXT"
         )
+
+
+def _ensure_user_password_hash_column(conn: sqlite3.Connection) -> None:
+    columns = {
+        row["name"]
+        for row in conn.execute("PRAGMA table_info(users)").fetchall()
+    }
+    if "password_hash" not in columns:
+        conn.execute("ALTER TABLE users ADD COLUMN password_hash TEXT")
 
 
 def _ensure_session_module_column(conn: sqlite3.Connection) -> None:
@@ -370,6 +380,13 @@ def _verify_migration(conn: sqlite3.Connection) -> None:
             "Sessions is missing required claim columns: "
             + ", ".join(sorted(missing_session_columns))
         )
+
+    user_columns = {
+        row["name"]
+        for row in conn.execute("PRAGMA table_info(users)").fetchall()
+    }
+    if "password_hash" not in user_columns:
+        raise ValueError("Users is missing the password hash column")
 
     unversioned_sessions = conn.execute(
         """SELECT COUNT(*) FROM sessions

@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
   email TEXT NOT NULL,
   email_normalized TEXT NOT NULL UNIQUE,
   nickname TEXT NOT NULL,
+  password_hash TEXT,
   email_verified_at TEXT,
   status TEXT NOT NULL DEFAULT 'active'
     CHECK (status IN ('active','disabled','deleted')),
