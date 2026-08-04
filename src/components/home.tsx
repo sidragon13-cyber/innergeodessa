@@ -7,6 +7,9 @@ import {
   useLocale,
 } from "@/components/locale";
 import {
+  AccountHeaderLink,
+} from "@/components/account/account-header-link";
+import {
   getUiDictionary,
 } from "@/data/i18n";
 import {
@@ -84,6 +87,7 @@ export function SiteHeader({ homePath = "" }: { homePath?: string }) {
           <Link href="/about">
             {dictionary.navigation.about}
           </Link>
+          <AccountHeaderLink />
         </nav>
 
         <LocaleSwitcher />

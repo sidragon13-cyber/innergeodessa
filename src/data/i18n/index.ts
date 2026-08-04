@@ -127,3 +127,12 @@ export {
 export type {
   ZodiacReportDictionary,
 } from "./zodiac-report";
+
+export {
+  accountDictionaries,
+  getAccountDictionary,
+} from "./account";
+
+export type {
+  AccountDictionary,
+} from "./account";

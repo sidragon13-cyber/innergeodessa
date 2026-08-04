@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import {
   LocaleProvider,
 } from "@/components/locale";
+import {
+  AuthProvider,
+} from "@/components/account/auth-provider";
 
 import "./globals.css";
 
@@ -21,7 +24,7 @@ export default function RootLayout({
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
         <LocaleProvider>
-          {children}
+          <AuthProvider>{children}</AuthProvider>
         </LocaleProvider>
       </body>
     </html>
