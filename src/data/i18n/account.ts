@@ -122,6 +122,22 @@ export type AccountDictionary = {
       title: string;
       description: string;
     }[];
+    history: {
+      title: string;
+      description: string;
+      loading: string;
+      error: string;
+      retry: string;
+      empty: string;
+      openResult: string;
+      saved: string;
+      personality: string;
+      career: string;
+      zodiac: string;
+      zodiacUnavailable: string;
+      completedAt: string;
+      schemaVersion: string;
+    };
   };
 };
 
@@ -270,6 +286,25 @@ export const accountDictionaries: Record<
       upcomingTitle: "Account features coming next",
       upcomingDescription:
         "These areas are placeholders only. No records or purchases are being presented yet.",
+      history: {
+        title: "My saved assessments",
+        description:
+          "Review results that belong to your anonymous InnerGeo account.",
+        loading: "Loading saved assessments…",
+        error:
+          "Saved assessment history could not be loaded.",
+        retry: "Try again",
+        empty: "No saved assessments yet.",
+        openResult: "Open result",
+        saved: "Saved",
+        personality: "Personality",
+        career: "Career",
+        zodiac: "Zodiac",
+        zodiacUnavailable:
+          "This chart is saved, but cross-device chart retrieval will be connected in the next step.",
+        completedAt: "Saved",
+        schemaVersion: "Schema version",
+      },
       modules: [
         {
           id: "test-history",
@@ -421,6 +456,24 @@ export const accountDictionaries: Record<
       upcomingTitle: "后续账户功能",
       upcomingDescription:
         "以下区域目前只是功能预留，不展示任何虚构记录或购买数据。",
+      history: {
+        title: "我的已保存测评",
+        description:
+          "查看已经归属于你的匿名 InnerGeo 账户的测评记录。",
+        loading: "正在加载已保存测评…",
+        error: "暂时无法加载测评历史记录。",
+        retry: "重新加载",
+        empty: "目前还没有已保存的测评。",
+        openResult: "打开结果",
+        saved: "已保存",
+        personality: "人格测试",
+        career: "职业兴趣",
+        zodiac: "星座星盘",
+        zodiacUnavailable:
+          "这份星盘已经保存，但跨设备读取星盘详情将在下一步接入。",
+        completedAt: "保存时间",
+        schemaVersion: "合同版本",
+      },
       modules: [
         {
           id: "test-history",
