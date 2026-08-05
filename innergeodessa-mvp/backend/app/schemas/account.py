@@ -27,3 +27,31 @@ class SavedZodiacChartResponse(BaseModel):
     module: Literal["zodiac"]
     status: Literal["saved"]
     savedAt: str
+
+
+class PersonalityDashboardItem(BaseModel):
+    resourceId: str
+    type: str
+    createdAt: str
+    status: Literal["saved"]
+
+
+class CareerDashboardItem(BaseModel):
+    resourceId: str
+    code: str
+    createdAt: str
+    status: Literal["saved"]
+
+
+class ZodiacDashboardItem(BaseModel):
+    resourceId: str
+    createdAt: str
+    calculatedAt: str
+    schemaVersion: str
+    status: Literal["saved"]
+
+
+class AccountDashboardResponse(BaseModel):
+    personality: list[PersonalityDashboardItem]
+    career: list[CareerDashboardItem]
+    zodiac: list[ZodiacDashboardItem]

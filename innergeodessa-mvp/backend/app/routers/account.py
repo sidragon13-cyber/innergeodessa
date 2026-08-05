@@ -5,13 +5,20 @@ import hmac
 from fastapi import APIRouter, HTTPException, Request, status
 
 from ..auth import hash_token, utc_now
-from ..auth_context import require_verified_user
+from ..auth_context import (
+    get_current_user,
+    require_verified_user,
+)
 from ..database import connect
 from ..schemas.account import (
+    AccountDashboardResponse,
+    CareerDashboardItem,
     ClaimedAssessmentResponse,
     ClaimSessionRequest,
+    PersonalityDashboardItem,
     SavedZodiacChartResponse,
     SaveZodiacChartRequest,
+    ZodiacDashboardItem,
 )
 from ..zodiac_contract import (
     validate_and_serialize_zodiac_result,
@@ -256,4 +263,105 @@ def save_zodiac_chart(
         module="zodiac",
         status="saved",
         savedAt=now,
+    )
+
+
+
+@router.get(
+    "/dashboard",
+    response_model=AccountDashboardResponse,
+)
+def get_account_dashboard(
+    request: Request,
+) -> AccountDashboardResponse:
+    user = get_current_user(
+        request,
+        connection_factory=connect,
+    )
+    user_id = user["user_id"]
+
+    with connect() as conn:
+        personality_rows = conn.execute(
+            """SELECT session.session_id,
+                      result.personality_type,
+                      COALESCE(
+                        session.claimed_at,
+                        session.completed_at,
+                        session.started_at
+                      ) AS created_at
+               FROM sessions session
+               JOIN results result
+                 ON result.session_id=session.session_id
+               WHERE session.owner_user_id=?
+                 AND session.module='personality'
+                 AND session.status='completed'
+               ORDER BY created_at DESC,
+                        session.session_id DESC""",
+            (user_id,),
+        ).fetchall()
+
+        career_rows = conn.execute(
+            """SELECT session.session_id,
+                      result.code,
+                      COALESCE(
+                        session.claimed_at,
+                        session.completed_at,
+                        session.started_at
+                      ) AS created_at
+               FROM sessions session
+               JOIN riasec_results result
+                 ON result.session_id=session.session_id
+               WHERE session.owner_user_id=?
+                 AND session.module='riasec'
+                 AND session.status='completed'
+               ORDER BY created_at DESC,
+                        session.session_id DESC""",
+            (user_id,),
+        ).fetchall()
+
+        zodiac_rows = conn.execute(
+            """SELECT chart_id,
+                      schema_version,
+                      calculated_at,
+                      COALESCE(
+                        claimed_at,
+                        updated_at,
+                        created_at
+                      ) AS created_at
+               FROM zodiac_charts
+               WHERE owner_user_id=?
+               ORDER BY created_at DESC,
+                        chart_id DESC""",
+            (user_id,),
+        ).fetchall()
+
+    return AccountDashboardResponse(
+        personality=[
+            PersonalityDashboardItem(
+                resourceId=row["session_id"],
+                type=row["personality_type"],
+                createdAt=row["created_at"],
+                status="saved",
+            )
+            for row in personality_rows
+        ],
+        career=[
+            CareerDashboardItem(
+                resourceId=row["session_id"],
+                code=row["code"],
+                createdAt=row["created_at"],
+                status="saved",
+            )
+            for row in career_rows
+        ],
+        zodiac=[
+            ZodiacDashboardItem(
+                resourceId=row["chart_id"],
+                createdAt=row["created_at"],
+                calculatedAt=row["calculated_at"],
+                schemaVersion=row["schema_version"],
+                status="saved",
+            )
+            for row in zodiac_rows
+        ],
     )
