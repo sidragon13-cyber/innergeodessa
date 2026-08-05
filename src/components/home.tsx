@@ -325,17 +325,26 @@ export function HomeExploreSection() {
   );
 }
 
-export function SiteFooter({ homePath = "" }: { homePath?: string }) {
+export function SiteFooter({
+  homePath = "",
+}: {
+  homePath?: string;
+}) {
   const { locale } = useLocale();
   const dictionary = getUiDictionary(locale);
 
   return (
     <footer className="site-footer">
+      <div
+        className="site-footer-glow"
+        aria-hidden="true"
+      />
+
       <Container
         size="full"
         className="site-footer-inner max-w-[1400px]"
       >
-        <div>
+        <div className="site-footer-brand">
           <BrandLogo
             href={homePath || "/"}
             compact
@@ -345,23 +354,32 @@ export function SiteFooter({ homePath = "" }: { homePath?: string }) {
           <p>{dictionary.footer.tagline}</p>
         </div>
 
-        <nav aria-label={dictionary.footer.navigationLabel}>
+        <nav
+          className="site-footer-navigation"
+          aria-label={
+            dictionary.footer.navigationLabel
+          }
+        >
           <Link href="/personality">
             {dictionary.footer.personality}
           </Link>
+
           <Link href="/career">
             {dictionary.footer.career}
           </Link>
+
           <Link href="/zodiac">
             {dictionary.footer.zodiac}
           </Link>
+
           <Link href={`${homePath}#trust`}>
             {dictionary.footer.privacy}
           </Link>
-          <Link href={`${homePath}#trust`}>
-            {dictionary.footer.terms}
-          </Link>
         </nav>
+
+        <p className="site-footer-copyright">
+          © 2026 InnerGeo. All rights reserved.
+        </p>
       </Container>
     </footer>
   );
