@@ -470,10 +470,10 @@ export function AccountDashboard() {
                       dictionary.dateLocale,
                     )}
                     detail={`${dictionary.dashboard.history.schemaVersion}: ${item.schemaVersion}`}
-                    unavailable={
+                    href={`/zodiac/result/${item.resourceId}`}
+                    actionLabel={
                       dictionary.dashboard
-                        .history
-                        .zodiacUnavailable
+                        .history.openResult
                     }
                   />
                 ),

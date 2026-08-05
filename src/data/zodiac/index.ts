@@ -12,3 +12,4 @@ export * from "./report-zh";
 export * from "./storage";
 export * from "./fixtures";
 export * from "./calculation";
+export * from "./load-zodiac-chart";

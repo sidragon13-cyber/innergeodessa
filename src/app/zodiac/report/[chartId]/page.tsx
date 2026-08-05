@@ -11,7 +11,7 @@ import {
 import {
   generateZodiacReportSections,
   generateZodiacReportSectionsZh,
-  readStoredZodiacChart,
+  loadStoredOrRemoteZodiacChart,
   type AstrologyResultContract,
 } from "@/data/zodiac";
 
@@ -105,24 +105,46 @@ export default function ZodiacReportPage() {
   useEffect(() => {
     if (!chartId) {
       setLoadError("missingChartId");
-
       setStatus("error");
       return;
     }
 
-    const storedResult =
-      readStoredZodiacChart(chartId);
+    let active = true;
 
-    if (!storedResult) {
-      setLoadError("missingStoredChart");
+    async function loadChart(): Promise<void> {
+      setStatus("loading");
 
-      setStatus("error");
-      return;
+      try {
+        const loadedResult =
+          await loadStoredOrRemoteZodiacChart(
+            chartId,
+          );
+
+        if (!active) {
+          return;
+        }
+
+        setLoadError(null);
+        setResult(loadedResult);
+        setStatus("ready");
+      } catch {
+        if (!active) {
+          return;
+        }
+
+        setResult(null);
+        setLoadError(
+          "missingStoredChart",
+        );
+        setStatus("error");
+      }
     }
 
-    setLoadError(null);
-    setResult(storedResult);
-    setStatus("ready");
+    void loadChart();
+
+    return () => {
+      active = false;
+    };
   }, [chartId]);
 
   const sections =
