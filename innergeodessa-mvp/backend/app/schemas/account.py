@@ -55,3 +55,10 @@ class AccountDashboardResponse(BaseModel):
     personality: list[PersonalityDashboardItem]
     career: list[CareerDashboardItem]
     zodiac: list[ZodiacDashboardItem]
+
+
+class ZodiacChartDetailResponse(BaseModel):
+    resourceId: str
+    module: Literal["zodiac"]
+    result: dict
+    savedAt: str

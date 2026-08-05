@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hmac
+import json
 
 from fastapi import APIRouter, HTTPException, Request, status
 
@@ -18,6 +19,7 @@ from ..schemas.account import (
     PersonalityDashboardItem,
     SavedZodiacChartResponse,
     SaveZodiacChartRequest,
+    ZodiacChartDetailResponse,
     ZodiacDashboardItem,
 )
 from ..zodiac_contract import (
@@ -364,4 +366,87 @@ def get_account_dashboard(
             )
             for row in zodiac_rows
         ],
+    )
+
+
+
+@router.get(
+    "/zodiac-charts/{chart_id}",
+    response_model=ZodiacChartDetailResponse,
+)
+def get_zodiac_chart(
+    chart_id: str,
+    request: Request,
+) -> ZodiacChartDetailResponse:
+    user = get_current_user(
+        request,
+        connection_factory=connect,
+    )
+    user_id = user["user_id"]
+
+    with connect() as conn:
+        row = conn.execute(
+            """SELECT chart_id,
+                      result_json,
+                      created_at,
+                      updated_at,
+                      claimed_at
+               FROM zodiac_charts
+               WHERE chart_id=?
+                 AND owner_user_id=?""",
+            (
+                chart_id,
+                user_id,
+            ),
+        ).fetchone()
+
+    if row is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Zodiac chart not found.",
+        )
+
+    try:
+        parsed_result = json.loads(
+            row["result_json"]
+        )
+
+        (
+            normalized_result,
+            _schema_version,
+            _calculated_at,
+        ) = validate_and_serialize_zodiac_result(
+            parsed_result
+        )
+    except (
+        json.JSONDecodeError,
+        TypeError,
+        ValueError,
+    ) as error:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=(
+                "The saved zodiac chart data is invalid."
+            ),
+        ) from error
+
+    if normalized_result != row["result_json"]:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=(
+                "The saved zodiac chart data is not canonical."
+            ),
+        )
+
+    saved_at = (
+        row["claimed_at"]
+        or row["updated_at"]
+        or row["created_at"]
+    )
+
+    return ZodiacChartDetailResponse(
+        resourceId=row["chart_id"],
+        module="zodiac",
+        result=parsed_result,
+        savedAt=saved_at,
     )

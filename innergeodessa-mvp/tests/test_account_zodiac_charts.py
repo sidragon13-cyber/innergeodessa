@@ -426,3 +426,160 @@ def test_oversized_zodiac_result_is_rejected(
     )
 
     assert response.status_code == 422
+
+
+def test_zodiac_detail_requires_authentication(
+    client_and_database,
+):
+    client, _database_path = client_and_database
+
+    response = client.get(
+        f"/api/account/zodiac-charts/{uuid.uuid4()}",
+    )
+
+    assert response.status_code == 401
+
+
+def test_owner_can_retrieve_saved_zodiac_chart(
+    client_and_database,
+):
+    client, database_path = client_and_database
+    _user_id, token = create_user_session(
+        database_path,
+    )
+    chart_id = str(uuid.uuid4())
+    result = valid_zodiac_result()
+
+    client.cookies.set(
+        "innergeo_session",
+        token,
+    )
+
+    saved = save_chart(
+        client,
+        chart_id,
+        result,
+    )
+
+    assert saved.status_code == 200
+
+    response = client.get(
+        f"/api/account/zodiac-charts/{chart_id}",
+    )
+
+    assert response.status_code == 200
+
+    payload = response.json()
+
+    assert payload == {
+        "resourceId": chart_id,
+        "module": "zodiac",
+        "result": result,
+        "savedAt": saved.json()["savedAt"],
+    }
+
+    serialized = response.text
+
+    assert "owner_user_id" not in serialized
+    assert "claim_secret_hash" not in serialized
+    assert "result_json" not in serialized
+
+
+def test_other_user_cannot_retrieve_zodiac_chart(
+    client_and_database,
+):
+    client, database_path = client_and_database
+    _owner_id, owner_token = create_user_session(
+        database_path,
+    )
+    _other_id, other_token = create_user_session(
+        database_path,
+    )
+    chart_id = str(uuid.uuid4())
+
+    client.cookies.set(
+        "innergeo_session",
+        owner_token,
+    )
+
+    assert save_chart(
+        client,
+        chart_id,
+    ).status_code == 200
+
+    client.cookies.set(
+        "innergeo_session",
+        other_token,
+    )
+
+    response = client.get(
+        f"/api/account/zodiac-charts/{chart_id}",
+    )
+
+    assert response.status_code == 404
+
+
+def test_missing_zodiac_chart_returns_not_found(
+    client_and_database,
+):
+    client, database_path = client_and_database
+    _user_id, token = create_user_session(
+        database_path,
+    )
+
+    client.cookies.set(
+        "innergeo_session",
+        token,
+    )
+
+    response = client.get(
+        f"/api/account/zodiac-charts/{uuid.uuid4()}",
+    )
+
+    assert response.status_code == 404
+
+
+def test_invalid_saved_zodiac_json_returns_server_error(
+    client_and_database,
+):
+    client, database_path = client_and_database
+    user_id, token = create_user_session(
+        database_path,
+    )
+    chart_id = str(uuid.uuid4())
+    now = utc_now().isoformat()
+
+    with connect(database_path) as conn:
+        conn.execute(
+            """INSERT INTO zodiac_charts(
+                 chart_id,
+                 owner_user_id,
+                 result_json,
+                 schema_version,
+                 calculated_at,
+                 created_at,
+                 updated_at,
+                 claimed_at
+               ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+            (
+                chart_id,
+                user_id,
+                '{"invalid":true}',
+                "1.0.0",
+                now,
+                now,
+                now,
+                now,
+            ),
+        )
+
+    client.cookies.set(
+        "innergeo_session",
+        token,
+    )
+
+    response = client.get(
+        f"/api/account/zodiac-charts/{chart_id}",
+    )
+
+    assert response.status_code == 500
