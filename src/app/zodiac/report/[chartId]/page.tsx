@@ -20,6 +20,7 @@ import {
 } from "@/components/locale";
 import {
   ReportHeader,
+  ReportIdentityGate,
   ReportMetadata,
   ReportNavigation,
   ReportPrintButton,
@@ -223,7 +224,10 @@ export default function ZodiacReportPage() {
     ];
 
   return (
-    <ReportShell>
+    <ReportIdentityGate
+      returnTo={`/zodiac/report/${chartId}`}
+    >
+      <ReportShell>
         <ReportHeader
           eyebrow={dictionary.header.eyebrow}
           subtitle={dictionary.header.subtitle}
@@ -326,6 +330,7 @@ export default function ZodiacReportPage() {
         <footer className="mt-12 border-t border-[#c8c2b5] pt-8 text-sm leading-6 text-[#6d746b]">
           {dictionary.footer}
         </footer>
-    </ReportShell>
+      </ReportShell>
+    </ReportIdentityGate>
   );
 }

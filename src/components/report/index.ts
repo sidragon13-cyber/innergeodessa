@@ -7,3 +7,4 @@ export * from "./report-section";
 export * from "./report-shell";
 export * from "./report-state";
 export * from "./report-table-of-contents";
+export * from "./report-identity-gate";

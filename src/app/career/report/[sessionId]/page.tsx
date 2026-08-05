@@ -14,6 +14,7 @@ import {
 } from "@/components/locale";
 import {
   ReportHeader,
+  ReportIdentityGate,
   ReportMetadata,
   ReportNavigation,
   ReportPrintButton,
@@ -257,7 +258,10 @@ export default function CareerReportPage() {
     .join(" · ");
 
   return (
-    <ReportShell>
+    <ReportIdentityGate
+      returnTo={`/career/report/${sessionId}`}
+    >
+      <ReportShell>
       <ReportHeader
         eyebrow={dictionary.header.eyebrow}
         subtitle={
@@ -372,6 +376,7 @@ export default function CareerReportPage() {
             dictionary.navigation.overview,
         }}
       />
-    </ReportShell>
+      </ReportShell>
+    </ReportIdentityGate>
   );
 }
