@@ -6,3 +6,4 @@ export * from "./auth-provider";
 export * from "./login-form";
 export * from "./register-form";
 export * from "./verify-email-form";
+export * from "./save-assessment-result";

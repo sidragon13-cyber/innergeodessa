@@ -30,6 +30,9 @@ import {
   ResultState,
 } from "@/components/result";
 import {
+  SaveAssessmentResult,
+} from "@/components/account";
+import {
   useLocale,
 } from "@/components/locale";
 import {
@@ -603,6 +606,12 @@ export default function PersonalityResultPage() {
                       </p>
                     </>
                   )}
+
+                  <SaveAssessmentResult
+                    module="personality"
+                    sessionId={sessionId}
+                    className="mt-8"
+                  />
                 </div>
 
                 <div className="grid gap-px bg-[#68786c] sm:grid-cols-2">

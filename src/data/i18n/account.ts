@@ -78,6 +78,24 @@ export type AccountDictionary = {
     successDescription: string;
     goToAccount: string;
   };
+  ownership: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    checkingAccount: string;
+    loginRequired: string;
+    loginAction: string;
+    verificationRequired: string;
+    verificationAction: string;
+    missingCredential: string;
+    invalidCredential: string;
+    save: string;
+    saving: string;
+    retry: string;
+    savedTitle: string;
+    savedDescription: string;
+    error: string;
+  };
   dashboard: {
     eyebrow: string;
     title: string;
@@ -122,7 +140,7 @@ export const accountDictionaries: Record<
       anonymousNote:
         "InnerGeo accounts use an email address and an anonymous nickname. A real name is never required.",
       disclaimer:
-        "Account access does not change assessment results or unlock paid features. Saving, community, and purchasing capabilities will be introduced separately.",
+        "Saving completed assessments is available for verified accounts. Community and paid-report capabilities remain separate future features.",
     },
     header: {
       login: "Log in",
@@ -202,6 +220,31 @@ export const accountDictionaries: Record<
         "Your email verification status has been updated successfully.",
       goToAccount: "Go to account",
     },
+    ownership: {
+      eyebrow: "Save this result",
+      title: "Keep this assessment in your account",
+      description:
+        "Save this completed result to your verified anonymous account so it can be included in your future test history.",
+      checkingAccount: "Checking your account…",
+      loginRequired:
+        "Log in before saving this assessment.",
+      loginAction: "Log in to save",
+      verificationRequired:
+        "Verify your email before saving assessment results.",
+      verificationAction: "Verify email",
+      missingCredential:
+        "The secure saving credential is not available in this browser. Open the result in the browser where the assessment was completed.",
+      invalidCredential:
+        "This result cannot be saved with the available browser credential.",
+      save: "Save to my account",
+      saving: "Saving…",
+      retry: "Try saving again",
+      savedTitle: "Saved to your account",
+      savedDescription:
+        "This result now belongs to your anonymous InnerGeo account. It will appear in account history when the history view is connected.",
+      error:
+        "The result could not be saved. Please try again.",
+    },
     dashboard: {
       eyebrow: "Anonymous account",
       title: "Your InnerGeo account",
@@ -256,7 +299,7 @@ export const accountDictionaries: Record<
       anonymousNote:
         "InnerGeo 账户只使用邮箱和匿名昵称，任何时候都不要求提供真实姓名。",
       disclaimer:
-        "账户登录不会改变测评结果，也不会自动解锁付费功能。保存、社区和购买能力将在后续阶段分别接入。",
+        "已验证账户现在可以保存完成的测评结果；社区和付费报告仍属于后续独立功能。",
     },
     header: {
       login: "登录",
@@ -330,6 +373,29 @@ export const accountDictionaries: Record<
       successTitle: "邮箱已验证",
       successDescription: "邮箱验证状态已成功更新。",
       goToAccount: "进入账户中心",
+    },
+    ownership: {
+      eyebrow: "保存本次结果",
+      title: "将本次测评保存到账户",
+      description:
+        "把已完成的测评结果保存到已验证的匿名账户，后续可纳入你的测试历史记录。",
+      checkingAccount: "正在检查账户状态…",
+      loginRequired: "登录后才能保存本次测评。",
+      loginAction: "登录并保存",
+      verificationRequired:
+        "保存测评结果前，请先完成邮箱验证。",
+      verificationAction: "前往验证邮箱",
+      missingCredential:
+        "当前浏览器中没有找到安全认领凭证。请在完成本次测评的原浏览器中打开结果并保存。",
+      invalidCredential:
+        "当前浏览器凭证无法保存这份测评结果。",
+      save: "保存到我的账户",
+      saving: "正在保存…",
+      retry: "重新尝试保存",
+      savedTitle: "已保存到你的账户",
+      savedDescription:
+        "本次结果已经归属于你的匿名 InnerGeo 账户。账户历史页面接入后，可在其中重新查看。",
+      error: "暂时无法保存结果，请稍后重试。",
     },
     dashboard: {
       eyebrow: "匿名账户",

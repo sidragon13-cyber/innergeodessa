@@ -9,6 +9,9 @@ import {
 } from "react";
 
 import {
+  SaveAssessmentResult,
+} from "@/components/account";
+import {
   ResultHeader,
   ResultNavigation,
   ResultShell,
@@ -462,6 +465,12 @@ export default function CareerResultPage() {
             result.code,
           )}
         </Link>
+
+        <SaveAssessmentResult
+          module="career"
+          sessionId={sessionId}
+          className="mt-8"
+        />
       </section>
 
       <div className="mt-10 print:hidden">
