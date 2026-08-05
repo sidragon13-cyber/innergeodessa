@@ -38,9 +38,9 @@ export function LocaleSwitcher({
         className={[
           "min-h-10 px-4 text-xs font-bold uppercase tracking-[0.12em]",
           "transition-colors",
-          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#34483a]",
+          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5e4775]",
           locale === "en"
-            ? "bg-[#34483a] text-[#f1eee5]"
+            ? "bg-[#5e4775] text-[#ffffff]"
             : "hover:bg-black/5",
         ].join(" ")}
       >
@@ -54,9 +54,9 @@ export function LocaleSwitcher({
         className={[
           "min-h-10 border-l border-black/20 px-4 text-xs font-bold tracking-[0.12em]",
           "transition-colors",
-          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#34483a]",
+          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5e4775]",
           locale === "zh"
-            ? "bg-[#34483a] text-[#f1eee5]"
+            ? "bg-[#5e4775] text-[#ffffff]"
             : "hover:bg-black/5",
         ].join(" ")}
       >

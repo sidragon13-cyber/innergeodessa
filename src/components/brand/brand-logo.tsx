@@ -19,21 +19,36 @@ export function BrandLogo({
       href={href}
       aria-label="InnerGeo home"
       className={[
-        "brand-logo",
-        compact ? "brand-logo-compact" : "",
+        "brand-wordmark",
+        compact ? "brand-wordmark-compact" : "",
         className,
       ]
         .filter(Boolean)
         .join(" ")}
     >
-      <Image
-        src="/brand/innergeo-logo.png"
-        alt="InnerGeo — Understand Yourself. Shape Your Future."
-        width={1024}
-        height={1024}
-        priority
-        className="brand-logo-image"
-      />
+      <span
+        className="brand-symbol-crop"
+        aria-hidden="true"
+      >
+        <Image
+          src="/brand/innergeo-logo.png"
+          alt=""
+          width={1024}
+          height={1024}
+          priority
+          className="brand-symbol-source"
+        />
+      </span>
+
+      <span className="brand-wordmark-copy">
+        <strong>InnerGeo</strong>
+
+        {!compact ? (
+          <small>
+            Understand Yourself. Shape Your Future.
+          </small>
+        ) : null}
+      </span>
     </Link>
   );
 }
@@ -49,15 +64,29 @@ export function BrandHeroVisual() {
         className="brand-hero-orbit brand-hero-orbit-two"
         aria-hidden="true"
       />
-
-      <Image
-        src="/brand/innergeo-logo.png"
-        alt="InnerGeo — Understand Yourself. Shape Your Future."
-        width={1024}
-        height={1024}
-        priority
-        className="brand-hero-logo"
+      <div
+        className="brand-hero-axis brand-hero-axis-one"
+        aria-hidden="true"
       />
+      <div
+        className="brand-hero-axis brand-hero-axis-two"
+        aria-hidden="true"
+      />
+
+      <div className="brand-hero-symbol-crop">
+        <Image
+          src="/brand/innergeo-logo.png"
+          alt="The InnerGeo constellation points toward the North Star."
+          width={1024}
+          height={1024}
+          priority
+          className="brand-hero-symbol-source"
+        />
+      </div>
+
+      <p className="brand-hero-caption">
+        Inner direction · Future possibility
+      </p>
     </div>
   );
 }
@@ -116,12 +145,10 @@ export function BrandTrustStrip({
           value={content.organizations}
           label={content.organizationsLabel}
         />
-
         <TrustMetric
           value={content.participants}
           label={content.participantsLabel}
         />
-
         <TrustMetric
           value={content.assessments}
           label={content.assessmentsLabel}
