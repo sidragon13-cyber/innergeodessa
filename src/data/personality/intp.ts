@@ -55,7 +55,7 @@ export const intpProfile: PersonalityProfile = {
       { id: "thinking-patterns", title: { en: "Thinking Patterns" }, description: { en: "How you build models, test assumptions, and refine explanations." }, access: "premium" },
       { id: "decision-process", title: { en: "Decision Process" }, description: { en: "How to move from open exploration to a timely commitment." }, access: "premium" },
       { id: "work-environment", title: { en: "Work Environment" }, description: { en: "Conditions that support autonomy, depth, and effective delivery." }, access: "premium" },
-      { id: "communication-style", title: { en: "Communication Style" }, description: { en: "Ways to translate complex reasoning into accessible conversation." }, access: "premium" },
+      { id: "communication-style", title: { en: "Communication Style" , zh: "沟通风格"}, description: { en: "Ways to translate complex reasoning into accessible conversation." }, access: "premium" },
       { id: "relationship-dynamics", title: { en: "Relationship Dynamics" }, description: { en: "How independence and internal processing shape connection." }, access: "premium" },
       { id: "stress-response", title: { en: "Stress Response" }, description: { en: "Patterns that may appear when uncertainty or demands accumulate." }, access: "premium" },
       { id: "execution-practice", title: { en: "Execution Practice" }, description: { en: "Methods for completing valuable work after discovery." }, access: "premium" },

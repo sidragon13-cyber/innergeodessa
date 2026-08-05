@@ -57,7 +57,7 @@ export const istpProfile: PersonalityProfile = {
       { id: "risk-and-response", title: { en: "Risk and Response" }, description: { en: "Balancing composure, speed, and preventive checks." }, access: "premium" },
       { id: "communication-clarity", title: { en: "Communication Clarity" }, description: { en: "Keeping others informed without unnecessary detail." }, access: "premium" },
       { id: "commitment-patterns", title: { en: "Commitment Patterns" }, description: { en: "Preserving autonomy within dependable agreements." }, access: "premium" },
-      { id: "career-environment", title: { en: "Career Environment" }, description: { en: "Work settings that reward skill, action, and independence." }, access: "premium" },
+      { id: "career-environment", title: { en: "Career Environment" , zh: "职业环境"}, description: { en: "Work settings that reward skill, action, and independence." }, access: "premium" },
       { id: "stress-reactions", title: { en: "Stress Reactions" }, description: { en: "Recognising withdrawal, impulsive action, and accumulated pressure." }, access: "premium" },
       { id: "long-range-growth", title: { en: "Long-Range Growth" }, description: { en: "A practical plan for extending immediate skill into durable value." }, access: "premium" },
     ],

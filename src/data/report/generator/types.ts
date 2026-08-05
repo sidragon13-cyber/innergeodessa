@@ -15,6 +15,7 @@ export interface GeneratePersonalityReportInput {
   personalityType: PersonalityTypeCode;
   dimensions: Record<DimensionCode, DimensionResult>;
   accessLevel: ReportAccess;
+  locale: "en" | "zh";
   generatedAt?: string;
 }
 

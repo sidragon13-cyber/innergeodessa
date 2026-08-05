@@ -270,6 +270,7 @@ export default function PersonalityReportPage() {
       personalityType: displayResult.type,
       dimensions: createReportDimensions(displayResult),
       accessLevel: "premium",
+      locale,
       generatedAt: displayResult.calculatedAt,
     });
   } catch {

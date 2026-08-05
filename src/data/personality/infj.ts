@@ -56,7 +56,7 @@ export const infjProfile: PersonalityProfile = {
       { id: "empathy-boundaries", title: { en: "Empathy and Boundaries" }, description: { en: "Supporting others without losing personal capacity." }, access: "premium" },
       { id: "communication-depth", title: { en: "Communication Depth" }, description: { en: "Turning private insight into timely, useful dialogue." }, access: "premium" },
       { id: "purposeful-work", title: { en: "Purposeful Work" }, description: { en: "Environments that connect contribution with integrity." }, access: "premium" },
-      { id: "relationship-patterns", title: { en: "Relationship Patterns" }, description: { en: "How trust, depth, and expectations influence connection." }, access: "premium" },
+      { id: "relationship-patterns", title: { en: "Relationship Patterns" , zh: "关系模式"}, description: { en: "How trust, depth, and expectations influence connection." }, access: "premium" },
       { id: "conflict-practice", title: { en: "Conflict Practice" }, description: { en: "Approaching disagreement without abandoning values or harmony." }, access: "premium" },
       { id: "stress-and-recovery", title: { en: "Stress and Recovery" }, description: { en: "Recognising overload, withdrawal, and restorative needs." }, access: "premium" },
       { id: "impact-roadmap", title: { en: "Impact Roadmap" }, description: { en: "A paced plan for translating purpose into sustainable action." }, access: "premium" },
