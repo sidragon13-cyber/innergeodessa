@@ -1,6 +1,7 @@
 import {
   Hero,
   HomeExploreSection,
+  HomeTrustMetrics,
   HomeProfileSection,
   HomeTrustSection,
   HomeValuesSection,
@@ -13,6 +14,7 @@ export default function Home() {
     <main id="top">
       <SiteHeader />
       <Hero />
+      <HomeTrustMetrics />
 
       <HomeExploreSection />
 

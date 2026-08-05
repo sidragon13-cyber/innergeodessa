@@ -4094,3 +4094,210 @@ a {
     widows: 3;
   }
 }
+
+/* =========================================================
+   InnerGeo Brand System v1.0
+   ========================================================= */
+
+:root {
+  --brand-primary: #5e4775;
+  --brand-primary-dark: #443255;
+  --brand-primary-soft: #7a6b8a;
+  --brand-gold: #c99a45;
+  --brand-gold-dark: #a97729;
+  --brand-background: #f8f6f2;
+  --brand-surface: #fffdfa;
+  --brand-panel: #f1ede6;
+  --brand-text: #28222d;
+  --brand-muted: #6e6672;
+  --brand-border: rgba(68, 50, 85, 0.2);
+
+  --ink: var(--brand-text);
+  --paper: var(--brand-background);
+  --paper-deep: var(--brand-panel);
+  --moss: var(--brand-primary);
+  --moss-dark: var(--brand-primary-dark);
+  --rust: var(--brand-gold-dark);
+  --rust-light: var(--brand-gold);
+  --line: var(--brand-border);
+}
+
+body {
+  background: var(--brand-background);
+  color: var(--brand-text);
+}
+
+.brand-logo {
+  width: 150px;
+  min-height: 64px;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.brand-logo-compact {
+  width: 126px;
+  min-height: 58px;
+}
+
+.brand-logo-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transform: scale(1.42);
+}
+
+.brand-hero-visual {
+  position: relative;
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 65% 33%,
+      rgba(201, 154, 69, 0.16),
+      transparent 24%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(94, 71, 117, 0.09),
+      rgba(255, 253, 250, 0.45)
+    );
+}
+
+.brand-hero-logo {
+  position: relative;
+  z-index: 2;
+  width: min(82%, 680px);
+  height: auto;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 28px 70px rgba(68, 50, 85, 0.12));
+}
+
+.brand-hero-orbit {
+  position: absolute;
+  border: 1px solid rgba(94, 71, 117, 0.14);
+  border-radius: 50%;
+}
+
+.brand-hero-orbit-one {
+  width: 500px;
+  height: 500px;
+}
+
+.brand-hero-orbit-two {
+  width: 710px;
+  height: 710px;
+}
+
+.brand-trust-strip {
+  width: min(100% - 64px, 1280px);
+  margin-inline: auto;
+  padding: 70px 0;
+  display: grid;
+  grid-template-columns:
+    minmax(280px, 0.9fr)
+    minmax(0, 1.5fr);
+  gap: 72px;
+  border-bottom: 1px solid var(--brand-border);
+}
+
+.brand-trust-eyebrow {
+  margin: 0 0 18px;
+  color: var(--brand-gold-dark);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.brand-trust-description {
+  max-width: 560px;
+  margin: 0;
+  color: var(--brand-muted);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.brand-trust-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--brand-border);
+  background: rgba(255, 253, 250, 0.6);
+}
+
+.brand-trust-metric {
+  min-height: 160px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.brand-trust-metric + .brand-trust-metric {
+  border-left: 1px solid var(--brand-border);
+}
+
+.brand-trust-metric strong {
+  color: var(--brand-primary);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(36px, 4vw, 54px);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+}
+
+.brand-trust-metric span {
+  max-width: 200px;
+  color: var(--brand-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.primary-button {
+  background: var(--brand-primary);
+  color: white;
+  box-shadow: 0 12px 30px rgba(68, 50, 85, 0.14);
+}
+
+.primary-button:hover {
+  background: var(--brand-primary-dark);
+}
+
+.site-header nav a::after,
+.site-footer nav a::after {
+  background: var(--brand-gold);
+}
+
+@media (max-width: 900px) {
+  .brand-trust-strip {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+
+  .brand-trust-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-trust-metric + .brand-trust-metric {
+    border-top: 1px solid var(--brand-border);
+    border-left: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .brand-logo,
+  .brand-logo-compact {
+    width: 108px;
+  }
+
+  .brand-trust-strip {
+    width: min(100% - 36px, 1280px);
+    padding: 48px 0;
+  }
+}

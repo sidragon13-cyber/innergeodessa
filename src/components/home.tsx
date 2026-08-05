@@ -3,6 +3,12 @@
 import Link from "next/link";
 
 import {
+  BrandHeroVisual,
+  BrandLogo,
+  BrandTrustStrip,
+} from "@/components/brand";
+
+import {
   LocaleSwitcher,
   useLocale,
 } from "@/components/locale";
@@ -68,13 +74,10 @@ export function SiteHeader({ homePath = "" }: { homePath?: string }) {
       size="full"
       className="site-header max-w-[1400px]"
     >
-      <Link
-        className="wordmark"
-        href={homePath || "#top"}
-        aria-label={dictionary.accessibility.homeLabel}
-      >
-        <Wordmark />
-      </Link>
+      <BrandLogo
+        href={homePath || "/"}
+        compact
+      />
 
       <div className="flex items-center gap-4">
         <nav aria-label={dictionary.navigation.primaryLabel}>
@@ -212,13 +215,16 @@ export function Hero() {
         </div>
       </div>
 
-      <IdentityMap
-        personalityLabel={hero.personalityLabel}
-        careerLabel={hero.careerLabel}
-        zodiacLabel={hero.zodiacLabel}
-        youLabel={hero.youLabel}
-      />
+      <BrandHeroVisual />
     </Container>
+  );
+}
+
+export function HomeTrustMetrics() {
+  const { locale } = useLocale();
+
+  return (
+    <BrandTrustStrip locale={locale} />
   );
 }
 
@@ -330,13 +336,11 @@ export function SiteFooter({ homePath = "" }: { homePath?: string }) {
         className="site-footer-inner max-w-[1400px]"
       >
         <div>
-          <Link
-            className="wordmark footer-wordmark"
-            href={homePath || "#top"}
-            aria-label="InnerGeo home"
-          >
-            <Wordmark />
-          </Link>
+          <BrandLogo
+            href={homePath || "/"}
+            compact
+            className="footer-wordmark"
+          />
 
           <p>{dictionary.footer.tagline}</p>
         </div>
