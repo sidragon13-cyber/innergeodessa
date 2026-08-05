@@ -5,7 +5,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from .database import initialize
-from .routers import auth_router, health_router, items_router, session_router
+from .routers import (
+    account_router,
+    auth_router,
+    health_router,
+    items_router,
+    session_router,
+)
 
 
 @asynccontextmanager
@@ -24,3 +30,4 @@ app.include_router(health_router)
 app.include_router(items_router)
 app.include_router(session_router)
 app.include_router(auth_router)
+app.include_router(account_router)
