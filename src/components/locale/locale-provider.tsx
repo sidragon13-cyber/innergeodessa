@@ -37,6 +37,8 @@ export function LocaleProvider({
     useState<SupportedLocale>(defaultLocale);
 
   useEffect(() => {
+    let active = true;
+
     const storedLocale =
       window.localStorage.getItem(LOCALE_STORAGE_KEY);
 
@@ -47,23 +49,31 @@ export function LocaleProvider({
         ? "zh"
         : defaultLocale;
 
-    setLocaleState(
-      normalizeLocale(storedLocale ?? browserLocale),
-    );
+    const initialLocale =
+      normalizeLocale(storedLocale ?? browserLocale);
+
+    queueMicrotask(() => {
+      if (active) {
+        setLocaleState(initialLocale);
+      }
+    });
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   useEffect(() => {
     document.documentElement.lang =
       locale === "zh" ? "zh-CN" : "en";
-
-    window.localStorage.setItem(
-      LOCALE_STORAGE_KEY,
-      locale,
-    );
   }, [locale]);
 
   const setLocale = useCallback(
     (nextLocale: SupportedLocale) => {
+      window.localStorage.setItem(
+        LOCALE_STORAGE_KEY,
+        nextLocale,
+      );
       setLocaleState(nextLocale);
     },
     [],

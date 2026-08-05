@@ -10,9 +10,6 @@ const reportSectionSource = readSource(
 const reportContentBlockSource = readSource(
   "src/app/personality/report/[sessionId]/report-content-block.tsx",
 );
-const printButtonSource = readSource(
-  "src/app/personality/report/[sessionId]/print-report-button.tsx",
-);
 const sharedPrintButtonSource = readSource(
   "src/components/report/report-print-button.tsx",
 );

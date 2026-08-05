@@ -123,7 +123,12 @@ export default function ZodiacTestPage() {
     let active = true;
 
     if (!locationQuery.trim()) {
-      setLocationResults([]);
+      queueMicrotask(() => {
+        if (active) {
+          setLocationResults([]);
+        }
+      });
+
       return () => {
         active = false;
       };

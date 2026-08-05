@@ -56,14 +56,6 @@ export function CompassMark() {
   );
 }
 
-function Wordmark() {
-  return (
-    <>
-      Inner<span>Geo</span>
-    </>
-  );
-}
-
 export function SiteHeader({ homePath = "" }: { homePath?: string }) {
   const { locale } = useLocale();
   const dictionary = getUiDictionary(locale);
@@ -121,64 +113,6 @@ export function PrimaryButton({
         </span>
       </span>
     </ButtonLink>
-  );
-}
-
-interface IdentityMapProps {
-  personalityLabel: string;
-  careerLabel: string;
-  zodiacLabel: string;
-  youLabel: string;
-}
-
-function IdentityMap({
-  personalityLabel,
-  careerLabel,
-  zodiacLabel,
-  youLabel,
-}: IdentityMapProps) {
-  return (
-    <div className="identity-map" aria-hidden="true">
-      <svg
-        className="contour-art"
-        viewBox="0 0 760 640"
-        fill="none"
-        preserveAspectRatio="xMidYMid slice"
-      >
-        <path d="M76 640C53 548 107 476 191 455c119-30 85-138 171-205 80-62 179-39 254-105 47-41 59-96 59-145" />
-        <path d="M131 640c-27-93 18-143 96-171 118-42 76-138 168-190 78-44 163-37 233-105 49-47 69-107 68-174" />
-        <path d="M188 640c-23-71 9-116 79-149 102-48 78-132 166-175 72-36 145-37 205-97 55-56 78-132 75-219" />
-        <path d="M251 640c-13-59 12-94 69-126 84-46 77-117 154-157 72-38 117-45 168-93 62-59 91-155 89-264" />
-        <path d="M323 640c-3-46 14-74 58-105 67-46 70-100 131-139 60-38 90-48 133-88 68-63 102-175 103-308" />
-        <path d="M0 188c84 9 139-16 166-75C189 61 236 27 306 9" />
-        <path d="M0 241c99 8 165-24 195-94 23-52 70-88 140-108" />
-        <path d="M0 297c117 4 194-37 229-122 20-50 67-86 137-108" />
-        <path d="M0 356c126-1 216-53 255-150 19-47 61-83 128-109" />
-        <circle cx="400" cy="316" r="150" />
-        <circle cx="400" cy="316" r="93" />
-      </svg>
-
-      <span className="map-axis map-axis-one" />
-      <span className="map-axis map-axis-two" />
-
-      <div className="dimension-node dimension-personality">
-        <span>P</span>
-        <strong>{personalityLabel}</strong>
-      </div>
-      <div className="dimension-node dimension-career">
-        <span>C</span>
-        <strong>{careerLabel}</strong>
-      </div>
-      <div className="dimension-node dimension-zodiac">
-        <span>Z</span>
-        <strong>{zodiacLabel}</strong>
-      </div>
-
-      <div className="map-center">
-        <CompassMark />
-        <span>{youLabel}</span>
-      </div>
-    </div>
   );
 }
 

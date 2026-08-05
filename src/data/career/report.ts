@@ -1,9 +1,7 @@
 import {
   getRiasecDimensionProfile,
-  type RiasecDimensionProfile,
 } from "./dimensions";
 import type { RiasecResultContract } from "./result-contract";
-import type { RiasecDimension } from "./types";
 import {
   DIMENSION_DETAILS,
 } from "./report/dimension-details";

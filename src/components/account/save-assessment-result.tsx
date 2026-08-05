@@ -109,22 +109,32 @@ export function SaveAssessmentResult({
       return;
     }
 
+    let active = true;
+
     const saved =
       window.localStorage.getItem(
         getSavedStorageKey(module, sessionId),
       ) === "saved";
 
-    if (saved) {
-      setSaveState("saved");
-      setClaimSecret(null);
-      return;
-    }
+    const storedClaimSecret =
+      saved
+        ? null
+        : window.sessionStorage.getItem(
+            getClaimStorageKey(module, sessionId),
+          );
 
-    setClaimSecret(
-      window.sessionStorage.getItem(
-        getClaimStorageKey(module, sessionId),
-      ),
-    );
+    queueMicrotask(() => {
+      if (!active) {
+        return;
+      }
+
+      setSaveState(saved ? "saved" : "idle");
+      setClaimSecret(storedClaimSecret);
+    });
+
+    return () => {
+      active = false;
+    };
   }, [module, sessionId]);
 
   async function saveResult(): Promise<void> {

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
   useEffect,
@@ -105,8 +104,6 @@ export default function ZodiacReportPage() {
 
   useEffect(() => {
     if (!chartId) {
-      setLoadError("missingChartId");
-      setStatus("error");
       return;
     }
 
@@ -148,6 +145,12 @@ export default function ZodiacReportPage() {
     };
   }, [chartId]);
 
+  const displayStatus: LoadStatus =
+    chartId ? status : "error";
+
+  const displayLoadError: LoadError | null =
+    chartId ? loadError : "missingChartId";
+
   const sections =
     useMemo(
       () =>
@@ -159,7 +162,7 @@ export default function ZodiacReportPage() {
       [locale, result],
     );
 
-  if (status === "loading") {
+  if (displayStatus === "loading") {
     return (
       <ReportState
         eyebrow={dictionary.loading.eyebrow}
@@ -181,7 +184,7 @@ export default function ZodiacReportPage() {
   }
 
   if (
-    status === "error" ||
+    displayStatus === "error" ||
     !result
   ) {
     return (
@@ -189,8 +192,8 @@ export default function ZodiacReportPage() {
         eyebrow={dictionary.loading.eyebrow}
         title={dictionary.errors.unavailable}
         message={
-          loadError
-            ? dictionary.errors[loadError]
+          displayLoadError
+            ? dictionary.errors[displayLoadError]
             : dictionary.errors.fallbackUnavailable
         }
         actions={[

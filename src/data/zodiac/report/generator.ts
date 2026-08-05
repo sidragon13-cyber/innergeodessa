@@ -6,7 +6,6 @@ import type {
 import {
   formatList,
   formatZodiacPosition,
-  getZodiacSignName,
   joinNatural,
   unique,
 } from "./helpers";

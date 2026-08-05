@@ -120,11 +120,19 @@ export function AccountDashboard() {
 
   useEffect(() => {
     if (
-      status === "authenticated" &&
-      user
+      status !== "authenticated" ||
+      !user
     ) {
-      void loadResources();
+      return;
     }
+
+    const timeoutId = window.setTimeout(() => {
+      void loadResources();
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
   }, [status, user, loadResources]);
 
   if (status === "loading") {

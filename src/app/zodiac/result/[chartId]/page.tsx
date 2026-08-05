@@ -189,8 +189,6 @@ export default function ZodiacResultPage() {
 
   useEffect(() => {
     if (!chartId) {
-      setResultError("missingChartId");
-      setStatus("error");
       return;
     }
 
@@ -231,6 +229,12 @@ export default function ZodiacResultPage() {
       active = false;
     };
   }, [chartId]);
+
+  const displayStatus: ResultStatus =
+    chartId ? status : "error";
+
+  const displayResultError: ResultError | null =
+    chartId ? resultError : "missingChartId";
 
   const corePositions =
     useMemo<
@@ -353,7 +357,7 @@ export default function ZodiacResultPage() {
       ];
     }, [dictionary.positions, result]);
 
-  if (status === "loading") {
+  if (displayStatus === "loading") {
     return (
       <ResultState
         eyebrow={dictionary.state.birthChartProfile}
@@ -364,7 +368,7 @@ export default function ZodiacResultPage() {
   }
 
   if (
-    status === "error" ||
+    displayStatus === "error" ||
     !result
   ) {
     return (
@@ -372,8 +376,8 @@ export default function ZodiacResultPage() {
         eyebrow={dictionary.state.unavailableEyebrow}
         title={dictionary.state.unavailableTitle}
         message={
-          resultError
-            ? dictionary.state[resultError]
+          displayResultError
+            ? dictionary.state[displayResultError]
             : dictionary.state.fallbackUnavailable
         }
         actions={[
