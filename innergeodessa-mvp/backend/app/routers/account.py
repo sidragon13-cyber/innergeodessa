@@ -39,7 +39,10 @@ def claim_session(
     payload: ClaimSessionRequest,
     request: Request,
 ) -> ClaimedAssessmentResponse:
-    user = require_verified_user(request)
+    user = require_verified_user(
+        request,
+        connection_factory=connect,
+    )
     user_id = user["user_id"]
     supplied_hash = hash_token(payload.claimSecret)
 

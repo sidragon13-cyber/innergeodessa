@@ -202,7 +202,12 @@ def login(payload: LoginRequest, response: Response) -> LoginResponse:
 
 @router.get("/me", response_model=AuthUserResponse)
 def me(request: Request) -> AuthUserResponse:
-    return _auth_user(get_current_user(request))
+    return _auth_user(
+        get_current_user(
+            request,
+            connection_factory=connect,
+        )
+    )
 
 
 @router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)

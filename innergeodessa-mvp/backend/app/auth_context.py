@@ -6,7 +6,11 @@ from .auth import COOKIE_NAME, hash_token, parse_utc, utc_now
 from .database import connect
 
 
-def get_current_user(request: Request):
+def get_current_user(
+    request: Request,
+    *,
+    connection_factory=None,
+):
     session_token = request.cookies.get(COOKIE_NAME)
 
     if not session_token:
@@ -16,8 +20,9 @@ def get_current_user(request: Request):
         )
 
     now = utc_now()
+    open_connection = connection_factory or connect
 
-    with connect() as conn:
+    with open_connection() as conn:
         session = conn.execute(
             """SELECT auth.auth_session_id,
                       auth.expires_at,
@@ -54,8 +59,15 @@ def get_current_user(request: Request):
     return session
 
 
-def require_verified_user(request: Request):
-    user = get_current_user(request)
+def require_verified_user(
+    request: Request,
+    *,
+    connection_factory=None,
+):
+    user = get_current_user(
+        request,
+        connection_factory=connection_factory,
+    )
 
     if user["email_verified_at"] is None:
         raise HTTPException(
