@@ -15,7 +15,7 @@ class AssessmentModuleConfig:
 ASSESSMENT_MODULES = {
     "personality": AssessmentModuleConfig(
         module="personality",
-        question_bank_version="personality-v1.0.0",
+        question_bank_version="personality-v2.0.0",
         expected_item_count=72,
         scoring_strategy="personality",
     ),

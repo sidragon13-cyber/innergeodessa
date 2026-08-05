@@ -11,7 +11,7 @@ ITEMS_PATH = ROOT / "data" / "items.json"
 RIASEC_ITEMS_PATH = ROOT / "data" / "riasec-items.json"
 
 LEGACY_BANK_VERSION = "personality-legacy-v1"
-CURRENT_BANK_VERSION = "personality-v1.0.0"
+CURRENT_BANK_VERSION = "personality-v2.0.0"
 RIASEC_BANK_VERSION = "riasec-v0.1.0"
 
 

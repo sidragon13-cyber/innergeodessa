@@ -107,7 +107,7 @@ def test_non_destructive_versioned_migration_is_idempotent(tmp_path):
         assert fetch_value(
             connection,
             "SELECT COUNT(*) FROM question_bank_items "
-            "WHERE question_bank_version='personality-v1.0.0'",
+            "WHERE question_bank_version='personality-v2.0.0'",
         ) == 72
         assert fetch_value(
             connection,
@@ -148,7 +148,7 @@ def test_generated_bank_declares_current_version():
     assert len(items) == 72
     assert {
         item["question_bank_version"] for item in items
-    } == {"personality-v1.0.0"}
+    } == {"personality-v2.0.0"}
 
 
 def test_failed_migration_rolls_back_schema_and_data(tmp_path):

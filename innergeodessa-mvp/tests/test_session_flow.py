@@ -96,7 +96,7 @@ def test_legacy_active_session_uses_legacy_snapshot_and_can_complete(
                LEFT JOIN question_bank_items legacy
                  ON legacy.question_bank_version='personality-legacy-v1'
                 AND legacy.source_item_id=current.source_item_id
-               WHERE current.question_bank_version='personality-v1.0.0'
+               WHERE current.question_bank_version='personality-v2.0.0'
                  AND legacy.item_record_id IS NULL
                ORDER BY current.master_order LIMIT 1"""
         ).fetchone()["source_item_id"]
@@ -124,7 +124,7 @@ def test_new_session_uses_current_snapshot_and_can_complete(
     )
     assert session_response.status_code == 200
     session = session_response.json()
-    assert session["question_bank_version"] == "personality-v1.0.0"
+    assert session["question_bank_version"] == "personality-v2.0.0"
 
     items_response = client.get(
         f"/api/sessions/{session['session_id']}/items"
@@ -134,7 +134,7 @@ def test_new_session_uses_current_snapshot_and_can_complete(
     assert len(items) == 72
     assert {
         item["question_bank_version"] for item in items
-    } == {"personality-v1.0.0"}
+    } == {"personality-v2.0.0"}
 
     answer_all(client, session["session_id"], items)
     result = client.post(
