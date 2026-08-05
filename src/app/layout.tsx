@@ -8,6 +8,7 @@ import {
 } from "@/components/account/auth-provider";
 
 import "./globals.css";
+import "./brand-home.css";
 
 export const metadata: Metadata = {
   title: "InnerGeo — Self-Discovery, Thoughtfully Mapped",
