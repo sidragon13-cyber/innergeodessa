@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal
+from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -62,3 +62,26 @@ class ZodiacChartDetailResponse(BaseModel):
     module: Literal["zodiac"]
     result: dict
     savedAt: str
+
+
+class ReportAccessResponse(BaseModel):
+    module: Literal[
+        "personality",
+        "career",
+        "zodiac",
+    ]
+    resourceId: str
+    authenticated: Literal[True]
+    emailVerified: Literal[True]
+    ownsResource: Literal[True]
+    entitlementStatus: Optional[
+        Literal[
+            "pending",
+            "unlocked",
+            "revoked",
+            "refunded",
+        ]
+    ]
+    canViewFullReport: bool
+    canPrint: bool
+    canDownloadPdf: bool

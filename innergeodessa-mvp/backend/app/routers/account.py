@@ -17,6 +17,7 @@ from ..schemas.account import (
     ClaimedAssessmentResponse,
     ClaimSessionRequest,
     PersonalityDashboardItem,
+    ReportAccessResponse,
     SavedZodiacChartResponse,
     SaveZodiacChartRequest,
     ZodiacChartDetailResponse,
@@ -449,4 +450,105 @@ def get_zodiac_chart(
         module="zodiac",
         result=parsed_result,
         savedAt=saved_at,
+    )
+
+
+
+@router.get(
+    "/report-access/{module}/{resource_id}",
+    response_model=ReportAccessResponse,
+)
+def get_report_access(
+    module: str,
+    resource_id: str,
+    request: Request,
+) -> ReportAccessResponse:
+    if module not in {
+        "personality",
+        "career",
+        "zodiac",
+    }:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="The report module is not supported.",
+        )
+
+    user = require_verified_user(
+        request,
+        connection_factory=connect,
+    )
+    user_id = user["user_id"]
+
+    with connect() as conn:
+        if module == "zodiac":
+            resource = conn.execute(
+                """SELECT chart_id
+                   FROM zodiac_charts
+                   WHERE chart_id=?
+                     AND owner_user_id=?""",
+                (
+                    resource_id,
+                    user_id,
+                ),
+            ).fetchone()
+        else:
+            internal_module = (
+                "personality"
+                if module == "personality"
+                else "riasec"
+            )
+
+            resource = conn.execute(
+                """SELECT session_id
+                   FROM sessions
+                   WHERE session_id=?
+                     AND owner_user_id=?
+                     AND module=?
+                     AND status='completed'""",
+                (
+                    resource_id,
+                    user_id,
+                    internal_module,
+                ),
+            ).fetchone()
+
+        if resource is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="The saved assessment resource was not found.",
+            )
+
+        entitlement = conn.execute(
+            """SELECT status
+               FROM report_entitlements
+               WHERE user_id=?
+                 AND module=?
+                 AND resource_id=?""",
+            (
+                user_id,
+                module,
+                resource_id,
+            ),
+        ).fetchone()
+
+    entitlement_status = (
+        entitlement["status"]
+        if entitlement is not None
+        else None
+    )
+
+    unlocked = (
+        entitlement_status == "unlocked"
+    )
+
+    return ReportAccessResponse(
+        module=module,
+        resourceId=resource_id,
+        authenticated=True,
+        emailVerified=True,
+        ownsResource=True,
+        entitlementStatus=entitlement_status,
+        canViewFullReport=unlocked,
+        canPrint=unlocked,
+        canDownloadPdf=unlocked,
     )
