@@ -55,7 +55,10 @@
     "validate:zodiac-core-freeze": "tsx scripts/validate-zodiac-core-freeze.ts",
     "validate-location-search": "tsx scripts/validate-location-search.ts",
     "validate:zodiac-partial-contract": "tsx scripts/validate-zodiac-partial-contract.ts",
-    "validate:personality-question-localization": "tsx scripts/validate-personality-question-localization.ts"
+    "validate:personality-question-localization": "tsx scripts/validate-personality-question-localization.ts",
+    "db:backup": "cd innergeodessa-mvp && backend/.venv/bin/python scripts/database_backup.py",
+    "db:restore": "cd innergeodessa-mvp && backend/.venv/bin/python scripts/database_restore.py",
+    "test:database-governance": "cd innergeodessa-mvp && backend/.venv/bin/python -m pytest tests/test_database_governance.py -q"
   },
   "dependencies": {
     "astronomy-engine": "2.1.19",

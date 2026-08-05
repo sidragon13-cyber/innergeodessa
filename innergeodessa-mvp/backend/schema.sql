@@ -1,5 +1,12 @@
 PRAGMA foreign_keys = ON;
 
+
+CREATE TABLE IF NOT EXISTS schema_migrations (
+  migration_id TEXT PRIMARY KEY,
+  description TEXT NOT NULL,
+  applied_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS users (
   user_id TEXT PRIMARY KEY,
   email TEXT NOT NULL,

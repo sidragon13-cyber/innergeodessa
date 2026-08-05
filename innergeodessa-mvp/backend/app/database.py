@@ -35,15 +35,48 @@ def initialize(
         conn.execute("BEGIN IMMEDIATE")
         try:
             _apply_schema(conn)
-            _ensure_user_password_hash_column(conn)
-            _ensure_session_claim_columns(conn)
-            _ensure_session_version_column(conn)
-            _ensure_session_module_column(conn)
+
+            _apply_migration(
+                conn,
+                migration_id="20260725_001_account_columns",
+                description=(
+                    "Add account password and assessment ownership columns."
+                ),
+                operation=lambda: (
+                    _ensure_user_password_hash_column(conn),
+                    _ensure_session_claim_columns(conn),
+                ),
+            )
+
+            _apply_migration(
+                conn,
+                migration_id="20260725_002_session_versioning",
+                description=(
+                    "Add assessment module and question-bank version columns."
+                ),
+                operation=lambda: (
+                    _ensure_session_version_column(conn),
+                    _ensure_session_module_column(conn),
+                ),
+            )
+
             _register_question_banks(conn)
-            _capture_legacy_items(conn)
-            _backfill_legacy_sessions(conn)
-            _create_missing_session_snapshots(conn)
-            _migrate_legacy_responses(conn)
+
+            _apply_migration(
+                conn,
+                migration_id="20260725_003_legacy_assessment_data",
+                description=(
+                    "Capture legacy question items, version legacy sessions, "
+                    "create immutable question snapshots, and migrate responses."
+                ),
+                operation=lambda: (
+                    _capture_legacy_items(conn),
+                    _backfill_legacy_sessions(conn),
+                    _create_missing_session_snapshots(conn),
+                    _migrate_legacy_responses(conn),
+                ),
+            )
+
             _upsert_current_items(conn, items)
             _upsert_riasec_items(conn, riasec_items)
             _verify_migration(conn)
@@ -59,6 +92,37 @@ def _apply_schema(conn: sqlite3.Connection) -> None:
     for statement in statements:
         if statement.strip():
             conn.execute(statement)
+
+
+def _apply_migration(
+    conn: sqlite3.Connection,
+    *,
+    migration_id: str,
+    description: str,
+    operation,
+) -> None:
+    existing = conn.execute(
+        """SELECT migration_id
+           FROM schema_migrations
+           WHERE migration_id=?""",
+        (migration_id,),
+    ).fetchone()
+
+    if existing is not None:
+        return
+
+    operation()
+
+    conn.execute(
+        """INSERT INTO schema_migrations(
+             migration_id,
+             description
+           ) VALUES (?, ?)""",
+        (
+            migration_id,
+            description,
+        ),
+    )
 
 
 def _ensure_session_version_column(conn: sqlite3.Connection) -> None:
@@ -326,6 +390,7 @@ def _upsert_riasec_items(
 
 def _verify_migration(conn: sqlite3.Connection) -> None:
     required_tables = {
+        "schema_migrations",
         "users",
         "auth_sessions",
         "email_verification_tokens",
