@@ -7,6 +7,7 @@ import uuid
 from fastapi import APIRouter, HTTPException
 
 from ..assessment_modules import get_assessment_module_config
+from ..auth import generate_token, hash_token
 from ..database import connect
 from ..schemas.session import AnswerRequest, StartRequest
 from ..scoring import TIE_RULE
@@ -27,21 +28,24 @@ def start_session(payload: StartRequest):
         raise HTTPException(400, str(error)) from error
 
     session_id = str(uuid.uuid4())
+    claim_secret = generate_token()
+    claim_secret_hash = hash_token(claim_secret)
     now = datetime.now(timezone.utc).isoformat()
 
     with connect() as conn:
         conn.execute(
             """INSERT INTO sessions(
                  session_id, consent, language, started_at,
-                 question_bank_version, module
+                 question_bank_version, module, claim_secret_hash
                )
-               VALUES (?,1,?,?,?,?)""",
+               VALUES (?,1,?,?,?,?,?)""",
             (
                 session_id,
                 payload.language,
                 now,
                 module_config.question_bank_version,
                 module_config.module,
+                claim_secret_hash,
             ),
         )
         if module_config.module == "riasec":
@@ -86,6 +90,7 @@ def start_session(payload: StartRequest):
 
     return {
         "session_id": session_id,
+        "claim_secret": claim_secret,
         "started_at": now,
         "module": module_config.module,
         "question_bank_version": (

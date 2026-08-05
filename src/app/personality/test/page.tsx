@@ -37,6 +37,7 @@ type ItemsResponse = {
 
 type SessionResponse = {
   session_id: string;
+  claim_secret?: string;
   started_at?: string;
   question_bank_version?: string;
   error?: string;
@@ -91,13 +92,22 @@ export default function PersonalityTestPage() {
 
         const sessionData: SessionResponse = await sessionResponse.json();
 
-        if (!sessionResponse.ok || !sessionData.session_id) {
+        if (
+          !sessionResponse.ok ||
+          !sessionData.session_id ||
+          !sessionData.claim_secret
+        ) {
           throw new Error(
             sessionData.error ??
               initialDictionary.current.personalityTest.errors
                 .createSession,
           );
         }
+
+        sessionStorage.setItem(
+          `innergeo-claim:personality:${sessionData.session_id}`,
+          sessionData.claim_secret,
+        );
 
         const response = await fetch(
           `/api/sessions/${sessionData.session_id}/items`,

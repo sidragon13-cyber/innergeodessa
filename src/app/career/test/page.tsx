@@ -38,6 +38,7 @@ type ItemsResponse =
 
 type SessionResponse = {
   session_id: string;
+  claim_secret?: string;
   started_at?: string;
   question_bank_version?: string;
   error?: string;
@@ -92,13 +93,22 @@ export default function CareerTestPage() {
 
         const sessionData: SessionResponse = await sessionResponse.json();
 
-        if (!sessionResponse.ok || !sessionData.session_id) {
+        if (
+          !sessionResponse.ok ||
+          !sessionData.session_id ||
+          !sessionData.claim_secret
+        ) {
           throw new Error(
             sessionData.error ??
               initialDictionary.current.errors
                 .createSession,
           );
         }
+
+        sessionStorage.setItem(
+          `innergeo-claim:career:${sessionData.session_id}`,
+          sessionData.claim_secret,
+        );
 
         const response = await fetch(
           `/api/sessions/${sessionData.session_id}/items`,
