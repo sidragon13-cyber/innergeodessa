@@ -40,7 +40,7 @@ for (const [dimension, poles] of Object.entries({
 assert.ok(
   items.every(
     (item) =>
-      item.question_bank_version === "personality-v1.0.0" &&
+      item.question_bank_version === "personality-v2.0.0" &&
       item.status === "pilot",
   ),
 );

@@ -1,0 +1,3899 @@
+===== CAREER PHASE 2 CONTEXT =====
+2026年 7月30日 星期四 15时02分41秒 SAST
+
+Repository: /Users/dupei/Documents/Jinlong/Web/innergeodessa
+
+
+===== CURRENT BRANCH AND COMMIT =====
+work/personality-system-audit
+ddff113 feat(career): add RIASEC scoring foundation
+
+
+===== WORKTREE =====
+?? docs/audits/career-focused-context-20260730.txt
+?? docs/audits/career-phase2-context-20260730.txt
+?? docs/audits/innergeo-full-audit-20260730-142911.txt
+?? src/app/career/result/
+?? src/app/career/test/
+?? src/app/zodiac/result/
+?? src/app/zodiac/test/
+?? src/data/zodiac/
+
+
+===== PERSONALITY TEST FILE TREE =====
+src/app/personality/page.tsx
+src/app/personality/preview/[type]/page.tsx
+src/app/personality/report/[sessionId]/page.tsx
+src/app/personality/report/[sessionId]/print-report-button.tsx
+src/app/personality/report/[sessionId]/report-content-block.tsx
+src/app/personality/report/[sessionId]/report-document.tsx
+src/app/personality/report/[sessionId]/report-header.tsx
+src/app/personality/report/[sessionId]/report-metadata.tsx
+src/app/personality/report/[sessionId]/report-navigation.tsx
+src/app/personality/report/[sessionId]/report-recipient-name.tsx
+src/app/personality/report/[sessionId]/report-section.tsx
+src/app/personality/report/[sessionId]/report-table-of-contents.tsx
+src/app/personality/report/[sessionId]/section-navigation.ts
+src/app/personality/result/[sessionId]/page.tsx
+src/app/personality/test/page.tsx
+src/components/home.tsx
+
+
+===== CAREER FILE TREE =====
+src/app/career/page.tsx
+src/app/career/result/.gitkeep
+src/app/career/test/.gitkeep
+src/data/career/index.ts
+src/data/career/questions/.gitkeep
+src/data/career/reports/.gitkeep
+src/data/career/scoring/.gitkeep
+src/data/career/scoring/index.ts
+src/data/career/scoring/scoreRiasec.ts
+src/data/career/types.ts
+
+
+===== PERSONALITY TEST SOURCE =====
+
+
+----- src/app/personality/test/page.tsx -----
+     1	"use client";
+     2	
+     3	import { useRouter } from "next/navigation";
+     4	import { useEffect, useRef, useState } from "react";
+     5	
+     6	import {
+     7	  fetchPersonalityResult,
+     8	  type PersonalityResultContract,
+     9	} from "@/data/assessment/scoring/personality";
+    10	
+    11	type AssessmentItem = {
+    12	  item_id: string;
+    13	  wording: string;
+    14	  master_order: number;
+    15	};
+    16	
+    17	type ItemsResponse = {
+    18	  count: number;
+    19	  items: AssessmentItem[];
+    20	  error?: string;
+    21	};
+    22	
+    23	type AnswerRecord = {
+    24	  value: number;
+    25	  responseTimeMs: number;
+    26	};
+    27	
+    28	type SessionResponse = {
+    29	  session_id: string;
+    30	  started_at?: string;
+    31	  question_bank_version?: string;
+    32	  error?: string;
+    33	};
+    34	
+    35	type SaveAnswerResponse = {
+    36	  saved?: boolean;
+    37	  error?: string;
+    38	};
+    39	
+    40	type CompleteResponse = {
+    41	  error?: string;
+    42	};
+    43	
+    44	const answerOptions = [
+    45	  { value: 1, label: "Strongly disagree" },
+    46	  { value: 2, label: "Disagree" },
+    47	  { value: 3, label: "Neither agree nor disagree" },
+    48	  { value: 4, label: "Agree" },
+    49	  { value: 5, label: "Strongly agree" },
+    50	];
+    51	
+    52	export default function PersonalityTestPage() {
+    53	  const router = useRouter();
+    54	  const [items, setItems] = useState<AssessmentItem[]>([]);
+    55	  const [sessionId, setSessionId] = useState("");
+    56	  const [currentIndex, setCurrentIndex] = useState(0);
+    57	  const [answers, setAnswers] = useState<Record<string, AnswerRecord>>({});
+    58	  const questionStartedAt = useRef<number | null>(null);
+    59	  const [status, setStatus] = useState<"loading" | "ready" | "error">(
+    60	    "loading",
+    61	  );
+    62	  const [errorMessage, setErrorMessage] = useState("");
+    63	  const [isSaving, setIsSaving] = useState(false);
+    64	  const [saveMessage, setSaveMessage] = useState("");
+    65	  const [completionResult, setCompletionResult] =
+    66	    useState<PersonalityResultContract | null>(null);
+    67	
+    68	  useEffect(() => {
+    69	    async function loadItems() {
+    70	      try {
+    71	        const sessionResponse = await fetch("/api/sessions", {
+    72	          method: "POST",
+    73	        });
+    74	
+    75	        const sessionData: SessionResponse = await sessionResponse.json();
+    76	
+    77	        if (!sessionResponse.ok || !sessionData.session_id) {
+    78	          throw new Error(
+    79	            sessionData.error ?? "Unable to create assessment session.",
+    80	          );
+    81	        }
+    82	
+    83	        const response = await fetch(
+    84	          `/api/sessions/${sessionData.session_id}/items`,
+    85	          { cache: "no-store" },
+    86	        );
+    87	
+    88	        const data: ItemsResponse = await response.json();
+    89	
+    90	        if (!response.ok) {
+    91	          throw new Error(data.error ?? "Unable to load assessment items.");
+    92	        }
+    93	
+    94	        if (!Array.isArray(data.items) || data.count !== 72) {
+    95	          throw new Error("The assessment did not return all 72 questions.");
+    96	        }
+    97	
+    98	        const sortedItems = [...data.items].sort(
+    99	          (first, second) => first.master_order - second.master_order,
+   100	        );
+   101	
+   102	        setSessionId(sessionData.session_id);
+   103	        setItems(sortedItems);
+   104	        setStatus("ready");
+   105	      } catch (error) {
+   106	        setErrorMessage(
+   107	          error instanceof Error
+   108	            ? error.message
+   109	            : "The assessment could not be loaded.",
+   110	        );
+   111	        setStatus("error");
+   112	      }
+   113	    }
+   114	
+   115	    loadItems();
+   116	  }, []);
+   117	
+   118	  useEffect(() => {
+   119	    if (status === "ready") {
+   120	      questionStartedAt.current = performance.now();
+   121	    }
+   122	  }, [currentIndex, status]);
+   123	
+   124	  if (status === "loading") {
+   125	    return (
+   126	      <main className="min-h-screen p-20">
+   127	        <h1 className="text-4xl">Loading assessment…</h1>
+   128	      </main>
+   129	    );
+   130	  }
+   131	
+   132	  if (status === "error") {
+   133	    return (
+   134	      <main className="min-h-screen p-20">
+   135	        <h1 className="mb-4 text-4xl">Unable to load assessment</h1>
+   136	        <p>{errorMessage}</p>
+   137	      </main>
+   138	    );
+   139	  }
+   140	
+   141	  const currentItem = items[currentIndex];
+   142	  const selectedValue = answers[currentItem.item_id]?.value;
+   143	  const isFirstQuestion = currentIndex === 0;
+   144	  const isLastQuestion = currentIndex === items.length - 1;
+   145	  const progress = ((currentIndex + 1) / items.length) * 100;
+   146	
+   147	  function selectAnswer(
+   148	    value: number,
+   149	    eventTimeStamp: number,
+   150	  ) {
+   151	    setSaveMessage("");
+   152	    const startedAt =
+   153	      questionStartedAt.current ?? eventTimeStamp;
+   154	
+   155	    const responseTimeMs = Math.max(
+   156	      0,
+   157	      Math.round(eventTimeStamp - startedAt),
+   158	    );
+   159	
+   160	    setAnswers((currentAnswers) => ({
+   161	      ...currentAnswers,
+   162	      [currentItem.item_id]: {
+   163	        value,
+   164	        responseTimeMs,
+   165	      },
+   166	    }));
+   167	  }
+   168	
+   169	  async function goToNextQuestion() {
+   170	    if (
+   171	      selectedValue === undefined ||
+   172	      !sessionId ||
+   173	      isSaving
+   174	    ) {
+   175	      return;
+   176	    }
+   177	
+   178	    const answer = answers[currentItem.item_id];
+   179	
+   180	    if (!answer) {
+   181	      return;
+   182	    }
+   183	
+   184	    setIsSaving(true);
+   185	    setSaveMessage("");
+   186	    setCompletionResult(null);
+   187	
+   188	    try {
+   189	      const response = await fetch(
+   190	        `/api/sessions/${sessionId}/answers`,
+   191	        {
+   192	          method: "PUT",
+   193	          headers: {
+   194	            "Content-Type": "application/json",
+   195	          },
+   196	          body: JSON.stringify({
+   197	            item_id: currentItem.item_id,
+   198	            value: answer.value,
+   199	            response_time_ms: answer.responseTimeMs,
+   200	          }),
+   201	        },
+   202	      );
+   203	
+   204	      const data: SaveAnswerResponse = await response.json();
+   205	
+   206	      if (!response.ok || data.saved !== true) {
+   207	        throw new Error(
+   208	          data.error ?? "The answer could not be saved.",
+   209	        );
+   210	      }
+   211	
+   212	      if (isLastQuestion) {
+   213	        const completeResponse = await fetch(
+   214	          `/api/sessions/${sessionId}/complete`,
+   215	          {
+   216	            method: "POST",
+   217	          },
+   218	        );
+   219	
+   220	        const completeData: CompleteResponse =
+   221	          await completeResponse.json();
+   222	
+   223	        if (!completeResponse.ok) {
+   224	          throw new Error(
+   225	            completeData.error ??
+   226	              "The assessment result could not be generated.",
+   227	          );
+   228	        }
+   229	
+   230	        const persistedResult =
+   231	          await fetchPersonalityResult(sessionId);
+   232	
+   233	        setCompletionResult(persistedResult);
+   234	        setSaveMessage(
+   235	          "Assessment completed and result generated successfully.",
+   236	        );
+   237	
+   238	        sessionStorage.setItem(
+   239	          `innergeodessa-result-${sessionId}`,
+   240	          JSON.stringify(persistedResult),
+   241	        );
+   242	
+   243	        router.push(`/personality/result/${sessionId}`);
+   244	        return;
+   245	      }
+   246	
+   247	      setCurrentIndex((index) => index + 1);
+   248	    } catch (error) {
+   249	      setSaveMessage(
+   250	        error instanceof Error
+   251	          ? error.message
+   252	          : "The answer could not be saved.",
+   253	      );
+   254	    } finally {
+   255	      setIsSaving(false);
+   256	    }
+   257	  }
+   258	
+   259	  function goToPreviousQuestion() {
+   260	    if (isFirstQuestion) {
+   261	      return;
+   262	    }
+   263	
+   264	    setCurrentIndex((index) => index - 1);
+   265	  }
+   266	
+   267	  return (
+   268	    <main className="min-h-screen bg-[#f1eee5] text-[#20231d]">
+   269	      <header className="border-b border-black/20">
+   270	        <div className="mx-auto flex min-h-20 w-[min(100%-40px,1000px)] items-center justify-between">
+   271	          <span className="font-serif text-xl font-bold">
+   272	            Inner<span className="italic text-[#a64a2c]">Geodessa</span>
+   273	          </span>
+   274	
+   275	          <span className="text-xs font-bold uppercase tracking-[0.16em]">
+   276	            Question {currentIndex + 1} of {items.length}
+   277	          </span>
+   278	        </div>
+   279	      </header>
+   280	
+   281	      <section className="mx-auto w-[min(100%-40px,760px)] py-16 md:py-24">
+   282	        <div className="mb-14 h-px bg-black/15">
+   283	          <div
+   284	            className="h-px bg-[#a64a2c] transition-all duration-300"
+   285	            style={{ width: `${progress}%` }}
+   286	          />
+   287	        </div>
+   288	
+   289	        <p className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-[#a64a2c]">
+   290	          Personality assessment
+   291	        </p>
+   292	
+   293	        <h1 className="mb-12 font-serif text-4xl leading-tight md:text-5xl">
+   294	          {currentItem.wording}
+   295	        </h1>
+   296	
+   297	        <div className="grid gap-3">
+   298	          {answerOptions.map((option) => {
+   299	            const selected = selectedValue === option.value;
+   300	
+   301	            return (
+   302	              <button
+   303	                key={option.value}
+   304	                type="button"
+   305	                onClick={(event) =>
+   306	                  selectAnswer(option.value, event.timeStamp)
+   307	                }
+   308	                className={`flex min-h-16 items-center justify-between border px-5 text-left transition ${
+   309	                  selected
+   310	                    ? "border-[#a64a2c] bg-[#a64a2c] text-[#f1eee5]"
+   311	                    : "border-black/20 hover:border-[#a64a2c]"
+   312	                }`}
+   313	              >
+   314	                <span>{option.label}</span>
+   315	                <span className="text-sm">{option.value}</span>
+   316	              </button>
+   317	            );
+   318	          })}
+   319	        </div>
+   320	
+   321	        <div className="mt-10 flex items-center justify-between border-t border-black/20 pt-8">
+   322	          <button
+   323	            type="button"
+   324	            onClick={goToPreviousQuestion}
+   325	            disabled={isFirstQuestion}
+   326	            className="min-h-12 px-5 text-xs font-bold uppercase tracking-[0.14em] disabled:opacity-30"
+   327	          >
+   328	            ← Previous
+   329	          </button>
+   330	
+   331	          <div className="text-center text-xs text-black/50">
+   332	            <p>
+   333	              Answered {Object.keys(answers).length} of {items.length}
+   334	            </p>
+   335	            <p className="mt-1">
+   336	              Session {sessionId.slice(0, 8)}…
+   337	            </p>
+   338	          </div>
+   339	
+   340	          <button
+   341	            type="button"
+   342	            onClick={goToNextQuestion}
+   343	            disabled={
+   344	              selectedValue === undefined ||
+   345	              isSaving ||
+   346	              completionResult !== null
+   347	            }
+   348	            className="min-h-12 bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] disabled:cursor-not-allowed disabled:opacity-30"
+   349	          >
+   350	            {isSaving
+   351	              ? isLastQuestion
+   352	                ? "Generating result…"
+   353	                : "Saving…"
+   354	              : completionResult
+   355	                ? "Assessment complete"
+   356	                : isLastQuestion
+   357	                  ? "Save final answer"
+   358	                  : "Next question →"}
+   359	          </button>
+   360	        </div>
+   361	
+   362	        {completionResult && (
+   363	          <div className="mt-8 border border-[#c8c2b5] bg-[#f7f4ec] p-6">
+   364	            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6d746b]">
+   365	              Assessment Complete
+   366	            </p>
+   367	
+   368	            <h2 className="mt-3 text-2xl font-semibold text-[#26372d]">
+   369	              Result generated successfully
+   370	            </h2>
+   371	
+   372	            <pre className="mt-5 max-h-96 overflow-auto whitespace-pre-wrap break-words bg-white p-4 text-xs leading-6 text-[#34483a]">
+   373	              {JSON.stringify(completionResult, null, 2)}
+   374	            </pre>
+   375	          </div>
+   376	        )}
+   377	
+   378	        {saveMessage && (
+   379	          <p
+   380	            className={`mt-5 text-center text-sm ${
+   381	              saveMessage.startsWith("Final")
+   382	                ? "text-[#34483a]"
+   383	                : "text-[#a64a2c]"
+   384	            }`}
+   385	          >
+   386	            {saveMessage}
+   387	          </p>
+   388	        )}
+   389	      </section>
+   390	    </main>
+   391	  );
+   392	}
+
+
+===== PERSONALITY RESULT ENTRY SOURCE =====
+
+
+----- src/app/personality/result/[sessionId]/page.tsx -----
+     1	"use client";
+     2	
+     3	import Link from "next/link";
+     4	import { useParams } from "next/navigation";
+     5	import {
+     6	  useEffect,
+     7	  useState,
+     8	  useSyncExternalStore,
+     9	} from "react";
+    10	
+    11	import {
+    12	  fetchPersonalityResult,
+    13	  isPersonalityResultContract,
+    14	  PersonalityResultRequestError,
+    15	  type PersonalityResultContract,
+    16	} from "@/data/assessment/scoring/personality";
+    17	import { getPersonalityProfile } from "@/data/personality";
+    18	import {
+    19	  isPhaseOnePersonalityReportType,
+    20	} from "@/data/report";
+    21	import {
+    22	  getLocalizedStringList,
+    23	  getLocalizedText,
+    24	  type SupportedLocale,
+    25	} from "@/data/shared";
+    26	
+    27	const dimensionLabels = {
+    28	  EI: "Extraversion — Introversion",
+    29	  SN: "Sensing — Intuition",
+    30	  TF: "Thinking — Feeling",
+    31	  JP: "Judging — Perceiving",
+    32	} as const;
+    33	
+    34	type DimensionKey = keyof typeof dimensionLabels;
+    35	
+    36	const dimensions: DimensionKey[] = ["EI", "SN", "TF", "JP"];
+    37	
+    38	function formatConfidence(value: number | undefined) {
+    39	  if (value === undefined) {
+    40	    return "—";
+    41	  }
+    42	
+    43	  return `${Math.round(value * 100)}%`;
+    44	}
+    45	
+    46	type ResultLoadState =
+    47	  | "loading"
+    48	  | "ready"
+    49	  | "not-found"
+    50	  | "not-completed"
+    51	  | "error";
+    52	
+    53	function readCachedResult(
+    54	  storedResult: string | null,
+    55	  sessionId: string,
+    56	): PersonalityResultContract | null {
+    57	  if (!storedResult) {
+    58	    return null;
+    59	  }
+    60	
+    61	  try {
+    62	    const parsed: unknown = JSON.parse(storedResult);
+    63	
+    64	    return (
+    65	      isPersonalityResultContract(parsed) &&
+    66	      parsed.sessionId === sessionId
+    67	    )
+    68	      ? parsed
+    69	      : null;
+    70	  } catch {
+    71	    return null;
+    72	  }
+    73	}
+    74	
+    75	function subscribeToSessionStorage() {
+    76	  return () => {};
+    77	}
+    78	
+    79	function getFailureState(error: unknown): ResultLoadState {
+    80	  if (error instanceof PersonalityResultRequestError) {
+    81	    if (error.status === 404) {
+    82	      return "not-found";
+    83	    }
+    84	
+    85	    if (error.status === 409) {
+    86	      return "not-completed";
+    87	    }
+    88	  }
+    89	
+    90	  return "error";
+    91	}
+    92	
+    93	function ResultState({
+    94	  label,
+    95	  title,
+    96	  message,
+    97	}: {
+    98	  label: string;
+    99	  title: string;
+   100	  message: string;
+   101	}) {
+   102	  return (
+   103	    <main className="min-h-screen bg-[#efede5] px-6 py-20 text-[#26372d]">
+   104	      <section className="mx-auto max-w-3xl border border-[#c8c2b5] bg-[#f7f4ec] p-8 md:p-12">
+   105	        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
+   106	          {label}
+   107	        </p>
+   108	
+   109	        <h1 className="mt-4 text-3xl font-semibold">
+   110	          {title}
+   111	        </h1>
+   112	
+   113	        <p className="mt-5 leading-7 text-[#596158]">
+   114	          {message}
+   115	        </p>
+   116	
+   117	        <Link
+   118	          href="/personality/test"
+   119	          className="mt-8 inline-flex min-h-12 items-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5]"
+   120	        >
+   121	          Start assessment
+   122	        </Link>
+   123	      </section>
+   124	    </main>
+   125	  );
+   126	}
+   127	
+   128	export default function PersonalityResultPage() {
+   129	  const params = useParams<{ sessionId: string }>();
+   130	  const sessionId = params.sessionId;
+   131	
+   132	  const locale: SupportedLocale = "en";
+   133	  const storageKey = `innergeodessa-result-${sessionId}`;
+   134	  const storedResult = useSyncExternalStore(
+   135	    subscribeToSessionStorage,
+   136	    () => sessionStorage.getItem(storageKey),
+   137	    () => null,
+   138	  );
+   139	  const cachedResult = readCachedResult(
+   140	    storedResult,
+   141	    sessionId,
+   142	  );
+   143	  const [result, setResult] =
+   144	    useState<PersonalityResultContract | null>(null);
+   145	  const [loadState, setLoadState] =
+   146	    useState<ResultLoadState>("loading");
+   147	
+   148	  useEffect(() => {
+   149	    const previewResult = readCachedResult(
+   150	      sessionStorage.getItem(storageKey),
+   151	      sessionId,
+   152	    );
+   153	
+   154	    if (
+   155	      sessionId.startsWith("preview-") &&
+   156	      previewResult?.questionBankVersion === "preview"
+   157	    ) {
+   158	      return;
+   159	    }
+   160	
+   161	    let cancelled = false;
+   162	
+   163	    async function loadPersistedResult() {
+   164	      try {
+   165	        const persistedResult =
+   166	          await fetchPersonalityResult(sessionId);
+   167	
+   168	        if (cancelled) {
+   169	          return;
+   170	        }
+   171	
+   172	        setResult(persistedResult);
+   173	        setLoadState("ready");
+   174	        sessionStorage.setItem(
+   175	          storageKey,
+   176	          JSON.stringify(persistedResult),
+   177	        );
+   178	      } catch (error) {
+   179	        if (cancelled) {
+   180	          return;
+   181	        }
+   182	
+   183	        setResult(null);
+   184	        setLoadState(getFailureState(error));
+   185	      }
+   186	    }
+   187	
+   188	    loadPersistedResult();
+   189	
+   190	    return () => {
+   191	      cancelled = true;
+   192	    };
+   193	  }, [sessionId, storageKey]);
+   194	
+   195	  const displayResult = result ?? cachedResult;
+   196	
+   197	  if (loadState === "loading" && !displayResult) {
+   198	    return (
+   199	      <ResultState
+   200	        label="Loading result"
+   201	        title="Loading your personality result…"
+   202	        message="Retrieving the completed assessment from the result service."
+   203	      />
+   204	    );
+   205	  }
+   206	
+   207	  if (loadState === "not-found") {
+   208	    return (
+   209	      <ResultState
+   210	        label="Result not found"
+   211	        title="This result could not be found."
+   212	        message="Check the result link or complete a new personality assessment."
+   213	      />
+   214	    );
+   215	  }
+   216	
+   217	  if (loadState === "not-completed") {
+   218	    return (
+   219	      <ResultState
+   220	        label="Assessment not completed"
+   221	        title="This assessment has not been completed."
+   222	        message="Return to the assessment and answer all questions before viewing the result."
+   223	      />
+   224	    );
+   225	  }
+   226	
+   227	  if (loadState === "error" || !displayResult) {
+   228	    return (
+   229	      <ResultState
+   230	        label="Unable to load result"
+   231	        title="Your result could not be loaded."
+   232	        message="The result service is temporarily unavailable. Please try again later."
+   233	      />
+   234	    );
+   235	  }
+   236	
+   237	  const profile = getPersonalityProfile(displayResult.type);
+   238	
+   239	  const personalityName = profile
+   240	    ? getLocalizedText(profile.identity.name, locale)
+   241	    : "";
+   242	
+   243	  const shortName = profile
+   244	    ? getLocalizedText(profile.identity.shortName, locale)
+   245	    : "";
+   246	
+   247	  const tagline = profile
+   248	    ? getLocalizedText(profile.identity.tagline, locale)
+   249	    : "";
+   250	
+   251	  const keywords = profile
+   252	    ? getLocalizedStringList(profile.identity.keywords, locale)
+   253	    : [];
+   254	
+   255	  const overviewParagraphs = profile
+   256	    ? getLocalizedStringList(profile.overview.paragraphs, locale)
+   257	    : [];
+   258	
+   259	  return (
+   260	    <main className="min-h-screen bg-[#efede5] px-6 py-12 text-[#26372d] md:py-20">
+   261	      <div className="mx-auto max-w-6xl">
+   262	        <header className="border-b border-[#c8c2b5] pb-10">
+   263	          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6d746b]">
+   264	            InnerGeodessa Personality Assessment
+   265	          </p>
+   266	
+   267	          <div className="mt-7 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+   268	            <div>
+   269	              <p className="text-sm text-[#6d746b]">
+   270	                Your personality type
+   271	              </p>
+   272	
+   273	              <div className="mt-3 flex flex-wrap items-end gap-x-5 gap-y-2">
+   274	                <h1 className="text-6xl font-semibold tracking-tight md:text-8xl">
+   275	                  {displayResult.type}
+   276	                </h1>
+   277	
+   278	                {personalityName && (
+   279	                  <p className="pb-2 text-2xl font-semibold text-[#4f5e53] md:text-3xl">
+   280	                    {personalityName}
+   281	                  </p>
+   282	                )}
+   283	              </div>
+   284	
+   285	              {shortName && (
+   286	                <p className="mt-5 text-lg font-semibold">
+   287	                  {shortName}
+   288	                </p>
+   289	              )}
+   290	
+   291	              {tagline && (
+   292	                <p className="mt-2 max-w-3xl text-lg leading-8 text-[#596158]">
+   293	                  {tagline}
+   294	                </p>
+   295	              )}
+   296	            </div>
+   297	
+   298	            <div className="text-sm leading-7 text-[#6d746b] lg:text-right">
+   299	              <p>Assessment completed</p>
+   300	              <p>Session {sessionId.slice(0, 8)}…</p>
+   301	            </div>
+   302	          </div>
+   303	
+   304	          {keywords.length > 0 && (
+   305	            <div className="mt-8 flex flex-wrap gap-2">
+   306	              {keywords.map((keyword) => (
+   307	                <span
+   308	                  key={keyword}
+   309	                  className="border border-[#c8c2b5] bg-[#f7f4ec] px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em]"
+   310	                >
+   311	                  {keyword}
+   312	                </span>
+   313	              ))}
+   314	            </div>
+   315	          )}
+   316	        </header>
+   317	
+   318	        {profile ? (
+   319	          <>
+   320	            <section className="mt-12 grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
+   321	              <div>
+   322	                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
+   323	                  Personality Overview
+   324	                </p>
+   325	
+   326	                <h2 className="mt-4 text-3xl font-semibold leading-tight md:text-4xl">
+   327	                  {getLocalizedText(
+   328	                    profile.overview.headline,
+   329	                    locale,
+   330	                  )}
+   331	                </h2>
+   332	              </div>
+   333	
+   334	              <div className="space-y-5 text-base leading-8 text-[#596158]">
+   335	                {overviewParagraphs.map((paragraph) => (
+   336	                  <p key={paragraph}>{paragraph}</p>
+   337	                ))}
+   338	
+   339	                <p className="border-l-2 border-[#34483a] pl-5 font-semibold text-[#26372d]">
+   340	                  {getLocalizedText(
+   341	                    profile.overview.summary,
+   342	                    locale,
+   343	                  )}
+   344	                </p>
+   345	              </div>
+   346	            </section>
+   347	
+   348	            <section className="mt-14">
+   349	              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
+   350	                Core Personality Traits
+   351	              </p>
+   352	
+   353	              <div className="mt-5 grid gap-px border border-[#c8c2b5] bg-[#c8c2b5] md:grid-cols-2">
+   354	                {profile.coreTraits.map((trait) => (
+   355	                  <article
+   356	                    key={trait.id}
+   357	                    className="bg-[#f7f4ec] p-7 md:p-9"
+   358	                  >
+   359	                    <h3 className="text-xl font-semibold">
+   360	                      {getLocalizedText(trait.title, locale)}
+
+
+===== SHARED ASSESSMENT COMPONENTS =====
+
+
+===== API CALL REFERENCES =====
+src/app/personality/result/[sessionId]/page.tsx:50:  | "not-completed"
+src/app/personality/result/[sessionId]/page.tsx:55:  sessionId: string,
+src/app/personality/result/[sessionId]/page.tsx:66:      parsed.sessionId === sessionId
+src/app/personality/result/[sessionId]/page.tsx:86:      return "not-completed";
+src/app/personality/result/[sessionId]/page.tsx:129:  const params = useParams<{ sessionId: string }>();
+src/app/personality/result/[sessionId]/page.tsx:130:  const sessionId = params.sessionId;
+src/app/personality/result/[sessionId]/page.tsx:133:  const storageKey = `innergeodessa-result-${sessionId}`;
+src/app/personality/result/[sessionId]/page.tsx:141:    sessionId,
+src/app/personality/result/[sessionId]/page.tsx:151:      sessionId,
+src/app/personality/result/[sessionId]/page.tsx:155:      sessionId.startsWith("preview-") &&
+src/app/personality/result/[sessionId]/page.tsx:166:          await fetchPersonalityResult(sessionId);
+src/app/personality/result/[sessionId]/page.tsx:193:  }, [sessionId, storageKey]);
+src/app/personality/result/[sessionId]/page.tsx:202:        message="Retrieving the completed assessment from the result service."
+src/app/personality/result/[sessionId]/page.tsx:212:        message="Check the result link or complete a new personality assessment."
+src/app/personality/result/[sessionId]/page.tsx:217:  if (loadState === "not-completed") {
+src/app/personality/result/[sessionId]/page.tsx:220:        label="Assessment not completed"
+src/app/personality/result/[sessionId]/page.tsx:221:        title="This assessment has not been completed."
+src/app/personality/result/[sessionId]/page.tsx:299:              <p>Assessment completed</p>
+src/app/personality/result/[sessionId]/page.tsx:300:              <p>Session {sessionId.slice(0, 8)}…</p>
+src/app/personality/result/[sessionId]/page.tsx:591:                      href={`/personality/report/${sessionId}`}
+src/app/personality/test/page.tsx:29:  session_id: string;
+src/app/personality/test/page.tsx:55:  const [sessionId, setSessionId] = useState("");
+src/app/personality/test/page.tsx:57:  const [answers, setAnswers] = useState<Record<string, AnswerRecord>>({});
+src/app/personality/test/page.tsx:71:        const sessionResponse = await fetch("/api/sessions", {
+src/app/personality/test/page.tsx:77:        if (!sessionResponse.ok || !sessionData.session_id) {
+src/app/personality/test/page.tsx:84:          `/api/sessions/${sessionData.session_id}/items`,
+src/app/personality/test/page.tsx:102:        setSessionId(sessionData.session_id);
+src/app/personality/test/page.tsx:142:  const selectedValue = answers[currentItem.item_id]?.value;
+src/app/personality/test/page.tsx:172:      !sessionId ||
+src/app/personality/test/page.tsx:178:    const answer = answers[currentItem.item_id];
+src/app/personality/test/page.tsx:190:        `/api/sessions/${sessionId}/answers`,
+src/app/personality/test/page.tsx:213:        const completeResponse = await fetch(
+src/app/personality/test/page.tsx:214:          `/api/sessions/${sessionId}/complete`,
+src/app/personality/test/page.tsx:220:        const completeData: CompleteResponse =
+src/app/personality/test/page.tsx:221:          await completeResponse.json();
+src/app/personality/test/page.tsx:223:        if (!completeResponse.ok) {
+src/app/personality/test/page.tsx:225:            completeData.error ??
+src/app/personality/test/page.tsx:231:          await fetchPersonalityResult(sessionId);
+src/app/personality/test/page.tsx:235:          "Assessment completed and result generated successfully.",
+src/app/personality/test/page.tsx:239:          `innergeodessa-result-${sessionId}`,
+src/app/personality/test/page.tsx:243:        router.push(`/personality/result/${sessionId}`);
+src/app/personality/test/page.tsx:333:              Answered {Object.keys(answers).length} of {items.length}
+src/app/personality/test/page.tsx:336:              Session {sessionId.slice(0, 8)}…
+src/app/personality/test/page.tsx:355:                ? "Assessment complete"
+src/app/personality/preview/[type]/page.tsx:27:    const sessionId =
+src/app/personality/preview/[type]/page.tsx:31:      sessionId,
+src/app/personality/preview/[type]/page.tsx:32:      status: "completed",
+src/app/personality/preview/[type]/page.tsx:54:      completedAt: PREVIEW_TIMESTAMP,
+src/app/personality/preview/[type]/page.tsx:59:      `innergeodessa-result-${sessionId}`,
+src/app/personality/preview/[type]/page.tsx:64:      `/personality/result/${sessionId}`,
+src/app/personality/report/[sessionId]/report-navigation.tsx:4:  sessionId: string;
+src/app/personality/report/[sessionId]/report-navigation.tsx:8:  sessionId,
+src/app/personality/report/[sessionId]/report-navigation.tsx:13:        href={`/personality/result/${sessionId}`}
+src/app/personality/report/[sessionId]/report-header.tsx:15:  sessionId: string;
+src/app/personality/report/[sessionId]/report-header.tsx:24:  sessionId,
+src/app/personality/report/[sessionId]/report-header.tsx:52:            sessionId={sessionId}
+src/app/personality/report/[sessionId]/report-recipient-name.tsx:15:  sessionId: string;
+src/app/personality/report/[sessionId]/report-recipient-name.tsx:20:  sessionId,
+src/app/personality/report/[sessionId]/report-recipient-name.tsx:23:    `personality-report-recipient-name:${sessionId}`;
+src/app/personality/report/[sessionId]/page.tsx:29:  | "not-completed"
+src/app/personality/report/[sessionId]/page.tsx:34:  sessionId: string,
+src/app/personality/report/[sessionId]/page.tsx:45:      parsed.sessionId === sessionId
+src/app/personality/report/[sessionId]/page.tsx:65:      return "not-completed";
+src/app/personality/report/[sessionId]/page.tsx:76:  sessionId,
+src/app/personality/report/[sessionId]/page.tsx:81:  sessionId: string;
+src/app/personality/report/[sessionId]/page.tsx:100:            href={`/personality/result/${sessionId}`}
+src/app/personality/report/[sessionId]/page.tsx:119:  const params = useParams<{ sessionId: string }>();
+src/app/personality/report/[sessionId]/page.tsx:120:  const sessionId = params.sessionId;
+src/app/personality/report/[sessionId]/page.tsx:121:  const storageKey = `innergeodessa-result-${sessionId}`;
+src/app/personality/report/[sessionId]/page.tsx:129:    sessionId,
+src/app/personality/report/[sessionId]/page.tsx:139:      sessionId,
+src/app/personality/report/[sessionId]/page.tsx:143:      sessionId.startsWith("preview-") &&
+src/app/personality/report/[sessionId]/page.tsx:154:          await fetchPersonalityResult(sessionId);
+src/app/personality/report/[sessionId]/page.tsx:181:  }, [sessionId, storageKey]);
+src/app/personality/report/[sessionId]/page.tsx:189:        title="Loading your complete personality report…"
+src/app/personality/report/[sessionId]/page.tsx:190:        message="Retrieving the completed assessment from the result service."
+src/app/personality/report/[sessionId]/page.tsx:191:        sessionId={sessionId}
+src/app/personality/report/[sessionId]/page.tsx:201:        message="Check the result link or complete a new personality assessment."
+src/app/personality/report/[sessionId]/page.tsx:202:        sessionId={sessionId}
+src/app/personality/report/[sessionId]/page.tsx:207:  if (loadState === "not-completed") {
+src/app/personality/report/[sessionId]/page.tsx:210:        label="Assessment not completed"
+src/app/personality/report/[sessionId]/page.tsx:211:        title="This assessment has not been completed."
+src/app/personality/report/[sessionId]/page.tsx:213:        sessionId={sessionId}
+src/app/personality/report/[sessionId]/page.tsx:224:        sessionId={sessionId}
+src/app/personality/report/[sessionId]/page.tsx:233:        title={`${displayResult.type} complete reports are not available in Phase 1.`}
+src/app/personality/report/[sessionId]/page.tsx:234:        message="Your free personality result remains available. Complete reports currently support ISFJ and ENTJ while the remaining personality reports complete validation."
+src/app/personality/report/[sessionId]/page.tsx:235:        sessionId={sessionId}
+src/app/personality/report/[sessionId]/page.tsx:244:      sessionId,
+src/app/personality/report/[sessionId]/page.tsx:254:        title="Your complete report could not be generated."
+src/app/personality/report/[sessionId]/page.tsx:255:        message="Your persisted free result is still available. Please try the complete report again later."
+src/app/personality/report/[sessionId]/page.tsx:256:        sessionId={sessionId}
+src/app/personality/report/[sessionId]/report-document.tsx:58:          sessionId={report.sessionId}
+src/app/personality/report/[sessionId]/report-document.tsx:76:        <ReportNavigation sessionId={report.sessionId} />
+src/app/personality/page.tsx:52:  "A complete personality report you can review and print",
+
+
+===== QUESTION BANK EXPORTS =====
+
+
+----- src/data/career/types.ts -----
+     1	export const RIASEC_DIMENSIONS = [
+     2	  "R",
+     3	  "I",
+     4	  "A",
+     5	  "S",
+     6	  "E",
+     7	  "C",
+     8	] as const;
+     9	
+    10	export type RiasecDimension =
+    11	  (typeof RIASEC_DIMENSIONS)[number];
+    12	
+    13	export type RiasecScores = Record<
+    14	  RiasecDimension,
+    15	  number
+    16	>;
+    17	
+    18	export type RiasecPercentages = Record<
+    19	  RiasecDimension,
+    20	  number
+    21	>;
+    22	
+    23	export type RiasecAnswer = {
+    24	  questionId: string;
+    25	  dimension: RiasecDimension;
+    26	  value: number;
+    27	  order: number;
+    28	};
+    29	
+    30	export type RiasecRankedDimension = {
+    31	  dimension: RiasecDimension;
+    32	  score: number;
+    33	  percentage: number;
+    34	  rank: number;
+    35	};
+    36	
+    37	export type RiasecScoreGaps = {
+    38	  firstToSecond: number;
+    39	  secondToThird: number;
+    40	  thirdToFourth: number;
+    41	};
+    42	
+    43	export type RiasecResult = {
+    44	  code: string;
+    45	  scores: RiasecScores;
+    46	  percentages: RiasecPercentages;
+    47	  ranking: RiasecRankedDimension[];
+    48	  primary: RiasecDimension;
+    49	  secondary: RiasecDimension;
+    50	  tertiary: RiasecDimension;
+    51	  scoreGaps: RiasecScoreGaps;
+    52	  answeredCount: number;
+    53	  completedAt: string;
+    54	  questionBankVersion: string;
+    55	};
+    56	
+    57	export type ScoreRiasecInput = {
+    58	  answers: readonly RiasecAnswer[];
+    59	  questionBankVersion: string;
+    60	  completedAt?: string;
+    61	};
+
+
+----- src/data/career/scoring/index.ts -----
+     1	export { scoreRiasec } from "./scoreRiasec";
+
+
+----- src/data/career/index.ts -----
+     1	export {
+     2	  RIASEC_DIMENSIONS,
+     3	  type RiasecAnswer,
+     4	  type RiasecDimension,
+     5	  type RiasecPercentages,
+     6	  type RiasecRankedDimension,
+     7	  type RiasecResult,
+     8	  type RiasecScoreGaps,
+     9	  type RiasecScores,
+    10	  type ScoreRiasecInput,
+    11	} from "./types";
+    12	
+    13	export { scoreRiasec } from "./scoring";
+
+
+----- src/data/personality/types.ts -----
+     1	import type {
+     2	  ContentAccess,
+     3	  LocalizedStringList,
+     4	  LocalizedText,
+     5	} from "../shared";
+     6	
+     7	export const personalityTypeCodes = [
+     8	  "INTJ",
+     9	  "INTP",
+    10	  "ENTJ",
+    11	  "ENTP",
+    12	  "INFJ",
+    13	  "INFP",
+    14	  "ENFJ",
+    15	  "ENFP",
+    16	  "ISTJ",
+    17	  "ISFJ",
+    18	  "ESTJ",
+    19	  "ESFJ",
+    20	  "ISTP",
+    21	  "ISFP",
+    22	  "ESTP",
+    23	  "ESFP",
+    24	] as const;
+    25	
+    26	export type PersonalityTypeCode =
+    27	  (typeof personalityTypeCodes)[number];
+    28	
+    29	export type PersonalityTrait = {
+    30	  id: string;
+    31	  title: LocalizedText;
+    32	  description: LocalizedText;
+    33	};
+    34	
+    35	export type PersonalityStrength = {
+    36	  id: string;
+    37	  title: LocalizedText;
+    38	  description: LocalizedText;
+    39	};
+    40	
+    41	export type PersonalityGrowthRisk = {
+    42	  id: string;
+    43	  title: LocalizedText;
+    44	  description: LocalizedText;
+    45	  growthAction: LocalizedText;
+    46	};
+    47	
+    48	export type CareerGroup = {
+    49	  id: string;
+    50	  category: LocalizedText;
+    51	  description: LocalizedText;
+    52	  roles: LocalizedStringList;
+    53	};
+    54	
+    55	export type PremiumSectionPreview = {
+    56	  id: string;
+    57	  title: LocalizedText;
+    58	  description: LocalizedText;
+    59	  access: Extract<ContentAccess, "premium">;
+    60	};
+    61	
+    62	export type PersonalityProfile = {
+    63	  schemaVersion: "1.0.0";
+    64	  type: PersonalityTypeCode;
+    65	
+    66	  identity: {
+    67	    name: LocalizedText;
+    68	    shortName: LocalizedText;
+    69	    tagline: LocalizedText;
+    70	    keywords: LocalizedStringList;
+    71	  };
+    72	
+    73	  overview: {
+    74	    headline: LocalizedText;
+    75	    paragraphs: Partial<Record<"en" | "zh", string[]>>;
+    76	    summary: LocalizedText;
+    77	    access: Extract<ContentAccess, "free">;
+    78	  };
+    79	
+    80	  coreTraits: PersonalityTrait[];
+    81	  strengths: PersonalityStrength[];
+    82	  growthRisks: PersonalityGrowthRisk[];
+    83	  careerGroups: CareerGroup[];
+    84	
+    85	  careerNotice: LocalizedText;
+    86	
+    87	  premiumPreview: {
+    88	    headline: LocalizedText;
+    89	    introduction: LocalizedText;
+    90	    sections: PremiumSectionPreview[];
+    91	    callToAction: LocalizedText;
+    92	  };
+    93	
+    94	  metadata: {
+    95	    assessmentModel: "MBTI_STYLE";
+    96	    contentVersion: string;
+    97	    reviewed: boolean;
+    98	    availableLocales: Array<"en" | "zh">;
+    99	  };
+   100	};
+
+
+----- src/data/personality/index.ts -----
+     1	import { enfjProfile } from "./enfj";
+     2	import { enfpProfile } from "./enfp";
+     3	import { entjProfile } from "./entj";
+     4	import { entpProfile } from "./entp";
+     5	import { esfjProfile } from "./esfj";
+     6	import { esfpProfile } from "./esfp";
+     7	import { estjProfile } from "./estj";
+     8	import { estpProfile } from "./estp";
+     9	import { infjProfile } from "./infj";
+    10	import { infpProfile } from "./infp";
+    11	import { intjProfile } from "./intj";
+    12	import { intpProfile } from "./intp";
+    13	import { isfjProfile } from "./isfj";
+    14	import { isfpProfile } from "./isfp";
+    15	import { istjProfile } from "./istj";
+    16	import { istpProfile } from "./istp";
+    17	
+    18	import type {
+    19	  PersonalityProfile,
+    20	  PersonalityTypeCode,
+    21	} from "./types";
+    22	
+    23	export const personalityProfiles: Record<
+    24	  PersonalityTypeCode,
+    25	  PersonalityProfile
+    26	> = {
+    27	  INTJ: intjProfile,
+    28	  INTP: intpProfile,
+    29	  ENTJ: entjProfile,
+    30	  ENTP: entpProfile,
+    31	  INFJ: infjProfile,
+    32	  INFP: infpProfile,
+    33	  ENFJ: enfjProfile,
+    34	  ENFP: enfpProfile,
+    35	  ISTJ: istjProfile,
+    36	  ISFJ: isfjProfile,
+    37	  ESTJ: estjProfile,
+    38	  ESFJ: esfjProfile,
+    39	  ISTP: istpProfile,
+    40	  ISFP: isfpProfile,
+    41	  ESTP: estpProfile,
+    42	  ESFP: esfpProfile,
+    43	};
+    44	
+    45	export function getPersonalityProfile(
+    46	  type: string | null | undefined,
+    47	): PersonalityProfile | null {
+    48	  if (!type) {
+    49	    return null;
+    50	  }
+    51	
+    52	  const normalisedType =
+    53	    type.trim().toUpperCase() as PersonalityTypeCode;
+    54	
+    55	  return personalityProfiles[normalisedType] ?? null;
+    56	}
+    57	
+    58	export { personalityTypeCodes } from "./types";
+    59	
+    60	export type {
+    61	  CareerGroup,
+    62	  PersonalityGrowthRisk,
+    63	  PersonalityProfile,
+    64	  PersonalityStrength,
+    65	  PersonalityTrait,
+    66	  PersonalityTypeCode,
+    67	  PremiumSectionPreview,
+    68	} from "./types";
+
+
+----- src/data/shared/index.ts -----
+     1	export {
+     2	  assessmentModuleCodes,
+     3	  assessmentModules,
+     4	} from "./assessment";
+     5	
+     6	export type {
+     7	  AssessmentModuleCode,
+     8	  AssessmentModuleDefinition,
+     9	  ContentAccess,
+    10	} from "./assessment";
+    11	
+    12	export {
+    13	  defaultLocale,
+    14	  getLocalizedStringList,
+    15	  getLocalizedText,
+    16	  normalizeLocale,
+    17	  supportedLocales,
+    18	} from "./localization";
+    19	
+    20	export type {
+    21	  LocalizedStringList,
+    22	  LocalizedText,
+    23	  SupportedLocale,
+    24	} from "./localization";
+
+
+----- src/data/assessment/personality/index.ts -----
+     1	export {
+     2	  createPersonalityAssessmentResult,
+     3	  determinePersonalityType,
+     4	  interpretPersonalityAggregation,
+     5	  interpretPersonalityDimension,
+     6	} from "./interpreter";
+     7	
+     8	export {
+     9	  PERSONALITY_DIMENSIONS,
+    10	} from "./schema";
+    11	
+    12	export type {
+    13	  PersonalityDimension,
+    14	  PersonalityDimensionInterpretation,
+    15	  PersonalityInterpretationFailure,
+    16	  PersonalityInterpretationResult,
+    17	  PersonalityInterpretationSuccess,
+    18	  PersonalityPole,
+    19	  PersonalityType,
+    20	} from "./schema";
+
+
+----- src/data/assessment/scoring/personality/index.ts -----
+     1	export {
+     2	  adaptPersonalityInterpretationToScoreContract,
+     3	  PERSONALITY_TIE_RULE,
+     4	} from "./adapter";
+     5	export {
+     6	  isPersonalityResultContract,
+     7	} from "./schema";
+     8	export {
+     9	  fetchPersonalityResult,
+    10	  PersonalityResultRequestError,
+    11	} from "./result-client";
+    12	export { scorePersonalityAssessment } from "./score";
+    13	export {
+    14	  validatePersonalityScoringInputs,
+    15	} from "./validation";
+    16	
+    17	export type {
+    18	  PersonalityDimensionScores,
+    19	  PersonalityResultContract,
+    20	  PersonalityScoreContract,
+    21	} from "./schema";
+    22	export type {
+    23	  PersonalityScoringValidationResult,
+    24	} from "./validation";
+
+
+----- src/data/assessment/scoring/index.ts -----
+     1	export * from "./personality";
+
+
+----- src/data/assessment/index.ts -----
+     1	export * from "./engine";
+     2	export * from "./questions";
+
+
+----- src/data/assessment/engine/index.ts -----
+     1	export { aggregateAssessmentDimensions } from "./aggregate";
+     2	export { normalizeAssessmentResponses } from "./normalize";
+     3	export { validateAssessmentResponses } from "./validation";
+     4	
+     5	export type {
+     6	  AssessmentAggregationResult,
+     7	  AssessmentDimensionAggregate,
+     8	  AssessmentEngineInput,
+     9	  AssessmentEngineIssue,
+    10	  AssessmentNormalizationResult,
+    11	  AssessmentResponse,
+    12	  NormalizedAssessmentResponse,
+    13	} from "./schema";
+    14	
+    15	export type {
+    16	  AssessmentResponseValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/assessment/questions/personality/questions.ts -----
+     1	import type { AssessmentQuestion } from "../schema";
+     2	
+     3	function createAgreementOptions():
+     4	  AssessmentQuestion["options"] {
+     5	  return [
+     6	    {
+     7	      value: 1,
+     8	      label: {
+     9	        en: "Strongly disagree",
+    10	        zh: "非常不同意",
+    11	      },
+    12	    },
+    13	    {
+    14	      value: 2,
+    15	      label: {
+    16	        en: "Disagree",
+    17	        zh: "不同意",
+    18	      },
+    19	    },
+    20	    {
+    21	      value: 3,
+    22	      label: {
+    23	        en: "Neither agree nor disagree",
+    24	        zh: "既不同意也不赞同",
+    25	      },
+    26	    },
+    27	    {
+    28	      value: 4,
+    29	      label: {
+    30	        en: "Agree",
+    31	        zh: "同意",
+    32	      },
+    33	    },
+    34	    {
+    35	      value: 5,
+    36	      label: {
+    37	        en: "Strongly agree",
+    38	        zh: "非常同意",
+    39	      },
+    40	    },
+    41	  ];
+    42	}
+    43	
+    44	export const personalityQuestionBank = [
+    45	  {
+    46	    id: "personality-001",
+    47	    module: "personality",
+    48	    order: 1,
+    49	    dimension: "EI",
+    50	    reverseScored: false,
+    51	    prompt: {
+    52	      en: "Discussing a new idea with someone often helps me understand my own thinking more clearly.",
+    53	      zh: "与他人讨论一个新想法，往往能帮助我更清楚地理解自己的思路。",
+    54	    },
+    55	    options: createAgreementOptions(),
+    56	    metadata: {
+    57	      contentVersion: "1.0.0",
+    58	      status: "review",
+    59	      reviewed: false,
+    60	    },
+    61	  },
+    62	  {
+    63	    id: "personality-002",
+    64	    module: "personality",
+    65	    order: 2,
+    66	    dimension: "SN",
+    67	    reverseScored: false,
+    68	    prompt: {
+    69	      en: "I prefer to base an initial judgment on information that can be checked directly.",
+    70	      zh: "我倾向于根据可以直接核实的信息作出初步判断。",
+    71	    },
+    72	    options: createAgreementOptions(),
+    73	    metadata: {
+    74	      contentVersion: "1.0.0",
+    75	      status: "review",
+    76	      reviewed: false,
+    77	    },
+    78	  },
+    79	  {
+    80	    id: "personality-003",
+    81	    module: "personality",
+    82	    order: 3,
+    83	    dimension: "TF",
+    84	    reverseScored: false,
+    85	    prompt: {
+    86	      en: "I usually evaluate results against consistent standards.",
+    87	      zh: "我通常会依据一致的标准来评估结果。",
+    88	    },
+    89	    options: createAgreementOptions(),
+    90	    metadata: {
+    91	      contentVersion: "1.0.0",
+    92	      status: "review",
+    93	      reviewed: false,
+    94	    },
+    95	  },
+    96	  {
+    97	    id: "personality-004",
+    98	    module: "personality",
+    99	    order: 4,
+   100	    dimension: "JP",
+   101	    reverseScored: false,
+   102	    prompt: {
+   103	      en: "I prefer to decide in advance how I will approach an important task.",
+   104	      zh: "对于重要任务，我倾向于事先决定自己将如何着手。",
+   105	    },
+   106	    options: createAgreementOptions(),
+   107	    metadata: {
+   108	      contentVersion: "1.0.0",
+   109	      status: "review",
+   110	      reviewed: false,
+   111	    },
+   112	  },
+   113	  {
+   114	    id: "personality-005",
+   115	    module: "personality",
+   116	    order: 5,
+   117	    dimension: "EI",
+   118	    reverseScored: true,
+   119	    prompt: {
+   120	      en: "After spending a long time interacting with others, I prefer a period with fewer conversations or activities.",
+   121	      zh: "与他人长时间互动后，我更希望有一段时间少些交谈或活动。",
+   122	    },
+   123	    options: createAgreementOptions(),
+   124	    metadata: {
+   125	      contentVersion: "1.0.0",
+   126	      status: "review",
+   127	      reviewed: false,
+   128	    },
+   129	  },
+   130	  {
+   131	    id: "personality-006",
+   132	    module: "personality",
+   133	    order: 6,
+   134	    dimension: "EI",
+   135	    reverseScored: false,
+   136	    prompt: {
+   137	      en: "I prefer having some activity around me while I work on a routine task.",
+   138	      zh: "在处理常规任务时，我更喜欢周围有些活动。",
+   139	    },
+   140	    options: createAgreementOptions(),
+   141	    metadata: {
+   142	      contentVersion: "1.0.0",
+   143	      status: "review",
+   144	      reviewed: false,
+   145	    },
+   146	  },
+   147	  {
+   148	    id: "personality-007",
+   149	    module: "personality",
+   150	    order: 7,
+   151	    dimension: "SN",
+   152	    reverseScored: true,
+   153	    prompt: {
+   154	      en: "I often step back from individual details to consider the larger pattern.",
+   155	      zh: "我经常会暂时放下个别细节，转而思考整体模式。",
+   156	    },
+   157	    options: createAgreementOptions(),
+   158	    metadata: {
+   159	      contentVersion: "1.0.0",
+   160	      status: "review",
+   161	      reviewed: false,
+   162	    },
+   163	  },
+   164	  {
+   165	    id: "personality-008",
+   166	    module: "personality",
+   167	    order: 8,
+   168	    dimension: "SN",
+   169	    reverseScored: false,
+   170	    prompt: {
+   171	      en: "I prefer learning that shows how something can be used in practice.",
+   172	      zh: "我更喜欢能说明知识如何实际应用的学习方式。",
+   173	    },
+   174	    options: createAgreementOptions(),
+   175	    metadata: {
+   176	      contentVersion: "1.0.0",
+   177	      status: "review",
+   178	      reviewed: false,
+   179	    },
+   180	  },
+   181	  {
+   182	    id: "personality-009",
+   183	    module: "personality",
+   184	    order: 9,
+   185	    dimension: "TF",
+   186	    reverseScored: true,
+   187	    prompt: {
+   188	      en: "I prefer to consider how each choice may affect the people involved.",
+   189	      zh: "我倾向于考虑每个选择可能会如何影响所涉及的人。",
+   190	    },
+   191	    options: createAgreementOptions(),
+   192	    metadata: {
+   193	      contentVersion: "1.0.0",
+   194	      status: "review",
+   195	      reviewed: false,
+   196	    },
+   197	  },
+   198	  {
+   199	    id: "personality-010",
+   200	    module: "personality",
+   201	    order: 10,
+   202	    dimension: "TF",
+   203	    reverseScored: false,
+   204	    prompt: {
+   205	      en: "I prefer feedback that is direct and specific.",
+   206	      zh: "我更喜欢直接而具体的反馈。",
+   207	    },
+   208	    options: createAgreementOptions(),
+   209	    metadata: {
+   210	      contentVersion: "1.0.0",
+   211	      status: "review",
+   212	      reviewed: false,
+   213	    },
+   214	  },
+   215	  {
+   216	    id: "personality-011",
+   217	    module: "personality",
+   218	    order: 11,
+   219	    dimension: "JP",
+   220	    reverseScored: true,
+   221	    prompt: {
+   222	      en: "When several steps are required, I am comfortable deciding the next step during the process.",
+   223	      zh: "当需要完成多个步骤时，我很适应在过程中再决定下一步怎么做。",
+   224	    },
+   225	    options: createAgreementOptions(),
+   226	    metadata: {
+   227	      contentVersion: "1.0.0",
+   228	      status: "review",
+   229	      reviewed: false,
+   230	    },
+   231	  },
+   232	  {
+   233	    id: "personality-012",
+   234	    module: "personality",
+   235	    order: 12,
+   236	    dimension: "JP",
+   237	    reverseScored: false,
+   238	    prompt: {
+   239	      en: "I prefer to reach a decision once the main information is available.",
+   240	      zh: "在掌握主要信息后，我倾向于作出决定。",
+   241	    },
+   242	    options: createAgreementOptions(),
+   243	    metadata: {
+   244	      contentVersion: "1.0.0",
+   245	      status: "review",
+   246	      reviewed: false,
+   247	    },
+   248	  },
+   249	  {
+   250	    id: "personality-013",
+   251	    module: "personality",
+   252	    order: 13,
+   253	    dimension: "EI",
+   254	    reverseScored: true,
+   255	    prompt: {
+   256	      en: "When an activity is already under way, I usually wait for an opening before joining.",
+   257	      zh: "当一项活动已经开始时，我通常会等到合适的时机再加入。",
+   258	    },
+   259	    options: createAgreementOptions(),
+   260	    metadata: {
+
+
+----- src/data/assessment/questions/personality/index.ts -----
+     1	export { personalityQuestionBank } from "./questions";
+     2	export {
+     3	  getQuestionIdBySourceItemId,
+     4	  getSourceItemIdByQuestionId,
+     5	  personalityQuestionSourceMappings,
+     6	  validatePersonalityQuestionSourceMappings,
+     7	} from "./source-mapping";
+     8	export {
+     9	  validatePersonalityQuestionBank,
+    10	} from "./validation";
+    11	
+    12	export type {
+    13	  PersonalityQuestionSourceMapping,
+    14	  PersonalitySourceMappingValidationIssue,
+    15	  PersonalitySourceMappingValidationResult,
+    16	} from "./source-mapping";
+    17	
+    18	export type {
+    19	  PersonalityDimension,
+    20	  PersonalityQuestionBankValidationIssue,
+    21	  PersonalityQuestionBankValidationResult,
+    22	} from "./validation";
+
+
+----- src/data/assessment/questions/riasec/questions.ts -----
+     1	import type {
+     2	  AssessmentOption,
+     3	  AssessmentQuestion,
+     4	} from "../schema";
+     5	
+     6	const RIASEC_CONTENT_VERSION = "0.1.0";
+     7	
+     8	const interestOptions: readonly AssessmentOption[] = Object.freeze([
+     9	  Object.freeze({
+    10	    value: 1,
+    11	    label: {
+    12	      en: "Strongly dislike",
+    13	      zh: "非常不喜欢",
+    14	    },
+    15	  }),
+    16	  Object.freeze({
+    17	    value: 2,
+    18	    label: {
+    19	      en: "Dislike",
+    20	      zh: "不喜欢",
+    21	    },
+    22	  }),
+    23	  Object.freeze({
+    24	    value: 3,
+    25	    label: {
+    26	      en: "Neutral",
+    27	      zh: "一般",
+    28	    },
+    29	  }),
+    30	  Object.freeze({
+    31	    value: 4,
+    32	    label: {
+    33	      en: "Like",
+    34	      zh: "喜欢",
+    35	    },
+    36	  }),
+    37	  Object.freeze({
+    38	    value: 5,
+    39	    label: {
+    40	      en: "Strongly like",
+    41	      zh: "非常喜欢",
+    42	    },
+    43	  }),
+    44	]);
+    45	
+    46	type RiasecDimension = "R" | "I" | "A" | "S" | "E" | "C";
+    47	
+    48	type RiasecQuestionDefinition = {
+    49	  id: string;
+    50	  order: number;
+    51	  dimension: RiasecDimension;
+    52	  en: string;
+    53	  zh: string;
+    54	};
+    55	
+    56	const questionDefinitions: readonly RiasecQuestionDefinition[] = [
+    57	  // Cycle 1
+    58	  {
+    59	    id: "riasec-r-01",
+    60	    order: 1,
+    61	    dimension: "R",
+    62	    en: "Build or assemble a physical object.",
+    63	    zh: "制作或组装一个实体物品。",
+    64	  },
+    65	  {
+    66	    id: "riasec-i-01",
+    67	    order: 2,
+    68	    dimension: "I",
+    69	    en: "Investigate why a system or process is not working.",
+    70	    zh: "研究一个系统或流程为什么没有正常运作。",
+    71	  },
+    72	  {
+    73	    id: "riasec-a-01",
+    74	    order: 3,
+    75	    dimension: "A",
+    76	    en: "Create an original visual design.",
+    77	    zh: "创作一个原创视觉设计。",
+    78	  },
+    79	  {
+    80	    id: "riasec-s-01",
+    81	    order: 4,
+    82	    dimension: "S",
+    83	    en: "Help someone understand a difficult idea.",
+    84	    zh: "帮助他人理解一个较难的概念。",
+    85	  },
+    86	  {
+    87	    id: "riasec-e-01",
+    88	    order: 5,
+    89	    dimension: "E",
+    90	    en: "Persuade people to support an idea or project.",
+    91	    zh: "说服他人支持一个想法或项目。",
+    92	  },
+    93	  {
+    94	    id: "riasec-c-01",
+    95	    order: 6,
+    96	    dimension: "C",
+    97	    en: "Organise information into a clear and reliable system.",
+    98	    zh: "将信息整理成清晰可靠的系统。",
+    99	  },
+   100	
+   101	  // Cycle 2
+   102	  {
+   103	    id: "riasec-r-02",
+   104	    order: 7,
+   105	    dimension: "R",
+   106	    en: "Use tools or equipment to complete a practical task.",
+   107	    zh: "使用工具或设备完成一项实际任务。",
+   108	  },
+   109	  {
+   110	    id: "riasec-i-02",
+   111	    order: 8,
+   112	    dimension: "I",
+   113	    en: "Analyse data to identify patterns or explanations.",
+   114	    zh: "分析数据以寻找规律或解释。",
+   115	  },
+   116	  {
+   117	    id: "riasec-a-02",
+   118	    order: 9,
+   119	    dimension: "A",
+   120	    en: "Write a story, article, script, or other creative text.",
+   121	    zh: "创作故事、文章、剧本或其他创意文字。",
+   122	  },
+   123	  {
+   124	    id: "riasec-s-02",
+   125	    order: 10,
+   126	    dimension: "S",
+   127	    en: "Listen to someone and help them work through a problem.",
+   128	    zh: "倾听他人的问题并帮助其寻找解决办法。",
+   129	  },
+   130	  {
+   131	    id: "riasec-e-02",
+   132	    order: 11,
+   133	    dimension: "E",
+   134	    en: "Lead a team toward a challenging goal.",
+   135	    zh: "带领团队实现一个具有挑战性的目标。",
+   136	  },
+   137	  {
+   138	    id: "riasec-c-02",
+   139	    order: 12,
+   140	    dimension: "C",
+   141	    en: "Check records carefully for errors or inconsistencies.",
+   142	    zh: "仔细检查记录中的错误或不一致之处。",
+   143	  },
+   144	
+   145	  // Cycle 3
+   146	  {
+   147	    id: "riasec-r-03",
+   148	    order: 13,
+   149	    dimension: "R",
+   150	    en: "Repair or improve a machine, device, or physical structure.",
+   151	    zh: "维修或改进机器、设备或实体结构。",
+   152	  },
+   153	  {
+   154	    id: "riasec-i-03",
+   155	    order: 14,
+   156	    dimension: "I",
+   157	    en: "Research a complex question before reaching a conclusion.",
+   158	    zh: "在得出结论前深入研究一个复杂问题。",
+   159	  },
+   160	  {
+   161	    id: "riasec-a-03",
+   162	    order: 15,
+   163	    dimension: "A",
+   164	    en: "Experiment with new ways to express an idea.",
+   165	    zh: "尝试用新的方式表达一个想法。",
+   166	  },
+   167	  {
+   168	    id: "riasec-s-03",
+   169	    order: 16,
+   170	    dimension: "S",
+   171	    en: "Teach or demonstrate a skill to another person.",
+   172	    zh: "向他人教授或示范一项技能。",
+   173	  },
+   174	  {
+   175	    id: "riasec-e-03",
+   176	    order: 17,
+   177	    dimension: "E",
+   178	    en: "Negotiate an agreement between people with different priorities.",
+   179	    zh: "在诉求不同的人之间协商达成一致。",
+   180	  },
+   181	  {
+   182	    id: "riasec-c-03",
+   183	    order: 18,
+   184	    dimension: "C",
+   185	    en: "Follow a detailed procedure to complete work accurately.",
+   186	    zh: "按照详细流程准确完成工作。",
+   187	  },
+   188	
+   189	  // Cycle 4
+   190	  {
+   191	    id: "riasec-r-04",
+   192	    order: 19,
+   193	    dimension: "R",
+   194	    en: "Work outdoors with land, plants, animals, or natural resources.",
+   195	    zh: "在户外与土地、植物、动物或自然资源打交道。",
+   196	  },
+   197	  {
+   198	    id: "riasec-i-04",
+   199	    order: 20,
+   200	    dimension: "I",
+   201	    en: "Compare several possible explanations for an event.",
+   202	    zh: "比较一个事件的多种可能解释。",
+   203	  },
+   204	  {
+   205	    id: "riasec-a-04",
+   206	    order: 21,
+   207	    dimension: "A",
+   208	    en: "Develop the style, appearance, or creative direction of a project.",
+   209	    zh: "设计一个项目的风格、外观或创意方向。",
+   210	  },
+   211	  {
+   212	    id: "riasec-s-04",
+   213	    order: 22,
+   214	    dimension: "S",
+   215	    en: "Support a group in communicating and working together.",
+   216	    zh: "帮助一个团队更好地沟通与合作。",
+   217	  },
+   218	  {
+   219	    id: "riasec-e-04",
+   220	    order: 23,
+   221	    dimension: "E",
+   222	    en: "Present a proposal to clients, investors, or decision-makers.",
+   223	    zh: "向客户、投资者或决策者介绍一项方案。",
+   224	  },
+   225	  {
+   226	    id: "riasec-c-04",
+   227	    order: 24,
+   228	    dimension: "C",
+   229	    en: "Create schedules, records, or plans that keep work on track.",
+   230	    zh: "制定日程、记录或计划，使工作有序推进。",
+   231	  },
+   232	
+   233	  // Cycle 5
+   234	  {
+   235	    id: "riasec-r-05",
+   236	    order: 25,
+   237	    dimension: "R",
+   238	    en: "Test a physical product to see whether it works correctly.",
+   239	    zh: "测试一个实体产品是否能够正常工作。",
+   240	  },
+   241	  {
+   242	    id: "riasec-i-05",
+   243	    order: 26,
+   244	    dimension: "I",
+   245	    en: "Use scientific or logical methods to solve a problem.",
+   246	    zh: "使用科学或逻辑方法解决问题。",
+   247	  },
+   248	  {
+   249	    id: "riasec-a-05",
+   250	    order: 27,
+   251	    dimension: "A",
+   252	    en: "Produce music, photography, video, illustration, or performance.",
+   253	    zh: "创作音乐、摄影、视频、插画或表演作品。",
+   254	  },
+   255	  {
+   256	    id: "riasec-s-05",
+   257	    order: 28,
+   258	    dimension: "S",
+   259	    en: "Guide someone in making a learning or career decision.",
+   260	    zh: "指导他人作出学习或职业方面的决定。",
+
+
+----- src/data/assessment/questions/riasec/index.ts -----
+     1	export { riasecQuestionBank } from "./questions";
+
+
+----- src/data/assessment/questions/index.ts -----
+     1	export { assessmentQuestionTemplate } from "./template";
+     2	export { personalityQuestionBank } from "./personality";
+     3	export {
+     4	  assessmentQuestionBanks,
+     5	  getAssessmentQuestionBank,
+     6	  hasAssessmentQuestionBank,
+     7	  validateAllRegisteredQuestionBanks,
+     8	  validateRegisteredQuestionBank,
+     9	} from "./registry";
+    10	export {
+    11	  validateAssessmentQuestion,
+    12	  validateAssessmentQuestionBank,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  AssessmentModule,
+    17	  AssessmentOption,
+    18	  AssessmentQuestion,
+    19	  AssessmentQuestionId,
+    20	  AssessmentQuestionMetadata,
+    21	  AssessmentQuestionStatus,
+    22	  RequiredLocalizedText,
+    23	} from "./schema";
+    24	
+    25	export type {
+    26	  AssessmentQuestionBank,
+    27	  AssessmentQuestionBankRegistry,
+    28	  RegisteredQuestionBankValidation,
+    29	} from "./registry";
+    30	
+    31	export type {
+    32	  QuestionValidationIssue,
+    33	  QuestionValidationResult,
+    34	} from "./validation";
+
+
+----- src/data/report/infp/rules/index.ts -----
+     1	export {
+     2	  INFP_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  INFP_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  INFP_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  INFP_REPORT_RULES,
+    12	  validateInfpRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  InfpRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/infp/index.ts -----
+     1	export {
+     2	  INFP_COMPLETE_REPORT,
+     3	} from "./report";
+     4	
+     5	export {
+     6	  validateInfpCompleteReport,
+     7	} from "./validation";
+     8	
+     9	export type {
+    10	  InfpReportValidationResult,
+    11	} from "./validation";
+    12	
+    13	export {
+    14	  INFP_COMBINATION_RULES,
+    15	  INFP_CONFIDENCE_RULES,
+    16	  INFP_DIMENSION_RULES,
+    17	  INFP_REPORT_RULES,
+    18	  validateInfpRuleSet,
+    19	} from "./rules";
+    20	
+    21	export type {
+    22	  InfpRuleSetValidationResult,
+    23	} from "./rules";
+
+
+----- src/data/report/infj/rules/index.ts -----
+     1	export {
+     2	  INFJ_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  INFJ_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  INFJ_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  INFJ_REPORT_RULES,
+    12	  validateInfjRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  InfjRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/infj/index.ts -----
+     1	export {
+     2	  INFJ_COMPLETE_REPORT,
+     3	} from "./report";
+     4	
+     5	export {
+     6	  validateInfjCompleteReport,
+     7	} from "./validation";
+     8	
+     9	export type {
+    10	  InfjReportValidationResult,
+    11	} from "./validation";
+    12	
+    13	export {
+    14	  INFJ_COMBINATION_RULES,
+    15	  INFJ_CONFIDENCE_RULES,
+    16	  INFJ_DIMENSION_RULES,
+    17	  INFJ_REPORT_RULES,
+    18	  validateInfjRuleSet,
+    19	} from "./rules";
+    20	
+    21	export type {
+    22	  InfjRuleSetValidationResult,
+    23	} from "./rules";
+
+
+----- src/data/report/intj/rules/index.ts -----
+     1	export {
+     2	  INTJ_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  INTJ_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  INTJ_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  INTJ_REPORT_RULES,
+    12	  validateIntjRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  IntjRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/intj/index.ts -----
+     1	export {
+     2	  INTJ_COMPLETE_REPORT,
+     3	} from "./report";
+     4	
+     5	export {
+     6	  validateIntjCompleteReport,
+     7	} from "./validation";
+     8	
+     9	export type {
+    10	  IntjReportValidationResult,
+    11	} from "./validation";
+    12	
+    13	export {
+    14	  INTJ_COMBINATION_RULES,
+    15	  INTJ_CONFIDENCE_RULES,
+    16	  INTJ_DIMENSION_RULES,
+    17	  INTJ_REPORT_RULES,
+    18	  validateIntjRuleSet,
+    19	} from "./rules";
+    20	
+    21	export type {
+    22	  IntjRuleSetValidationResult,
+    23	} from "./rules";
+
+
+----- src/data/report/intp/rules/index.ts -----
+     1	export {
+     2	  INTP_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  INTP_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  INTP_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  INTP_REPORT_RULES,
+    12	  validateIntpRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  IntpRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/intp/index.ts -----
+     1	export {
+     2	  INTP_COMPLETE_REPORT,
+     3	} from "./report";
+     4	
+     5	export {
+     6	  validateIntpCompleteReport,
+     7	} from "./validation";
+     8	
+     9	export type {
+    10	  IntpReportValidationResult,
+    11	} from "./validation";
+    12	
+    13	export {
+    14	  INTP_COMBINATION_RULES,
+    15	  INTP_CONFIDENCE_RULES,
+    16	  INTP_DIMENSION_RULES,
+    17	  INTP_REPORT_RULES,
+    18	  validateIntpRuleSet,
+    19	} from "./rules";
+    20	
+    21	export type {
+    22	  IntpRuleSetValidationResult,
+    23	} from "./rules";
+
+
+----- src/data/report/_template/rules/index.ts -----
+     1	import type {
+     2	  PersonalityTypeCode,
+     3	} from "../../../personality/types";
+     4	import type {
+     5	  ReportRuleDefinition,
+     6	} from "../../rules";
+     7	import {
+     8	  createTemplateCombinationRules,
+     9	} from "./combination-rules";
+    10	import {
+    11	  createTemplateConfidenceRules,
+    12	} from "./confidence-rules";
+    13	import {
+    14	  createTemplateDimensionRules,
+    15	} from "./dimension-rules";
+    16	
+    17	export {
+    18	  createTemplateCombinationRules,
+    19	} from "./combination-rules";
+    20	export {
+    21	  createTemplateConfidenceRules,
+    22	} from "./confidence-rules";
+    23	export {
+    24	  createTemplateDimensionRules,
+    25	} from "./dimension-rules";
+    26	export {
+    27	  validatePersonalityRuleTemplate,
+    28	} from "./validation";
+    29	
+    30	export type {
+    31	  TemplateRuleValidationResult,
+    32	} from "./validation";
+    33	
+    34	export function createPersonalityRuleTemplate(
+    35	  personalityType: PersonalityTypeCode,
+    36	): readonly ReportRuleDefinition[] {
+    37	  return [
+    38	    ...createTemplateDimensionRules(personalityType),
+    39	    ...createTemplateConfidenceRules(personalityType),
+    40	    ...createTemplateCombinationRules(personalityType),
+    41	  ];
+    42	}
+
+
+----- src/data/report/_template/index.ts -----
+     1	export {
+     2	  createPersonalityReportTemplate,
+     3	} from "./report";
+     4	export {
+     5	  validatePersonalityReportTemplate,
+     6	} from "./validation";
+     7	export {
+     8	  createPersonalityRuleTemplate,
+     9	  createTemplateCombinationRules,
+    10	  createTemplateConfidenceRules,
+    11	  createTemplateDimensionRules,
+    12	  validatePersonalityRuleTemplate,
+    13	} from "./rules";
+    14	
+    15	export type {
+    16	  TemplateReportValidationResult,
+    17	} from "./validation";
+    18	export type {
+    19	  TemplateRuleValidationResult,
+    20	} from "./rules";
+
+
+----- src/data/report/estp/rules/index.ts -----
+     1	export {
+     2	  ESTP_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  ESTP_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  ESTP_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  ESTP_REPORT_RULES,
+    12	  validateEstpRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  EstpRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/estp/index.ts -----
+     1	export {
+     2	  ESTP_COMPLETE_REPORT,
+     3	} from "./report";
+     4	
+     5	export {
+     6	  validateEstpCompleteReport,
+     7	} from "./validation";
+     8	
+     9	export {
+    10	  ESTP_COMBINATION_RULES,
+    11	  ESTP_CONFIDENCE_RULES,
+    12	  ESTP_DIMENSION_RULES,
+    13	  ESTP_REPORT_RULES,
+    14	  validateEstpRuleSet,
+    15	} from "./rules";
+    16	
+    17	export type {
+    18	  EstpReportValidationResult,
+    19	} from "./validation";
+    20	
+    21	export type {
+    22	  EstpRuleSetValidationResult,
+    23	} from "./rules";
+
+
+----- src/data/report/estj/rules/index.ts -----
+     1	export {
+     2	  ESTJ_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  ESTJ_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  ESTJ_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  ESTJ_REPORT_RULES,
+    12	  validateEstjRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  EstjRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/estj/index.ts -----
+     1	export {
+     2	  ESTJ_COMPLETE_REPORT,
+     3	} from "./report";
+     4	
+     5	export {
+     6	  validateEstjCompleteReport,
+     7	} from "./validation";
+     8	
+     9	export {
+    10	  ESTJ_COMBINATION_RULES,
+    11	  ESTJ_CONFIDENCE_RULES,
+    12	  ESTJ_DIMENSION_RULES,
+    13	  ESTJ_REPORT_RULES,
+    14	  validateEstjRuleSet,
+    15	} from "./rules";
+    16	
+    17	export type {
+    18	  EstjReportValidationResult,
+    19	} from "./validation";
+    20	
+    21	export type {
+    22	  EstjRuleSetValidationResult,
+    23	} from "./rules";
+
+
+----- src/data/report/esfj/rules/index.ts -----
+     1	export {
+     2	  ESFJ_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  ESFJ_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  ESFJ_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  ESFJ_REPORT_RULES,
+    12	  validateEsfjRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  EsfjRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/esfj/index.ts -----
+     1	export {
+     2	  ESFJ_COMPLETE_REPORT,
+     3	} from "./report";
+     4	
+     5	export {
+     6	  validateEsfjCompleteReport,
+     7	} from "./validation";
+     8	
+     9	export type {
+    10	  EsfjReportValidationResult,
+    11	} from "./validation";
+    12	
+    13	export {
+    14	  ESFJ_COMBINATION_RULES,
+    15	  ESFJ_CONFIDENCE_RULES,
+    16	  ESFJ_DIMENSION_RULES,
+    17	  ESFJ_REPORT_RULES,
+    18	  validateEsfjRuleSet,
+    19	} from "./rules";
+    20	
+    21	export type {
+    22	  EsfjRuleSetValidationResult,
+    23	} from "./rules";
+
+
+----- src/data/report/esfp/rules/index.ts -----
+     1	export {
+     2	  ESFP_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  ESFP_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  ESFP_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  ESFP_REPORT_RULES,
+    12	  validateEsfpRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  EsfpRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/esfp/index.ts -----
+     1	export {
+     2	  ESFP_COMPLETE_REPORT,
+     3	} from "./report";
+     4	
+     5	export {
+     6	  validateEsfpCompleteReport,
+     7	} from "./validation";
+     8	
+     9	export type {
+    10	  EsfpReportValidationResult,
+    11	} from "./validation";
+    12	
+    13	export {
+    14	  ESFP_COMBINATION_RULES,
+    15	  ESFP_CONFIDENCE_RULES,
+    16	  ESFP_DIMENSION_RULES,
+    17	  ESFP_REPORT_RULES,
+    18	  validateEsfpRuleSet,
+    19	} from "./rules";
+    20	
+    21	export type {
+    22	  EsfpRuleSetValidationResult,
+    23	} from "./rules";
+
+
+----- src/data/report/generator/types.ts -----
+     1	import type {
+     2	  PersonalityTypeCode,
+     3	} from "../../personality/types";
+     4	import type {
+     5	  DimensionCode,
+     6	  DimensionResult,
+     7	} from "../rules/types";
+     8	import type {
+     9	  GeneratedPersonalityReport,
+    10	  ReportAccess,
+    11	} from "../types";
+    12	
+    13	export interface GeneratePersonalityReportInput {
+    14	  sessionId: string;
+    15	  personalityType: PersonalityTypeCode;
+    16	  dimensions: Record<DimensionCode, DimensionResult>;
+    17	  accessLevel: ReportAccess;
+    18	  generatedAt?: string;
+    19	}
+    20	
+    21	export interface GeneratedReportMetadata {
+    22	  appliedRuleIds: string[];
+    23	  appliedRuleCount: number;
+    24	  sourceReportVersion: string;
+    25	  sourceContentVersion: string;
+    26	  sourceRuleVersion: string;
+    27	}
+    28	
+    29	export interface GeneratedPersonalityReportResult
+    30	  extends GeneratedPersonalityReport {
+    31	  metadata: GeneratedReportMetadata;
+    32	}
+
+
+----- src/data/report/generator/index.ts -----
+     1	export {
+     2	  createReportDimensions,
+     3	} from "./from-assessment-result";
+     4	
+     5	export {
+     6	  generatePersonalityReport,
+     7	} from "./generate-report";
+     8	
+     9	export {
+    10	  isPhaseOnePersonalityReportType,
+    11	} from "./phase-one";
+    12	
+    13	export {
+    14	  getCompletePersonalityReport,
+    15	  hasCompletePersonalityReport,
+    16	} from "./registry";
+    17	
+    18	export type {
+    19	  GeneratePersonalityReportInput,
+    20	  GeneratedPersonalityReportResult,
+    21	  GeneratedReportMetadata,
+    22	} from "./types";
+    23	
+    24	export type {
+    25	  PhaseOnePersonalityReportType,
+    26	} from "./phase-one";
+
+
+----- src/data/report/types.ts -----
+     1	import type {
+     2	  PersonalityTypeCode,
+     3	} from "../personality/types";
+     4	import type { LocalizedText } from "../shared";
+     5	
+     6	export interface ReportVersion {
+     7	  reportVersion: string;
+     8	  contentVersion: string;
+     9	  ruleVersion: string;
+    10	}
+    11	
+    12	export type ReportAccess = "free" | "premium";
+    13	
+    14	export type ReportSectionCategory =
+    15	  | "identity"
+    16	  | "overview"
+    17	  | "dimensions"
+    18	  | "strengths"
+    19	  | "growth-risks"
+    20	  | "core-pattern"
+    21	  | "motivation"
+    22	  | "information-processing"
+    23	  | "decision-making"
+    24	  | "communication"
+    25	  | "teamwork-leadership"
+    26	  | "career"
+    27	  | "relationships"
+    28	  | "change-adaptation"
+    29	  | "stress-recovery"
+    30	  | "growth-roadmap"
+    31	  | "action-plan"
+    32	  | "methodology";
+    33	
+    34	export type ReportContentBlockType =
+    35	  | "summary"
+    36	  | "analysis"
+    37	  | "evidence"
+    38	  | "strength"
+    39	  | "risk"
+    40	  | "guidance"
+    41	  | "example"
+    42	  | "reflection"
+    43	  | "action";
+    44	
+    45	export interface ReportRuleReference {
+    46	  ruleId: string;
+    47	  required: boolean;
+    48	}
+    49	
+    50	export type ReportDimension = "EI" | "SN" | "TF" | "JP";
+    51	
+    52	export interface ReportDynamicSlot {
+    53	  id: string;
+    54	  source:
+    55	    | "dimension"
+    56	    | "confidence"
+    57	    | "combination"
+    58	    | "response-pattern";
+    59	  dimensions?: ReportDimension[];
+    60	  ruleIds?: string[];
+    61	}
+    62	
+    63	export interface ReportContentBlock {
+    64	  id: string;
+    65	  type: ReportContentBlockType;
+    66	  title?: LocalizedText;
+    67	  content: LocalizedText;
+    68	  dynamicSlots?: ReportDynamicSlot[];
+    69	  ruleReferences?: ReportRuleReference[];
+    70	}
+    71	
+    72	export interface ReportSectionDefinition {
+    73	  id: string;
+    74	  order: number;
+    75	  category: ReportSectionCategory;
+    76	  access: ReportAccess;
+    77	  title: LocalizedText;
+    78	  description: LocalizedText;
+    79	  contentBlocks: ReportContentBlock[];
+    80	  dynamicSlots?: ReportDynamicSlot[];
+    81	  ruleReferences?: ReportRuleReference[];
+    82	}
+    83	
+    84	export interface CompletePersonalityReportDefinition {
+    85	  personalityType: PersonalityTypeCode;
+    86	  version: ReportVersion;
+    87	  title: LocalizedText;
+    88	  sections: ReportSectionDefinition[];
+    89	}
+    90	
+    91	export interface GeneratedReportSection {
+    92	  id: string;
+    93	  order: number;
+    94	  category: ReportSectionCategory;
+    95	  access: ReportAccess;
+    96	  title: LocalizedText;
+    97	  description: LocalizedText;
+    98	  contentBlocks: ReportContentBlock[];
+    99	}
+   100	
+   101	export interface GeneratedPersonalityReport {
+   102	  sessionId: string;
+   103	  personalityType: PersonalityTypeCode;
+   104	  version: ReportVersion;
+   105	  accessLevel: ReportAccess;
+   106	  sections: GeneratedReportSection[];
+   107	  generatedAt: string;
+   108	}
+
+
+----- src/data/report/enfp/rules/index.ts -----
+     1	export {
+     2	  ENFP_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  ENFP_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  ENFP_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  ENFP_REPORT_RULES,
+    12	  validateEnfpRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  EnfpRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/enfp/index.ts -----
+     1	export {
+     2	  ENFP_COMPLETE_REPORT,
+     3	} from "./report";
+     4	
+     5	export {
+     6	  validateEnfpCompleteReport,
+     7	} from "./validation";
+     8	
+     9	export type {
+    10	  EnfpReportValidationResult,
+    11	} from "./validation";
+    12	
+    13	export {
+    14	  ENFP_COMBINATION_RULES,
+    15	  ENFP_CONFIDENCE_RULES,
+    16	  ENFP_DIMENSION_RULES,
+    17	  ENFP_REPORT_RULES,
+    18	  validateEnfpRuleSet,
+    19	} from "./rules";
+    20	
+    21	export type {
+    22	  EnfpRuleSetValidationResult,
+    23	} from "./rules";
+
+
+----- src/data/report/enfj/rules/index.ts -----
+     1	export {
+     2	  ENFJ_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  ENFJ_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  ENFJ_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  ENFJ_REPORT_RULES,
+    12	  validateEnfjRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  EnfjRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/enfj/index.ts -----
+     1	export {
+     2	  ENFJ_COMPLETE_REPORT,
+     3	} from "./report";
+     4	
+     5	export {
+     6	  validateEnfjCompleteReport,
+     7	} from "./validation";
+     8	
+     9	export type {
+    10	  EnfjReportValidationResult,
+    11	} from "./validation";
+    12	
+    13	export {
+    14	  ENFJ_COMBINATION_RULES,
+    15	  ENFJ_CONFIDENCE_RULES,
+    16	  ENFJ_DIMENSION_RULES,
+    17	  ENFJ_REPORT_RULES,
+    18	  validateEnfjRuleSet,
+    19	} from "./rules";
+    20	
+    21	export type {
+    22	  EnfjRuleSetValidationResult,
+    23	} from "./rules";
+
+
+----- src/data/report/entj/rules/index.ts -----
+     1	export {
+     2	  ENTJ_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  ENTJ_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  ENTJ_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  ENTJ_REPORT_RULES,
+    12	  validateEntjRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  EntjRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/entj/index.ts -----
+     1	export {
+     2	  ENTJ_COMPLETE_REPORT,
+     3	} from "./report";
+     4	
+     5	export {
+     6	  validateEntjCompleteReport,
+     7	} from "./validation";
+     8	
+     9	export {
+    10	  ENTJ_REPORT_RULES,
+    11	} from "./rules";
+
+
+----- src/data/report/entp/rules/index.ts -----
+     1	export {
+     2	  ENTP_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  ENTP_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  ENTP_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  ENTP_REPORT_RULES,
+    12	  validateEntpRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  EntpRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/entp/index.ts -----
+     1	export {
+     2	  ENTP_COMPLETE_REPORT,
+     3	} from "./report";
+     4	
+     5	export {
+     6	  validateEntpCompleteReport,
+     7	} from "./validation";
+     8	
+     9	export type {
+    10	  EntpReportValidationResult,
+    11	} from "./validation";
+    12	
+    13	export {
+    14	  ENTP_COMBINATION_RULES,
+    15	  ENTP_CONFIDENCE_RULES,
+    16	  ENTP_DIMENSION_RULES,
+    17	  ENTP_REPORT_RULES,
+    18	  validateEntpRuleSet,
+    19	} from "./rules";
+    20	
+    21	export type {
+    22	  EntpRuleSetValidationResult,
+    23	} from "./rules";
+
+
+----- src/data/report/rules/types.ts -----
+     1	import type {
+     2	  PersonalityTypeCode,
+     3	} from "../../personality/types";
+     4	import type { LocalizedText } from "../../shared";
+     5	import type {
+     6	  ReportContentBlockType,
+     7	} from "../types";
+     8	
+     9	export const DIMENSION_CODES = [
+    10	  "EI",
+    11	  "SN",
+    12	  "TF",
+    13	  "JP",
+    14	] as const;
+    15	
+    16	export type DimensionCode =
+    17	  (typeof DIMENSION_CODES)[number];
+    18	
+    19	export interface DimensionResult {
+    20	  dimension: DimensionCode;
+    21	  score: number;
+    22	  confidence: number;
+    23	}
+    24	
+    25	export interface ReportRuleInput {
+    26	  personalityType: PersonalityTypeCode;
+    27	  dimensions: Record<DimensionCode, DimensionResult>;
+    28	}
+    29	
+    30	export type DimensionBand =
+    31	  | "balanced"
+    32	  | "borderline"
+    33	  | "moderate"
+    34	  | "strong"
+    35	  | "very-strong";
+    36	
+    37	export type PreferenceLetter =
+    38	  | "E"
+    39	  | "I"
+    40	  | "S"
+    41	  | "N"
+    42	  | "T"
+    43	  | "F"
+    44	  | "J"
+    45	  | "P"
+    46	  | "X";
+    47	
+    48	export interface AnalysedDimension extends DimensionResult {
+    49	  preference: PreferenceLetter;
+    50	  oppositePreference: PreferenceLetter;
+    51	  band: DimensionBand;
+    52	}
+    53	
+    54	export interface AnalysedRuleInput {
+    55	  personalityType: PersonalityTypeCode;
+    56	  dimensions: Record<DimensionCode, AnalysedDimension>;
+    57	  averageConfidence: number;
+    58	  lowConfidenceCount: number;
+    59	  balancedCount: number;
+    60	}
+    61	
+    62	export type RulePriority = number;
+    63	
+    64	export interface ReportRuleContent {
+    65	  targetSectionId: string;
+    66	  targetSlotId: string;
+    67	  blockId: string;
+    68	  blockType: ReportContentBlockType;
+    69	  content: LocalizedText;
+    70	  title?: LocalizedText;
+    71	}
+    72	
+    73	export interface DimensionRuleCondition {
+    74	  kind: "dimension";
+    75	  dimension: DimensionCode;
+    76	  preferences?: PreferenceLetter[];
+    77	  bands?: DimensionBand[];
+    78	  minConfidence?: number;
+    79	  maxConfidence?: number;
+    80	}
+    81	
+    82	export interface AggregateRuleCondition {
+    83	  kind: "aggregate";
+    84	  metric:
+    85	    | "average-confidence"
+    86	    | "low-confidence-count"
+    87	    | "balanced-count";
+    88	  operator: "eq" | "gte" | "lte";
+    89	  value: number;
+    90	}
+    91	
+    92	export interface CombinationRuleCondition {
+    93	  kind: "combination";
+    94	  all: DimensionRuleCondition[];
+    95	}
+    96	
+    97	export type ReportRuleCondition =
+    98	  | DimensionRuleCondition
+    99	  | AggregateRuleCondition
+   100	  | CombinationRuleCondition;
+   101	
+   102	export interface ReportRuleDefinition {
+   103	  id: string;
+   104	  personalityType: PersonalityTypeCode;
+   105	  priority: RulePriority;
+   106	  conditions: ReportRuleCondition[];
+   107	  content: ReportRuleContent[];
+   108	  exclusiveGroup?: string;
+   109	  tags?: string[];
+   110	}
+   111	
+   112	export interface SelectedReportRule {
+   113	  ruleId: string;
+   114	  priority: RulePriority;
+   115	  content: ReportRuleContent[];
+   116	  matchedConditions: ReportRuleCondition[];
+   117	}
+
+
+----- src/data/report/rules/index.ts -----
+     1	export {
+     2	  analyseDimension,
+     3	  analyseRuleInput,
+     4	} from "./dimension-strength";
+     5	export {
+     6	  matchesRule,
+     7	  selectReportRules,
+     8	  selectRulesForSlot,
+     9	} from "./rule-selector";
+    10	export { DIMENSION_CODES } from "./types";
+    11	
+    12	export type {
+    13	  AggregateRuleCondition,
+    14	  AnalysedDimension,
+    15	  AnalysedRuleInput,
+    16	  CombinationRuleCondition,
+    17	  DimensionBand,
+    18	  DimensionCode,
+    19	  DimensionResult,
+    20	  DimensionRuleCondition,
+    21	  PreferenceLetter,
+    22	  ReportRuleCondition,
+    23	  ReportRuleContent,
+    24	  ReportRuleDefinition,
+    25	  ReportRuleInput,
+    26	  RulePriority,
+    27	  SelectedReportRule,
+    28	} from "./types";
+
+
+----- src/data/report/istp/rules/index.ts -----
+     1	export {
+     2	  ISTP_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  ISTP_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  ISTP_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  ISTP_REPORT_RULES,
+    12	  validateIstpRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  IstpRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/istp/index.ts -----
+     1	export {
+     2	  ISTP_COMPLETE_REPORT,
+     3	} from "./report";
+     4	
+     5	export {
+     6	  validateIstpCompleteReport,
+     7	} from "./validation";
+     8	
+     9	export type {
+    10	  IstpReportValidationResult,
+    11	} from "./validation";
+    12	
+    13	export {
+    14	  ISTP_COMBINATION_RULES,
+    15	  ISTP_CONFIDENCE_RULES,
+    16	  ISTP_DIMENSION_RULES,
+    17	  ISTP_REPORT_RULES,
+    18	  validateIstpRuleSet,
+    19	} from "./rules";
+    20	
+    21	export type {
+    22	  IstpRuleSetValidationResult,
+    23	} from "./rules";
+
+
+----- src/data/report/index.ts -----
+     1	export {
+     2	  COMPLETE_PERSONALITY_REPORT_STANDARD,
+     3	  COMPLETE_PERSONALITY_REPORT_VERSION,
+     4	  validateCompletePersonalityReportStandard,
+     5	} from "./report-standard";
+     6	export {
+     7	  COMPLETE_REPORT_SECTION_STANDARD,
+     8	  validateCompletePersonalityDefinition,
+     9	} from "./personality-expansion-standard";
+    10	export {
+    11	  validateAllPersonalityTypes,
+    12	  validatePersonalityTypes,
+    13	} from "./personality-batch-validation";
+    14	export {
+    15	  CANONICAL_PERSONALITY_TYPES,
+    16	  PERSONALITY_IMPLEMENTATION_MANIFEST,
+    17	  PERSONALITY_IMPLEMENTATION_STAGES,
+    18	  validatePersonalityImplementationManifest,
+    19	} from "./personality-implementation-status";
+    20	export {
+    21	  ISFJ_COMPLETE_REPORT,
+    22	  ISFJ_COMBINATION_RULES,
+    23	  ISFJ_CONFIDENCE_RULES,
+    24	  ISFJ_DIMENSION_RULES,
+    25	  ISFJ_REPORT_RULES,
+    26	  validateIsfjCompleteReport,
+    27	  validateIsfjRuleSet,
+    28	} from "./isfj";
+    29	export {
+    30	  ENTP_COMPLETE_REPORT,
+    31	  ENTP_COMBINATION_RULES,
+    32	  ENTP_CONFIDENCE_RULES,
+    33	  ENTP_DIMENSION_RULES,
+    34	  ENTP_REPORT_RULES,
+    35	  validateEntpCompleteReport,
+    36	  validateEntpRuleSet,
+    37	} from "./entp";
+    38	export {
+    39	  INTJ_COMPLETE_REPORT,
+    40	  INTJ_COMBINATION_RULES,
+    41	  INTJ_CONFIDENCE_RULES,
+    42	  INTJ_DIMENSION_RULES,
+    43	  INTJ_REPORT_RULES,
+    44	  validateIntjCompleteReport,
+    45	  validateIntjRuleSet,
+    46	} from "./intj";
+    47	export {
+    48	  INTP_COMPLETE_REPORT,
+    49	  INTP_COMBINATION_RULES,
+    50	  INTP_CONFIDENCE_RULES,
+    51	  INTP_DIMENSION_RULES,
+    52	  INTP_REPORT_RULES,
+    53	  validateIntpCompleteReport,
+    54	  validateIntpRuleSet,
+    55	} from "./intp";
+    56	export {
+    57	  INFJ_COMPLETE_REPORT,
+    58	  INFJ_COMBINATION_RULES,
+    59	  INFJ_CONFIDENCE_RULES,
+    60	  INFJ_DIMENSION_RULES,
+    61	  INFJ_REPORT_RULES,
+    62	  validateInfjCompleteReport,
+    63	  validateInfjRuleSet,
+    64	} from "./infj";
+    65	export {
+    66	  INFP_COMPLETE_REPORT,
+    67	  INFP_COMBINATION_RULES,
+    68	  INFP_CONFIDENCE_RULES,
+    69	  INFP_DIMENSION_RULES,
+    70	  INFP_REPORT_RULES,
+    71	  validateInfpCompleteReport,
+    72	  validateInfpRuleSet,
+    73	} from "./infp";
+    74	export {
+    75	  ENFJ_COMPLETE_REPORT,
+    76	  ENFJ_COMBINATION_RULES,
+    77	  ENFJ_CONFIDENCE_RULES,
+    78	  ENFJ_DIMENSION_RULES,
+    79	  ENFJ_REPORT_RULES,
+    80	  validateEnfjCompleteReport,
+    81	  validateEnfjRuleSet,
+    82	} from "./enfj";
+    83	export {
+    84	  ENFP_COMPLETE_REPORT,
+    85	  ENFP_COMBINATION_RULES,
+    86	  ENFP_CONFIDENCE_RULES,
+    87	  ENFP_DIMENSION_RULES,
+    88	  ENFP_REPORT_RULES,
+    89	  validateEnfpCompleteReport,
+    90	  validateEnfpRuleSet,
+    91	} from "./enfp";
+    92	export {
+    93	  ISTJ_COMPLETE_REPORT,
+    94	  ISTJ_COMBINATION_RULES,
+    95	  ISTJ_CONFIDENCE_RULES,
+    96	  ISTJ_DIMENSION_RULES,
+    97	  ISTJ_REPORT_RULES,
+    98	  validateIstjCompleteReport,
+    99	  validateIstjRuleSet,
+   100	} from "./istj";
+   101	export {
+   102	  ESTJ_COMPLETE_REPORT,
+   103	  ESTJ_COMBINATION_RULES,
+   104	  ESTJ_CONFIDENCE_RULES,
+   105	  ESTJ_DIMENSION_RULES,
+   106	  ESTJ_REPORT_RULES,
+   107	  validateEstjCompleteReport,
+   108	  validateEstjRuleSet,
+   109	} from "./estj";
+   110	export {
+   111	  ESFJ_COMPLETE_REPORT,
+   112	  ESFJ_COMBINATION_RULES,
+   113	  ESFJ_CONFIDENCE_RULES,
+   114	  ESFJ_DIMENSION_RULES,
+   115	  ESFJ_REPORT_RULES,
+   116	  validateEsfjCompleteReport,
+   117	  validateEsfjRuleSet,
+   118	} from "./esfj";
+   119	export {
+   120	  ISTP_COMPLETE_REPORT,
+   121	  ISTP_COMBINATION_RULES,
+   122	  ISTP_CONFIDENCE_RULES,
+   123	  ISTP_DIMENSION_RULES,
+   124	  ISTP_REPORT_RULES,
+   125	  validateIstpCompleteReport,
+   126	  validateIstpRuleSet,
+   127	} from "./istp";
+   128	export {
+   129	  ISFP_COMPLETE_REPORT,
+   130	  ISFP_COMBINATION_RULES,
+   131	  ISFP_CONFIDENCE_RULES,
+   132	  ISFP_DIMENSION_RULES,
+   133	  ISFP_REPORT_RULES,
+   134	  validateIsfpCompleteReport,
+   135	  validateIsfpRuleSet,
+   136	} from "./isfp";
+   137	export {
+   138	  ESTP_COMPLETE_REPORT,
+   139	  ESTP_COMBINATION_RULES,
+   140	  ESTP_CONFIDENCE_RULES,
+   141	  ESTP_DIMENSION_RULES,
+   142	  ESTP_REPORT_RULES,
+   143	  validateEstpCompleteReport,
+   144	  validateEstpRuleSet,
+   145	} from "./estp";
+   146	export {
+   147	  ESFP_COMPLETE_REPORT,
+   148	  ESFP_COMBINATION_RULES,
+   149	  ESFP_CONFIDENCE_RULES,
+   150	  ESFP_DIMENSION_RULES,
+   151	  ESFP_REPORT_RULES,
+   152	  validateEsfpCompleteReport,
+   153	  validateEsfpRuleSet,
+   154	} from "./esfp";
+   155	export {
+   156	  analyseDimension,
+   157	  analyseRuleInput,
+   158	  DIMENSION_CODES,
+   159	  matchesRule,
+   160	  selectReportRules,
+   161	  selectRulesForSlot,
+   162	} from "./rules";
+   163	
+   164	export type {
+   165	  ReportStandardValidationResult,
+   166	} from "./report-standard";
+   167	export type {
+   168	  CompletePersonalityValidationIssue,
+   169	  CompletePersonalityValidationResult,
+   170	  CompleteReportSectionStandardEntry,
+   171	} from "./personality-expansion-standard";
+   172	export type {
+   173	  PersonalityBatchValidationIssue,
+   174	  PersonalityBatchValidationResult,
+   175	  PersonalityBatchValidationSeverity,
+   176	  PersonalityTypeValidationResult,
+   177	} from "./personality-batch-validation";
+   178	export type {
+   179	  PersonalityImplementationManifestEntry,
+   180	  PersonalityImplementationStage,
+   181	  PersonalityImplementationStatus,
+   182	  PersonalityManifestValidationIssue,
+   183	  PersonalityManifestValidationResult,
+   184	} from "./personality-implementation-status";
+   185	export type {
+   186	  IsfjReportValidationResult,
+   187	  IsfjRuleSetValidationResult,
+   188	} from "./isfj";
+   189	export type {
+   190	  EntpReportValidationResult,
+   191	  EntpRuleSetValidationResult,
+   192	} from "./entp";
+   193	export type {
+   194	  IntjReportValidationResult,
+   195	  IntjRuleSetValidationResult,
+   196	} from "./intj";
+   197	export type {
+   198	  IntpReportValidationResult,
+   199	  IntpRuleSetValidationResult,
+   200	} from "./intp";
+   201	export type {
+   202	  InfjReportValidationResult,
+   203	  InfjRuleSetValidationResult,
+   204	} from "./infj";
+   205	export type {
+   206	  InfpReportValidationResult,
+   207	  InfpRuleSetValidationResult,
+   208	} from "./infp";
+   209	export type {
+   210	  EnfjReportValidationResult,
+   211	  EnfjRuleSetValidationResult,
+   212	} from "./enfj";
+   213	export type {
+   214	  EnfpReportValidationResult,
+   215	  EnfpRuleSetValidationResult,
+   216	} from "./enfp";
+   217	export type {
+   218	  IstjReportValidationResult,
+   219	  IstjRuleSetValidationResult,
+   220	} from "./istj";
+   221	export type {
+   222	  EstjReportValidationResult,
+   223	  EstjRuleSetValidationResult,
+   224	} from "./estj";
+   225	export type {
+   226	  EsfjReportValidationResult,
+   227	  EsfjRuleSetValidationResult,
+   228	} from "./esfj";
+   229	export type {
+   230	  IstpReportValidationResult,
+   231	  IstpRuleSetValidationResult,
+   232	} from "./istp";
+   233	export type {
+   234	  IsfpReportValidationResult,
+   235	  IsfpRuleSetValidationResult,
+   236	} from "./isfp";
+   237	export type {
+   238	  EstpReportValidationResult,
+   239	  EstpRuleSetValidationResult,
+   240	} from "./estp";
+   241	export type {
+   242	  EsfpReportValidationResult,
+   243	  EsfpRuleSetValidationResult,
+   244	} from "./esfp";
+   245	
+   246	export type {
+   247	  AggregateRuleCondition,
+   248	  AnalysedDimension,
+   249	  AnalysedRuleInput,
+   250	  CombinationRuleCondition,
+   251	  DimensionBand,
+   252	  DimensionCode,
+   253	  DimensionResult,
+   254	  DimensionRuleCondition,
+   255	  PreferenceLetter,
+   256	  ReportRuleCondition,
+   257	  ReportRuleContent,
+   258	  ReportRuleDefinition,
+   259	  ReportRuleInput,
+   260	  RulePriority,
+
+
+----- src/data/report/istj/rules/index.ts -----
+     1	export {
+     2	  ISTJ_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  ISTJ_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  ISTJ_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  ISTJ_REPORT_RULES,
+    12	  validateIstjRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  IstjRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/istj/index.ts -----
+     1	export {
+     2	  ISTJ_COMPLETE_REPORT,
+     3	} from "./report";
+     4	
+     5	export {
+     6	  validateIstjCompleteReport,
+     7	} from "./validation";
+     8	
+     9	export type {
+    10	  IstjReportValidationResult,
+    11	} from "./validation";
+    12	
+    13	export {
+    14	  ISTJ_COMBINATION_RULES,
+    15	  ISTJ_CONFIDENCE_RULES,
+    16	  ISTJ_DIMENSION_RULES,
+    17	  ISTJ_REPORT_RULES,
+    18	  validateIstjRuleSet,
+    19	} from "./rules";
+    20	
+    21	export type {
+    22	  IstjRuleSetValidationResult,
+    23	} from "./rules";
+
+
+----- src/data/report/isfj/rules/index.ts -----
+     1	export {
+     2	  ISFJ_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  ISFJ_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  ISFJ_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  ISFJ_REPORT_RULES,
+    12	  validateIsfjRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  IsfjRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/isfj/index.ts -----
+     1	export { ISFJ_COMPLETE_REPORT } from "./report";
+     2	export {
+     3	  validateIsfjCompleteReport,
+     4	} from "./validation";
+     5	
+     6	export type {
+     7	  IsfjReportValidationResult,
+     8	} from "./validation";
+     9	
+    10	export {
+    11	  ISFJ_COMBINATION_RULES,
+    12	  ISFJ_CONFIDENCE_RULES,
+    13	  ISFJ_DIMENSION_RULES,
+    14	  ISFJ_REPORT_RULES,
+    15	  validateIsfjRuleSet,
+    16	} from "./rules";
+    17	
+    18	export type {
+    19	  IsfjRuleSetValidationResult,
+    20	} from "./rules";
+
+
+----- src/data/report/isfp/rules/index.ts -----
+     1	export {
+     2	  ISFP_COMBINATION_RULES,
+     3	} from "./combination-rules";
+     4	export {
+     5	  ISFP_CONFIDENCE_RULES,
+     6	} from "./confidence-rules";
+     7	export {
+     8	  ISFP_DIMENSION_RULES,
+     9	} from "./dimension-rules";
+    10	export {
+    11	  ISFP_REPORT_RULES,
+    12	  validateIsfpRuleSet,
+    13	} from "./validation";
+    14	
+    15	export type {
+    16	  IsfpRuleSetValidationResult,
+    17	} from "./validation";
+
+
+----- src/data/report/isfp/index.ts -----
+     1	export {
+     2	  ISFP_COMPLETE_REPORT,
+     3	} from "./report";
+     4	
+     5	export {
+     6	  validateIsfpCompleteReport,
+     7	} from "./validation";
+     8	
+     9	export type {
+    10	  IsfpReportValidationResult,
+    11	} from "./validation";
+    12	
+    13	export {
+    14	  ISFP_COMBINATION_RULES,
+    15	  ISFP_CONFIDENCE_RULES,
+    16	  ISFP_DIMENSION_RULES,
+    17	  ISFP_REPORT_RULES,
+    18	  validateIsfpRuleSet,
+    19	} from "./rules";
+    20	
+    21	export type {
+    22	  IsfpRuleSetValidationResult,
+    23	} from "./rules";
+
+
+===== CAREER LANDING PAGE =====
+     1	import type { Metadata } from "next";
+     2	import { CompassMark, SiteFooter, SiteHeader } from "@/components/home";
+     3	
+     4	export const metadata: Metadata = {
+     5	  title: "Career Interest Assessment | InnerGeodessa",
+     6	  description:
+     7	    "Explore your career interests through six balanced dimensions and discover work environments, learning paths, and future directions that may fit you.",
+     8	};
+     9	
+    10	const dimensions = [
+    11	  {
+    12	    code: "R",
+    13	    title: "Realistic",
+    14	    theme: "Build, operate, repair, and work with tangible systems.",
+    15	    examples: [
+    16	      "Practical activity",
+    17	      "Tools and equipment",
+    18	      "Nature and the physical world",
+    19	      "Hands-on problem-solving",
+    20	    ],
+    21	  },
+    22	  {
+    23	    code: "I",
+    24	    title: "Investigative",
+    25	    theme: "Understand, analyse, research, and solve complex questions.",
+    26	    examples: [
+    27	      "Science and data",
+    28	      "Research",
+    29	      "Systems thinking",
+    30	      "Independent problem-solving",
+    31	    ],
+    32	  },
+    33	  {
+    34	    code: "A",
+    35	    title: "Artistic",
+    36	    theme: "Create, express, imagine, and communicate original ideas.",
+    37	    examples: [
+    38	      "Design and writing",
+    39	      "Visual communication",
+    40	      "Performance",
+    41	      "Creative experimentation",
+    42	    ],
+    43	  },
+    44	  {
+    45	    code: "S",
+    46	    title: "Social",
+    47	    theme: "Support, teach, guide, connect, and develop people.",
+    48	    examples: [
+    49	      "Education",
+    50	      "Counselling",
+    51	      "Communication",
+    52	      "Collaborative development",
+    53	    ],
+    54	  },
+    55	  {
+    56	    code: "E",
+    57	    title: "Enterprising",
+    58	    theme: "Lead, persuade, initiate, organise, and create momentum.",
+    59	    examples: [
+    60	      "Business and leadership",
+    61	      "Negotiation",
+    62	      "Entrepreneurship",
+    63	      "Influence and decisions",
+    64	    ],
+    65	  },
+    66	  {
+    67	    code: "C",
+    68	    title: "Conventional",
+    69	    theme: "Organise, structure, maintain, and improve reliable processes.",
+    70	    examples: [
+    71	      "Planning",
+    72	      "Administration and finance",
+    73	      "Quality control",
+    74	      "Information organisation",
+    75	    ],
+    76	  },
+    77	];
+    78	
+    79	const resultPreview = [
+    80	  "Primary and secondary interest dimensions",
+    81	  "An explanation of your RIASEC pattern",
+    82	  "Preferred tasks and environments",
+    83	  "Possible career families",
+    84	  "Education and learning directions",
+    85	  "Transferable strengths",
+    86	  "Development areas",
+    87	  "Questions for further exploration",
+    88	  "Possible links with personality and values",
+    89	  "Practical next-step recommendations",
+    90	];
+    91	
+    92	const guidance = [
+    93	  "Answer according to genuine interest, not social expectations.",
+    94	  "Distinguish what you enjoy from what you are already good at.",
+    95	  "Avoid choosing answers only because a career seems prestigious or profitable.",
+    96	  "Think across school, work, hobbies, projects, and daily life.",
+    97	  "Use the result as evidence for reflection rather than a final decision.",
+    98	];
+    99	
+   100	function ComingSoonAction({ children }: { children: React.ReactNode }) {
+   101	  return (
+   102	    <span className="primary-button disabled-button" aria-disabled="true">
+   103	      {children}
+   104	      <span>Coming Soon</span>
+   105	    </span>
+   106	  );
+   107	}
+   108	
+   109	function CareerMap() {
+   110	  return (
+   111	    <div className="career-map" aria-hidden="true">
+   112	      <svg viewBox="0 0 620 620" fill="none">
+   113	        <circle cx="310" cy="310" r="224" />
+   114	        <circle cx="310" cy="310" r="162" />
+   115	        <circle cx="310" cy="310" r="96" />
+   116	        <path d="M310 36v548M36 310h548M116 116l388 388M504 116 116 504" />
+   117	      </svg>
+   118	      <div className="career-map-center">
+   119	        <CompassMark />
+   120	        <span>Interests</span>
+   121	      </div>
+   122	      {dimensions.map((dimension, index) => (
+   123	        <span
+   124	          className={`career-map-code career-map-code-${index + 1}`}
+   125	          key={dimension.code}
+   126	        >
+   127	          {dimension.code}
+   128	        </span>
+   129	      ))}
+   130	    </div>
+   131	  );
+   132	}
+   133	
+   134	export default function CareerPage() {
+   135	  return (
+   136	    <main id="top">
+   137	      <SiteHeader homePath="/" />
+   138	
+   139	      <section className="career-hero shell">
+   140	        <div className="career-hero-copy">
+   141	          <p className="eyebrow">Career Interest Assessment</p>
+   142	          <h1>Discover the work that feels meaningful to you.</h1>
+   143	          <p className="career-intro">
+   144	            Explore the environments, activities, and challenges that
+   145	            naturally hold your attention. Your interests can help reveal
+   146	            career directions worth investigating—not a single job you must
+   147	            choose.
+   148	          </p>
+   149	          <ul className="assessment-meta" aria-label="Assessment details">
+   150	            <li>Six interest dimensions</li>
+   151	            <li>Approximately 8–12 minutes</li>
+   152	            <li>Designed for career exploration</li>
+   153	            <li>No right or wrong answers</li>
+   154	          </ul>
+   155	          <div className="career-actions">
+   156	            <ComingSoonAction>Start Assessment</ComingSoonAction>
+   157	            <a className="secondary-link" href="#riasec">
+   158	              Explore the Six Dimensions <span aria-hidden="true">↓</span>
+   159	            </a>
+   160	          </div>
+   161	        </div>
+   162	        <CareerMap />
+   163	      </section>
+   164	
+   165	      <section className="career-context shell">
+   166	        <div className="career-context-heading">
+   167	          <p className="eyebrow">Look beyond the title</p>
+   168	          <h2>Why career interests matter</h2>
+   169	        </div>
+   170	        <div className="career-context-copy">
+   171	          <p>
+   172	            Career decisions are shaped by more than job titles. Sustained
+   173	            interest often grows from the activities you enjoy, the problems
+   174	            you want to solve, and the environments where your attention feels
+   175	            naturally engaged.
+   176	          </p>
+   177	          <p>
+   178	            You may prefer working with people, systems, ideas, creativity,
+   179	            structure, or practical action—and those interests may develop
+   180	            over time. A useful career direction also considers skills, values,
+   181	            opportunities, education, circumstances, and real-world
+   182	            experience.
+   183	          </p>
+   184	        </div>
+   185	      </section>
+   186	
+   187	      <section className="riasec-section" id="riasec">
+   188	        <div className="shell">
+   189	          <div className="career-section-heading">
+   190	            <div>
+   191	              <p className="eyebrow">The RIASEC framework</p>
+   192	              <h2>Six dimensions of interest</h2>
+   193	            </div>
+   194	            <p>
+   195	              Most people combine several dimensions. None is more valuable
+   196	              than another, and no single dimension defines your future.
+   197	            </p>
+   198	          </div>
+   199	
+   200	          <div className="riasec-grid">
+   201	            {dimensions.map((dimension, index) => (
+   202	              <article className="riasec-card" key={dimension.code}>
+   203	                <div className="riasec-card-top">
+   204	                  <span>0{index + 1}</span>
+   205	                  <strong aria-hidden="true">{dimension.code}</strong>
+   206	                </div>
+   207	                <h3>{dimension.title}</h3>
+   208	                <p>{dimension.theme}</p>
+   209	                <ul>
+   210	                  {dimension.examples.map((example) => (
+   211	                    <li key={example}>{example}</li>
+   212	                  ))}
+   213	                </ul>
+   214	              </article>
+   215	            ))}
+   216	          </div>
+   217	        </div>
+   218	      </section>
+   219	
+   220	      <section className="interest-pattern shell">
+   221	        <div className="interest-pattern-heading">
+   222	          <p className="eyebrow">Your interest pattern</p>
+   223	          <h2>A combination, not a rigid label</h2>
+   224	        </div>
+   225	        <div className="pattern-body">
+   226	          <p>
+   227	            The future assessment will highlight your strongest interest
+   228	            areas, supporting dimensions, preferred activities, and the
+   229	            environments that may feel energising—or require more deliberate
+   230	            effort.
+   231	          </p>
+   232	          <div className="pattern-examples" aria-label="Example combinations">
+   233	            <span>Investigative</span>
+   234	            <i>+</i>
+   235	            <span>Artistic</span>
+   236	            <em>or</em>
+   237	            <span>Enterprising</span>
+   238	            <i>+</i>
+   239	            <span>Social</span>
+   240	          </div>
+   241	          <p>
+   242	            Combinations help widen exploration. They are starting points for
+   243	            questions and real-world research, not instructions about the one
+   244	            career you should pursue.
+   245	          </p>
+   246	        </div>
+   247	      </section>
+   248	
+   249	      <section className="career-results">
+   250	        <div className="career-results-inner shell">
+   251	          <div className="career-results-heading">
+   252	            <p className="eyebrow">Future result preview</p>
+   253	            <h2>What your result may include</h2>
+   254	            <p>
+   255	              A structured overview for comparing possibilities—not a claim
+   256	              to identify your perfect career.
+   257	            </p>
+   258	          </div>
+   259	          <ol>
+   260	            {resultPreview.map((item, index) => (
+   261	              <li key={item}>
+   262	                <span>{String(index + 1).padStart(2, "0")}</span>
+   263	                {item}
+   264	              </li>
+   265	            ))}
+   266	          </ol>
+   267	        </div>
+   268	      </section>
+   269	
+   270	      <section className="beyond-section shell">
+   271	        <div className="beyond-heading">
+   272	          <p className="eyebrow">Flexible directions</p>
+   273	          <h2>Beyond job titles</h2>
+   274	        </div>
+   275	        <div className="beyond-grid">
+   276	          <p>
+   277	            One interest pattern can connect to many occupations, and the same
+   278	            occupation can feel very different across industries.
+   279	          </p>
+   280	          <p>
+   281	            Work environment and role design may matter as much as the title
+   282	            printed on a job description.
+   283	          </p>
+   284	          <p>
+   285	            People can combine interests through portfolio careers,
+   286	            entrepreneurship, interdisciplinary work, and changing roles over
+   287	            time.
+   288	          </p>
+   289	        </div>
+   290	      </section>
+   291	
+   292	      <section className="career-guidance">
+   293	        <div className="shell">
+   294	          <div className="career-section-heading">
+   295	            <div>
+   296	              <p className="eyebrow">Assessment guidance</p>
+   297	              <h2>Answer from genuine interest</h2>
+   298	            </div>
+   299	            <p>
+   300	              Curiosity is different from competence. Consider what draws you
+   301	              in, even when you are still learning.
+   302	            </p>
+   303	          </div>
+   304	          <div className="career-guidance-grid">
+   305	            {guidance.map((item, index) => (
+   306	              <article key={item}>
+   307	                <span>0{index + 1}</span>
+   308	                <p>{item}</p>
+   309	              </article>
+   310	            ))}
+   311	          </div>
+   312	        </div>
+   313	      </section>
+   314	
+   315	      <section className="career-disclaimer">
+   316	        <div className="career-disclaimer-inner shell">
+   317	          <div>
+   318	            <p className="eyebrow">Professional context</p>
+   319	            <h2>Exploration, not a career decision</h2>
+   320	          </div>
+   321	          <div>
+   322	            <p>
+   323	              This assessment is designed for education, self-reflection, and
+   324	              career exploration. It does not provide a professional
+   325	              psychological, educational, recruitment, or employment
+   326	              decision.
+   327	            </p>
+   328	            <p>
+   329	              Career choices should also consider abilities, values,
+   330	              qualifications, personal circumstances, labour-market
+   331	              conditions, and professional guidance where appropriate.
+   332	            </p>
+   333	            <p className="disclaimer-source">
+   334	              Inspired by widely used RIASEC career-interest concepts. No
+   335	              endorsement by an external organisation is implied.
+   336	            </p>
+   337	          </div>
+   338	        </div>
+   339	      </section>
+   340	
+   341	      <section className="future-profile shell">
+   342	        <div className="future-profile-copy">
+   343	          <p className="eyebrow">Future InnerGeodessa connection</p>
+   344	          <h2>More perspectives, brought together</h2>
+   345	          <p>
+   346	            A future integrated profile may connect career interests with
+   347	            personality preferences, strengths, values, learning style, and
+   348	            personal goals. These connections are not yet available.
+   349	          </p>
+   350	        </div>
+   351	        <div className="future-profile-map" aria-hidden="true">
+   352	          {[
+   353	            "Career",
+   354	            "Personality",
+   355	            "Strengths",
+   356	            "Values",
+   357	            "Learning",
+   358	            "Goals",
+   359	          ].map((item) => (
+   360	            <span key={item}>{item}</span>
+   361	          ))}
+   362	          <CompassMark />
+   363	        </div>
+   364	      </section>
+   365	
+   366	      <section className="career-final-cta">
+   367	        <div className="shell">
+   368	          <p className="eyebrow">Your next direction</p>
+   369	          <h2>
+   370	            Your direction becomes clearer when you understand what draws you
+   371	            forward.
+   372	          </h2>
+   373	          <p className="career-final-copy">
+   374	            Begin with curiosity. Explore your interests, compare
+   375	            possibilities, and build a direction through evidence and
+   376	            experience.
+   377	          </p>
+   378	          <div className="career-final-actions">
+   379	            <ComingSoonAction>Start Career Assessment</ComingSoonAction>
+   380	            <a className="secondary-link light-secondary" href="/personality">
+   381	              Explore Personality <span aria-hidden="true">↗</span>
+   382	            </a>
+   383	          </div>
+   384	        </div>
+   385	      </section>
+   386	
+   387	      <SiteFooter homePath="/" />
+   388	    </main>
+   389	  );
+   390	}
+
+
+===== RELEVANT CSS REFERENCES =====
+src/app/career/page.tsx:111:    <div className="career-map" aria-hidden="true">
+src/app/career/page.tsx:118:      <div className="career-map-center">
+src/app/career/page.tsx:124:          className={`career-map-code career-map-code-${index + 1}`}
+src/app/career/page.tsx:139:      <section className="career-hero shell">
+src/app/career/page.tsx:140:        <div className="career-hero-copy">
+src/app/career/page.tsx:143:          <p className="career-intro">
+src/app/career/page.tsx:149:          <ul className="assessment-meta" aria-label="Assessment details">
+src/app/career/page.tsx:155:          <div className="career-actions">
+src/app/career/page.tsx:165:      <section className="career-context shell">
+src/app/career/page.tsx:166:        <div className="career-context-heading">
+src/app/career/page.tsx:170:        <div className="career-context-copy">
+src/app/career/page.tsx:189:          <div className="career-section-heading">
+src/app/career/page.tsx:249:      <section className="career-results">
+src/app/career/page.tsx:250:        <div className="career-results-inner shell">
+src/app/career/page.tsx:251:          <div className="career-results-heading">
+src/app/career/page.tsx:292:      <section className="career-guidance">
+src/app/career/page.tsx:294:          <div className="career-section-heading">
+src/app/career/page.tsx:304:          <div className="career-guidance-grid">
+src/app/career/page.tsx:315:      <section className="career-disclaimer">
+src/app/career/page.tsx:316:        <div className="career-disclaimer-inner shell">
+src/app/career/page.tsx:334:              Inspired by widely used RIASEC career-interest concepts. No
+src/app/career/page.tsx:366:      <section className="career-final-cta">
+src/app/career/page.tsx:373:          <p className="career-final-copy">
+src/app/career/page.tsx:378:          <div className="career-final-actions">
+src/app/personality/report/[sessionId]/report-section.tsx:30:      className="personality-report-section border border-[#c8c2b5] bg-[#f7f4ec]"
+src/app/personality/report/[sessionId]/report-section.tsx:32:      <header className="personality-report-section-header report-print-section-heading-group border-b border-[#d8d2c6] p-7 md:p-9">
+src/app/personality/report/[sessionId]/report-header.tsx:28:    <header className="personality-report-header border-b border-[#c8c2b5] pb-10">
+src/app/personality/report/[sessionId]/report-recipient-name.tsx:11:  "personality-report-recipient-name-change";
+src/app/personality/report/[sessionId]/report-recipient-name.tsx:23:    `personality-report-recipient-name:${sessionId}`;
+src/app/personality/report/[sessionId]/report-content-block.tsx:22:    <article className="personality-report-content-block report-print-flow-block p-7 md:p-9">
+src/app/personality/report/[sessionId]/report-document.tsx:49:    <main className="personality-report min-h-screen bg-[#efede5] px-6 py-12 text-[#26372d] md:py-20">
+src/app/personality/report/[sessionId]/report-document.tsx:50:      <div className="personality-report-container mx-auto max-w-6xl">
+src/app/personality/report/[sessionId]/report-document.tsx:64:        <div className="personality-report-sections mt-12 space-y-12">
+src/app/personality/page.tsx:63:  "This is an original self-exploration assessment inspired by public personality-dimension theory.",
+src/app/personality/page.tsx:71:    <div className="personality-contour" aria-hidden="true">
+src/app/personality/page.tsx:80:      <div className="personality-compass">
+src/app/personality/page.tsx:97:      <section className="personality-hero shell">
+src/app/personality/page.tsx:98:        <div className="personality-hero-copy">
+src/app/personality/page.tsx:104:          <p className="personality-intro">
+src/app/personality/page.tsx:109:          <ul className="assessment-meta" aria-label="Assessment details">
+src/app/personality/page.tsx:114:          <div className="personality-actions">
+src/app/personality/page.tsx:127:        <div className="personality-section-heading">
+src/app/personality/page.tsx:209:      <section className="personality-final-cta" id="assessment">
+src/app/about/page.tsx:205:          <ul className="assessment-meta" aria-label="Platform principles">
+src/app/zodiac/page.tsx:182:          <ul className="assessment-meta" aria-label="Experience details">
+src/app/globals.css:103:.personality-report-section {
+src/app/globals.css:723:.personality-hero {
+src/app/globals.css:731:.personality-hero-copy {
+src/app/globals.css:740:.personality-hero h1,
+src/app/globals.css:741:.personality-section-heading h2,
+src/app/globals.css:745:.personality-final-cta h2 {
+src/app/globals.css:752:.personality-hero h1 {
+src/app/globals.css:758:.personality-intro {
+src/app/globals.css:766:.assessment-meta {
+src/app/globals.css:775:.assessment-meta li {
+src/app/globals.css:784:.assessment-meta li::before {
+src/app/globals.css:796:.personality-actions {
+src/app/globals.css:818:.personality-contour {
+src/app/globals.css:825:.personality-contour > svg {
+src/app/globals.css:832:.personality-contour > svg path,
+src/app/globals.css:833:.personality-contour > svg circle {
+src/app/globals.css:838:.personality-compass {
+src/app/globals.css:849:.personality-compass .compass-mark {
+src/app/globals.css:853:.personality-compass span,
+src/app/globals.css:900:.personality-section-heading {
+src/app/globals.css:908:.personality-section-heading .eyebrow {
+src/app/globals.css:912:.personality-section-heading h2,
+src/app/globals.css:920:.personality-section-heading > p:last-child,
+src/app/globals.css:1124:.personality-final-cta {
+src/app/globals.css:1129:.personality-final-cta .shell {
+src/app/globals.css:1135:.personality-final-cta .compass-mark {
+src/app/globals.css:1141:.personality-final-cta .eyebrow {
+src/app/globals.css:1145:.personality-final-cta h2 {
+src/app/globals.css:1176:.career-hero {
+src/app/globals.css:1184:.career-hero-copy {
+src/app/globals.css:1193:.career-hero h1,
+src/app/globals.css:1194:.career-context h2,
+src/app/globals.css:1195:.career-section-heading h2,
+src/app/globals.css:1197:.career-results h2,
+src/app/globals.css:1199:.career-disclaimer h2,
+src/app/globals.css:1201:.career-final-cta h2 {
+src/app/globals.css:1208:.career-hero h1 {
+src/app/globals.css:1214:.career-intro {
+src/app/globals.css:1222:.career-actions {
+src/app/globals.css:1228:.career-map {
+src/app/globals.css:1237:.career-map > svg {
+src/app/globals.css:1244:.career-map > svg circle,
+src/app/globals.css:1245:.career-map > svg path {
+src/app/globals.css:1250:.career-map-center {
+src/app/globals.css:1261:.career-map-center .compass-mark {
+src/app/globals.css:1265:.career-map-center > span {
+src/app/globals.css:1273:.career-map-code {
+src/app/globals.css:1287:.career-map-code-1 { top: 11%; left: 46%; }
+src/app/globals.css:1288:.career-map-code-2 { top: 25%; right: 12%; }
+src/app/globals.css:1289:.career-map-code-3 { right: 11%; bottom: 22%; }
+src/app/globals.css:1290:.career-map-code-4 { bottom: 10%; left: 46%; }
+src/app/globals.css:1291:.career-map-code-5 { bottom: 23%; left: 11%; }
+src/app/globals.css:1292:.career-map-code-6 { top: 25%; left: 11%; }
+src/app/globals.css:1294:.career-context {
+src/app/globals.css:1302:.career-context h2,
+src/app/globals.css:1303:.career-section-heading h2,
+src/app/globals.css:1305:.career-results h2,
+src/app/globals.css:1307:.career-disclaimer h2,
+src/app/globals.css:1313:.career-context-copy {
+src/app/globals.css:1321:.career-context-copy p {
+src/app/globals.css:1333:.career-section-heading {
+src/app/globals.css:1341:.career-section-heading .eyebrow {
+src/app/globals.css:1345:.career-section-heading > p {
+src/app/globals.css:1482:.career-results {
+src/app/globals.css:1488:.career-results-inner {
+src/app/globals.css:1494:.career-results-heading .eyebrow {
+src/app/globals.css:1498:.career-results-heading > p:last-child {
+src/app/globals.css:1506:.career-results ol {
+src/app/globals.css:1515:.career-results li {
+src/app/globals.css:1528:.career-results li:nth-child(even) {
+src/app/globals.css:1533:.career-results li span {
+src/app/globals.css:1577:.career-guidance {
+src/app/globals.css:1582:.career-guidance-grid {
+src/app/globals.css:1589:.career-guidance-grid article {
+src/app/globals.css:1596:.career-guidance-grid article + article {
+src/app/globals.css:1601:.career-guidance-grid span {
+src/app/globals.css:1607:.career-guidance-grid p {
+src/app/globals.css:1614:.career-disclaimer {
+src/app/globals.css:1618:.career-disclaimer-inner {
+src/app/globals.css:1624:.career-disclaimer-inner > div:last-child {
+src/app/globals.css:1630:.career-disclaimer p {
+src/app/globals.css:1637:.career-disclaimer .disclaimer-source {
+src/app/globals.css:1704:.career-final-cta {
+src/app/globals.css:1711:.career-final-cta .shell {
+src/app/globals.css:1717:.career-final-cta .eyebrow { color: var(--rust-light); }
+src/app/globals.css:1719:.career-final-cta h2 {
+src/app/globals.css:1725:.career-final-copy {
+src/app/globals.css:1733:.career-final-actions {
+src/app/globals.css:2947:  .personality-hero {
+src/app/globals.css:2951:  .personality-hero-copy {
+src/app/globals.css:2956:  .personality-contour {
+src/app/globals.css:2960:  .personality-section-heading {
+src/app/globals.css:2965:  .personality-section-heading .eyebrow {
+src/app/globals.css:2969:  .personality-section-heading > p:last-child {
+src/app/globals.css:3016:  .career-hero {
+src/app/globals.css:3020:  .career-hero-copy {
+src/app/globals.css:3025:  .career-map {
+src/app/globals.css:3029:  .career-context,
+src/app/globals.css:3031:  .career-results-inner,
+src/app/globals.css:3032:  .career-disclaimer-inner {
+src/app/globals.css:3037:  .career-context-copy {
+src/app/globals.css:3041:  .career-section-heading {
+src/app/globals.css:3046:  .career-section-heading > p {
+src/app/globals.css:3054:  .career-guidance-grid {
+src/app/globals.css:3058:  .career-guidance-grid article:nth-child(odd) {
+src/app/globals.css:3063:  .career-guidance-grid article:nth-child(n + 3) {
+src/app/globals.css:3067:  .career-disclaimer-inner > div:last-child {
+src/app/globals.css:3360:  .personality-hero-copy {
+src/app/globals.css:3365:  .personality-hero h1 {
+src/app/globals.css:3369:  .personality-intro {
+src/app/globals.css:3373:  .personality-actions {
+src/app/globals.css:3380:  .personality-actions .secondary-link {
+src/app/globals.css:3384:  .personality-contour {
+src/app/globals.css:3394:  .personality-section-heading,
+src/app/globals.css:3399:  .personality-section-heading h2,
+src/app/globals.css:3464:  .personality-final-cta {
+src/app/globals.css:3468:  .personality-final-cta h2 {
+src/app/globals.css:3472:  .career-hero-copy {
+src/app/globals.css:3477:  .career-hero h1 {
+src/app/globals.css:3481:  .career-intro {
+src/app/globals.css:3485:  .career-actions,
+src/app/globals.css:3486:  .career-final-actions {
+src/app/globals.css:3493:  .career-actions .secondary-link,
+src/app/globals.css:3494:  .career-final-actions .secondary-link {
+src/app/globals.css:3502:  .career-map {
+src/app/globals.css:3506:  .career-map-code {
+src/app/globals.css:3511:  .career-map-center .compass-mark {
+src/app/globals.css:3515:  .career-context,
+src/app/globals.css:3522:  .career-context h2,
+src/app/globals.css:3523:  .career-section-heading h2,
+src/app/globals.css:3525:  .career-results h2,
+src/app/globals.css:3527:  .career-disclaimer h2,
+src/app/globals.css:3532:  .career-context-copy {
+src/app/globals.css:3538:  .career-guidance {
+src/app/globals.css:3554:  .career-results {
+src/app/globals.css:3558:  .career-results-inner {
+src/app/globals.css:3562:  .career-results ol {
+src/app/globals.css:3566:  .career-results li:nth-child(even) {
+src/app/globals.css:3591:  .career-guidance-grid {
+src/app/globals.css:3595:  .career-guidance-grid article {
+src/app/globals.css:3600:  .career-guidance-grid article + article {
+src/app/globals.css:3606:  .career-disclaimer {
+src/app/globals.css:3610:  .career-disclaimer-inner > div:last-child {
+src/app/globals.css:3633:  .career-final-cta {
+src/app/globals.css:3637:  .career-final-cta h2 {
+src/app/globals.css:3959:  .personality-report {
+src/app/globals.css:3969:  .personality-report *,
+src/app/globals.css:3970:  .personality-report *::before,
+src/app/globals.css:3971:  .personality-report *::after {
+src/app/globals.css:3978:  .personality-report-container {
+src/app/globals.css:3984:  .personality-report-header {
+src/app/globals.css:4023:  .personality-report-sections {
+src/app/globals.css:4027:  .personality-report-sections > .personality-report-section {
+src/app/globals.css:4032:  .personality-report-sections > .personality-report-section:first-child {
+src/app/globals.css:4043:  .personality-report-section-header {
+src/app/globals.css:4060:  .personality-report h1,
+src/app/globals.css:4061:  .personality-report h2,
+src/app/globals.css:4062:  .personality-report h3 {
+src/app/globals.css:4067:  .personality-report h1 {
+src/app/globals.css:4073:  .personality-report h2 {
+src/app/globals.css:4079:  .personality-report h3 {
+src/app/globals.css:4085:  .personality-report-content-block > p {
+src/app/globals.css:4091:  .personality-report p,
+src/app/globals.css:4092:  .personality-report dd {
+
+
+===== PACKAGE SCRIPTS =====
+{
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "eslint",
+  "typecheck": "tsc --noEmit",
+  "validate:personalities": "tsx scripts/validate-personalities.ts",
+  "validate:question-bank": "tsx scripts/validate-question-bank.ts",
+  "validate:personality-bank-contract": "tsx scripts/validate-personality-bank-contract.ts",
+  "validate:personality-interpreter": "tsx scripts/validate-personality-interpreter.ts",
+  "validate:personality-scoring": "tsx scripts/validate-personality-scoring.ts",
+  "validate:personality-sync": "tsx scripts/validate-personality-sync.ts",
+  "validate:personality-parity": "tsx scripts/validate-personality-parity.ts",
+  "validate:report-standard": "tsx scripts/validate-report-standard.ts",
+  "validate:isfj-report": "tsx scripts/validate-isfj-report.ts",
+  "validate:isfj-rules": "tsx scripts/validate-isfj-rules.ts",
+  "sync:personality-items": "tsx scripts/sync-personality-items.ts",
+  "check:personality-items": "tsx scripts/sync-personality-items.ts --check",
+  "test:python": "cd innergeodessa-mvp && backend/.venv/bin/python -m pytest tests -v",
+  "validate": "npm run validate:question-bank && npm run validate:personality-bank-contract && npm run validate:personalities && npm run validate:personality-interpreter && npm run validate:personality-scoring && npm run validate:personality-sync && npm run check:personality-items && npm run validate:personality-parity && npm run validate:report-standard && npm run validate:isfj-report && npm run validate:isfj-rules && npm run validate:report-generator && npm run validate:report-generator-boundaries && npm run validate:report-frontend && npm run validate:report-print && npm run validate:report-navigation && npm run validate:report-template && npm run validate:report-recipient-name && npm run validate:personality-expansion && npm run validate:personality-all",
+  "validate:report-generator": "tsx scripts/validate-report-generator.ts",
+  "validate:report-generator-boundaries": "tsx scripts/validate-report-generator-boundaries.ts",
+  "validate:report-frontend": "tsx scripts/validate-report-frontend.ts",
+  "validate:report-print": "tsx scripts/validate-report-print.ts",
+  "validate:report-navigation": "tsx scripts/validate-report-navigation.ts",
+  "validate:report-template": "tsx scripts/validate-report-template.ts",
+  "validate:report-recipient-name": "tsx scripts/validate-report-recipient-name.ts",
+  "validate:personality-expansion": "tsx scripts/validate-personality-expansion-standard.ts",
+  "validate:personality": "tsx scripts/validate-personality-types.ts",
+  "validate:personality-family": "tsx scripts/validate-personality-types.ts --family",
+  "validate:personality-all": "tsx scripts/validate-personality-types.ts --all",
+  "scaffold:personality": "node scripts/scaffold-personality-report.mjs",
+  "validate:riasec-question-bank": "tsx scripts/validate-riasec-question-bank.ts",
+  "validate:riasec-scoring": "tsx scripts/validate-riasec-scoring.ts"
+}
+
+
+===== END =====

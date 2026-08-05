@@ -1,0 +1,1478 @@
+===== CURRENT HEAD =====
+3bd7ca7 feat(career): add persisted RIASEC result flow
+
+===== CURRENT STATUS =====
+?? docs/audits/career-focused-context-20260730.txt
+?? docs/audits/career-phase2-context-20260730.txt
+?? docs/audits/career-phase2c-context-20260730.txt
+?? docs/audits/innergeo-full-audit-20260730-142911.txt
+?? src/app/career/result/
+?? src/app/career/test/
+?? src/app/zodiac/result/
+?? src/app/zodiac/test/
+?? src/data/zodiac/
+
+===== PERSONALITY TEST ADAPTER =====
+     1	"use client";
+     2	
+     3	import { useRouter } from "next/navigation";
+     4	import { useEffect, useRef, useState } from "react";
+     5	
+     6	import {
+     7	  AssessmentAnswerScale,
+     8	  AssessmentNavigation,
+     9	  AssessmentProgress,
+    10	  AssessmentQuestion,
+    11	  AssessmentShell,
+    12	  type AssessmentAnswerOption,
+    13	  type AssessmentAnswerRecord,
+    14	  type AssessmentDisplayItem,
+    15	  type AssessmentViewStatus,
+    16	} from "@/components/assessment";
+    17	import {
+    18	  fetchPersonalityResult,
+    19	  type PersonalityResultContract,
+    20	} from "@/data/assessment/scoring/personality";
+    21	
+    22	type ItemsResponse = {
+    23	  count: number;
+    24	  items: AssessmentDisplayItem[];
+    25	  error?: string;
+    26	};
+    27	
+    28	type SessionResponse = {
+    29	  session_id: string;
+    30	  started_at?: string;
+    31	  question_bank_version?: string;
+    32	  error?: string;
+    33	};
+    34	
+    35	type SaveAnswerResponse = {
+    36	  saved?: boolean;
+    37	  error?: string;
+    38	};
+    39	
+    40	type CompleteResponse = {
+    41	  error?: string;
+    42	};
+    43	
+    44	const answerOptions = [
+    45	  { value: 1, label: "Strongly disagree" },
+    46	  { value: 2, label: "Disagree" },
+    47	  { value: 3, label: "Neither agree nor disagree" },
+    48	  { value: 4, label: "Agree" },
+    49	  { value: 5, label: "Strongly agree" },
+    50	] as const satisfies readonly AssessmentAnswerOption[];
+    51	
+    52	export default function PersonalityTestPage() {
+    53	  const router = useRouter();
+    54	  const [items, setItems] = useState<AssessmentDisplayItem[]>([]);
+    55	  const [sessionId, setSessionId] = useState("");
+    56	  const [currentIndex, setCurrentIndex] = useState(0);
+    57	  const [answers, setAnswers] = useState<
+    58	    Record<string, AssessmentAnswerRecord>
+    59	  >({});
+    60	  const questionStartedAt = useRef<number | null>(null);
+    61	  const [status, setStatus] =
+    62	    useState<AssessmentViewStatus>("loading");
+    63	  const [errorMessage, setErrorMessage] = useState("");
+    64	  const [isSaving, setIsSaving] = useState(false);
+    65	  const [saveMessage, setSaveMessage] = useState("");
+    66	  const [completionResult, setCompletionResult] =
+    67	    useState<PersonalityResultContract | null>(null);
+    68	
+    69	  useEffect(() => {
+    70	    async function loadItems() {
+    71	      try {
+    72	        const sessionResponse = await fetch("/api/sessions", {
+    73	          method: "POST",
+    74	        });
+    75	
+    76	        const sessionData: SessionResponse = await sessionResponse.json();
+    77	
+    78	        if (!sessionResponse.ok || !sessionData.session_id) {
+    79	          throw new Error(
+    80	            sessionData.error ?? "Unable to create assessment session.",
+    81	          );
+    82	        }
+    83	
+    84	        const response = await fetch(
+    85	          `/api/sessions/${sessionData.session_id}/items`,
+    86	          { cache: "no-store" },
+    87	        );
+    88	
+    89	        const data: ItemsResponse = await response.json();
+    90	
+    91	        if (!response.ok) {
+    92	          throw new Error(data.error ?? "Unable to load assessment items.");
+    93	        }
+    94	
+    95	        if (!Array.isArray(data.items) || data.count !== 72) {
+    96	          throw new Error("The assessment did not return all 72 questions.");
+    97	        }
+    98	
+    99	        const sortedItems = [...data.items].sort(
+   100	          (first, second) => first.master_order - second.master_order,
+   101	        );
+   102	
+   103	        setSessionId(sessionData.session_id);
+   104	        setItems(sortedItems);
+   105	        setStatus("ready");
+   106	      } catch (error) {
+   107	        setErrorMessage(
+   108	          error instanceof Error
+   109	            ? error.message
+   110	            : "The assessment could not be loaded.",
+   111	        );
+   112	        setStatus("error");
+   113	      }
+   114	    }
+   115	
+   116	    loadItems();
+   117	  }, []);
+   118	
+   119	  useEffect(() => {
+   120	    if (status === "ready") {
+   121	      questionStartedAt.current = performance.now();
+   122	    }
+   123	  }, [currentIndex, status]);
+   124	
+   125	  if (status === "loading") {
+   126	    return (
+   127	      <AssessmentShell
+   128	        status={status}
+   129	        errorMessage=""
+   130	        currentIndex={0}
+   131	        itemCount={0}
+   132	      >
+   133	        {null}
+   134	      </AssessmentShell>
+   135	    );
+   136	  }
+   137	
+   138	  if (status === "error") {
+   139	    return (
+   140	      <AssessmentShell
+   141	        status={status}
+   142	        errorMessage={errorMessage}
+   143	        currentIndex={0}
+   144	        itemCount={0}
+   145	      >
+   146	        {null}
+   147	      </AssessmentShell>
+   148	    );
+   149	  }
+   150	
+   151	  const currentItem = items[currentIndex];
+   152	  const selectedValue = answers[currentItem.item_id]?.value;
+   153	  const isFirstQuestion = currentIndex === 0;
+   154	  const isLastQuestion = currentIndex === items.length - 1;
+   155	
+   156	  function selectAnswer(
+   157	    value: number,
+   158	    eventTimeStamp: number,
+   159	  ) {
+   160	    setSaveMessage("");
+   161	    const startedAt =
+   162	      questionStartedAt.current ?? eventTimeStamp;
+   163	
+   164	    const responseTimeMs = Math.max(
+   165	      0,
+   166	      Math.round(eventTimeStamp - startedAt),
+   167	    );
+   168	
+   169	    setAnswers((currentAnswers) => ({
+   170	      ...currentAnswers,
+   171	      [currentItem.item_id]: {
+   172	        value,
+   173	        responseTimeMs,
+   174	      },
+   175	    }));
+   176	  }
+   177	
+   178	  async function goToNextQuestion() {
+   179	    if (
+   180	      selectedValue === undefined ||
+   181	      !sessionId ||
+   182	      isSaving
+   183	    ) {
+   184	      return;
+   185	    }
+   186	
+   187	    const answer = answers[currentItem.item_id];
+   188	
+   189	    if (!answer) {
+   190	      return;
+   191	    }
+   192	
+   193	    setIsSaving(true);
+   194	    setSaveMessage("");
+   195	    setCompletionResult(null);
+   196	
+   197	    try {
+   198	      const response = await fetch(
+   199	        `/api/sessions/${sessionId}/answers`,
+   200	        {
+   201	          method: "PUT",
+   202	          headers: {
+   203	            "Content-Type": "application/json",
+   204	          },
+   205	          body: JSON.stringify({
+   206	            item_id: currentItem.item_id,
+   207	            value: answer.value,
+   208	            response_time_ms: answer.responseTimeMs,
+   209	          }),
+   210	        },
+   211	      );
+   212	
+   213	      const data: SaveAnswerResponse = await response.json();
+   214	
+   215	      if (!response.ok || data.saved !== true) {
+   216	        throw new Error(
+   217	          data.error ?? "The answer could not be saved.",
+   218	        );
+   219	      }
+   220	
+   221	      if (isLastQuestion) {
+   222	        const completeResponse = await fetch(
+   223	          `/api/sessions/${sessionId}/complete`,
+   224	          {
+   225	            method: "POST",
+   226	          },
+   227	        );
+   228	
+   229	        const completeData: CompleteResponse =
+   230	          await completeResponse.json();
+   231	
+   232	        if (!completeResponse.ok) {
+   233	          throw new Error(
+   234	            completeData.error ??
+   235	              "The assessment result could not be generated.",
+   236	          );
+   237	        }
+   238	
+   239	        const persistedResult =
+   240	          await fetchPersonalityResult(sessionId);
+   241	
+   242	        setCompletionResult(persistedResult);
+   243	        setSaveMessage(
+   244	          "Assessment completed and result generated successfully.",
+   245	        );
+   246	
+   247	        sessionStorage.setItem(
+   248	          `innergeodessa-result-${sessionId}`,
+   249	          JSON.stringify(persistedResult),
+   250	        );
+   251	
+   252	        router.push(`/personality/result/${sessionId}`);
+   253	        return;
+   254	      }
+   255	
+   256	      setCurrentIndex((index) => index + 1);
+   257	    } catch (error) {
+   258	      setSaveMessage(
+   259	        error instanceof Error
+   260	          ? error.message
+   261	          : "The answer could not be saved.",
+   262	      );
+   263	    } finally {
+   264	      setIsSaving(false);
+   265	    }
+   266	  }
+   267	
+   268	  function goToPreviousQuestion() {
+   269	    if (isFirstQuestion) {
+   270	      return;
+   271	    }
+   272	
+   273	    setCurrentIndex((index) => index - 1);
+   274	  }
+   275	
+   276	  return (
+   277	    <AssessmentShell
+   278	      status={status}
+   279	      errorMessage={errorMessage}
+   280	      currentIndex={currentIndex}
+   281	      itemCount={items.length}
+   282	    >
+   283	      <AssessmentProgress
+   284	        currentIndex={currentIndex}
+   285	        itemCount={items.length}
+   286	      />
+   287	      <AssessmentQuestion
+   288	        eyebrow="Personality assessment"
+   289	        wording={currentItem.wording}
+   290	      />
+   291	      <AssessmentAnswerScale
+   292	        options={answerOptions}
+   293	        selectedValue={selectedValue}
+   294	        onSelect={selectAnswer}
+   295	      />
+   296	      <AssessmentNavigation
+   297	        answeredCount={Object.keys(answers).length}
+   298	        itemCount={items.length}
+   299	        sessionId={sessionId}
+   300	        isFirstQuestion={isFirstQuestion}
+   301	        isLastQuestion={isLastQuestion}
+   302	        hasSelectedAnswer={selectedValue !== undefined}
+   303	        isSaving={isSaving}
+   304	        isComplete={completionResult !== null}
+   305	        saveMessage={saveMessage}
+   306	        onPrevious={goToPreviousQuestion}
+   307	        onNext={goToNextQuestion}
+   308	        completionContent={
+   309	          completionResult ? (
+   310	            <div className="mt-8 border border-[#c8c2b5] bg-[#f7f4ec] p-6">
+   311	              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6d746b]">
+   312	                Assessment Complete
+   313	              </p>
+   314	
+   315	              <h2 className="mt-3 text-2xl font-semibold text-[#26372d]">
+   316	                Result generated successfully
+   317	              </h2>
+   318	
+   319	              <pre className="mt-5 max-h-96 overflow-auto whitespace-pre-wrap break-words bg-white p-4 text-xs leading-6 text-[#34483a]">
+   320	                {JSON.stringify(completionResult, null, 2)}
+   321	              </pre>
+   322	            </div>
+   323	          ) : undefined
+   324	        }
+   325	      />
+   326	    </AssessmentShell>
+   327	  );
+   328	}
+
+===== SHARED ASSESSMENT COMPONENTS =====
+
+----- src/components/assessment/types.ts -----
+     1	export interface AssessmentDisplayItem {
+     2	  item_id: string;
+     3	  wording: string;
+     4	  master_order: number;
+     5	}
+     6	
+     7	export interface AssessmentAnswerOption {
+     8	  value: number;
+     9	  label: string;
+    10	}
+    11	
+    12	export interface AssessmentAnswerRecord {
+    13	  value: number;
+    14	  responseTimeMs: number;
+    15	}
+    16	
+    17	export type AssessmentViewStatus = "loading" | "ready" | "error";
+
+----- src/components/assessment/index.ts -----
+     1	export { AssessmentAnswerScale } from "./assessment-answer-scale";
+     2	export { AssessmentNavigation } from "./assessment-navigation";
+     3	export { AssessmentProgress } from "./assessment-progress";
+     4	export { AssessmentQuestion } from "./assessment-question";
+     5	export { AssessmentShell } from "./assessment-shell";
+     6	
+     7	export type {
+     8	  AssessmentAnswerOption,
+     9	  AssessmentAnswerRecord,
+    10	  AssessmentDisplayItem,
+    11	  AssessmentViewStatus,
+    12	} from "./types";
+
+----- src/components/assessment/assessment-shell.tsx -----
+     1	import type { ReactNode } from "react";
+     2	
+     3	import type { AssessmentViewStatus } from "./types";
+     4	
+     5	export interface AssessmentShellProps {
+     6	  status: AssessmentViewStatus;
+     7	  errorMessage: string;
+     8	  currentIndex: number;
+     9	  itemCount: number;
+    10	  children: ReactNode;
+    11	}
+    12	
+    13	export function AssessmentShell({
+    14	  status,
+    15	  errorMessage,
+    16	  currentIndex,
+    17	  itemCount,
+    18	  children,
+    19	}: AssessmentShellProps) {
+    20	  if (status === "loading") {
+    21	    return (
+    22	      <main className="min-h-screen p-20">
+    23	        <h1 className="text-4xl">Loading assessment…</h1>
+    24	      </main>
+    25	    );
+    26	  }
+    27	
+    28	  if (status === "error") {
+    29	    return (
+    30	      <main className="min-h-screen p-20">
+    31	        <h1 className="mb-4 text-4xl">Unable to load assessment</h1>
+    32	        <p>{errorMessage}</p>
+    33	      </main>
+    34	    );
+    35	  }
+    36	
+    37	  return (
+    38	    <main className="min-h-screen bg-[#f1eee5] text-[#20231d]">
+    39	      <header className="border-b border-black/20">
+    40	        <div className="mx-auto flex min-h-20 w-[min(100%-40px,1000px)] items-center justify-between">
+    41	          <span className="font-serif text-xl font-bold">
+    42	            Inner<span className="italic text-[#a64a2c]">Geodessa</span>
+    43	          </span>
+    44	
+    45	          <span className="text-xs font-bold uppercase tracking-[0.16em]">
+    46	            Question {currentIndex + 1} of {itemCount}
+    47	          </span>
+    48	        </div>
+    49	      </header>
+    50	
+    51	      <section className="mx-auto w-[min(100%-40px,760px)] py-16 md:py-24">
+    52	        {children}
+    53	      </section>
+    54	    </main>
+    55	  );
+    56	}
+
+----- src/components/assessment/assessment-progress.tsx -----
+     1	export interface AssessmentProgressProps {
+     2	  currentIndex: number;
+     3	  itemCount: number;
+     4	}
+     5	
+     6	export function AssessmentProgress({
+     7	  currentIndex,
+     8	  itemCount,
+     9	}: AssessmentProgressProps) {
+    10	  const progress = ((currentIndex + 1) / itemCount) * 100;
+    11	
+    12	  return (
+    13	    <div className="mb-14 h-px bg-black/15">
+    14	      <div
+    15	        className="h-px bg-[#a64a2c] transition-all duration-300"
+    16	        style={{ width: `${progress}%` }}
+    17	      />
+    18	    </div>
+    19	  );
+    20	}
+
+----- src/components/assessment/assessment-question.tsx -----
+     1	export interface AssessmentQuestionProps {
+     2	  eyebrow: string;
+     3	  wording: string;
+     4	}
+     5	
+     6	export function AssessmentQuestion({
+     7	  eyebrow,
+     8	  wording,
+     9	}: AssessmentQuestionProps) {
+    10	  return (
+    11	    <>
+    12	      <p className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-[#a64a2c]">
+    13	        {eyebrow}
+    14	      </p>
+    15	
+    16	      <h1 className="mb-12 font-serif text-4xl leading-tight md:text-5xl">
+    17	        {wording}
+    18	      </h1>
+    19	    </>
+    20	  );
+    21	}
+
+----- src/components/assessment/assessment-answer-scale.tsx -----
+     1	import type { AssessmentAnswerOption } from "./types";
+     2	
+     3	export interface AssessmentAnswerScaleProps {
+     4	  options: readonly AssessmentAnswerOption[];
+     5	  selectedValue: number | undefined;
+     6	  onSelect: (value: number, eventTimeStamp: number) => void;
+     7	}
+     8	
+     9	export function AssessmentAnswerScale({
+    10	  options,
+    11	  selectedValue,
+    12	  onSelect,
+    13	}: AssessmentAnswerScaleProps) {
+    14	  return (
+    15	    <div className="grid gap-3">
+    16	      {options.map((option) => {
+    17	        const selected = selectedValue === option.value;
+    18	
+    19	        return (
+    20	          <button
+    21	            key={option.value}
+    22	            type="button"
+    23	            onClick={(event) =>
+    24	              onSelect(option.value, event.timeStamp)
+    25	            }
+    26	            className={`flex min-h-16 items-center justify-between border px-5 text-left transition ${
+    27	              selected
+    28	                ? "border-[#a64a2c] bg-[#a64a2c] text-[#f1eee5]"
+    29	                : "border-black/20 hover:border-[#a64a2c]"
+    30	            }`}
+    31	          >
+    32	            <span>{option.label}</span>
+    33	            <span className="text-sm">{option.value}</span>
+    34	          </button>
+    35	        );
+    36	      })}
+    37	    </div>
+    38	  );
+    39	}
+
+----- src/components/assessment/assessment-navigation.tsx -----
+     1	import type { ReactNode } from "react";
+     2	
+     3	export interface AssessmentNavigationProps {
+     4	  answeredCount: number;
+     5	  itemCount: number;
+     6	  sessionId: string;
+     7	  isFirstQuestion: boolean;
+     8	  isLastQuestion: boolean;
+     9	  hasSelectedAnswer: boolean;
+    10	  isSaving: boolean;
+    11	  isComplete: boolean;
+    12	  saveMessage: string;
+    13	  completionContent?: ReactNode;
+    14	  onPrevious: () => void;
+    15	  onNext: () => void;
+    16	}
+    17	
+    18	export function AssessmentNavigation({
+    19	  answeredCount,
+    20	  itemCount,
+    21	  sessionId,
+    22	  isFirstQuestion,
+    23	  isLastQuestion,
+    24	  hasSelectedAnswer,
+    25	  isSaving,
+    26	  isComplete,
+    27	  saveMessage,
+    28	  completionContent,
+    29	  onPrevious,
+    30	  onNext,
+    31	}: AssessmentNavigationProps) {
+    32	  return (
+    33	    <>
+    34	      <div className="mt-10 flex items-center justify-between border-t border-black/20 pt-8">
+    35	        <button
+    36	          type="button"
+    37	          onClick={onPrevious}
+    38	          disabled={isFirstQuestion}
+    39	          className="min-h-12 px-5 text-xs font-bold uppercase tracking-[0.14em] disabled:opacity-30"
+    40	        >
+    41	          ← Previous
+    42	        </button>
+    43	
+    44	        <div className="text-center text-xs text-black/50">
+    45	          <p>
+    46	            Answered {answeredCount} of {itemCount}
+    47	          </p>
+    48	          <p className="mt-1">
+    49	            Session {sessionId.slice(0, 8)}…
+    50	          </p>
+    51	        </div>
+    52	
+    53	        <button
+    54	          type="button"
+    55	          onClick={onNext}
+    56	          disabled={!hasSelectedAnswer || isSaving || isComplete}
+    57	          className="min-h-12 bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] disabled:cursor-not-allowed disabled:opacity-30"
+    58	        >
+    59	          {isSaving
+    60	            ? isLastQuestion
+    61	              ? "Generating result…"
+    62	              : "Saving…"
+    63	            : isComplete
+    64	              ? "Assessment complete"
+    65	              : isLastQuestion
+    66	                ? "Save final answer"
+    67	                : "Next question →"}
+    68	        </button>
+    69	      </div>
+    70	
+    71	      {completionContent}
+    72	
+    73	      {saveMessage && (
+    74	        <p
+    75	          className={`mt-5 text-center text-sm ${
+    76	            saveMessage.startsWith("Final")
+    77	              ? "text-[#34483a]"
+    78	              : "text-[#a64a2c]"
+    79	          }`}
+    80	        >
+    81	          {saveMessage}
+    82	        </p>
+    83	      )}
+    84	    </>
+    85	  );
+    86	}
+
+===== CAREER RESULT CONTRACT =====
+     1	import {
+     2	  RIASEC_DIMENSIONS,
+     3	  type RiasecDimension,
+     4	  type RiasecPercentages,
+     5	  type RiasecScores,
+     6	} from "./types";
+     7	
+     8	export interface RiasecResultContract {
+     9	  sessionId: string;
+    10	  module: "riasec";
+    11	  status: "completed";
+    12	  code: string;
+    13	  scores: RiasecScores;
+    14	  percentages: RiasecPercentages;
+    15	  ranking: RiasecDimension[];
+    16	  answered: RiasecScores;
+    17	  questionBankVersion: string;
+    18	  completedAt: string;
+    19	  calculatedAt: string;
+    20	}
+    21	
+    22	export function isRiasecResultContract(
+    23	  value: unknown,
+    24	): value is RiasecResultContract {
+    25	  if (
+    26	    !isRecord(value) ||
+    27	    !isNonEmptyString(value.sessionId) ||
+    28	    value.module !== "riasec" ||
+    29	    value.status !== "completed" ||
+    30	    !isNonEmptyString(value.code) ||
+    31	    !isDimensionRecord(value.scores, isFiniteNumber) ||
+    32	    !isDimensionRecord(
+    33	      value.percentages,
+    34	      isValidPercentage,
+    35	    ) ||
+    36	    !isRanking(value.ranking) ||
+    37	    !isDimensionRecord(
+    38	      value.answered,
+    39	      isNonNegativeInteger,
+    40	    ) ||
+    41	    !isNonEmptyString(value.questionBankVersion) ||
+    42	    !isNonEmptyString(value.completedAt) ||
+    43	    !isNonEmptyString(value.calculatedAt)
+    44	  ) {
+    45	    return false;
+    46	  }
+    47	
+    48	  return value.code === value.ranking.slice(0, 3).join("");
+    49	}
+    50	
+    51	function isRanking(value: unknown): value is RiasecDimension[] {
+    52	  return (
+    53	    Array.isArray(value) &&
+    54	    value.length === RIASEC_DIMENSIONS.length &&
+    55	    value.every(isRiasecDimension) &&
+    56	    new Set(value).size === RIASEC_DIMENSIONS.length
+    57	  );
+    58	}
+    59	
+    60	function isDimensionRecord(
+    61	  value: unknown,
+    62	  validateValue: (entry: unknown) => boolean,
+    63	): boolean {
+    64	  return (
+    65	    isRecord(value) &&
+    66	    RIASEC_DIMENSIONS.every((dimension) =>
+    67	      validateValue(value[dimension]),
+    68	    )
+    69	  );
+    70	}
+    71	
+    72	function isRiasecDimension(
+    73	  value: unknown,
+    74	): value is RiasecDimension {
+    75	  return (
+    76	    typeof value === "string" &&
+    77	    RIASEC_DIMENSIONS.some((dimension) => dimension === value)
+    78	  );
+    79	}
+    80	
+    81	function isFiniteNumber(value: unknown): boolean {
+    82	  return typeof value === "number" && Number.isFinite(value);
+    83	}
+    84	
+    85	function isValidPercentage(value: unknown): boolean {
+    86	  return (
+    87	    isFiniteNumber(value) &&
+    88	    typeof value === "number" &&
+    89	    value >= 0 &&
+    90	    value <= 100
+    91	  );
+    92	}
+    93	
+    94	function isNonNegativeInteger(value: unknown): boolean {
+    95	  return (
+    96	    typeof value === "number" &&
+    97	    Number.isInteger(value) &&
+    98	    value >= 0
+    99	  );
+   100	}
+   101	
+   102	function isNonEmptyString(value: unknown): value is string {
+   103	  return typeof value === "string" && value.trim().length > 0;
+   104	}
+   105	
+   106	function isRecord(
+   107	  value: unknown,
+   108	): value is Record<string, unknown> {
+   109	  return typeof value === "object" && value !== null;
+   110	}
+
+===== CAREER DATA INDEX =====
+     1	export {
+     2	  RIASEC_DIMENSIONS,
+     3	  type RiasecAnswer,
+     4	  type RiasecDimension,
+     5	  type RiasecPercentages,
+     6	  type RiasecRankedDimension,
+     7	  type RiasecResult,
+     8	  type RiasecScoreGaps,
+     9	  type RiasecScores,
+    10	  type ScoreRiasecInput,
+    11	} from "./types";
+    12	
+    13	export { scoreRiasec } from "./scoring";
+    14	export {
+    15	  isRiasecResultContract,
+    16	  type RiasecResultContract,
+    17	} from "./result-contract";
+
+===== CAREER LANDING PAGE =====
+     1	import type { Metadata } from "next";
+     2	import { CompassMark, SiteFooter, SiteHeader } from "@/components/home";
+     3	
+     4	export const metadata: Metadata = {
+     5	  title: "Career Interest Assessment | InnerGeodessa",
+     6	  description:
+     7	    "Explore your career interests through six balanced dimensions and discover work environments, learning paths, and future directions that may fit you.",
+     8	};
+     9	
+    10	const dimensions = [
+    11	  {
+    12	    code: "R",
+    13	    title: "Realistic",
+    14	    theme: "Build, operate, repair, and work with tangible systems.",
+    15	    examples: [
+    16	      "Practical activity",
+    17	      "Tools and equipment",
+    18	      "Nature and the physical world",
+    19	      "Hands-on problem-solving",
+    20	    ],
+    21	  },
+    22	  {
+    23	    code: "I",
+    24	    title: "Investigative",
+    25	    theme: "Understand, analyse, research, and solve complex questions.",
+    26	    examples: [
+    27	      "Science and data",
+    28	      "Research",
+    29	      "Systems thinking",
+    30	      "Independent problem-solving",
+    31	    ],
+    32	  },
+    33	  {
+    34	    code: "A",
+    35	    title: "Artistic",
+    36	    theme: "Create, express, imagine, and communicate original ideas.",
+    37	    examples: [
+    38	      "Design and writing",
+    39	      "Visual communication",
+    40	      "Performance",
+    41	      "Creative experimentation",
+    42	    ],
+    43	  },
+    44	  {
+    45	    code: "S",
+    46	    title: "Social",
+    47	    theme: "Support, teach, guide, connect, and develop people.",
+    48	    examples: [
+    49	      "Education",
+    50	      "Counselling",
+    51	      "Communication",
+    52	      "Collaborative development",
+    53	    ],
+    54	  },
+    55	  {
+    56	    code: "E",
+    57	    title: "Enterprising",
+    58	    theme: "Lead, persuade, initiate, organise, and create momentum.",
+    59	    examples: [
+    60	      "Business and leadership",
+    61	      "Negotiation",
+    62	      "Entrepreneurship",
+    63	      "Influence and decisions",
+    64	    ],
+    65	  },
+    66	  {
+    67	    code: "C",
+    68	    title: "Conventional",
+    69	    theme: "Organise, structure, maintain, and improve reliable processes.",
+    70	    examples: [
+    71	      "Planning",
+    72	      "Administration and finance",
+    73	      "Quality control",
+    74	      "Information organisation",
+    75	    ],
+    76	  },
+    77	];
+    78	
+    79	const resultPreview = [
+    80	  "Primary and secondary interest dimensions",
+    81	  "An explanation of your RIASEC pattern",
+    82	  "Preferred tasks and environments",
+    83	  "Possible career families",
+    84	  "Education and learning directions",
+    85	  "Transferable strengths",
+    86	  "Development areas",
+    87	  "Questions for further exploration",
+    88	  "Possible links with personality and values",
+    89	  "Practical next-step recommendations",
+    90	];
+    91	
+    92	const guidance = [
+    93	  "Answer according to genuine interest, not social expectations.",
+    94	  "Distinguish what you enjoy from what you are already good at.",
+    95	  "Avoid choosing answers only because a career seems prestigious or profitable.",
+    96	  "Think across school, work, hobbies, projects, and daily life.",
+    97	  "Use the result as evidence for reflection rather than a final decision.",
+    98	];
+    99	
+   100	function ComingSoonAction({ children }: { children: React.ReactNode }) {
+   101	  return (
+   102	    <span className="primary-button disabled-button" aria-disabled="true">
+   103	      {children}
+   104	      <span>Coming Soon</span>
+   105	    </span>
+   106	  );
+   107	}
+   108	
+   109	function CareerMap() {
+   110	  return (
+   111	    <div className="career-map" aria-hidden="true">
+   112	      <svg viewBox="0 0 620 620" fill="none">
+   113	        <circle cx="310" cy="310" r="224" />
+   114	        <circle cx="310" cy="310" r="162" />
+   115	        <circle cx="310" cy="310" r="96" />
+   116	        <path d="M310 36v548M36 310h548M116 116l388 388M504 116 116 504" />
+   117	      </svg>
+   118	      <div className="career-map-center">
+   119	        <CompassMark />
+   120	        <span>Interests</span>
+   121	      </div>
+   122	      {dimensions.map((dimension, index) => (
+   123	        <span
+   124	          className={`career-map-code career-map-code-${index + 1}`}
+   125	          key={dimension.code}
+   126	        >
+   127	          {dimension.code}
+   128	        </span>
+   129	      ))}
+   130	    </div>
+   131	  );
+   132	}
+   133	
+   134	export default function CareerPage() {
+   135	  return (
+   136	    <main id="top">
+   137	      <SiteHeader homePath="/" />
+   138	
+   139	      <section className="career-hero shell">
+   140	        <div className="career-hero-copy">
+   141	          <p className="eyebrow">Career Interest Assessment</p>
+   142	          <h1>Discover the work that feels meaningful to you.</h1>
+   143	          <p className="career-intro">
+   144	            Explore the environments, activities, and challenges that
+   145	            naturally hold your attention. Your interests can help reveal
+   146	            career directions worth investigating—not a single job you must
+   147	            choose.
+   148	          </p>
+   149	          <ul className="assessment-meta" aria-label="Assessment details">
+   150	            <li>Six interest dimensions</li>
+   151	            <li>Approximately 8–12 minutes</li>
+   152	            <li>Designed for career exploration</li>
+   153	            <li>No right or wrong answers</li>
+   154	          </ul>
+   155	          <div className="career-actions">
+   156	            <ComingSoonAction>Start Assessment</ComingSoonAction>
+   157	            <a className="secondary-link" href="#riasec">
+   158	              Explore the Six Dimensions <span aria-hidden="true">↓</span>
+   159	            </a>
+   160	          </div>
+   161	        </div>
+   162	        <CareerMap />
+   163	      </section>
+   164	
+   165	      <section className="career-context shell">
+   166	        <div className="career-context-heading">
+   167	          <p className="eyebrow">Look beyond the title</p>
+   168	          <h2>Why career interests matter</h2>
+   169	        </div>
+   170	        <div className="career-context-copy">
+   171	          <p>
+   172	            Career decisions are shaped by more than job titles. Sustained
+   173	            interest often grows from the activities you enjoy, the problems
+   174	            you want to solve, and the environments where your attention feels
+   175	            naturally engaged.
+   176	          </p>
+   177	          <p>
+   178	            You may prefer working with people, systems, ideas, creativity,
+   179	            structure, or practical action—and those interests may develop
+   180	            over time. A useful career direction also considers skills, values,
+   181	            opportunities, education, circumstances, and real-world
+   182	            experience.
+   183	          </p>
+   184	        </div>
+   185	      </section>
+   186	
+   187	      <section className="riasec-section" id="riasec">
+   188	        <div className="shell">
+   189	          <div className="career-section-heading">
+   190	            <div>
+   191	              <p className="eyebrow">The RIASEC framework</p>
+   192	              <h2>Six dimensions of interest</h2>
+   193	            </div>
+   194	            <p>
+   195	              Most people combine several dimensions. None is more valuable
+   196	              than another, and no single dimension defines your future.
+   197	            </p>
+   198	          </div>
+   199	
+   200	          <div className="riasec-grid">
+   201	            {dimensions.map((dimension, index) => (
+   202	              <article className="riasec-card" key={dimension.code}>
+   203	                <div className="riasec-card-top">
+   204	                  <span>0{index + 1}</span>
+   205	                  <strong aria-hidden="true">{dimension.code}</strong>
+   206	                </div>
+   207	                <h3>{dimension.title}</h3>
+   208	                <p>{dimension.theme}</p>
+   209	                <ul>
+   210	                  {dimension.examples.map((example) => (
+   211	                    <li key={example}>{example}</li>
+   212	                  ))}
+   213	                </ul>
+   214	              </article>
+   215	            ))}
+   216	          </div>
+   217	        </div>
+   218	      </section>
+   219	
+   220	      <section className="interest-pattern shell">
+   221	        <div className="interest-pattern-heading">
+   222	          <p className="eyebrow">Your interest pattern</p>
+   223	          <h2>A combination, not a rigid label</h2>
+   224	        </div>
+   225	        <div className="pattern-body">
+   226	          <p>
+   227	            The future assessment will highlight your strongest interest
+   228	            areas, supporting dimensions, preferred activities, and the
+   229	            environments that may feel energising—or require more deliberate
+   230	            effort.
+   231	          </p>
+   232	          <div className="pattern-examples" aria-label="Example combinations">
+   233	            <span>Investigative</span>
+   234	            <i>+</i>
+   235	            <span>Artistic</span>
+   236	            <em>or</em>
+   237	            <span>Enterprising</span>
+   238	            <i>+</i>
+   239	            <span>Social</span>
+   240	          </div>
+   241	          <p>
+   242	            Combinations help widen exploration. They are starting points for
+   243	            questions and real-world research, not instructions about the one
+   244	            career you should pursue.
+   245	          </p>
+   246	        </div>
+   247	      </section>
+   248	
+   249	      <section className="career-results">
+   250	        <div className="career-results-inner shell">
+   251	          <div className="career-results-heading">
+   252	            <p className="eyebrow">Future result preview</p>
+   253	            <h2>What your result may include</h2>
+   254	            <p>
+   255	              A structured overview for comparing possibilities—not a claim
+   256	              to identify your perfect career.
+   257	            </p>
+   258	          </div>
+   259	          <ol>
+   260	            {resultPreview.map((item, index) => (
+   261	              <li key={item}>
+   262	                <span>{String(index + 1).padStart(2, "0")}</span>
+   263	                {item}
+   264	              </li>
+   265	            ))}
+   266	          </ol>
+   267	        </div>
+   268	      </section>
+   269	
+   270	      <section className="beyond-section shell">
+   271	        <div className="beyond-heading">
+   272	          <p className="eyebrow">Flexible directions</p>
+   273	          <h2>Beyond job titles</h2>
+   274	        </div>
+   275	        <div className="beyond-grid">
+   276	          <p>
+   277	            One interest pattern can connect to many occupations, and the same
+   278	            occupation can feel very different across industries.
+   279	          </p>
+   280	          <p>
+   281	            Work environment and role design may matter as much as the title
+   282	            printed on a job description.
+   283	          </p>
+   284	          <p>
+   285	            People can combine interests through portfolio careers,
+   286	            entrepreneurship, interdisciplinary work, and changing roles over
+   287	            time.
+   288	          </p>
+   289	        </div>
+   290	      </section>
+   291	
+   292	      <section className="career-guidance">
+   293	        <div className="shell">
+   294	          <div className="career-section-heading">
+   295	            <div>
+   296	              <p className="eyebrow">Assessment guidance</p>
+   297	              <h2>Answer from genuine interest</h2>
+   298	            </div>
+   299	            <p>
+   300	              Curiosity is different from competence. Consider what draws you
+   301	              in, even when you are still learning.
+   302	            </p>
+   303	          </div>
+   304	          <div className="career-guidance-grid">
+   305	            {guidance.map((item, index) => (
+   306	              <article key={item}>
+   307	                <span>0{index + 1}</span>
+   308	                <p>{item}</p>
+   309	              </article>
+   310	            ))}
+   311	          </div>
+   312	        </div>
+   313	      </section>
+   314	
+   315	      <section className="career-disclaimer">
+   316	        <div className="career-disclaimer-inner shell">
+   317	          <div>
+   318	            <p className="eyebrow">Professional context</p>
+   319	            <h2>Exploration, not a career decision</h2>
+   320	          </div>
+   321	          <div>
+   322	            <p>
+   323	              This assessment is designed for education, self-reflection, and
+   324	              career exploration. It does not provide a professional
+   325	              psychological, educational, recruitment, or employment
+   326	              decision.
+   327	            </p>
+   328	            <p>
+   329	              Career choices should also consider abilities, values,
+   330	              qualifications, personal circumstances, labour-market
+   331	              conditions, and professional guidance where appropriate.
+   332	            </p>
+   333	            <p className="disclaimer-source">
+   334	              Inspired by widely used RIASEC career-interest concepts. No
+   335	              endorsement by an external organisation is implied.
+   336	            </p>
+   337	          </div>
+   338	        </div>
+   339	      </section>
+   340	
+   341	      <section className="future-profile shell">
+   342	        <div className="future-profile-copy">
+   343	          <p className="eyebrow">Future InnerGeodessa connection</p>
+   344	          <h2>More perspectives, brought together</h2>
+   345	          <p>
+   346	            A future integrated profile may connect career interests with
+   347	            personality preferences, strengths, values, learning style, and
+   348	            personal goals. These connections are not yet available.
+   349	          </p>
+   350	        </div>
+   351	        <div className="future-profile-map" aria-hidden="true">
+   352	          {[
+   353	            "Career",
+   354	            "Personality",
+   355	            "Strengths",
+   356	            "Values",
+   357	            "Learning",
+   358	            "Goals",
+   359	          ].map((item) => (
+   360	            <span key={item}>{item}</span>
+   361	          ))}
+   362	          <CompassMark />
+   363	        </div>
+   364	      </section>
+   365	
+   366	      <section className="career-final-cta">
+   367	        <div className="shell">
+   368	          <p className="eyebrow">Your next direction</p>
+   369	          <h2>
+   370	            Your direction becomes clearer when you understand what draws you
+   371	            forward.
+   372	          </h2>
+   373	          <p className="career-final-copy">
+   374	            Begin with curiosity. Explore your interests, compare
+   375	            possibilities, and build a direction through evidence and
+   376	            experience.
+   377	          </p>
+   378	          <div className="career-final-actions">
+   379	            <ComingSoonAction>Start Career Assessment</ComingSoonAction>
+   380	            <a className="secondary-link light-secondary" href="/personality">
+   381	              Explore Personality <span aria-hidden="true">↗</span>
+   382	            </a>
+   383	          </div>
+   384	        </div>
+   385	      </section>
+   386	
+   387	      <SiteFooter homePath="/" />
+   388	    </main>
+   389	  );
+   390	}
+
+===== SESSION API ROUTER =====
+     1	from __future__ import annotations
+     2	
+     3	from datetime import datetime, timezone
+     4	import json
+     5	import uuid
+     6	
+     7	from fastapi import APIRouter, HTTPException
+     8	
+     9	from ..assessment_modules import get_assessment_module_config
+    10	from ..database import connect
+    11	from ..schemas.session import AnswerRequest, StartRequest
+    12	from ..scoring import TIE_RULE
+    13	from ..session_completion import complete_session_assessment
+    14	
+    15	
+    16	router = APIRouter()
+    17	
+    18	
+    19	@router.post("/api/sessions")
+    20	def start_session(payload: StartRequest):
+    21	    if not payload.consent:
+    22	        raise HTTPException(400, "Consent is required.")
+    23	
+    24	    try:
+    25	        module_config = get_assessment_module_config(payload.module)
+    26	    except ValueError as error:
+    27	        raise HTTPException(400, str(error)) from error
+    28	
+    29	    session_id = str(uuid.uuid4())
+    30	    now = datetime.now(timezone.utc).isoformat()
+    31	
+    32	    with connect() as conn:
+    33	        conn.execute(
+    34	            """INSERT INTO sessions(
+    35	                 session_id, consent, language, started_at,
+    36	                 question_bank_version, module
+    37	               )
+    38	               VALUES (?,1,?,?,?,?)""",
+    39	            (
+    40	                session_id,
+    41	                payload.language,
+    42	                now,
+    43	                module_config.question_bank_version,
+    44	                module_config.module,
+    45	            ),
+    46	        )
+    47	        if module_config.module == "riasec":
+    48	            snapshot_table = "riasec_session_question_items"
+    49	            item_table = "riasec_question_items"
+    50	        else:
+    51	            snapshot_table = "session_question_items"
+    52	            item_table = "question_bank_items"
+    53	
+    54	        conn.execute(
+    55	            f"""INSERT INTO {snapshot_table}(
+    56	                  session_id, item_record_id, display_order
+    57	                )
+    58	                SELECT ?, item_record_id, master_order
+    59	                FROM {item_table}
+    60	                WHERE question_bank_version=?""",
+    61	            (session_id, module_config.question_bank_version),
+    62	        )
+    63	
+    64	        snapshot_count = conn.execute(
+    65	            f"""SELECT COUNT(*)
+    66	                FROM {snapshot_table}
+    67	                WHERE session_id=?""",
+    68	            (session_id,),
+    69	        ).fetchone()[0]
+    70	
+    71	        if snapshot_count != module_config.expected_item_count:
+    72	            raise HTTPException(
+    73	                503,
+    74	                detail={
+    75	                    "message": (
+    76	                        "Assessment question bank is unavailable."
+    77	                    ),
+    78	                    "module": module_config.module,
+    79	                    "question_bank_version": (
+    80	                        module_config.question_bank_version
+    81	                    ),
+    82	                    "expected": module_config.expected_item_count,
+    83	                    "actual": snapshot_count,
+    84	                },
+    85	            )
+    86	
+    87	    return {
+    88	        "session_id": session_id,
+    89	        "started_at": now,
+    90	        "module": module_config.module,
+    91	        "question_bank_version": (
+    92	            module_config.question_bank_version
+    93	        ),
+    94	    }
+    95	
+    96	
+    97	@router.get("/api/sessions/{session_id}/items")
+    98	def get_session_items(session_id: str):
+    99	    with connect() as conn:
+   100	        session = conn.execute(
+   101	            """SELECT question_bank_version, module
+   102	               FROM sessions WHERE session_id=?""",
+   103	            (session_id,),
+   104	        ).fetchone()
+   105	        if not session:
+   106	            raise HTTPException(404, "Session not found.")
+   107	
+   108	        if session["module"] == "riasec":
+   109	            rows = conn.execute(
+   110	                """SELECT item.source_item_id AS item_id,
+   111	                          item.dimension,
+   112	                          item.wording,
+   113	                          snapshot.display_order AS master_order,
+   114	                          item.question_bank_version
+   115	                   FROM riasec_session_question_items snapshot
+   116	                   JOIN riasec_question_items item
+   117	                     ON item.item_record_id=snapshot.item_record_id
+   118	                   WHERE snapshot.session_id=?
+   119	                   ORDER BY snapshot.display_order""",
+   120	                (session_id,),
+   121	            ).fetchall()
+   122	        elif session["module"] == "personality":
+   123	            rows = conn.execute(
+   124	                """SELECT qbi.source_item_id AS item_id,
+   125	                          qbi.dimension,
+   126	                          qbi.subdimension,
+   127	                          qbi.keyed_pole,
+   128	                          qbi.form,
+   129	                          qbi.wording,
+   130	                          sqi.display_order AS master_order,
+   131	                          qbi.question_bank_version
+   132	                   FROM session_question_items sqi
+   133	                   JOIN question_bank_items qbi
+   134	                     ON qbi.item_record_id=sqi.item_record_id
+   135	                   WHERE sqi.session_id=?
+   136	                   ORDER BY sqi.display_order""",
+   137	                (session_id,),
+   138	            ).fetchall()
+   139	        else:
+   140	            raise HTTPException(400, "Session module is not supported.")
+   141	    return [dict(row) for row in rows]
+   142	
+   143	
+   144	@router.get("/api/sessions/{session_id}/result")
+   145	def get_session_result(session_id: str):
+   146	    with connect() as conn:
+   147	        session = conn.execute(
+   148	            """SELECT status, question_bank_version, completed_at, module
+   149	               FROM sessions
+   150	               WHERE session_id=?""",
+   151	            (session_id,),
+   152	        ).fetchone()
+   153	        if not session:
+   154	            raise HTTPException(404, "Session not found.")
+   155	        if session["status"] != "completed":
+   156	            raise HTTPException(409, "Session is not completed.")
+   157	
+   158	        if session["module"] == "riasec":
+   159	            result = conn.execute(
+   160	                """SELECT code, scores_json, percentages_json,
+   161	                          ranking_json, answered_json, calculated_at
+   162	                   FROM riasec_results
+   163	                   WHERE session_id=?""",
+   164	                (session_id,),
+   165	            ).fetchone()
+   166	        elif session["module"] == "personality":
+   167	            result = conn.execute(
+   168	                """SELECT personality_type,
+   169	                          ei_score, sn_score, tf_score, jp_score,
+   170	                          ei_confidence, sn_confidence,
+   171	                          tf_confidence, jp_confidence,
+   172	                          calculated_at
+   173	                   FROM results
+   174	                   WHERE session_id=?""",
+   175	                (session_id,),
+   176	            ).fetchone()
+   177	        else:
+   178	            raise HTTPException(400, "Session module is not supported.")
+   179	        if not result:
+   180	            raise HTTPException(
+   181	                500,
+   182	                "Completed session result is missing.",
+   183	            )
+   184	
+   185	    if session["module"] == "riasec":
+   186	        try:
+   187	            scores = json.loads(result["scores_json"])
+   188	            percentages = json.loads(result["percentages_json"])
+   189	            ranking = json.loads(result["ranking_json"])
+   190	            answered = json.loads(result["answered_json"])
+   191	        except (json.JSONDecodeError, TypeError) as error:
+   192	            raise HTTPException(
+   193	                500,
+   194	                "Completed session result is invalid.",
+   195	            ) from error
+   196	
+   197	        return {
+   198	            "sessionId": session_id,
+   199	            "module": "riasec",
+   200	            "status": "completed",
+   201	            "code": result["code"],
+   202	            "scores": scores,
+   203	            "percentages": percentages,
+   204	            "ranking": ranking,
+   205	            "answered": answered,
+   206	            "questionBankVersion": session["question_bank_version"],
+   207	            "completedAt": session["completed_at"],
+   208	            "calculatedAt": result["calculated_at"],
+   209	        }
+   210	
+   211	    return {
+   212	        "sessionId": session_id,
+   213	        "status": "completed",
+   214	        "type": result["personality_type"],
+   215	        "scores": {
+   216	            "EI": result["ei_score"],
+   217	            "SN": result["sn_score"],
+   218	            "TF": result["tf_score"],
+   219	            "JP": result["jp_score"],
+   220	        },
+   221	        "confidence": {
+   222	            "EI": result["ei_confidence"],
+   223	            "SN": result["sn_confidence"],
+   224	            "TF": result["tf_confidence"],
+   225	            "JP": result["jp_confidence"],
+   226	        },
+   227	        "answered": {
+   228	            "EI": 18,
+   229	            "SN": 18,
+   230	            "TF": 18,
+   231	            "JP": 18,
+   232	        },
+   233	        "tie_rule": TIE_RULE,
+   234	        "questionBankVersion": session["question_bank_version"],
+   235	        "completedAt": session["completed_at"],
+   236	        "calculatedAt": result["calculated_at"],
+   237	    }
+   238	
+   239	
+   240	@router.put("/api/sessions/{session_id}/answers")
+   241	def save_answer(session_id: str, payload: AnswerRequest):
+   242	    now = datetime.now(timezone.utc).isoformat()
+   243	    with connect() as conn:
+   244	        session = conn.execute(
+   245	            "SELECT status, module FROM sessions WHERE session_id=?",
+   246	            (session_id,),
+   247	        ).fetchone()
+   248	        if not session:
+   249	            raise HTTPException(404, "Session not found.")
+   250	        if session["status"] != "active":
+   251	            raise HTTPException(409, "Session is not active.")
+   252	        if session["module"] == "riasec":
+   253	            item = conn.execute(
+   254	                """SELECT snapshot.item_record_id
+   255	                   FROM riasec_session_question_items snapshot
+   256	                   JOIN riasec_question_items item
+   257	                     ON item.item_record_id=snapshot.item_record_id
+   258	                   WHERE snapshot.session_id=?
+   259	                     AND item.source_item_id=?""",
+   260	                (session_id, payload.item_id),
+   261	            ).fetchone()
+   262	            response_table = "riasec_session_responses"
+   263	        elif session["module"] == "personality":
+   264	            item = conn.execute(
+   265	                """SELECT sqi.item_record_id
+   266	                   FROM session_question_items sqi
+   267	                   JOIN question_bank_items qbi
+   268	                     ON qbi.item_record_id=sqi.item_record_id
+   269	                   WHERE sqi.session_id=? AND qbi.source_item_id=?""",
+   270	                (session_id, payload.item_id),
+   271	            ).fetchone()
+   272	            response_table = "session_responses"
+   273	        else:
+   274	            raise HTTPException(400, "Session module is not supported.")
+   275	        if not item:
+   276	            raise HTTPException(
+   277	                404,
+   278	                "Item is not part of this session's question snapshot.",
+   279	            )
+   280	        conn.execute(
+   281	            f"""INSERT INTO {response_table}(
+   282	                  session_id, item_record_id, raw_value,
+   283	                  response_time_ms, answered_at
+   284	                )
+   285	                VALUES (?,?,?,?,?)
+   286	                ON CONFLICT(session_id,item_record_id) DO UPDATE SET
+   287	                raw_value=excluded.raw_value,
+   288	                response_time_ms=excluded.response_time_ms,
+   289	                answered_at=excluded.answered_at""",
+   290	            (
+   291	                session_id,
+   292	                item["item_record_id"],
+   293	                payload.value,
+   294	                payload.response_time_ms,
+   295	                now,
+   296	            ),
+   297	        )
+   298	    return {"saved": True}
+   299	
+   300	
+   301	@router.post("/api/sessions/{session_id}/complete")
+   302	def complete_session(session_id: str):
+   303	    with connect() as conn:
+   304	        return complete_session_assessment(conn, session_id)
+
+===== PACKAGE SCRIPTS =====
+{
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "eslint",
+  "typecheck": "tsc --noEmit",
+  "validate:personalities": "tsx scripts/validate-personalities.ts",
+  "validate:question-bank": "tsx scripts/validate-question-bank.ts",
+  "validate:personality-bank-contract": "tsx scripts/validate-personality-bank-contract.ts",
+  "validate:personality-interpreter": "tsx scripts/validate-personality-interpreter.ts",
+  "validate:personality-scoring": "tsx scripts/validate-personality-scoring.ts",
+  "validate:personality-sync": "tsx scripts/validate-personality-sync.ts",
+  "validate:personality-parity": "tsx scripts/validate-personality-parity.ts",
+  "validate:report-standard": "tsx scripts/validate-report-standard.ts",
+  "validate:isfj-report": "tsx scripts/validate-isfj-report.ts",
+  "validate:isfj-rules": "tsx scripts/validate-isfj-rules.ts",
+  "sync:personality-items": "tsx scripts/sync-personality-items.ts",
+  "check:personality-items": "tsx scripts/sync-personality-items.ts --check",
+  "test:python": "cd innergeodessa-mvp && backend/.venv/bin/python -m pytest tests -v",
+  "validate": "npm run validate:question-bank && npm run validate:personality-bank-contract && npm run validate:personalities && npm run validate:personality-interpreter && npm run validate:personality-scoring && npm run validate:personality-sync && npm run check:personality-items && npm run validate:personality-parity && npm run validate:report-standard && npm run validate:isfj-report && npm run validate:isfj-rules && npm run validate:report-generator && npm run validate:report-generator-boundaries && npm run validate:report-frontend && npm run validate:report-print && npm run validate:report-navigation && npm run validate:report-template && npm run validate:report-recipient-name && npm run validate:personality-expansion && npm run validate:personality-all",
+  "validate:report-generator": "tsx scripts/validate-report-generator.ts",
+  "validate:report-generator-boundaries": "tsx scripts/validate-report-generator-boundaries.ts",
+  "validate:report-frontend": "tsx scripts/validate-report-frontend.ts",
+  "validate:report-print": "tsx scripts/validate-report-print.ts",
+  "validate:report-navigation": "tsx scripts/validate-report-navigation.ts",
+  "validate:report-template": "tsx scripts/validate-report-template.ts",
+  "validate:report-recipient-name": "tsx scripts/validate-report-recipient-name.ts",
+  "validate:personality-expansion": "tsx scripts/validate-personality-expansion-standard.ts",
+  "validate:personality": "tsx scripts/validate-personality-types.ts",
+  "validate:personality-family": "tsx scripts/validate-personality-types.ts --family",
+  "validate:personality-all": "tsx scripts/validate-personality-types.ts --all",
+  "scaffold:personality": "node scripts/scaffold-personality-report.mjs",
+  "validate:riasec-question-bank": "tsx scripts/validate-riasec-question-bank.ts",
+  "validate:riasec-scoring": "tsx scripts/validate-riasec-scoring.ts",
+  "validate:assessment-engine-boundaries": "tsx scripts/validate-assessment-engine-boundaries.ts",
+  "validate:riasec-result-contract": "tsx scripts/validate-riasec-result-contract.ts"
+}

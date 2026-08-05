@@ -1,0 +1,371 @@
+"use client";
+
+import {
+  CompassMark,
+  SiteFooter,
+  SiteHeader,
+} from "@/components/home";
+import {
+  useLocale,
+} from "@/components/locale";
+import {
+  Container,
+} from "@/components/ui";
+import {
+  getZodiacLandingDictionary,
+} from "@/data/i18n";
+import type {
+  ZodiacSignLandingItem,
+} from "@/data/i18n/zodiac";
+
+function ZodiacOrbit({
+  label,
+  signs,
+}: {
+  label: string;
+  signs: readonly ZodiacSignLandingItem[];
+}) {
+  return (
+    <div
+      className="zodiac-orbit"
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 640 640" fill="none">
+        <circle cx="320" cy="320" r="248" />
+        <circle cx="320" cy="320" r="184" />
+        <circle cx="320" cy="320" r="106" />
+        <path d="M320 22v596M22 320h596M109 109l422 422M531 109 109 531" />
+      </svg>
+
+      <div className="zodiac-orbit-center">
+        <CompassMark />
+        <span>{label}</span>
+      </div>
+
+      {signs.map((sign, index) => (
+        <span
+          className={`orbit-sign orbit-sign-${index + 1}`}
+          key={sign.code}
+        >
+          {sign.code}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+export function ZodiacLanding() {
+  const { locale } = useLocale();
+  const dictionary =
+    getZodiacLandingDictionary(locale);
+
+  return (
+    <main id="top">
+      <SiteHeader homePath="/" />
+
+      <Container
+        as="section"
+        size="full"
+        className="zodiac-hero max-w-[1400px] px-0 sm:px-0 lg:px-0"
+      >
+        <div className="zodiac-hero-copy">
+          <p className="eyebrow">
+            {dictionary.hero.eyebrow}
+          </p>
+
+          <h1>{dictionary.hero.title}</h1>
+
+          <p className="zodiac-intro">
+            {dictionary.hero.description}
+          </p>
+
+          <ul
+            className="assessment-meta"
+            aria-label={dictionary.hero.detailsLabel}
+          >
+            {dictionary.hero.details.map((detail, index) => (
+              <li key={`hero-detail-${index}`}>
+                {detail}
+              </li>
+            ))}
+          </ul>
+
+          <div className="zodiac-actions">
+            <a
+              className="primary-button"
+              href="/zodiac/test"
+            >
+              {dictionary.hero.primaryAction}
+            </a>
+
+            <a
+              className="secondary-link"
+              href="#signs"
+            >
+              {dictionary.hero.secondaryAction} {" "}
+              <span aria-hidden="true">↓</span>
+            </a>
+          </div>
+        </div>
+
+        <ZodiacOrbit
+          label={dictionary.orbitLabel}
+          signs={dictionary.signs.items}
+        />
+      </Container>
+
+      <Container
+        as="section"
+        className="zodiac-meaning"
+      >
+        <div>
+          <p className="eyebrow">
+            {dictionary.approach.eyebrow}
+          </p>
+          <h2>{dictionary.approach.title}</h2>
+        </div>
+
+        <div className="zodiac-meaning-copy">
+          {dictionary.approach.paragraphs.map(
+            (paragraph, index) => (
+              <p key={`approach-${index}`}>
+                {paragraph}
+              </p>
+            ),
+          )}
+        </div>
+      </Container>
+
+      <section className="signs-section" id="signs">
+        <Container>
+          <div className="zodiac-section-heading">
+            <div>
+              <p className="eyebrow">
+                {dictionary.signs.eyebrow}
+              </p>
+              <h2>{dictionary.signs.title}</h2>
+            </div>
+
+            <p>{dictionary.signs.description}</p>
+          </div>
+
+          <div className="sign-grid">
+            {dictionary.signs.items.map((sign, index) => (
+              <article className="sign-card" key={sign.code}>
+                <div className="sign-card-top">
+                  <span>
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <strong aria-hidden="true">
+                    {sign.code}
+                  </strong>
+                </div>
+
+                <p className="sign-dates">{sign.dates}</p>
+                <h3>
+                  {sign.name}
+                  <br />
+                  <small>{sign.secondaryName}</small>
+                </h3>
+                <p className="sign-theme">{sign.theme}</p>
+
+                <ul>
+                  {sign.qualities.map((quality, qualityIndex) => (
+                    <li key={`${sign.code}-quality-${qualityIndex}`}>
+                      {quality}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <Container
+        as="section"
+        className="more-than-sign"
+      >
+        <div>
+          <p className="eyebrow">
+            {dictionary.complexity.eyebrow}
+          </p>
+          <h2>{dictionary.complexity.title}</h2>
+        </div>
+
+        <div className="more-than-sign-copy">
+          {dictionary.complexity.paragraphs.map(
+            (paragraph, index) => (
+              <p key={`complexity-${index}`}>
+                {paragraph}
+              </p>
+            ),
+          )}
+          <p className="tradition-note">
+            {dictionary.complexity.traditionNote}
+          </p>
+        </div>
+      </Container>
+
+      <section className="zodiac-profile-preview">
+        <Container>
+          <div className="zodiac-profile-heading">
+            <p className="eyebrow">
+              {dictionary.profile.eyebrow}
+            </p>
+            <h2>{dictionary.profile.title}</h2>
+            <p>{dictionary.profile.description}</p>
+          </div>
+
+          <ol>
+            {dictionary.profile.items.map((item, index) => (
+              <li key={`profile-item-${index}`}>
+                <span>
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                {item}
+              </li>
+            ))}
+          </ol>
+        </Container>
+      </section>
+
+      <Container
+        as="section"
+        className="reflection-section"
+      >
+        <div className="reflection-heading">
+          <p className="eyebrow">
+            {dictionary.reflection.eyebrow}
+          </p>
+          <h2>{dictionary.reflection.title}</h2>
+          <p>{dictionary.reflection.description}</p>
+        </div>
+
+        <div className="reflection-questions">
+          {dictionary.reflection.questions.map(
+            (question, index) => (
+              <p key={`reflection-question-${index}`}>
+                <span>
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                {question}
+              </p>
+            ),
+          )}
+        </div>
+      </Container>
+
+      <section className="culture-section">
+        <Container className="culture-inner">
+          <div>
+            <p className="eyebrow">
+              {dictionary.culture.eyebrow}
+            </p>
+            <h2>{dictionary.culture.title}</h2>
+          </div>
+
+          <div>
+            {dictionary.culture.paragraphs.map(
+              (paragraph, index) => (
+                <p key={`culture-${index}`}>
+                  {paragraph}
+                </p>
+              ),
+            )}
+          </div>
+        </Container>
+      </section>
+
+      <Container
+        as="section"
+        className="guardian-section"
+      >
+        <div className="guardian-copy">
+          <p className="eyebrow">
+            {dictionary.geodessa.eyebrow}
+          </p>
+          <h2>{dictionary.geodessa.title}</h2>
+          <p>{dictionary.geodessa.description}</p>
+          <p className="future-status">
+            {dictionary.geodessa.status}
+          </p>
+        </div>
+
+        <div
+          className="guardian-concepts"
+          aria-label={dictionary.geodessa.conceptsLabel}
+        >
+          {dictionary.geodessa.concepts.map((concept, index) => (
+            <span key={`geodessa-concept-${index}`}>
+              <i>
+                {String(index + 1).padStart(2, "0")}
+              </i>
+              {concept}
+            </span>
+          ))}
+        </div>
+      </Container>
+
+      <section className="zodiac-community">
+        <Container className="zodiac-community-inner">
+          <div>
+            <p className="eyebrow">
+              {dictionary.community.eyebrow}
+            </p>
+            <h2>{dictionary.community.title}</h2>
+          </div>
+          <p>{dictionary.community.description}</p>
+        </Container>
+      </section>
+
+      <Container
+        as="section"
+        className="zodiac-disclaimer"
+      >
+        <div>
+          <p className="eyebrow">
+            {dictionary.responsibleUse.eyebrow}
+          </p>
+          <h2>{dictionary.responsibleUse.title}</h2>
+        </div>
+        <p>{dictionary.responsibleUse.description}</p>
+      </Container>
+
+      <section className="zodiac-final-cta">
+        <Container>
+          <p className="eyebrow">
+            {dictionary.finalCta.eyebrow}
+          </p>
+          <h2>{dictionary.finalCta.title}</h2>
+          <p className="zodiac-final-copy">
+            {dictionary.finalCta.description}
+          </p>
+          <div className="zodiac-final-actions">
+            <a
+              className="primary-button light-primary"
+              href="/zodiac/test"
+            >
+              {dictionary.finalCta.primaryAction}
+            </a>
+            <a
+              className="secondary-link light-secondary"
+              href="/career"
+            >
+              {dictionary.finalCta.careerAction} {" "}
+              <span aria-hidden="true">↗</span>
+            </a>
+            <a
+              className="quiet-route-link"
+              href="/personality"
+            >
+              {dictionary.finalCta.personalityAction}
+            </a>
+          </div>
+        </Container>
+      </section>
+
+      <SiteFooter homePath="/" />
+    </main>
+  );
+}

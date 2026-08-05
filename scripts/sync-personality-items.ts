@@ -7,7 +7,7 @@ import {
   personalityQuestionSourceMappings,
 } from "../src/data/assessment/questions/personality";
 
-const CURRENT_BANK_VERSION = "personality-v1.0.0";
+const CURRENT_BANK_VERSION = "personality-v2.0.0";
 const DEFAULT_ITEMS_PATH = path.resolve(
   "innergeodessa-mvp/backend/data/items.json",
 );

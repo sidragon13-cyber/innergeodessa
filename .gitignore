@@ -63,10 +63,35 @@ innergeodessa-mvp/backend/*
 !innergeodessa-mvp/backend/requirements-dev.txt
 
 innergeodessa-mvp/backend/app/*
+
 !innergeodessa-mvp/backend/app/*.py
+
+!innergeodessa-mvp/backend/app/schemas/
+innergeodessa-mvp/backend/app/schemas/*
+!innergeodessa-mvp/backend/app/schemas/*.py
+
+!innergeodessa-mvp/backend/app/routers/
+innergeodessa-mvp/backend/app/routers/*
+!innergeodessa-mvp/backend/app/routers/*.py
 
 innergeodessa-mvp/backend/data/*
 !innergeodessa-mvp/backend/data/items.json
+!innergeodessa-mvp/backend/data/riasec-items.json
 
 innergeodessa-mvp/tests/*
 !innergeodessa-mvp/tests/*.py
+
+# macOS
+.DS_Store
+
+# Local development backups
+*.backup
+*.save
+*.before-*.tsx
+
+# Local development audit files
+*-audit.txt
+riasec-existing-foundation.txt
+
+# Local historical backups and release archives
+archives/

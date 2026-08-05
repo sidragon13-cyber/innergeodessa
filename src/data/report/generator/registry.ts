@@ -1,0 +1,90 @@
+import type {
+  PersonalityTypeCode,
+} from "../../personality/types";
+import {
+  ENTP_COMPLETE_REPORT,
+} from "../entp";
+import {
+  ENTJ_COMPLETE_REPORT,
+} from "../entj";
+import {
+  ISFJ_COMPLETE_REPORT,
+} from "../isfj";
+import {
+  INTJ_COMPLETE_REPORT,
+} from "../intj";
+import {
+  INTP_COMPLETE_REPORT,
+} from "../intp";
+import {
+  ISTJ_COMPLETE_REPORT,
+} from "../istj";
+import {
+  ESTJ_COMPLETE_REPORT,
+} from "../estj";
+import {
+  ESFJ_COMPLETE_REPORT,
+} from "../esfj";
+import {
+  ISTP_COMPLETE_REPORT,
+} from "../istp";
+import {
+  ISFP_COMPLETE_REPORT,
+} from "../isfp";
+import {
+  ESTP_COMPLETE_REPORT,
+} from "../estp";
+import {
+  ESFP_COMPLETE_REPORT,
+} from "../esfp";
+import {
+  INFJ_COMPLETE_REPORT,
+} from "../infj";
+import {
+  INFP_COMPLETE_REPORT,
+} from "../infp";
+import {
+  ENFJ_COMPLETE_REPORT,
+} from "../enfj";
+import {
+  ENFP_COMPLETE_REPORT,
+} from "../enfp";
+import type {
+  CompletePersonalityReportDefinition,
+} from "../types";
+
+const COMPLETE_REPORT_REGISTRY: Partial<
+  Record<
+    PersonalityTypeCode,
+    CompletePersonalityReportDefinition
+  >
+> = {
+  ISFJ: ISFJ_COMPLETE_REPORT,
+  ENTJ: ENTJ_COMPLETE_REPORT,
+  ENTP: ENTP_COMPLETE_REPORT,
+  INTJ: INTJ_COMPLETE_REPORT,
+  INTP: INTP_COMPLETE_REPORT,
+  INFJ: INFJ_COMPLETE_REPORT,
+  INFP: INFP_COMPLETE_REPORT,
+  ENFJ: ENFJ_COMPLETE_REPORT,
+  ENFP: ENFP_COMPLETE_REPORT,
+  ISTJ: ISTJ_COMPLETE_REPORT,
+  ESTJ: ESTJ_COMPLETE_REPORT,
+  ESFJ: ESFJ_COMPLETE_REPORT,
+  ISTP: ISTP_COMPLETE_REPORT,
+  ISFP: ISFP_COMPLETE_REPORT,
+  ESTP: ESTP_COMPLETE_REPORT,
+  ESFP: ESFP_COMPLETE_REPORT,
+};
+
+export function getCompletePersonalityReport(
+  personalityType: PersonalityTypeCode,
+): CompletePersonalityReportDefinition | null {
+  return COMPLETE_REPORT_REGISTRY[personalityType] ?? null;
+}
+
+export function hasCompletePersonalityReport(
+  personalityType: PersonalityTypeCode,
+): boolean {
+  return personalityType in COMPLETE_REPORT_REGISTRY;
+}

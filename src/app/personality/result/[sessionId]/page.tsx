@@ -2,41 +2,48 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useSyncExternalStore } from "react";
+import {
+  useEffect,
+  useState,
+  useSyncExternalStore,
+} from "react";
 
+import {
+  fetchPersonalityResult,
+  isPersonalityResultContract,
+  PersonalityResultRequestError,
+  type PersonalityResultContract,
+} from "@/data/assessment/scoring/personality";
 import { getPersonalityProfile } from "@/data/personality";
+import {
+  isPhaseOnePersonalityReportType,
+} from "@/data/report";
 import {
   getLocalizedStringList,
   getLocalizedText,
-  type SupportedLocale,
 } from "@/data/shared";
 
-type PersonalityResult = {
-  type?: string;
-  scores?: {
-    EI?: number;
-    SN?: number;
-    TF?: number;
-    JP?: number;
-  };
-  confidence?: {
-    EI?: number;
-    SN?: number;
-    TF?: number;
-    JP?: number;
-  };
-  answered?: Record<string, unknown>;
-  [key: string]: unknown;
-};
+import {
+  ResultHeader,
+  ResultNavigation,
+  ResultShell,
+  ResultState,
+} from "@/components/result";
+import {
+  SaveAssessmentResult,
+} from "@/components/account";
+import {
+  useLocale,
+} from "@/components/locale";
+import {
+  getPersonalityResultDictionary,
+} from "@/data/i18n";
 
-const dimensionLabels = {
-  EI: "Extraversion — Introversion",
-  SN: "Sensing — Intuition",
-  TF: "Thinking — Feeling",
-  JP: "Judging — Perceiving",
-} as const;
-
-type DimensionKey = keyof typeof dimensionLabels;
+type DimensionKey =
+  | "EI"
+  | "SN"
+  | "TF"
+  | "JP";
 
 const dimensions: DimensionKey[] = ["EI", "SN", "TF", "JP"];
 
@@ -48,61 +55,182 @@ function formatConfidence(value: number | undefined) {
   return `${Math.round(value * 100)}%`;
 }
 
+type ResultLoadState =
+  | "loading"
+  | "ready"
+  | "not-found"
+  | "not-completed"
+  | "error";
+
+function readCachedResult(
+  storedResult: string | null,
+  sessionId: string,
+): PersonalityResultContract | null {
+  if (!storedResult) {
+    return null;
+  }
+
+  try {
+    const parsed: unknown = JSON.parse(storedResult);
+
+    return (
+      isPersonalityResultContract(parsed) &&
+      parsed.sessionId === sessionId
+    )
+      ? parsed
+      : null;
+  } catch {
+    return null;
+  }
+}
+
 function subscribeToSessionStorage() {
   return () => {};
+}
+
+function getFailureState(error: unknown): ResultLoadState {
+  if (error instanceof PersonalityResultRequestError) {
+    if (error.status === 404) {
+      return "not-found";
+    }
+
+    if (error.status === 409) {
+      return "not-completed";
+    }
+  }
+
+  return "error";
 }
 
 export default function PersonalityResultPage() {
   const params = useParams<{ sessionId: string }>();
   const sessionId = params.sessionId;
-
-  const locale: SupportedLocale = "en";
+  const { locale } = useLocale();
+  const dictionary =
+    getPersonalityResultDictionary(locale);
   const storageKey = `innergeodessa-result-${sessionId}`;
-
   const storedResult = useSyncExternalStore(
     subscribeToSessionStorage,
     () => sessionStorage.getItem(storageKey),
     () => null,
   );
+  const cachedResult = readCachedResult(
+    storedResult,
+    sessionId,
+  );
+  const [result, setResult] =
+    useState<PersonalityResultContract | null>(null);
+  const [loadState, setLoadState] =
+    useState<ResultLoadState>("loading");
 
-  let result: PersonalityResult | null = null;
+  useEffect(() => {
+    const previewResult = readCachedResult(
+      sessionStorage.getItem(storageKey),
+      sessionId,
+    );
 
-  if (storedResult) {
-    try {
-      result = JSON.parse(storedResult) as PersonalityResult;
-    } catch {
-      result = null;
+    if (
+      sessionId.startsWith("preview-") &&
+      previewResult?.questionBankVersion === "preview"
+    ) {
+      return;
     }
-  }
 
-  if (!result) {
+    let cancelled = false;
+
+    async function loadPersistedResult() {
+      try {
+        const persistedResult =
+          await fetchPersonalityResult(sessionId);
+
+        if (cancelled) {
+          return;
+        }
+
+        setResult(persistedResult);
+        setLoadState("ready");
+        sessionStorage.setItem(
+          storageKey,
+          JSON.stringify(persistedResult),
+        );
+      } catch (error) {
+        if (cancelled) {
+          return;
+        }
+
+        setResult(null);
+        setLoadState(getFailureState(error));
+      }
+    }
+
+    loadPersistedResult();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [sessionId, storageKey]);
+
+  const displayResult = result ?? cachedResult;
+
+  if (loadState === "loading" && !displayResult) {
     return (
-      <main className="min-h-screen bg-[#efede5] px-6 py-20 text-[#26372d]">
-        <section className="mx-auto max-w-3xl border border-[#c8c2b5] bg-[#f7f4ec] p-8 md:p-12">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-            Result unavailable
-          </p>
-
-          <h1 className="mt-4 text-3xl font-semibold">
-            This result is not available in the current browser session.
-          </h1>
-
-          <p className="mt-5 leading-7 text-[#596158]">
-            Complete a new personality assessment to generate a result.
-          </p>
-
-          <Link
-            href="/personality/test"
-            className="mt-8 inline-flex min-h-12 items-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5]"
-          >
-            Start assessment
-          </Link>
-        </section>
-      </main>
+      <ResultState
+        eyebrow={dictionary.states.loading.eyebrow}
+        title={dictionary.states.loading.title}
+        message={dictionary.states.loading.message}
+      />
     );
   }
 
-  const profile = getPersonalityProfile(result.type);
+  if (loadState === "not-found") {
+    return (
+      <ResultState
+        eyebrow={dictionary.states.notFound.eyebrow}
+        title={dictionary.states.notFound.title}
+        message={dictionary.states.notFound.message}
+        actions={[
+          {
+            href: "/personality/test",
+            label: dictionary.states.error.action,
+          },
+        ]}
+      />
+    );
+  }
+
+  if (loadState === "not-completed") {
+    return (
+      <ResultState
+        eyebrow={dictionary.states.notCompleted.eyebrow}
+        title={dictionary.states.notCompleted.title}
+        message={dictionary.states.notCompleted.message}
+        actions={[
+          {
+            href: "/personality/test",
+            label: dictionary.states.notCompleted.action,
+          },
+        ]}
+      />
+    );
+  }
+
+  if (loadState === "error" || !displayResult) {
+    return (
+      <ResultState
+        eyebrow={dictionary.states.error.eyebrow}
+        title={dictionary.states.error.title}
+        message={dictionary.states.error.message}
+        actions={[
+          {
+            href: "/personality/test",
+            label: "Start assessment",
+          },
+        ]}
+      />
+    );
+  }
+
+  const profile = getPersonalityProfile(displayResult.type);
 
   const personalityName = profile
     ? getLocalizedText(profile.identity.name, locale)
@@ -125,70 +253,69 @@ export default function PersonalityResultPage() {
     : [];
 
   return (
-    <main className="min-h-screen bg-[#efede5] px-6 py-12 text-[#26372d] md:py-20">
-      <div className="mx-auto max-w-6xl">
-        <header className="border-b border-[#c8c2b5] pb-10">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6d746b]">
-            InnerGeodessa Personality Assessment
-          </p>
+    <ResultShell>
+        <ResultHeader
+          eyebrow={dictionary.header.eyebrow}
+          subtitle={dictionary.header.subtitle}
+          title={
+            <div className="flex flex-wrap items-end gap-x-5 gap-y-2">
+              <h1 className="text-6xl font-semibold tracking-tight md:text-8xl">
+                {displayResult.type}
+              </h1>
 
-          <div className="mt-7 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div>
-              <p className="text-sm text-[#6d746b]">
-                Your personality type
-              </p>
-
-              <div className="mt-3 flex flex-wrap items-end gap-x-5 gap-y-2">
-                <h1 className="text-6xl font-semibold tracking-tight md:text-8xl">
-                  {result.type ?? "—"}
-                </h1>
-
-                {personalityName && (
-                  <p className="pb-2 text-2xl font-semibold text-[#4f5e53] md:text-3xl">
-                    {personalityName}
-                  </p>
-                )}
-              </div>
-
-              {shortName && (
-                <p className="mt-5 text-lg font-semibold">
+              {personalityName ? (
+                <p className="pb-2 text-2xl font-semibold text-[#4f5e53] md:text-3xl">
+                  {personalityName}
+                </p>
+              ) : null}
+            </div>
+          }
+          description={
+            <>
+              {shortName ? (
+                <p className="font-semibold text-[#26372d]">
                   {shortName}
                 </p>
-              )}
+              ) : null}
 
-              {tagline && (
-                <p className="mt-2 max-w-3xl text-lg leading-8 text-[#596158]">
+              {tagline ? (
+                <p className={shortName ? "mt-2" : ""}>
                   {tagline}
                 </p>
-              )}
-            </div>
-
-            <div className="text-sm leading-7 text-[#6d746b] lg:text-right">
-              <p>Assessment completed</p>
-              <p>Session {sessionId.slice(0, 8)}…</p>
-            </div>
-          </div>
-
-          {keywords.length > 0 && (
-            <div className="mt-8 flex flex-wrap gap-2">
-              {keywords.map((keyword) => (
-                <span
-                  key={keyword}
-                  className="border border-[#c8c2b5] bg-[#f7f4ec] px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em]"
-                >
-                  {keyword}
-                </span>
-              ))}
-            </div>
-          )}
-        </header>
+              ) : null}
+            </>
+          }
+          metadata={
+            <>
+              <p>{dictionary.header.completed}</p>
+              <p>
+                {dictionary.header.sessionLabel}{" "}
+                {sessionId.slice(0, 8)}…
+              </p>
+            </>
+          }
+          badges={
+            keywords.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {keywords.map((keyword) => (
+                  <span
+                    key={keyword}
+                    className="border border-[#c8c2b5] bg-[#f7f4ec] px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em]"
+                  >
+                    {keyword}
+                  </span>
+                ))}
+              </div>
+            ) : null
+          }
+        />
 
         {profile ? (
           <>
             <section className="mt-12 grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-                  Personality Overview
+                  {dictionary.sections.overview}
                 </p>
 
                 <h2 className="mt-4 text-3xl font-semibold leading-tight md:text-4xl">
@@ -215,7 +342,7 @@ export default function PersonalityResultPage() {
 
             <section className="mt-14">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-                Core Personality Traits
+                {dictionary.sections.coreTraits}
               </p>
 
               <div className="mt-5 grid gap-px border border-[#c8c2b5] bg-[#c8c2b5] md:grid-cols-2">
@@ -242,24 +369,22 @@ export default function PersonalityResultPage() {
         ) : (
           <section className="mt-12 border border-[#c8c2b5] bg-[#f7f4ec] p-8 md:p-10">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-              Profile in development
+              {dictionary.sections.profileInDevelopment}
             </p>
 
             <h2 className="mt-4 text-3xl font-semibold">
-              Your assessment has been scored successfully.
+              {dictionary.sections.scoredSuccessfully}
             </h2>
 
             <p className="mt-5 max-w-3xl leading-7 text-[#596158]">
-              The detailed English profile for this personality type is
-              currently being prepared. Your dimension scores remain
-              available below.
+              {dictionary.sections.profileInDevelopmentMessage}
             </p>
           </section>
         )}
 
         <section className="mt-14">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-            Dimension Overview
+            {dictionary.sections.dimensionOverview}
           </p>
 
           <div className="mt-5 grid gap-px border border-[#c8c2b5] bg-[#c8c2b5] md:grid-cols-2">
@@ -275,23 +400,23 @@ export default function PersonalityResultPage() {
                     </p>
 
                     <h2 className="mt-2 text-lg font-semibold">
-                      {dimensionLabels[dimension]}
+                      {dictionary.dimensions[dimension]}
                     </h2>
                   </div>
 
                   <p className="text-3xl font-semibold">
-                    {result.scores?.[dimension] ?? "—"}
+                    {displayResult.scores[dimension]}
                   </p>
                 </div>
 
                 <div className="mt-7 flex items-center justify-between border-t border-[#d8d2c6] pt-4 text-sm">
                   <span className="text-[#6d746b]">
-                    Confidence
+                    {dictionary.sections.confidence}
                   </span>
 
                   <span className="font-semibold">
                     {formatConfidence(
-                      result.confidence?.[dimension],
+                      displayResult.confidence[dimension],
                     )}
                   </span>
                 </div>
@@ -306,7 +431,7 @@ export default function PersonalityResultPage() {
               <div className="grid gap-8 lg:grid-cols-2">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-                    Key Strengths
+                    {dictionary.sections.strengths}
                   </p>
 
                   <div className="mt-5 space-y-px border border-[#c8c2b5] bg-[#c8c2b5]">
@@ -335,7 +460,7 @@ export default function PersonalityResultPage() {
 
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-                    Growth Risks
+                    {dictionary.sections.growthRisks}
                   </p>
 
                   <div className="mt-5 space-y-px border border-[#c8c2b5] bg-[#c8c2b5]">
@@ -360,7 +485,7 @@ export default function PersonalityResultPage() {
 
                         <div className="mt-4 border-l-2 border-[#8d7552] pl-4">
                           <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#7c684d]">
-                            Development focus
+                            {dictionary.sections.developmentFocus}
                           </p>
 
                           <p className="mt-2 leading-7 text-[#596158]">
@@ -379,7 +504,7 @@ export default function PersonalityResultPage() {
 
             <section className="mt-14">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
-                Career Directions
+                {dictionary.sections.careerDirections}
               </p>
 
               <div className="mt-5 grid gap-5 md:grid-cols-2">
@@ -435,7 +560,7 @@ export default function PersonalityResultPage() {
               <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c9d1c9]">
-                    Premium Report
+                    {dictionary.sections.premiumReport}
                   </p>
 
                   <h2 className="mt-4 text-3xl font-semibold md:text-4xl">
@@ -452,21 +577,41 @@ export default function PersonalityResultPage() {
                     )}
                   </p>
 
-                  <button
-                    type="button"
-                    disabled
-                    className="mt-8 inline-flex min-h-12 cursor-not-allowed items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] opacity-70"
-                  >
-                    {getLocalizedText(
-                      profile.premiumPreview.callToAction,
-                      locale,
-                    )}
-                  </button>
+                  {isPhaseOnePersonalityReportType(
+                    displayResult.type,
+                  ) ? (
+                    <Link
+                      href={`/personality/report/${sessionId}`}
+                      className="mt-8 inline-flex min-h-12 items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-[#f1eee5] hover:text-[#34483a]"
+                    >
+                      {dictionary.premium.viewCompleteReport(
+                        displayResult.type,
+                      )}
+                    </Link>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        disabled
+                        className="mt-8 inline-flex min-h-12 cursor-not-allowed items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] opacity-70"
+                      >
+                        {getLocalizedText(
+                          profile.premiumPreview.callToAction,
+                          locale,
+                        )}
+                      </button>
 
-                  <p className="mt-3 text-xs text-[#bdc7be]">
-                    Premium reports will be introduced in a later
-                    development stage.
-                  </p>
+                      <p className="mt-3 text-xs text-[#bdc7be]">
+                        {dictionary.sections.premiumLaterMessage}
+                      </p>
+                    </>
+                  )}
+
+                  <SaveAssessmentResult
+                    module="personality"
+                    sessionId={sessionId}
+                    className="mt-8"
+                  />
                 </div>
 
                 <div className="grid gap-px bg-[#68786c] sm:grid-cols-2">
@@ -498,22 +643,17 @@ export default function PersonalityResultPage() {
           </>
         )}
 
-        <div className="mt-12 flex flex-col gap-4 sm:flex-row">
-          <Link
-            href="/personality"
-            className="inline-flex min-h-12 items-center justify-center border border-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em]"
-          >
-            Personality overview
-          </Link>
-
-          <Link
-            href="/personality/test"
-            className="inline-flex min-h-12 items-center justify-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5]"
-          >
-            Take assessment again
-          </Link>
-        </div>
-      </div>
-    </main>
+        <ResultNavigation
+          className="mt-12"
+          primary={{
+            href: "/personality/test",
+            label: dictionary.navigation.retake,
+          }}
+          secondary={{
+            href: "/personality",
+            label: dictionary.navigation.overview,
+          }}
+        />
+    </ResultShell>
   );
 }

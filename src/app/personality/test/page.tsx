@@ -3,25 +3,41 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-type AssessmentItem = {
-  item_id: string;
-  wording: string;
-  master_order: number;
-};
+import {
+  AssessmentAnswerScale,
+  AssessmentNavigation,
+  AssessmentProgress,
+  AssessmentQuestion,
+  AssessmentShell,
+  type AssessmentAnswerOption,
+  type AssessmentAnswerRecord,
+  type AssessmentDisplayItem,
+  type AssessmentViewStatus,
+} from "@/components/assessment";
+import {
+  useLocale,
+} from "@/components/locale";
+import {
+  getAssessmentDictionary,
+} from "@/data/i18n";
+import {
+  personalityQuestionBank,
+  getQuestionIdBySourceItemId,
+} from "@/data/assessment/questions/personality";
+import {
+  fetchPersonalityResult,
+  type PersonalityResultContract,
+} from "@/data/assessment/scoring/personality";
 
 type ItemsResponse = {
   count: number;
-  items: AssessmentItem[];
+  items: AssessmentDisplayItem[];
   error?: string;
-};
-
-type AnswerRecord = {
-  value: number;
-  responseTimeMs: number;
 };
 
 type SessionResponse = {
   session_id: string;
+  claim_secret?: string;
   started_at?: string;
   question_bank_version?: string;
   error?: string;
@@ -34,47 +50,64 @@ type SaveAnswerResponse = {
 
 type CompleteResponse = {
   error?: string;
-  [key: string]: unknown;
 };
-
-const answerOptions = [
-  { value: 1, label: "Strongly disagree" },
-  { value: 2, label: "Disagree" },
-  { value: 3, label: "Neither agree nor disagree" },
-  { value: 4, label: "Agree" },
-  { value: 5, label: "Strongly agree" },
-];
 
 export default function PersonalityTestPage() {
   const router = useRouter();
-  const [items, setItems] = useState<AssessmentItem[]>([]);
+  const { locale } = useLocale();
+  const dictionary = getAssessmentDictionary(locale);
+  const initialLocale = useRef(locale);
+  const initialDictionary = useRef(dictionary);
+  const answerOptions: readonly AssessmentAnswerOption[] =
+    dictionary.personalityTest.answerOptions;
+  const [items, setItems] = useState<AssessmentDisplayItem[]>([]);
   const [sessionId, setSessionId] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, AnswerRecord>>({});
+  const [answers, setAnswers] = useState<
+    Record<string, AssessmentAnswerRecord>
+  >({});
   const questionStartedAt = useRef<number | null>(null);
-  const [status, setStatus] = useState<"loading" | "ready" | "error">(
-    "loading",
-  );
+  const [status, setStatus] =
+    useState<AssessmentViewStatus>("loading");
   const [errorMessage, setErrorMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
   const [completionResult, setCompletionResult] =
-    useState<CompleteResponse | null>(null);
+    useState<PersonalityResultContract | null>(null);
 
   useEffect(() => {
     async function loadItems() {
       try {
         const sessionResponse = await fetch("/api/sessions", {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            consent: true,
+            language: initialLocale.current,
+            module: "personality",
+          }),
         });
 
         const sessionData: SessionResponse = await sessionResponse.json();
 
-        if (!sessionResponse.ok || !sessionData.session_id) {
+        if (
+          !sessionResponse.ok ||
+          !sessionData.session_id ||
+          !sessionData.claim_secret
+        ) {
           throw new Error(
-            sessionData.error ?? "Unable to create assessment session.",
+            sessionData.error ??
+              initialDictionary.current.personalityTest.errors
+                .createSession,
           );
         }
+
+        sessionStorage.setItem(
+          `innergeo-claim:personality:${sessionData.session_id}`,
+          sessionData.claim_secret,
+        );
 
         const response = await fetch(
           `/api/sessions/${sessionData.session_id}/items`,
@@ -84,11 +117,18 @@ export default function PersonalityTestPage() {
         const data: ItemsResponse = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.error ?? "Unable to load assessment items.");
+          throw new Error(
+            data.error ??
+              initialDictionary.current.personalityTest.errors
+                .loadItems,
+          );
         }
 
         if (!Array.isArray(data.items) || data.count !== 72) {
-          throw new Error("The assessment did not return all 72 questions.");
+          throw new Error(
+            initialDictionary.current.personalityTest.errors
+              .incompleteQuestionBank,
+          );
         }
 
         const sortedItems = [...data.items].sort(
@@ -102,7 +142,8 @@ export default function PersonalityTestPage() {
         setErrorMessage(
           error instanceof Error
             ? error.message
-            : "The assessment could not be loaded.",
+            : initialDictionary.current.personalityTest.errors
+                .loadAssessment,
         );
         setStatus("error");
       }
@@ -119,26 +160,56 @@ export default function PersonalityTestPage() {
 
   if (status === "loading") {
     return (
-      <main className="min-h-screen p-20">
-        <h1 className="text-4xl">Loading assessment…</h1>
-      </main>
+      <AssessmentShell
+        status={status}
+        errorMessage=""
+        currentIndex={0}
+        itemCount={0}
+      >
+        {null}
+      </AssessmentShell>
     );
   }
 
   if (status === "error") {
     return (
-      <main className="min-h-screen p-20">
-        <h1 className="mb-4 text-4xl">Unable to load assessment</h1>
-        <p>{errorMessage}</p>
-      </main>
+      <AssessmentShell
+        status={status}
+        errorMessage={errorMessage}
+        currentIndex={0}
+        itemCount={0}
+      >
+        {null}
+      </AssessmentShell>
     );
   }
 
   const currentItem = items[currentIndex];
+
+  const localizedQuestion = currentItem
+    ? (() => {
+        const questionId =
+          getQuestionIdBySourceItemId(
+            currentItem.item_id,
+          );
+
+        if (!questionId) {
+          return undefined;
+        }
+
+        return personalityQuestionBank.find(
+          (question) => question.id === questionId,
+        );
+      })()
+    : undefined;
+
+  const currentWording =
+    localizedQuestion?.prompt[locale] ??
+    currentItem?.wording ??
+    "";
   const selectedValue = answers[currentItem.item_id]?.value;
   const isFirstQuestion = currentIndex === 0;
   const isLastQuestion = currentIndex === items.length - 1;
-  const progress = ((currentIndex + 1) / items.length) * 100;
 
   function selectAnswer(
     value: number,
@@ -201,7 +272,8 @@ export default function PersonalityTestPage() {
 
       if (!response.ok || data.saved !== true) {
         throw new Error(
-          data.error ?? "The answer could not be saved.",
+          data.error ??
+            dictionary.personalityTest.errors.saveAnswer,
         );
       }
 
@@ -219,18 +291,21 @@ export default function PersonalityTestPage() {
         if (!completeResponse.ok) {
           throw new Error(
             completeData.error ??
-              "The assessment result could not be generated.",
+              dictionary.personalityTest.errors.generateResult,
           );
         }
 
-        setCompletionResult(completeData);
+        const persistedResult =
+          await fetchPersonalityResult(sessionId);
+
+        setCompletionResult(persistedResult);
         setSaveMessage(
-          "Assessment completed and result generated successfully.",
+          dictionary.personalityTest.completion.successMessage,
         );
 
         sessionStorage.setItem(
           `innergeodessa-result-${sessionId}`,
-          JSON.stringify(completeData),
+          JSON.stringify(persistedResult),
         );
 
         router.push(`/personality/result/${sessionId}`);
@@ -242,7 +317,7 @@ export default function PersonalityTestPage() {
       setSaveMessage(
         error instanceof Error
           ? error.message
-          : "The answer could not be saved.",
+          : dictionary.personalityTest.errors.saveAnswer,
       );
     } finally {
       setIsSaving(false);
@@ -258,128 +333,55 @@ export default function PersonalityTestPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f1eee5] text-[#20231d]">
-      <header className="border-b border-black/20">
-        <div className="mx-auto flex min-h-20 w-[min(100%-40px,1000px)] items-center justify-between">
-          <span className="font-serif text-xl font-bold">
-            Inner<span className="italic text-[#a64a2c]">Geodessa</span>
-          </span>
+    <AssessmentShell
+      status={status}
+      errorMessage={errorMessage}
+      currentIndex={currentIndex}
+      itemCount={items.length}
+    >
+      <AssessmentProgress
+        currentIndex={currentIndex}
+        itemCount={items.length}
+      />
+      <AssessmentQuestion
+        eyebrow={dictionary.personalityTest.eyebrow}
+        wording={currentWording}
+      />
+      <AssessmentAnswerScale
+        options={answerOptions}
+        selectedValue={selectedValue}
+        onSelect={selectAnswer}
+      />
+      <AssessmentNavigation
+        answeredCount={Object.keys(answers).length}
+        itemCount={items.length}
+        sessionId={sessionId}
+        isFirstQuestion={isFirstQuestion}
+        isLastQuestion={isLastQuestion}
+        hasSelectedAnswer={selectedValue !== undefined}
+        isSaving={isSaving}
+        isComplete={completionResult !== null}
+        saveMessage={saveMessage}
+        onPrevious={goToPreviousQuestion}
+        onNext={goToNextQuestion}
+        completionContent={
+          completionResult ? (
+            <div className="mt-8 border border-[#c8c2b5] bg-[#f7f4ec] p-6">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6d746b]">
+                {dictionary.personalityTest.completion.eyebrow}
+              </p>
 
-          <span className="text-xs font-bold uppercase tracking-[0.16em]">
-            Question {currentIndex + 1} of {items.length}
-          </span>
-        </div>
-      </header>
+              <h2 className="mt-3 text-2xl font-semibold text-[#26372d]">
+                {dictionary.personalityTest.completion.title}
+              </h2>
 
-      <section className="mx-auto w-[min(100%-40px,760px)] py-16 md:py-24">
-        <div className="mb-14 h-px bg-black/15">
-          <div
-            className="h-px bg-[#a64a2c] transition-all duration-300"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-
-        <p className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-[#a64a2c]">
-          Personality assessment
-        </p>
-
-        <h1 className="mb-12 font-serif text-4xl leading-tight md:text-5xl">
-          {currentItem.wording}
-        </h1>
-
-        <div className="grid gap-3">
-          {answerOptions.map((option) => {
-            const selected = selectedValue === option.value;
-
-            return (
-              <button
-                key={option.value}
-                type="button"
-                onClick={(event) =>
-                  selectAnswer(option.value, event.timeStamp)
-                }
-                className={`flex min-h-16 items-center justify-between border px-5 text-left transition ${
-                  selected
-                    ? "border-[#a64a2c] bg-[#a64a2c] text-[#f1eee5]"
-                    : "border-black/20 hover:border-[#a64a2c]"
-                }`}
-              >
-                <span>{option.label}</span>
-                <span className="text-sm">{option.value}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="mt-10 flex items-center justify-between border-t border-black/20 pt-8">
-          <button
-            type="button"
-            onClick={goToPreviousQuestion}
-            disabled={isFirstQuestion}
-            className="min-h-12 px-5 text-xs font-bold uppercase tracking-[0.14em] disabled:opacity-30"
-          >
-            ← Previous
-          </button>
-
-          <div className="text-center text-xs text-black/50">
-            <p>
-              Answered {Object.keys(answers).length} of {items.length}
-            </p>
-            <p className="mt-1">
-              Session {sessionId.slice(0, 8)}…
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={goToNextQuestion}
-            disabled={
-              selectedValue === undefined ||
-              isSaving ||
-              completionResult !== null
-            }
-            className="min-h-12 bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] disabled:cursor-not-allowed disabled:opacity-30"
-          >
-            {isSaving
-              ? isLastQuestion
-                ? "Generating result…"
-                : "Saving…"
-              : completionResult
-                ? "Assessment complete"
-                : isLastQuestion
-                  ? "Save final answer"
-                  : "Next question →"}
-          </button>
-        </div>
-
-        {completionResult && (
-          <div className="mt-8 border border-[#c8c2b5] bg-[#f7f4ec] p-6">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6d746b]">
-              Assessment Complete
-            </p>
-
-            <h2 className="mt-3 text-2xl font-semibold text-[#26372d]">
-              Result generated successfully
-            </h2>
-
-            <pre className="mt-5 max-h-96 overflow-auto whitespace-pre-wrap break-words bg-white p-4 text-xs leading-6 text-[#34483a]">
-              {JSON.stringify(completionResult, null, 2)}
-            </pre>
-          </div>
-        )}
-
-        {saveMessage && (
-          <p
-            className={`mt-5 text-center text-sm ${
-              saveMessage.startsWith("Final")
-                ? "text-[#34483a]"
-                : "text-[#a64a2c]"
-            }`}
-          >
-            {saveMessage}
-          </p>
-        )}
-      </section>
-    </main>
+              <pre className="mt-5 max-h-96 overflow-auto whitespace-pre-wrap break-words bg-white p-4 text-xs leading-6 text-[#34483a]">
+                {JSON.stringify(completionResult, null, 2)}
+              </pre>
+            </div>
+          ) : undefined
+        }
+      />
+    </AssessmentShell>
   );
 }

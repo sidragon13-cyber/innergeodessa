@@ -9,6 +9,11 @@ DIMENSIONS = {
     "JP": ("J", "P"),
 }
 
+TIE_RULE = (
+    "A zero score resolves to the first pole and must be "
+    "reported as low differentiation."
+)
+
 @dataclass(frozen=True)
 class Item:
     item_id: str
@@ -49,7 +54,7 @@ def score_assessment(
         "scores": signed,
         "confidence": confidence,
         "answered": answered,
-        "tie_rule": "A zero score resolves to the first pole and must be reported as low differentiation.",
+        "tie_rule": TIE_RULE,
     }
 
 

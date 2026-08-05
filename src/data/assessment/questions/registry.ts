@@ -3,6 +3,7 @@ import type {
   AssessmentQuestion,
 } from "./schema";
 import { personalityQuestionBank } from "./personality";
+import { riasecQuestionBank } from "./riasec";
 import {
   validateAssessmentQuestionBank,
 } from "./validation";
@@ -36,6 +37,7 @@ export const assessmentQuestionBanks:
   AssessmentQuestionBankRegistry =
     freezeQuestionBankRegistry({
       personality: personalityQuestionBank,
+      riasec: riasecQuestionBank,
     });
 
 export function getAssessmentQuestionBank(

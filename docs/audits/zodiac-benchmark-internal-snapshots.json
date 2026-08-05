@@ -1,0 +1,200 @@
+[
+  {
+    "caseId": "johannesburg-standard-time",
+    "description": "Southern Hemisphere baseline with a stable UTC+2 time zone.",
+    "localDateTime": "2026-07-30T14:00:00",
+    "utcDateTime": "2026-07-30T12:00:00.000Z",
+    "offsetMinutes": 120,
+    "latitude": -26.2041,
+    "longitude": 28.0473,
+    "timeZone": "Africa/Johannesburg",
+    "positions": {
+      "sun": {
+        "sign": "leo",
+        "degree": 7,
+        "minute": 21,
+        "second": 17,
+        "absoluteLongitude": 127.35459916814347
+      },
+      "moon": {
+        "sign": "aquarius",
+        "degree": 17,
+        "minute": 26,
+        "second": 55,
+        "absoluteLongitude": 317.448721565956
+      },
+      "mercury": {
+        "sign": "cancer",
+        "degree": 18,
+        "minute": 25,
+        "second": 43,
+        "absoluteLongitude": 108.42851624965948
+      },
+      "venus": {
+        "sign": "virgo",
+        "degree": 22,
+        "minute": 29,
+        "second": 48,
+        "absoluteLongitude": 172.49667498222266
+      },
+      "mars": {
+        "sign": "gemini",
+        "degree": 22,
+        "minute": 3,
+        "second": 12,
+        "absoluteLongitude": 82.05346037875523
+      },
+      "ascendant": {
+        "sign": "sagittarius",
+        "degree": 19,
+        "minute": 11,
+        "second": 33,
+        "absoluteLongitude": 259.19241560471085
+      },
+      "midheaven": {
+        "sign": "virgo",
+        "degree": 4,
+        "minute": 18,
+        "second": 52,
+        "absoluteLongitude": 154.31441223213073
+      }
+    },
+    "engine": {
+      "name": "Astronomy Engine",
+      "version": "2.1.19"
+    },
+    "generatedAt": "2026-08-01T12:15:07.549Z"
+  },
+  {
+    "caseId": "london-summer-time",
+    "description": "European daylight-saving case during British Summer Time.",
+    "localDateTime": "2000-07-01T18:45:00",
+    "utcDateTime": "2000-07-01T17:45:00.000Z",
+    "offsetMinutes": 60,
+    "latitude": 51.5074,
+    "longitude": -0.1278,
+    "timeZone": "Europe/London",
+    "positions": {
+      "sun": {
+        "sign": "cancer",
+        "degree": 10,
+        "minute": 10,
+        "second": 21,
+        "absoluteLongitude": 100.17252175333414
+      },
+      "moon": {
+        "sign": "cancer",
+        "degree": 9,
+        "minute": 14,
+        "second": 1,
+        "absoluteLongitude": 99.2337165245134
+      },
+      "mercury": {
+        "sign": "cancer",
+        "degree": 17,
+        "minute": 31,
+        "second": 6,
+        "absoluteLongitude": 107.51846266410689
+      },
+      "venus": {
+        "sign": "cancer",
+        "degree": 15,
+        "minute": 44,
+        "second": 42,
+        "absoluteLongitude": 105.7450177282584
+      },
+      "mars": {
+        "sign": "cancer",
+        "degree": 10,
+        "minute": 8,
+        "second": 58,
+        "absoluteLongitude": 100.14945309617144
+      },
+      "ascendant": {
+        "sign": "sagittarius",
+        "degree": 8,
+        "minute": 1,
+        "second": 50,
+        "absoluteLongitude": 248.03050979743193
+      },
+      "midheaven": {
+        "sign": "libra",
+        "degree": 6,
+        "minute": 45,
+        "second": 21,
+        "absoluteLongitude": 186.7557950023106
+      }
+    },
+    "engine": {
+      "name": "Astronomy Engine",
+      "version": "2.1.19"
+    },
+    "generatedAt": "2026-08-01T12:15:07.549Z"
+  },
+  {
+    "caseId": "new-york-summer-time",
+    "description": "North American daylight-saving case using Eastern Daylight Time.",
+    "localDateTime": "1985-08-20T23:50:00",
+    "utcDateTime": "1985-08-21T03:50:00.000Z",
+    "offsetMinutes": -240,
+    "latitude": 40.7128,
+    "longitude": -74.006,
+    "timeZone": "America/New_York",
+    "positions": {
+      "sun": {
+        "sign": "leo",
+        "degree": 28,
+        "minute": 2,
+        "second": 32,
+        "absoluteLongitude": 148.04219390730356
+      },
+      "moon": {
+        "sign": "scorpio",
+        "degree": 1,
+        "minute": 10,
+        "second": 51,
+        "absoluteLongitude": 211.18090253383366
+      },
+      "mercury": {
+        "sign": "leo",
+        "degree": 13,
+        "minute": 12,
+        "second": 54,
+        "absoluteLongitude": 133.2150991370019
+      },
+      "venus": {
+        "sign": "cancer",
+        "degree": 21,
+        "minute": 45,
+        "second": 13,
+        "absoluteLongitude": 111.75354207266673
+      },
+      "mars": {
+        "sign": "leo",
+        "degree": 17,
+        "minute": 20,
+        "second": 8,
+        "absoluteLongitude": 137.3356687406515
+      },
+      "ascendant": {
+        "sign": "gemini",
+        "degree": 4,
+        "minute": 10,
+        "second": 4,
+        "absoluteLongitude": 64.1676680282792
+      },
+      "midheaven": {
+        "sign": "aquarius",
+        "degree": 10,
+        "minute": 27,
+        "second": 35,
+        "absoluteLongitude": 310.4596744464342
+      }
+    },
+    "engine": {
+      "name": "Astronomy Engine",
+      "version": "2.1.19"
+    },
+    "generatedAt": "2026-08-01T12:15:07.549Z"
+  }
+]

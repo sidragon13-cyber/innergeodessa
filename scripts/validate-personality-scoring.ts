@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 
 import {
+  isPersonalityResultContract,
   scorePersonalityAssessment,
 } from "../src/data/assessment/scoring/personality";
 import {
@@ -44,6 +45,59 @@ assert.equal(
     responsesFor(1),
   ).type,
   "ESTJ",
+);
+
+const persistedResult = {
+  sessionId: "session-001",
+  status: "completed",
+  type: "INTJ",
+  scores: { EI: -4, SN: -6, TF: 8, JP: 2 },
+  confidence: { EI: 0.2, SN: 0.3, TF: 0.4, JP: 0.1 },
+  answered: { EI: 18, SN: 18, TF: 18, JP: 18 },
+  tie_rule:
+    "A zero score resolves to the first pole and must be reported as low differentiation.",
+  questionBankVersion: "personality-v1.0.0",
+  completedAt: "2026-07-27T12:00:00+00:00",
+  calculatedAt: "2026-07-27T12:00:00+00:00",
+};
+
+assert.equal(
+  isPersonalityResultContract(persistedResult),
+  true,
+);
+assert.equal(
+  isPersonalityResultContract({
+    ...persistedResult,
+    type: "XXXX",
+  }),
+  false,
+);
+assert.equal(
+  isPersonalityResultContract({
+    ...persistedResult,
+    confidence: {
+      ...persistedResult.confidence,
+      EI: 1.1,
+    },
+  }),
+  false,
+);
+assert.equal(
+  isPersonalityResultContract({
+    ...persistedResult,
+    answered: {
+      ...persistedResult.answered,
+      EI: 1.5,
+    },
+  }),
+  false,
+);
+assert.equal(
+  isPersonalityResultContract({
+    ...persistedResult,
+    sessionId: " ",
+  }),
+  false,
 );
 assert.equal(
   scorePersonalityAssessment(
