@@ -15,3 +15,15 @@ class ClaimedAssessmentResponse(BaseModel):
     module: Literal["personality", "career"]
     status: Literal["saved"]
     claimedAt: str
+
+
+class SaveZodiacChartRequest(BaseModel):
+    chartId: str = Field(min_length=1, max_length=128)
+    result: dict
+
+
+class SavedZodiacChartResponse(BaseModel):
+    resourceId: str
+    module: Literal["zodiac"]
+    status: Literal["saved"]
+    savedAt: str

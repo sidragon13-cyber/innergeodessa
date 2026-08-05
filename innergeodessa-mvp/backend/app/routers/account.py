@@ -10,6 +10,11 @@ from ..database import connect
 from ..schemas.account import (
     ClaimedAssessmentResponse,
     ClaimSessionRequest,
+    SavedZodiacChartResponse,
+    SaveZodiacChartRequest,
+)
+from ..zodiac_contract import (
+    validate_and_serialize_zodiac_result,
 )
 
 
@@ -148,4 +153,107 @@ def claim_session(
         module=public_module,
         status="saved",
         claimedAt=claimed_at,
+    )
+
+
+
+@router.post(
+    "/zodiac-charts",
+    response_model=SavedZodiacChartResponse,
+)
+def save_zodiac_chart(
+    payload: SaveZodiacChartRequest,
+    request: Request,
+) -> SavedZodiacChartResponse:
+    user = require_verified_user(
+        request,
+        connection_factory=connect,
+    )
+    user_id = user["user_id"]
+
+    try:
+        (
+            result_json,
+            schema_version,
+            calculated_at,
+        ) = validate_and_serialize_zodiac_result(
+            payload.result
+        )
+    except ValueError as error:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(error),
+        ) from error
+
+    now = utc_now().isoformat()
+
+    with connect() as conn:
+        existing = conn.execute(
+            """SELECT owner_user_id,
+                      result_json,
+                      created_at,
+                      updated_at
+               FROM zodiac_charts
+               WHERE chart_id=?""",
+            (payload.chartId,),
+        ).fetchone()
+
+        if existing is not None:
+            if existing["owner_user_id"] != user_id:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail=(
+                        "This zodiac chart already belongs "
+                        "to another account."
+                    ),
+                )
+
+            if existing["result_json"] != result_json:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail=(
+                        "This chart ID is already associated "
+                        "with different zodiac data."
+                    ),
+                )
+
+            return SavedZodiacChartResponse(
+                resourceId=payload.chartId,
+                module="zodiac",
+                status="saved",
+                savedAt=(
+                    existing["updated_at"]
+                    or existing["created_at"]
+                ),
+            )
+
+        conn.execute(
+            """INSERT INTO zodiac_charts(
+                 chart_id,
+                 owner_user_id,
+                 claim_secret_hash,
+                 result_json,
+                 schema_version,
+                 calculated_at,
+                 created_at,
+                 updated_at,
+                 claimed_at
+               ) VALUES (?, ?, NULL, ?, ?, ?, ?, ?, ?)""",
+            (
+                payload.chartId,
+                user_id,
+                result_json,
+                schema_version,
+                calculated_at,
+                now,
+                now,
+                now,
+            ),
+        )
+
+    return SavedZodiacChartResponse(
+        resourceId=payload.chartId,
+        module="zodiac",
+        status="saved",
+        savedAt=now,
     )
