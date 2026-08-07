@@ -1,23 +1,14 @@
 "use client";
 
-import {
-  useLocale,
-} from "@/components/locale";
-import {
-  getAssessmentDictionary,
-} from "@/data/i18n";
+import { useLocale } from "@/components/locale";
+import { getAssessmentDictionary } from "@/data/i18n";
 
-import type {
-  AssessmentAnswerOption,
-} from "./types";
+import type { AssessmentAnswerOption } from "./types";
 
 export interface AssessmentAnswerScaleProps {
   options: readonly AssessmentAnswerOption[];
   selectedValue: number | undefined;
-  onSelect: (
-    value: number,
-    eventTimeStamp: number,
-  ) => void;
+  onSelect: (value: number, eventTimeStamp: number) => void;
 }
 
 export function AssessmentAnswerScale({
@@ -35,8 +26,7 @@ export function AssessmentAnswerScale({
       aria-label={dictionary.answerScale.ariaLabel}
     >
       {options.map((option) => {
-        const selected =
-          selectedValue === option.value;
+        const selected = selectedValue === option.value;
 
         return (
           <button
@@ -44,31 +34,24 @@ export function AssessmentAnswerScale({
             type="button"
             role="radio"
             aria-checked={selected}
-            onClick={(event) =>
-              onSelect(
-                option.value,
-                event.timeStamp,
-              )
-            }
+            onClick={(event) => onSelect(option.value, event.timeStamp)}
             className={[
               "group flex min-h-16 w-full items-center justify-between gap-6 border px-5 py-4 text-left",
               "transition-colors duration-200",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a64a2c] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f1eee5]",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]",
               selected
-                ? "border-[#a64a2c] bg-[#a64a2c] text-[#f1eee5]"
-                : "border-black/20 bg-transparent text-[#20231d] hover:border-[#a64a2c] hover:bg-white/30",
+                ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-on-primary)]"
+                : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-raised)]",
             ].join(" ")}
           >
-            <span className="text-base leading-6">
-              {option.label}
-            </span>
+            <span className="text-base leading-6">{option.label}</span>
 
             <span
               className={[
                 "flex h-8 min-w-8 items-center justify-center border text-xs font-bold",
                 selected
-                  ? "border-[#f1eee5]/60"
-                  : "border-black/20 text-black/55 group-hover:border-[#a64a2c]",
+                  ? "border-[rgba(248,245,237,0.55)] text-[var(--color-on-primary)]"
+                  : "border-[var(--color-border)] text-[var(--color-text-muted)] group-hover:border-[var(--color-accent)]",
               ].join(" ")}
               aria-hidden="true"
             >

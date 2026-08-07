@@ -1,16 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import type {
-  ReactNode,
-} from "react";
+import type { ReactNode } from "react";
 
-import {
-  useAuth,
-} from "@/components/account";
-import {
-  useLocale,
-} from "@/components/locale";
+import { useAuth } from "@/components/account";
+import { useLocale } from "@/components/locale";
+import { Button, ButtonLink } from "@/components/ui";
 
 export interface ReportIdentityGateProps {
   children: ReactNode;
@@ -22,28 +16,15 @@ export function ReportIdentityGate({
   returnTo,
 }: ReportIdentityGateProps) {
   const { locale } = useLocale();
-  const {
-    status,
-    user,
-    error,
-    refreshUser,
-  } = useAuth();
+  const { status, user, error, refreshUser } = useAuth();
 
   const isChinese = locale === "zh";
 
   if (status === "loading") {
     return (
       <GatePage
-        eyebrow={
-          isChinese
-            ? "完整报告"
-            : "Full report"
-        }
-        title={
-          isChinese
-            ? "正在确认账户状态…"
-            : "Confirming your account…"
-        }
+        eyebrow={isChinese ? "完整报告" : "Full report"}
+        title={isChinese ? "正在确认账户状态…" : "Confirming your account…"}
         message={
           isChinese
             ? "正在检查你的登录与邮箱验证状态。"
@@ -56,11 +37,7 @@ export function ReportIdentityGate({
   if (error) {
     return (
       <GatePage
-        eyebrow={
-          isChinese
-            ? "账户服务"
-            : "Account service"
-        }
+        eyebrow={isChinese ? "账户服务" : "Account service"}
         title={
           isChinese
             ? "暂时无法确认账户状态"
@@ -72,46 +49,30 @@ export function ReportIdentityGate({
             : "Refresh your account status before opening the full report."
         }
         actions={
-          <button
+          <Button
             type="button"
             onClick={() => {
               void refreshUser();
             }}
-            className="inline-flex min-h-12 items-center justify-center bg-[#5e4775] px-6 text-xs font-bold uppercase tracking-[0.14em] text-white"
           >
-            {isChinese
-              ? "重新加载"
-              : "Try again"}
-          </button>
+            {isChinese ? "重新加载" : "Try again"}
+          </Button>
         }
       />
     );
   }
 
-  if (
-    status === "unauthenticated" ||
-    !user
-  ) {
-    const loginHref =
-      `/account/login?next=${encodeURIComponent(
-        returnTo,
-      )}`;
-    const registerHref =
-      `/account/register?next=${encodeURIComponent(
-        returnTo,
-      )}`;
+  if (status === "unauthenticated" || !user) {
+    const loginHref = `/account/login?next=${encodeURIComponent(returnTo)}`;
+    const registerHref = `/account/register?next=${encodeURIComponent(
+      returnTo,
+    )}`;
 
     return (
       <GatePage
-        eyebrow={
-          isChinese
-            ? "完整报告"
-            : "Full report"
-        }
+        eyebrow={isChinese ? "完整报告" : "Full report"}
         title={
-          isChinese
-            ? "登录后查看完整报告"
-            : "Sign in to view the full report"
+          isChinese ? "登录后查看完整报告" : "Sign in to view the full report"
         }
         message={
           isChinese
@@ -120,23 +81,13 @@ export function ReportIdentityGate({
         }
         actions={
           <>
-            <Link
-              href={loginHref}
-              className="inline-flex min-h-12 items-center justify-center bg-[#5e4775] px-6 text-xs font-bold uppercase tracking-[0.14em] text-white"
-            >
-              {isChinese
-                ? "登录"
-                : "Sign in"}
-            </Link>
+            <ButtonLink href={loginHref}>
+              {isChinese ? "登录" : "Sign in"}
+            </ButtonLink>
 
-            <Link
-              href={registerHref}
-              className="inline-flex min-h-12 items-center justify-center border border-[#5e4775] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#443255]"
-            >
-              {isChinese
-                ? "注册匿名账户"
-                : "Create account"}
-            </Link>
+            <ButtonLink href={registerHref} variant="secondary">
+              {isChinese ? "注册匿名账户" : "Create account"}
+            </ButtonLink>
           </>
         }
       />
@@ -144,22 +95,15 @@ export function ReportIdentityGate({
   }
 
   if (!user.emailVerified) {
-    const verifyHref =
-      `/account/verify-email?next=${encodeURIComponent(
-        returnTo,
-      )}`;
+    const verifyHref = `/account/verify-email?next=${encodeURIComponent(
+      returnTo,
+    )}`;
 
     return (
       <GatePage
-        eyebrow={
-          isChinese
-            ? "邮箱验证"
-            : "Email verification"
-        }
+        eyebrow={isChinese ? "邮箱验证" : "Email verification"}
         title={
-          isChinese
-            ? "验证邮箱后查看完整报告"
-            : "Verify your email to continue"
+          isChinese ? "验证邮箱后查看完整报告" : "Verify your email to continue"
         }
         message={
           isChinese
@@ -168,23 +112,13 @@ export function ReportIdentityGate({
         }
         actions={
           <>
-            <Link
-              href={verifyHref}
-              className="inline-flex min-h-12 items-center justify-center bg-[#5e4775] px-6 text-xs font-bold uppercase tracking-[0.14em] text-white"
-            >
-              {isChinese
-                ? "验证邮箱"
-                : "Verify email"}
-            </Link>
+            <ButtonLink href={verifyHref}>
+              {isChinese ? "验证邮箱" : "Verify email"}
+            </ButtonLink>
 
-            <Link
-              href="/account"
-              className="inline-flex min-h-12 items-center justify-center border border-[#5e4775] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#443255]"
-            >
-              {isChinese
-                ? "返回账户"
-                : "Back to account"}
-            </Link>
+            <ButtonLink href="/account" variant="secondary">
+              {isChinese ? "返回账户" : "Back to account"}
+            </ButtonLink>
           </>
         }
       />
@@ -206,24 +140,20 @@ function GatePage({
   actions?: ReactNode;
 }) {
   return (
-    <main className="min-h-screen bg-[#f8f6f2] px-6 py-20 text-[#28222d]">
-      <section className="mx-auto max-w-3xl border border-[#d9d1dd] bg-[#fffdfa] p-8 shadow-sm md:p-12">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#7a6b8a]">
+    <main className="min-h-screen bg-[var(--color-background)] px-6 py-20 text-[var(--color-text)]">
+      <section className="mx-auto max-w-3xl border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-8 shadow-sm md:p-12">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]">
           {eyebrow}
         </p>
 
-        <h1 className="mt-4 text-3xl font-semibold md:text-4xl">
-          {title}
-        </h1>
+        <h1 className="mt-4 text-3xl font-semibold md:text-4xl">{title}</h1>
 
-        <p className="mt-5 max-w-2xl leading-7 text-[#6e6672]">
+        <p className="mt-5 max-w-2xl leading-7 text-[var(--color-text-secondary)]">
           {message}
         </p>
 
         {actions ? (
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            {actions}
-          </div>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">{actions}</div>
         ) : null}
       </section>
     </main>

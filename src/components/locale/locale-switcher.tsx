@@ -1,35 +1,21 @@
 "use client";
 
-import {
-  useLocale,
-} from "./locale-provider";
+import { useLocale } from "./locale-provider";
 
 export interface LocaleSwitcherProps {
   className?: string;
 }
 
-export function LocaleSwitcher({
-  className = "",
-}: LocaleSwitcherProps) {
-  const {
-    locale,
-    setLocale,
-  } = useLocale();
+export function LocaleSwitcher({ className = "" }: LocaleSwitcherProps) {
+  const { locale, setLocale } = useLocale();
 
   return (
     <div
-      className={[
-        "inline-flex items-center border border-black/20",
-        className,
-      ]
+      className={["inline-flex items-center border border-black/20", className]
         .filter(Boolean)
         .join(" ")}
       role="group"
-      aria-label={
-        locale === "zh"
-          ? "语言选择"
-          : "Language selection"
-      }
+      aria-label={locale === "zh" ? "语言选择" : "Language selection"}
     >
       <button
         type="button"
@@ -38,9 +24,9 @@ export function LocaleSwitcher({
         className={[
           "min-h-10 px-4 text-xs font-bold uppercase tracking-[0.12em]",
           "transition-colors",
-          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5e4775]",
+          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
           locale === "en"
-            ? "bg-[#5e4775] text-[#ffffff]"
+            ? "bg-[var(--color-primary)] text-[var(--color-on-primary)]"
             : "hover:bg-black/5",
         ].join(" ")}
       >
@@ -54,9 +40,9 @@ export function LocaleSwitcher({
         className={[
           "min-h-10 border-l border-black/20 px-4 text-xs font-bold tracking-[0.12em]",
           "transition-colors",
-          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5e4775]",
+          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
           locale === "zh"
-            ? "bg-[#5e4775] text-[#ffffff]"
+            ? "bg-[var(--color-primary)] text-[var(--color-on-primary)]"
             : "hover:bg-black/5",
         ].join(" ")}
       >

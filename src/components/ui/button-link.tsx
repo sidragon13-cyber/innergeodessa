@@ -1,41 +1,25 @@
 import Link from "next/link";
-import type {
-  ComponentPropsWithoutRef,
-  ReactNode,
-} from "react";
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
-export type ButtonLinkVariant =
-  | "primary"
-  | "secondary"
-  | "quiet";
+export type ButtonLinkVariant = "primary" | "secondary" | "quiet";
 
-export type ButtonLinkSize =
-  | "default"
-  | "large";
+export type ButtonLinkSize = "default" | "large";
 
-const VARIANT_CLASSES: Readonly<
-  Record<ButtonLinkVariant, string>
-> = {
-  primary:
-    "border border-[#5e4775] bg-[#5e4775] text-[#ffffff] hover:border-[#443255] hover:bg-[#443255]",
-  secondary:
-    "border border-[#443255] bg-transparent text-[#443255] hover:bg-[#443255] hover:text-[#ffffff]",
-  quiet:
-    "border border-transparent bg-transparent text-[#443255] underline decoration-[#c99a45] underline-offset-4 hover:text-[#5e4775]",
+const VARIANT_CLASSES: Readonly<Record<ButtonLinkVariant, string>> = {
+  primary: "ig-button-primary",
+  secondary: "ig-button-secondary",
+  quiet: "ig-button-quiet underline decoration-1 underline-offset-4",
 };
 
-const SIZE_CLASSES: Readonly<
-  Record<ButtonLinkSize, string>
-> = {
+const SIZE_CLASSES: Readonly<Record<ButtonLinkSize, string>> = {
   default: "min-h-12 px-5",
   large: "min-h-14 px-7",
 };
 
-export interface ButtonLinkProps
-  extends Omit<
-    ComponentPropsWithoutRef<typeof Link>,
-    "className"
-  > {
+export interface ButtonLinkProps extends Omit<
+  ComponentPropsWithoutRef<typeof Link>,
+  "className"
+> {
   children: ReactNode;
   className?: string;
   showArrow?: boolean;
@@ -54,11 +38,12 @@ export function ButtonLink({
   return (
     <Link
       className={[
-        "inline-flex items-center justify-center gap-5 text-xs font-bold uppercase tracking-[0.14em]",
-        "transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c99a45] focus-visible:ring-offset-2",
+        "inline-flex items-center justify-center gap-5 rounded-[2px] text-xs font-bold uppercase tracking-[0.14em]",
+        "transition-[background-color,border-color,color,transform] duration-200 ease-out hover:-translate-y-px active:translate-y-0",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]",
+        className,
         VARIANT_CLASSES[variant],
         SIZE_CLASSES[size],
-        className,
       ]
         .filter(Boolean)
         .join(" ")}
@@ -66,9 +51,7 @@ export function ButtonLink({
     >
       <span>{children}</span>
 
-      {showArrow ? (
-        <span aria-hidden="true">→</span>
-      ) : null}
+      {showArrow ? <span aria-hidden="true">→</span> : null}
     </Link>
   );
 }

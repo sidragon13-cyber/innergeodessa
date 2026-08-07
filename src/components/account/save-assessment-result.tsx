@@ -1,32 +1,17 @@
 "use client";
 
-import Link from "next/link";
-import {
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import {
-  useLocale,
-} from "@/components/locale";
-import {
-  getAccountDictionary,
-} from "@/data/i18n";
+import { Button, ButtonLink } from "@/components/ui";
 
-import {
-  useAuth,
-} from "./auth-provider";
+import { useLocale } from "@/components/locale";
+import { getAccountDictionary } from "@/data/i18n";
 
-type AssessmentModule =
-  | "personality"
-  | "career";
+import { useAuth } from "./auth-provider";
 
-type SaveState =
-  | "idle"
-  | "saving"
-  | "saved"
-  | "error";
+type AssessmentModule = "personality" | "career";
+
+type SaveState = "idle" | "saving" | "saved" | "error";
 
 type ClaimResponse = {
   resourceId?: string;
@@ -60,11 +45,7 @@ function readErrorMessage(
   payload: ClaimResponse | null,
   fallback: string,
 ): string {
-  if (
-    payload &&
-    typeof payload.detail === "string" &&
-    payload.detail.trim()
-  ) {
+  if (payload && typeof payload.detail === "string" && payload.detail.trim()) {
     return payload.detail;
   }
 
@@ -76,22 +57,13 @@ export function SaveAssessmentResult({
   sessionId,
   className = "",
 }: SaveAssessmentResultProps) {
-  const {
-    status: authStatus,
-    user,
-  } = useAuth();
-  const {
-    locale,
-  } = useLocale();
-  const dictionary =
-    getAccountDictionary(locale).ownership;
+  const { status: authStatus, user } = useAuth();
+  const { locale } = useLocale();
+  const dictionary = getAccountDictionary(locale).ownership;
 
-  const [saveState, setSaveState] =
-    useState<SaveState>("idle");
-  const [claimSecret, setClaimSecret] =
-    useState<string | null>(null);
-  const [errorMessage, setErrorMessage] =
-    useState("");
+  const [saveState, setSaveState] = useState<SaveState>("idle");
+  const [claimSecret, setClaimSecret] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const resultPath = useMemo(
     () =>
@@ -101,8 +73,7 @@ export function SaveAssessmentResult({
     [module, sessionId],
   );
 
-  const loginHref =
-    `/account/login?next=${encodeURIComponent(resultPath)}`;
+  const loginHref = `/account/login?next=${encodeURIComponent(resultPath)}`;
 
   useEffect(() => {
     if (!sessionId) {
@@ -112,16 +83,12 @@ export function SaveAssessmentResult({
     let active = true;
 
     const saved =
-      window.localStorage.getItem(
-        getSavedStorageKey(module, sessionId),
-      ) === "saved";
+      window.localStorage.getItem(getSavedStorageKey(module, sessionId)) ===
+      "saved";
 
-    const storedClaimSecret =
-      saved
-        ? null
-        : window.sessionStorage.getItem(
-            getClaimStorageKey(module, sessionId),
-          );
+    const storedClaimSecret = saved
+      ? null
+      : window.sessionStorage.getItem(getClaimStorageKey(module, sessionId));
 
     queueMicrotask(() => {
       if (!active) {
@@ -151,35 +118,29 @@ export function SaveAssessmentResult({
     setErrorMessage("");
 
     try {
-      const response = await fetch(
-        "/api/account/claim-session",
-        {
-          method: "POST",
-          credentials: "same-origin",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            sessionId,
-            claimSecret,
-          }),
+      const response = await fetch("/api/account/claim-session", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          sessionId,
+          claimSecret,
+        }),
+      });
 
       let payload: ClaimResponse | null = null;
 
       try {
-        payload =
-          (await response.json()) as ClaimResponse;
+        payload = (await response.json()) as ClaimResponse;
       } catch {
         payload = null;
       }
 
       if (!response.ok) {
         if (response.status === 401) {
-          throw new Error(
-            dictionary.loginRequired,
-          );
+          throw new Error(dictionary.loginRequired);
         }
 
         if (response.status === 403) {
@@ -190,24 +151,14 @@ export function SaveAssessmentResult({
           );
         }
 
-        throw new Error(
-          readErrorMessage(
-            payload,
-            dictionary.error,
-          ),
-        );
+        throw new Error(readErrorMessage(payload, dictionary.error));
       }
 
-      if (
-        payload?.status !== "saved" ||
-        payload.resourceId !== sessionId
-      ) {
+      if (payload?.status !== "saved" || payload.resourceId !== sessionId) {
         throw new Error(dictionary.error);
       }
 
-      window.sessionStorage.removeItem(
-        getClaimStorageKey(module, sessionId),
-      );
+      window.sessionStorage.removeItem(getClaimStorageKey(module, sessionId));
       window.localStorage.setItem(
         getSavedStorageKey(module, sessionId),
         "saved",
@@ -217,9 +168,7 @@ export function SaveAssessmentResult({
       setSaveState("saved");
     } catch (error) {
       setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : dictionary.error,
+        error instanceof Error ? error.message : dictionary.error,
       );
       setSaveState("error");
     }
@@ -235,9 +184,7 @@ export function SaveAssessmentResult({
       </p>
 
       <h3 className="mt-2 text-xl font-semibold">
-        {saveState === "saved"
-          ? dictionary.savedTitle
-          : dictionary.title}
+        {saveState === "saved" ? dictionary.savedTitle : dictionary.title}
       </h3>
 
       <p className="mt-3 text-sm leading-6 text-[#657068]">
@@ -253,28 +200,24 @@ export function SaveAssessmentResult({
       ) : null}
 
       {authStatus === "unauthenticated" ? (
-        <Link
-          href={loginHref}
-          className="mt-5 inline-flex min-h-11 items-center justify-center border border-[#34483a] px-5 text-xs font-bold uppercase tracking-[0.13em] transition-colors hover:bg-[#34483a] hover:text-white"
-        >
+        <ButtonLink href={loginHref} variant="secondary" className="mt-5">
           {dictionary.loginAction}
-        </Link>
+        </ButtonLink>
       ) : null}
 
-      {authStatus === "authenticated" &&
-      user &&
-      !user.emailVerified ? (
+      {authStatus === "authenticated" && user && !user.emailVerified ? (
         <div className="mt-4">
           <p className="text-sm leading-6 text-[#8a4f43]">
             {dictionary.verificationRequired}
           </p>
 
-          <Link
+          <ButtonLink
             href="/account/verify-email"
-            className="mt-4 inline-flex min-h-11 items-center justify-center border border-[#34483a] px-5 text-xs font-bold uppercase tracking-[0.13em] transition-colors hover:bg-[#34483a] hover:text-white"
+            variant="secondary"
+            className="mt-4"
           >
             {dictionary.verificationAction}
-          </Link>
+          </ButtonLink>
         </div>
       ) : null}
 
@@ -291,25 +234,19 @@ export function SaveAssessmentResult({
       user?.emailVerified &&
       claimSecret &&
       saveState !== "saved" ? (
-        <button
+        <Button
           type="button"
           onClick={() => void saveResult()}
-          disabled={saveState === "saving"}
-          className="mt-5 inline-flex min-h-11 items-center justify-center bg-[#34483a] px-5 text-xs font-bold uppercase tracking-[0.13em] text-white disabled:cursor-wait disabled:opacity-65"
+          loading={saveState === "saving"}
+          loadingLabel={dictionary.saving}
+          className="mt-5"
         >
-          {saveState === "saving"
-            ? dictionary.saving
-            : saveState === "error"
-              ? dictionary.retry
-              : dictionary.save}
-        </button>
+          {saveState === "error" ? dictionary.retry : dictionary.save}
+        </Button>
       ) : null}
 
       {saveState === "error" && errorMessage ? (
-        <p
-          className="mt-4 text-sm leading-6 text-[#8a4f43]"
-          role="alert"
-        >
+        <p className="mt-4 text-sm leading-6 text-[#8a4f43]" role="alert">
           {errorMessage}
         </p>
       ) : null}

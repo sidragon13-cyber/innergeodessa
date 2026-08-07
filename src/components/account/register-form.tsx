@@ -1,28 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import {
-  useState,
-  type FormEvent,
-} from "react";
+import { useState, type FormEvent } from "react";
 
-import {
-  ButtonLink,
-} from "@/components/ui";
-import {
-  useLocale,
-} from "@/components/locale";
-import {
-  getAccountDictionary,
-} from "@/data/i18n";
+import { Button, ButtonLink } from "@/components/ui";
+import { useLocale } from "@/components/locale";
+import { getAccountDictionary } from "@/data/i18n";
 
-import {
-  getAuthErrorMessage,
-} from "./auth-errors";
-import {
-  useAuth,
-  type RegisterResult,
-} from "./auth-provider";
+import { getAuthErrorMessage } from "./auth-errors";
+import { useAuth, type RegisterResult } from "./auth-provider";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const INPUT_CLASS =
@@ -199,15 +185,14 @@ export function RegisterForm() {
 
       {errorMessage ? <AccountError>{errorMessage}</AccountError> : null}
 
-      <button
+      <Button
         type="submit"
-        disabled={submitting}
-        className="mt-7 min-h-12 bg-[#34483a] px-7 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] disabled:cursor-not-allowed disabled:opacity-60"
+        loading={submitting}
+        loadingLabel={dictionary.register.submitting}
+        className="mt-7"
       >
-        {submitting
-          ? dictionary.register.submitting
-          : dictionary.register.submit}
-      </button>
+        {dictionary.register.submit}
+      </Button>
 
       <p className="mt-6 text-sm text-[#596158]">
         {dictionary.register.haveAccount}{" "}
@@ -229,7 +214,10 @@ function AccountNotice({ children }: { children: React.ReactNode }) {
 
 function AccountError({ children }: { children: React.ReactNode }) {
   return (
-    <p role="alert" className="mt-6 border border-[#b98073] bg-[#fff5f2] p-4 text-sm text-[#7f3e33]">
+    <p
+      role="alert"
+      className="mt-6 border border-[#b98073] bg-[#fff5f2] p-4 text-sm text-[#7f3e33]"
+    >
       {children}
     </p>
   );

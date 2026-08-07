@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  /* Legacy brand tokens — retained for backward compatibility. */
   --ink: #20231d;
   --paper: #f1eee5;
   --paper-deep: #e5e0d3;
@@ -10,6 +11,43 @@
   --rust-light: #cf7b60;
   --line: rgba(32, 35, 29, 0.22);
   --light-line: rgba(241, 238, 229, 0.22);
+
+  /* InnerGeo Design System v1 — semantic color tokens. */
+  --color-background: #f7f4ec;
+  --color-background-subtle: #eee8dc;
+  --color-surface: #faf8f3;
+  --color-surface-raised: #fffdf9;
+
+  --color-text: #20231d;
+  --color-text-secondary: #6d746b;
+  --color-text-muted: #7c8279;
+  --color-text-inverse: #f8f5ed;
+
+  --color-primary: #34483a;
+  --color-primary-hover: #29392f;
+  --color-primary-active: #223129;
+  --color-on-primary: #f8f5ed;
+
+  --color-accent: #a64a2c;
+  --color-accent-hover: #873b24;
+  --color-gold: #c99a45;
+  --color-gold-soft: #e4c982;
+  --color-on-accent: #fffaf4;
+
+  --color-border: #d9d2c7;
+  --color-border-strong: #b9b0a3;
+  --color-border-inverse: rgba(248, 245, 237, 0.28);
+
+  --color-focus: #a64a2c;
+  --color-disabled-background: #d5d1c7;
+  --color-disabled-text: #747870;
+
+  --color-success: #4e7d5a;
+  --color-warning: #a66a2c;
+  --color-danger: #9a3f3f;
+
+  --shadow-focus: 0 0 0 3px rgba(166, 74, 44, 0.22);
+  --shadow-card: 0 10px 30px rgba(32, 35, 29, 0.06);
 }
 
 * {
@@ -1284,12 +1322,30 @@ a {
   font-size: 15px;
 }
 
-.career-map-code-1 { top: 11%; left: 46%; }
-.career-map-code-2 { top: 25%; right: 12%; }
-.career-map-code-3 { right: 11%; bottom: 22%; }
-.career-map-code-4 { bottom: 10%; left: 46%; }
-.career-map-code-5 { bottom: 23%; left: 11%; }
-.career-map-code-6 { top: 25%; left: 11%; }
+.career-map-code-1 {
+  top: 11%;
+  left: 46%;
+}
+.career-map-code-2 {
+  top: 25%;
+  right: 12%;
+}
+.career-map-code-3 {
+  right: 11%;
+  bottom: 22%;
+}
+.career-map-code-4 {
+  bottom: 10%;
+  left: 46%;
+}
+.career-map-code-5 {
+  bottom: 23%;
+  left: 11%;
+}
+.career-map-code-6 {
+  top: 25%;
+  left: 11%;
+}
 
 .career-context {
   display: grid;
@@ -1363,7 +1419,9 @@ a {
   padding: 27px 29px 30px;
   border: 1px solid var(--line);
   background: rgba(241, 238, 229, 0.58);
-  transition: border-color 180ms ease, transform 180ms ease;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease;
 }
 
 .riasec-card:hover {
@@ -1549,7 +1607,9 @@ a {
   margin-bottom: 55px;
 }
 
-.beyond-heading .eyebrow { margin-bottom: 6px; }
+.beyond-heading .eyebrow {
+  margin-bottom: 6px;
+}
 
 .beyond-grid {
   display: grid;
@@ -1683,8 +1743,14 @@ a {
   border-radius: 50%;
 }
 
-.future-profile-map::before { width: 320px; height: 320px; }
-.future-profile-map::after { width: 190px; height: 190px; }
+.future-profile-map::before {
+  width: 320px;
+  height: 320px;
+}
+.future-profile-map::after {
+  width: 190px;
+  height: 190px;
+}
 
 .future-profile-map > span {
   z-index: 2;
@@ -1714,7 +1780,9 @@ a {
   align-items: center;
 }
 
-.career-final-cta .eyebrow { color: var(--rust-light); }
+.career-final-cta .eyebrow {
+  color: var(--rust-light);
+}
 
 .career-final-cta h2 {
   max-width: 970px;
@@ -1736,7 +1804,9 @@ a {
   gap: 28px;
 }
 
-.light-secondary { border-color: var(--paper); }
+.light-secondary {
+  border-color: var(--paper);
+}
 
 /* Zodiac introduction */
 
@@ -1827,7 +1897,9 @@ a {
   transform: translate(-50%, -50%);
 }
 
-.zodiac-orbit-center .compass-mark { width: 92px; }
+.zodiac-orbit-center .compass-mark {
+  width: 92px;
+}
 
 .zodiac-orbit-center span {
   color: var(--ink);
@@ -1851,18 +1923,54 @@ a {
   font-size: 9px;
 }
 
-.orbit-sign-1 { top: 7%; left: 47%; }
-.orbit-sign-2 { top: 12%; right: 24%; }
-.orbit-sign-3 { top: 27%; right: 8%; }
-.orbit-sign-4 { top: 48%; right: 5%; }
-.orbit-sign-5 { right: 12%; bottom: 22%; }
-.orbit-sign-6 { right: 28%; bottom: 7%; }
-.orbit-sign-7 { bottom: 4%; left: 47%; }
-.orbit-sign-8 { bottom: 10%; left: 25%; }
-.orbit-sign-9 { bottom: 27%; left: 8%; }
-.orbit-sign-10 { top: 47%; left: 4%; }
-.orbit-sign-11 { top: 25%; left: 10%; }
-.orbit-sign-12 { top: 10%; left: 27%; }
+.orbit-sign-1 {
+  top: 7%;
+  left: 47%;
+}
+.orbit-sign-2 {
+  top: 12%;
+  right: 24%;
+}
+.orbit-sign-3 {
+  top: 27%;
+  right: 8%;
+}
+.orbit-sign-4 {
+  top: 48%;
+  right: 5%;
+}
+.orbit-sign-5 {
+  right: 12%;
+  bottom: 22%;
+}
+.orbit-sign-6 {
+  right: 28%;
+  bottom: 7%;
+}
+.orbit-sign-7 {
+  bottom: 4%;
+  left: 47%;
+}
+.orbit-sign-8 {
+  bottom: 10%;
+  left: 25%;
+}
+.orbit-sign-9 {
+  bottom: 27%;
+  left: 8%;
+}
+.orbit-sign-10 {
+  top: 47%;
+  left: 4%;
+}
+.orbit-sign-11 {
+  top: 25%;
+  left: 10%;
+}
+.orbit-sign-12 {
+  top: 10%;
+  left: 27%;
+}
 
 .zodiac-meaning,
 .more-than-sign,
@@ -1928,7 +2036,9 @@ a {
   margin-bottom: 58px;
 }
 
-.zodiac-section-heading .eyebrow { margin-bottom: 17px; }
+.zodiac-section-heading .eyebrow {
+  margin-bottom: 17px;
+}
 
 .zodiac-section-heading > p {
   max-width: 420px;
@@ -1951,7 +2061,9 @@ a {
   padding: 27px 29px 30px;
   border: 1px solid var(--line);
   background: rgba(241, 238, 229, 0.58);
-  transition: border-color 180ms ease, transform 180ms ease;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease;
 }
 
 .sign-card:hover {
@@ -2036,7 +2148,9 @@ a {
   gap: 10%;
 }
 
-.zodiac-profile-heading .eyebrow { color: var(--rust-light); }
+.zodiac-profile-heading .eyebrow {
+  color: var(--rust-light);
+}
 
 .zodiac-profile-heading > p:last-child {
   max-width: 470px;
@@ -2188,7 +2302,9 @@ a {
   color: var(--paper);
 }
 
-.zodiac-community .eyebrow { color: var(--rust-light); }
+.zodiac-community .eyebrow {
+  color: var(--rust-light);
+}
 
 .zodiac-community-inner > p {
   max-width: 700px;
@@ -2222,7 +2338,9 @@ a {
   align-items: center;
 }
 
-.zodiac-final-cta .eyebrow { color: var(--rust-light); }
+.zodiac-final-cta .eyebrow {
+  color: var(--rust-light);
+}
 
 .zodiac-final-cta h2 {
   max-width: 920px;
@@ -2344,7 +2462,9 @@ a {
   transform: translate(-50%, -50%);
 }
 
-.about-map-center .compass-mark { width: 98px; }
+.about-map-center .compass-mark {
+  width: 98px;
+}
 
 .about-map-center span,
 .about-map-label {
@@ -2361,9 +2481,18 @@ a {
   border-left: 1px solid var(--rust);
 }
 
-.about-map-label-one { top: 19%; right: 12%; }
-.about-map-label-two { right: 8%; bottom: 18%; }
-.about-map-label-three { bottom: 12%; left: 11%; }
+.about-map-label-one {
+  top: 19%;
+  right: 12%;
+}
+.about-map-label-two {
+  right: 8%;
+  bottom: 18%;
+}
+.about-map-label-three {
+  bottom: 12%;
+  left: 11%;
+}
 
 .about-purpose,
 .integrated-profile,
@@ -2422,7 +2551,9 @@ a {
   gap: 9%;
 }
 
-.name-heading .eyebrow { color: var(--rust-light); }
+.name-heading .eyebrow {
+  color: var(--rust-light);
+}
 
 .name-heading > p:last-child {
   max-width: 440px;
@@ -2495,7 +2626,9 @@ a {
   margin-bottom: 58px;
 }
 
-.about-section-heading .eyebrow { margin-bottom: 17px; }
+.about-section-heading .eyebrow {
+  margin-bottom: 17px;
+}
 
 .about-section-heading > p {
   max-width: 420px;
@@ -2802,7 +2935,9 @@ a {
   color: var(--paper);
 }
 
-.status-heading .eyebrow { color: var(--rust-light); }
+.status-heading .eyebrow {
+  color: var(--rust-light);
+}
 
 .status-heading > p:last-child {
   max-width: 580px;
@@ -2860,7 +2995,9 @@ a {
   align-items: center;
 }
 
-.about-final-cta .eyebrow { color: var(--rust-light); }
+.about-final-cta .eyebrow {
+  color: var(--rust-light);
+}
 
 .about-final-cta h2 {
   max-width: 900px;
@@ -4093,4 +4230,67 @@ a {
     orphans: 3;
     widows: 3;
   }
+}
+
+/* =========================================================
+   INNERGEO DESIGN SYSTEM V1 — BUTTON COLOR CONTRACT
+   These semantic classes intentionally override legacy
+   page-level Tailwind colour utilities.
+   ========================================================= */
+
+.ig-button-primary {
+  border-color: var(--color-primary) !important;
+  background-color: var(--color-primary) !important;
+  color: var(--color-on-primary) !important;
+}
+
+.ig-button-primary:hover {
+  border-color: var(--color-primary-hover) !important;
+  background-color: var(--color-primary-hover) !important;
+  color: var(--color-on-primary) !important;
+}
+
+.ig-button-primary:active {
+  border-color: var(--color-primary-active) !important;
+  background-color: var(--color-primary-active) !important;
+  color: var(--color-on-primary) !important;
+}
+
+.ig-button-secondary {
+  border-color: var(--color-primary) !important;
+  background-color: transparent !important;
+  color: var(--color-primary) !important;
+}
+
+.ig-button-secondary:hover {
+  border-color: var(--color-primary) !important;
+  background-color: var(--color-primary) !important;
+  color: var(--color-on-primary) !important;
+}
+
+.ig-button-secondary:active {
+  border-color: var(--color-primary-active) !important;
+  background-color: var(--color-primary-active) !important;
+  color: var(--color-on-primary) !important;
+}
+
+.ig-button-quiet {
+  border-color: transparent !important;
+  background-color: transparent !important;
+  color: var(--color-primary) !important;
+  text-decoration-color: var(--color-gold) !important;
+}
+
+.ig-button-quiet:hover {
+  color: var(--color-accent-hover) !important;
+}
+
+.ig-button-danger {
+  border-color: var(--color-danger) !important;
+  background-color: var(--color-danger) !important;
+  color: var(--color-on-primary) !important;
+}
+
+.ig-button-danger:hover {
+  filter: brightness(0.9);
 }

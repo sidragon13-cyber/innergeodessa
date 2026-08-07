@@ -4,8 +4,8 @@
    ========================================================= */
 
 :root {
-  --brand-primary: #604777;
-  --brand-primary-dark: #422d55;
+  --brand-primary: #34483a;
+  --brand-primary-dark: #223129;
   --brand-primary-soft: #7a6b8a;
 
   --brand-gold: #c99739;
@@ -16,7 +16,7 @@
   --brand-panel: #f3edf5;
 
   --brand-text: #29232d;
-  --brand-muted: #6e6672;
+  --brand-muted: #6d746b;
   --brand-border: rgba(68, 50, 85, 0.16);
 
   --ink: var(--brand-text);
@@ -58,10 +58,7 @@ body {
 .brand-name {
   display: block;
   margin: 0;
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
+  font-family: Georgia, "Times New Roman", serif;
   font-weight: 400;
   line-height: 0.92;
   letter-spacing: -0.065em;
@@ -130,13 +127,7 @@ body {
 .site-header .brand-name {
   color: var(--brand-primary-dark);
   font-size: 30px;
-  background:
-    linear-gradient(
-      180deg,
-      #3f2a52 0%,
-      #755987 56%,
-      #4b355e 100%
-    );
+  background: linear-gradient(180deg, #3f2a52 0%, #755987 56%, #29392f 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -183,11 +174,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding:
-    48px
-    clamp(40px, 4.5vw, 72px)
-    50px
-    clamp(56px, 7vw, 108px);
+  padding: 48px clamp(40px, 4.5vw, 72px) 50px clamp(56px, 7vw, 108px);
 }
 
 .hero .eyebrow {
@@ -234,25 +221,13 @@ body {
   min-height: 54px;
   padding-inline: 26px;
   border-radius: 5px;
-  background:
-    linear-gradient(
-      135deg,
-      #452957,
-      #68477c
-    );
+  background: linear-gradient(135deg, #223129, #34483a);
   color: white;
-  box-shadow:
-    0 16px 34px
-    rgba(68, 50, 85, 0.16);
+  box-shadow: 0 16px 34px rgba(68, 50, 85, 0.16);
 }
 
 .primary-button:hover {
-  background:
-    linear-gradient(
-      135deg,
-      #382146,
-      #563868
-    );
+  background: linear-gradient(135deg, #382146, #563868);
 }
 
 .hero-action > p {
@@ -302,9 +277,7 @@ body {
   position: absolute;
   top: 50%;
   left: 51%;
-  border:
-    1px solid
-    rgba(94, 71, 117, 0.11);
+  border: 1px solid rgba(94, 71, 117, 0.11);
   border-radius: 50%;
   transform: translate(-50%, -50%);
 }
@@ -354,9 +327,7 @@ body {
 
 .brand-map-module:hover {
   background: rgba(255, 253, 250, 0.93);
-  box-shadow:
-    0 14px 30px
-    rgba(68, 50, 85, 0.08);
+  box-shadow: 0 14px 30px rgba(68, 50, 85, 0.08);
   transform: translateY(-3px);
 }
 
@@ -431,9 +402,7 @@ body {
   font-size: 68px;
   line-height: 1;
   transform: scaleX(0.62) scaleY(1.08);
-  text-shadow:
-    0 0 24px
-    rgba(201, 154, 69, 0.24);
+  text-shadow: 0 0 24px rgba(201, 154, 69, 0.24);
 }
 
 .brand-map-star-small {
@@ -483,15 +452,12 @@ body {
   gap: 38px;
   border: 1px solid rgba(94, 71, 117, 0.1);
   border-radius: 20px;
-  background:
-    linear-gradient(
-      120deg,
-      rgba(245, 237, 249, 0.84),
-      rgba(255, 250, 244, 0.88)
-    );
-  box-shadow:
-    0 15px 40px
-    rgba(68, 50, 85, 0.04);
+  background: linear-gradient(
+    120deg,
+    rgba(245, 237, 249, 0.84),
+    rgba(255, 250, 244, 0.88)
+  );
+  box-shadow: 0 15px 40px rgba(68, 50, 85, 0.04);
 }
 
 .brand-trust-intro {
@@ -512,19 +478,15 @@ body {
 .brand-trust-description {
   max-width: 470px;
   margin: 0;
-  color: #665e69;
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
+  color: #6d746b;
+  font-family: Georgia, "Times New Roman", serif;
   font-size: 13.5px;
   line-height: 1.55;
 }
 
 .brand-trust-metrics {
   display: grid;
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .brand-trust-metric {
@@ -537,17 +499,12 @@ body {
 }
 
 .brand-trust-metric + .brand-trust-metric {
-  border-left:
-    1px solid
-    rgba(94, 71, 117, 0.23);
+  border-left: 1px solid rgba(94, 71, 117, 0.23);
 }
 
 .brand-trust-metric strong {
   color: var(--brand-primary-dark);
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
+  font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(32px, 3.2vw, 47px);
   font-weight: 400;
   line-height: 1;
@@ -578,12 +535,7 @@ body {
       rgba(122, 86, 148, 0.2),
       transparent 27%
     ),
-    linear-gradient(
-      125deg,
-      #251334 0%,
-      #3b2150 50%,
-      #29173a 100%
-    );
+    linear-gradient(125deg, #251334 0%, #3b2150 50%, #29173a 100%);
   color: #fffaf4;
 }
 
@@ -597,13 +549,12 @@ body {
   height: 500px;
   border-radius: 50% 50% 0 0;
   transform: translateX(-50%);
-  background:
-    radial-gradient(
-      ellipse at 50% 0%,
-      rgba(213, 164, 79, 0.18),
-      rgba(77, 45, 93, 0.78) 25%,
-      #21122e 70%
-    );
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(213, 164, 79, 0.18),
+    rgba(77, 45, 93, 0.78) 25%,
+    #21122e 70%
+  );
   box-shadow:
     0 -2px 0 rgba(239, 197, 111, 0.78),
     0 -7px 18px rgba(226, 174, 82, 0.38),
@@ -619,13 +570,12 @@ body {
   height: 78px;
   transform: translateX(-50%);
   border-radius: 50%;
-  background:
-    radial-gradient(
-      ellipse at center bottom,
-      rgba(255, 224, 153, 0.52),
-      rgba(222, 169, 78, 0.23) 30%,
-      transparent 72%
-    );
+  background: radial-gradient(
+    ellipse at center bottom,
+    rgba(255, 224, 153, 0.52),
+    rgba(222, 169, 78, 0.23) 30%,
+    transparent 72%
+  );
   filter: blur(9px);
 }
 
@@ -662,13 +612,7 @@ body {
 .site-footer .brand-name {
   color: #fffaf4;
   font-size: 40px;
-  background:
-    linear-gradient(
-      180deg,
-      #fffdf8,
-      #eadff0 58%,
-      #cdbbd7
-    );
+  background: linear-gradient(180deg, #fffdf8, #eadff0 58%, #cdbbd7);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -687,12 +631,8 @@ body {
 .site-footer-brand > p {
   width: 100%;
   margin: 14px 0 0;
-  color:
-    rgba(255, 250, 244, 0.76);
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
+  color: rgba(255, 250, 244, 0.76);
+  font-family: Georgia, "Times New Roman", serif;
   font-size: 14px;
   line-height: 1.5;
   text-align: center;
@@ -714,12 +654,8 @@ body {
 
 .site-footer-copyright {
   margin: 0;
-  color:
-    rgba(255, 250, 244, 0.66);
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
+  color: rgba(255, 250, 244, 0.66);
+  font-family: Georgia, "Times New Roman", serif;
   font-size: 11px;
   white-space: nowrap;
 }
@@ -828,11 +764,8 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .brand-trust-metric +
-  .brand-trust-metric {
-    border-top:
-      1px solid
-      rgba(94, 71, 117, 0.23);
+  .brand-trust-metric + .brand-trust-metric {
+    border-top: 1px solid rgba(94, 71, 117, 0.23);
     border-left: 0;
   }
 
@@ -842,10 +775,7 @@ body {
 
   .site-footer-inner {
     min-height: 390px;
-    padding:
-      44px
-      24px
-      130px;
+    padding: 44px 24px 130px;
   }
 
   .site-footer-navigation {
@@ -856,3 +786,130 @@ body {
     white-space: normal;
   }
 }
+
+/* INNERGEO DESIGN SYSTEM V1 — HOME BRAND OVERRIDES START */
+
+/*
+ * Brand direction:
+ * Forest green × warm ivory × restrained gold.
+ * Purple is no longer used as a large-area brand colour.
+ */
+
+/* Homepage primary action */
+.primary-button {
+  min-width: 260px;
+  min-height: 52px;
+  border-color: var(--color-primary);
+  border-radius: 6px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  box-shadow: none;
+  transform: none;
+}
+
+.primary-button:hover {
+  border-color: var(--color-primary-hover);
+  background: var(--color-primary-hover);
+  color: var(--color-on-primary);
+  transform: none;
+}
+
+.primary-button:active {
+  border-color: var(--color-primary-active);
+  background: var(--color-primary-active);
+  color: var(--color-on-primary);
+  transform: none;
+}
+
+.primary-button:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+/* Footer */
+.site-footer {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--color-border-inverse);
+  background: linear-gradient(
+    180deg,
+    var(--color-primary-active) 0%,
+    #1b2922 100%
+  );
+  color: var(--color-on-primary);
+}
+
+/* Remove the old purple atmospheric glow. */
+.site-footer-glow {
+  position: absolute;
+  inset: auto 0 0;
+  height: 74%;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 110%,
+    rgba(197, 155, 70, 0.2) 0%,
+    rgba(197, 155, 70, 0.08) 28%,
+    transparent 68%
+  );
+  opacity: 1;
+}
+
+/* Ensure footer content remains above decorative layers. */
+.site-footer-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.site-footer .footer-wordmark,
+.site-footer .footer-wordmark *,
+.site-footer .brand-logo,
+.site-footer .brand-logo * {
+  color: var(--color-on-primary);
+}
+
+.site-footer-brand > p {
+  color: rgba(248, 245, 237, 0.72);
+}
+
+.site-footer-navigation a {
+  color: rgba(248, 245, 237, 0.82);
+  transition:
+    color 180ms ease-out,
+    opacity 180ms ease-out;
+}
+
+.site-footer-navigation a:hover {
+  color: var(--color-gold);
+}
+
+.site-footer-navigation a:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 5px;
+}
+
+.site-footer-copyright {
+  color: rgba(248, 245, 237, 0.62);
+}
+
+/* Gold decoration remains restrained and consistent. */
+.site-footer .brand-logo-decoration,
+.site-footer .brand-logo-accent,
+.site-footer [data-brand-accent] {
+  color: var(--color-gold);
+}
+
+/* Mobile CTA and footer spacing */
+@media (max-width: 640px) {
+  .primary-button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .site-footer-inner {
+    gap: 32px;
+  }
+}
+
+/* INNERGEO DESIGN SYSTEM V1 — HOME BRAND OVERRIDES END */

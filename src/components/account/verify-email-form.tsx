@@ -1,29 +1,14 @@
 "use client";
 
-import {
-  useSearchParams,
-} from "next/navigation";
-import {
-  useState,
-  type FormEvent,
-} from "react";
+import { useSearchParams } from "next/navigation";
+import { useState, type FormEvent } from "react";
 
-import {
-  ButtonLink,
-} from "@/components/ui";
-import {
-  useLocale,
-} from "@/components/locale";
-import {
-  getAccountDictionary,
-} from "@/data/i18n";
+import { Button, ButtonLink } from "@/components/ui";
+import { useLocale } from "@/components/locale";
+import { getAccountDictionary } from "@/data/i18n";
 
-import {
-  getAuthErrorMessage,
-} from "./auth-errors";
-import {
-  useAuth,
-} from "./auth-provider";
+import { getAuthErrorMessage } from "./auth-errors";
+import { useAuth } from "./auth-provider";
 
 export function VerifyEmailForm() {
   const { locale } = useLocale();
@@ -97,20 +82,22 @@ export function VerifyEmailForm() {
       </label>
 
       {errorMessage ? (
-        <p role="alert" className="mt-6 border border-[#b98073] bg-[#fff5f2] p-4 text-sm text-[#7f3e33]">
+        <p
+          role="alert"
+          className="mt-6 border border-[#b98073] bg-[#fff5f2] p-4 text-sm text-[#7f3e33]"
+        >
           {errorMessage}
         </p>
       ) : null}
 
-      <button
+      <Button
         type="submit"
-        disabled={submitting}
-        className="mt-7 min-h-12 bg-[#34483a] px-7 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] disabled:cursor-not-allowed disabled:opacity-60"
+        loading={submitting}
+        loadingLabel={dictionary.verification.submitting}
+        className="mt-7"
       >
-        {submitting
-          ? dictionary.verification.submitting
-          : dictionary.verification.submit}
-      </button>
+        {dictionary.verification.submit}
+      </Button>
     </form>
   );
 }

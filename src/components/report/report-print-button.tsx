@@ -1,27 +1,27 @@
+"use client";
+
+import { Button } from "@/components/ui";
+
 export interface ReportPrintButtonProps {
-  label?: string;
+  label: string;
   guidance?: string;
 }
 
 export function ReportPrintButton({
-  label = "Print / Save as PDF",
-  guidance = "Disable browser headers and footers for a cleaner PDF.",
+  label,
+  guidance = "",
 }: ReportPrintButtonProps) {
   return (
-    <>
-      <button
-        type="button"
-        onClick={() => window.print()}
-        className="inline-flex min-h-12 items-center justify-center border border-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-[#34483a] hover:text-[#f1eee5] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#34483a]"
-      >
+    <div className="report-interactive-only">
+      <Button type="button" variant="secondary" onClick={() => window.print()}>
         {label}
-      </button>
+      </Button>
 
       {guidance ? (
-        <p className="max-w-xs text-xs leading-5 text-[#6d746b] lg:text-right">
+        <p className="mt-3 max-w-xl text-sm leading-6 text-[var(--color-text-secondary)]">
           {guidance}
         </p>
       ) : null}
-    </>
+    </div>
   );
 }

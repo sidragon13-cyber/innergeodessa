@@ -1,31 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import {
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
-import {
-  useState,
-  type FormEvent,
-} from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, type FormEvent } from "react";
 
-import {
-  ButtonLink,
-} from "@/components/ui";
-import {
-  useLocale,
-} from "@/components/locale";
-import {
-  getAccountDictionary,
-} from "@/data/i18n";
+import { Button, ButtonLink } from "@/components/ui";
+import { useLocale } from "@/components/locale";
+import { getAccountDictionary } from "@/data/i18n";
 
-import {
-  getAuthErrorMessage,
-} from "./auth-errors";
-import {
-  useAuth,
-} from "./auth-provider";
+import { getAuthErrorMessage } from "./auth-errors";
+import { useAuth } from "./auth-provider";
 
 const INPUT_CLASS =
   "min-h-12 rounded-none border border-[#a8a194] bg-[#f7f4ec] px-4 text-base outline-none focus:border-[#a64a2c] focus:ring-1 focus:ring-[#a64a2c]";
@@ -106,18 +90,22 @@ export function LoginForm() {
       </div>
 
       {errorMessage ? (
-        <p role="alert" className="mt-6 border border-[#b98073] bg-[#fff5f2] p-4 text-sm text-[#7f3e33]">
+        <p
+          role="alert"
+          className="mt-6 border border-[#b98073] bg-[#fff5f2] p-4 text-sm text-[#7f3e33]"
+        >
           {errorMessage}
         </p>
       ) : null}
 
-      <button
+      <Button
         type="submit"
-        disabled={submitting}
-        className="mt-7 min-h-12 bg-[#34483a] px-7 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] disabled:cursor-not-allowed disabled:opacity-60"
+        loading={submitting}
+        loadingLabel={dictionary.login.submitting}
+        className="mt-7"
       >
-        {submitting ? dictionary.login.submitting : dictionary.login.submit}
-      </button>
+        {dictionary.login.submit}
+      </Button>
 
       <p className="mt-6 text-sm text-[#596158]">
         {dictionary.login.noAccount}{" "}

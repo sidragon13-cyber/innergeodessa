@@ -1,10 +1,6 @@
-import type {
-  ReactNode,
-} from "react";
+import type { ReactNode } from "react";
 
-import {
-  Container,
-} from "@/components/ui";
+import { ButtonLink, Container } from "@/components/ui";
 
 export interface ReportStateAction {
   href: string;
@@ -26,38 +22,31 @@ export function ReportState({
   actions = [],
 }: ReportStateProps) {
   return (
-    <main className="min-h-screen bg-[#efede5] py-20 text-[#26372d]">
+    <main className="min-h-screen bg-[var(--color-background)] py-20 text-[var(--color-text)]">
       <Container size="content">
-        <section className="border border-[#c8c2b5] bg-[#f7f4ec] p-8 md:p-12">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
+        <section className="border border-[var(--color-border)] bg-[var(--color-surface)] p-8 md:p-12">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-text-secondary)]">
             {eyebrow}
           </p>
 
-          <h1 className="mt-4 text-3xl font-semibold leading-tight">
-            {title}
-          </h1>
+          <h1 className="mt-4 text-3xl font-semibold leading-tight">{title}</h1>
 
-          <div className="mt-5 leading-7 text-[#596158]">
+          <div className="mt-5 leading-7 text-[var(--color-text-secondary)]">
             {message}
           </div>
 
           {actions.length > 0 ? (
             <div className="mt-8 flex flex-wrap gap-3">
               {actions.map((action) => (
-                <a
+                <ButtonLink
                   key={`${action.href}-${action.label}`}
                   href={action.href}
-                  className={[
-                    "inline-flex min-h-12 items-center justify-center px-6",
-                    "text-xs font-bold uppercase tracking-[0.14em]",
-                    "transition-colors",
-                    action.variant === "secondary"
-                      ? "border border-[#34483a] hover:bg-[#34483a] hover:text-[#f1eee5]"
-                      : "bg-[#34483a] text-[#f1eee5] hover:bg-[#a64a2c]",
-                  ].join(" ")}
+                  variant={
+                    action.variant === "secondary" ? "secondary" : "primary"
+                  }
                 >
                   {action.label}
-                </a>
+                </ButtonLink>
               ))}
             </div>
           ) : null}
