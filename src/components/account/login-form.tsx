@@ -11,8 +11,7 @@ import { getAccountDictionary } from "@/data/i18n";
 import { getAuthErrorMessage } from "./auth-errors";
 import { useAuth } from "./auth-provider";
 
-const INPUT_CLASS =
-  "min-h-12 rounded-none border border-[#a8a194] bg-[#f7f4ec] px-4 text-base outline-none focus:border-[#a64a2c] focus:ring-1 focus:ring-[#a64a2c]";
+const INPUT_CLASS = "ig-input";
 
 export function LoginForm() {
   const { locale } = useLocale();

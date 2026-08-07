@@ -72,7 +72,7 @@ export function VerifyEmailForm() {
       <label className="grid gap-2 text-sm font-semibold">
         {dictionary.fields.verificationToken}
         <input
-          className="min-h-12 rounded-none border border-[#a8a194] bg-[#f7f4ec] px-4 text-base outline-none focus:border-[#a64a2c] focus:ring-1 focus:ring-[#a64a2c]"
+          className="ig-input"
           type="text"
           autoComplete="off"
           value={token}
