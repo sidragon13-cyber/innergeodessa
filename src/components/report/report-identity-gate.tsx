@@ -142,13 +142,11 @@ function GatePage({
   return (
     <main className="min-h-screen bg-[var(--color-background)] px-6 py-20 text-[var(--color-text)]">
       <section className="mx-auto max-w-3xl border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-8 shadow-sm md:p-12">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]">
-          {eyebrow}
-        </p>
+        <p className="ig-label text-[var(--color-accent)]">{eyebrow}</p>
 
-        <h1 className="mt-4 text-3xl font-semibold md:text-4xl">{title}</h1>
+        <h1 className="ig-heading-1 mt-4">{title}</h1>
 
-        <p className="mt-5 max-w-2xl leading-7 text-[var(--color-text-secondary)]">
+        <p className="ig-body ig-reading-width mt-5 text-[var(--color-text-secondary)]">
           {message}
         </p>
 

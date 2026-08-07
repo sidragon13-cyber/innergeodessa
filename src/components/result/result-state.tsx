@@ -25,13 +25,11 @@ export function ResultState({
     <main className="min-h-screen bg-[var(--color-background)] py-20 text-[var(--color-text)]">
       <Container size="content">
         <section className="border border-[var(--color-border)] bg-[var(--color-surface)] p-8 md:p-12">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-text-secondary)]">
-            {eyebrow}
-          </p>
+          <p className="ig-label text-[var(--color-text-muted)]">{eyebrow}</p>
 
-          <h1 className="mt-4 text-3xl font-semibold leading-tight">{title}</h1>
+          <h1 className="ig-heading-2 mt-4">{title}</h1>
 
-          <div className="mt-5 leading-7 text-[var(--color-text-secondary)]">
+          <div className="ig-body ig-reading-width mt-5 text-[var(--color-text-secondary)]">
             {message}
           </div>
 

@@ -119,7 +119,7 @@ export function AccountDashboard() {
   if (status === "unauthenticated" || !user) {
     return (
       <section className="border border-[#c8c2b5] bg-[#f7f4ec] p-7 md:p-9">
-        <h2 className="text-3xl font-semibold">
+        <h2 className="ig-heading-2">
           {dictionary.dashboard.loginRequiredTitle}
         </h2>
 
@@ -221,9 +221,7 @@ export function AccountDashboard() {
       </section>
 
       <section>
-        <h2 className="text-3xl font-semibold">
-          {dictionary.dashboard.history.title}
-        </h2>
+        <h2 className="ig-heading-2">{dictionary.dashboard.history.title}</h2>
 
         <p className="mt-3 leading-7 text-[#596158]">
           {dictionary.dashboard.history.description}
@@ -318,9 +316,7 @@ export function AccountDashboard() {
       </section>
 
       <section>
-        <h2 className="text-3xl font-semibold">
-          {dictionary.dashboard.upcomingTitle}
-        </h2>
+        <h2 className="ig-heading-2">{dictionary.dashboard.upcomingTitle}</h2>
 
         <p className="mt-3 leading-7 text-[#596158]">
           {dictionary.dashboard.upcomingDescription}
@@ -338,7 +334,7 @@ export function AccountDashboard() {
                   {dictionary.dashboard.nextPhase}
                 </p>
 
-                <h3 className="mt-3 text-xl font-semibold">{module.title}</h3>
+                <h3 className="ig-heading-3 mt-3">{module.title}</h3>
 
                 <p className="mt-3 text-sm leading-6 text-[#596158]">
                   {module.description}
@@ -366,7 +362,7 @@ function HistoryGroup({
 
   return (
     <section>
-      <h3 className="text-xl font-semibold">{title}</h3>
+      <h3 className="ig-heading-3">{title}</h3>
 
       {visibleRecords.length > 0 ? (
         <div className="mt-4 grid gap-4 md:grid-cols-2">{children}</div>

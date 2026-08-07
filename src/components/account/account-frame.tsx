@@ -1,22 +1,11 @@
 "use client";
 
-import type {
-  ReactNode,
-} from "react";
+import type { ReactNode } from "react";
 
-import {
-  SiteFooter,
-  SiteHeader,
-} from "@/components/home";
-import {
-  Container,
-} from "@/components/ui";
-import {
-  useLocale,
-} from "@/components/locale";
-import {
-  getAccountDictionary,
-} from "@/data/i18n";
+import { SiteFooter, SiteHeader } from "@/components/home";
+import { Container } from "@/components/ui";
+import { useLocale } from "@/components/locale";
+import { getAccountDictionary } from "@/data/i18n";
 
 export function AccountFrame({
   eyebrow,
@@ -37,19 +26,15 @@ export function AccountFrame({
       <SiteHeader homePath="/" />
       <main className="min-h-[70vh] bg-[#efede5] py-14 text-[#26372d] md:py-20">
         <Container size="content">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#a64a2c]">
-            {eyebrow}
-          </p>
-          <h1 className="mt-4 text-4xl font-semibold leading-tight md:text-6xl">
-            {title}
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-[#596158]">
+          <p className="ig-label text-[var(--color-accent)]">{eyebrow}</p>
+          <h1 className="ig-heading-1 mt-4">{title}</h1>
+          <p className="ig-body ig-reading-width mt-5 text-[var(--color-text-secondary)]">
             {description}
           </p>
 
           <div className="mt-10">{children}</div>
 
-          <div className="mt-10 border-t border-[#c8c2b5] pt-7 text-sm leading-6 text-[#6d746b]">
+          <div className="ig-body-small mt-10 border-t border-[var(--color-border)] pt-7 text-[var(--color-text-muted)]">
             <p>{dictionary.shared.anonymousNote}</p>
             <p className="mt-3">{dictionary.shared.disclaimer}</p>
           </div>

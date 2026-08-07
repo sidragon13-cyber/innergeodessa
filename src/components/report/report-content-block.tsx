@@ -1,6 +1,4 @@
-import type {
-  ReactNode,
-} from "react";
+import type { ReactNode } from "react";
 
 export interface ReportContentBlockProps {
   label: ReactNode;
@@ -25,18 +23,12 @@ export function ReportContentBlock({
         .join(" ")}
     >
       <div className="report-print-content-heading-group">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#7c684d]">
-          {label}
-        </p>
+        <p className="ig-label text-[var(--color-accent)]">{label}</p>
 
-        {title ? (
-          <h3 className="mt-3 text-xl font-semibold">
-            {title}
-          </h3>
-        ) : null}
+        {title ? <h3 className="ig-heading-3 mt-3">{title}</h3> : null}
       </div>
 
-      <div className="mt-4 max-w-4xl whitespace-pre-line leading-8 text-[#596158]">
+      <div className="ig-body ig-reading-width mt-4 whitespace-pre-line text-[var(--color-text-secondary)]">
         {children}
       </div>
     </article>

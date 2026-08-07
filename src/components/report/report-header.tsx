@@ -21,31 +21,31 @@ export function ReportHeader({
 }: ReportHeaderProps) {
   return (
     <header className="personality-report-header border-b border-[#c8c2b5] pb-10">
-      <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6d746b]">
+      <p className="ig-label text-[var(--color-text-muted)]">
         {eyebrow}
       </p>
 
       <div className="mt-7 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
         <div>
           {subtitle ? (
-            <div className="text-sm text-[#6d746b]">
+            <div className="ig-body-small text-[var(--color-text-muted)]">
               {subtitle}
             </div>
           ) : null}
 
-          <h1 className="mt-3 text-5xl font-semibold leading-tight tracking-tight md:text-7xl">
+          <h1 className="ig-heading-1 mt-3">
             {title}
           </h1>
 
           {description ? (
-            <div className="mt-5 max-w-3xl text-lg leading-8 text-[#596158]">
+            <div className="ig-body-large ig-reading-width mt-5 text-[var(--color-text-secondary)]">
               {description}
             </div>
           ) : null}
         </div>
 
         {metadata || actions ? (
-          <div className="report-print-compact-block text-sm leading-6 text-[#6d746b] lg:text-right">
+          <div className="report-print-compact-block ig-body-small text-[var(--color-text-muted)] lg:text-right">
             {metadata}
 
             {actions ? (

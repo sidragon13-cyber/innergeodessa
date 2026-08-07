@@ -1,10 +1,6 @@
-import type {
-  ReactNode,
-} from "react";
+import type { ReactNode } from "react";
 
-import {
-  ReportContentBlock,
-} from "./report-content-block";
+import { ReportContentBlock } from "./report-content-block";
 
 export interface ReportSectionBlock {
   id: string;
@@ -39,23 +35,19 @@ export function ReportSection({
     >
       <header className="personality-report-section-header report-print-section-heading-group border-b border-[#d8d2c6] p-7 md:p-9">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6d746b]">
+          <p className="ig-label text-[var(--color-text-muted)]">
             Section {order}
           </p>
 
           {badge ? (
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#7c684d]">
-              {badge}
-            </p>
+            <p className="ig-label text-[var(--color-accent)]">{badge}</p>
           ) : null}
         </div>
 
-        <h2 className="mt-4 text-3xl font-semibold">
-          {title}
-        </h2>
+        <h2 className="ig-heading-2 mt-4">{title}</h2>
 
         {description ? (
-          <div className="mt-4 max-w-4xl leading-7 text-[#596158]">
+          <div className="ig-body ig-reading-width mt-4 text-[var(--color-text-secondary)]">
             {description}
           </div>
         ) : null}
@@ -76,7 +68,7 @@ export function ReportSection({
       <div className="report-back-to-contents report-interactive-only border-t border-[#d8d2c6] px-7 py-5 md:px-9">
         <a
           href={`#${tableOfContentsId}`}
-          className="inline-flex min-h-10 items-center text-xs font-bold uppercase tracking-[0.14em] text-[#6d746b] underline decoration-[#a8a194] underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#34483a]"
+          className="ig-label inline-flex min-h-10 items-center text-[var(--color-text-muted)] underline decoration-[var(--color-border-strong)] underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-focus)]"
         >
           Back to contents
         </a>

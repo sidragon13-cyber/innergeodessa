@@ -183,7 +183,7 @@ export function SaveAssessmentResult({
         {dictionary.eyebrow}
       </p>
 
-      <h3 className="mt-2 text-xl font-semibold">
+      <h3 className="ig-heading-3 mt-2">
         {saveState === "saved" ? dictionary.savedTitle : dictionary.title}
       </h3>
 

@@ -94,7 +94,7 @@ export function RegisterForm() {
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#a64a2c]">
           {dictionary.register.successEyebrow}
         </p>
-        <h2 className="mt-3 text-3xl font-semibold">
+        <h2 className="ig-heading-2 mt-3">
           {dictionary.register.successTitle}
         </h2>
         <p className="mt-4 leading-7 text-[#596158]">
