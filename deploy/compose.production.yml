@@ -1,0 +1,60 @@
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: deploy/backend.Dockerfile
+    container_name: innergeo-backend
+    restart: unless-stopped
+
+    environment:
+      INNERGEO_ENV: production
+      INNERGEO_COOKIE_SECURE: "true"
+
+    volumes:
+      - type: bind
+        source: /var/lib/innergeo/innergeodessa.db
+        target: /app/innergeodessa-mvp/backend/innergeodessa.db
+
+    expose:
+      - "8000"
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+
+    networks:
+      - innergeo
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: deploy/frontend.Dockerfile
+    container_name: innergeo-frontend
+    restart: unless-stopped
+
+    environment:
+      NODE_ENV: production
+      INNERGEODESSA_API_URL: http://backend:8000
+
+    depends_on:
+      backend:
+        condition: service_healthy
+
+    ports:
+      - "127.0.0.1:3000:3000"
+
+    networks:
+      - innergeo
+
+networks:
+  innergeo:
+    name: innergeo-production
