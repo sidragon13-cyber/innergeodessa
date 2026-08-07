@@ -1,117 +1,78 @@
 "use client";
 
 import Link from "next/link";
-import {
-  useRouter,
-} from "next/navigation";
-import {
-  FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useRouter } from "next/navigation";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
-import {
-  useLocale,
-} from "@/components/locale";
-import {
-  getZodiacTestDictionary,
-} from "@/data/i18n";
+import { useLocale } from "@/components/locale";
+import { getZodiacTestDictionary } from "@/data/i18n";
 import {
   writeStoredZodiacChart,
   type BirthDataInput,
   type ZodiacChartApiResponse,
 } from "@/data/zodiac";
-import type {
-  SupportedLocale,
-} from "@/data/shared";
+import type { SupportedLocale } from "@/data/shared";
 import {
   searchLocations,
   STATIC_LOCATION_RECORDS,
   type LocationRecord,
 } from "@/shared/location";
 
-type FormStatus =
-  | "idle"
-  | "submitting"
-  | "error";
+type FormStatus = "idle" | "submitting" | "error";
 
-const currentYear =
-  new Date().getFullYear();
+const currentYear = new Date().getFullYear();
 
 function createYearOptions(): number[] {
   const years: number[] = [];
 
-  for (
-    let year = currentYear;
-    year >= 1900;
-    year -= 1
-  ) {
+  for (let year = currentYear; year >= 1900; year -= 1) {
     years.push(year);
   }
 
   return years;
 }
 
-const yearOptions =
-  createYearOptions();
+const yearOptions = createYearOptions();
 
 export default function ZodiacTestPage() {
   const router = useRouter();
   const { locale } = useLocale();
-  const dictionary =
-    getZodiacTestDictionary(locale);
+  const dictionary = getZodiacTestDictionary(locale);
 
-  const [year, setYear] =
-    useState("1990");
+  const [year, setYear] = useState("1990");
 
-  const [month, setMonth] =
-    useState("1");
+  const [month, setMonth] = useState("1");
 
-  const [day, setDay] =
-    useState("1");
+  const [day, setDay] = useState("1");
 
-  const [hour, setHour] =
-    useState("12");
+  const [hour, setHour] = useState("12");
 
-  const [minute, setMinute] =
-    useState("0");
+  const [minute, setMinute] = useState("0");
 
-  const [
-    timePrecision,
-    setTimePrecision,
-  ] = useState<
-    "exact" | "approximate"
-  >("exact");
+  const [timePrecision, setTimePrecision] = useState<"exact" | "approximate">(
+    "exact",
+  );
 
   const [locationQuery, setLocationQuery] = useState(
     STATIC_LOCATION_RECORDS[0]?.displayName ?? "",
   );
 
   const [selectedLocation, setSelectedLocation] =
-    useState<LocationRecord | null>(
-      STATIC_LOCATION_RECORDS[0] ?? null,
-    );
+    useState<LocationRecord | null>(STATIC_LOCATION_RECORDS[0] ?? null);
 
-  const [locationResults, setLocationResults] =
-    useState<readonly LocationRecord[]>([]);
+  const [locationResults, setLocationResults] = useState<
+    readonly LocationRecord[]
+  >([]);
 
-  const [isLocationSearchOpen, setIsLocationSearchOpen] =
-    useState(false);
+  const [isLocationSearchOpen, setIsLocationSearchOpen] = useState(false);
 
-  const [reportLocale, setReportLocale] =
-    useState<SupportedLocale>(locale);
+  const [reportLocale, setReportLocale] = useState<SupportedLocale>(locale);
 
-  const reportLocaleWasChanged =
-    useRef(false);
+  const reportLocaleWasChanged = useRef(false);
 
-  const [status, setStatus] =
-    useState<FormStatus>("idle");
+  const [status, setStatus] = useState<FormStatus>("idle");
 
-  const [
-    errorMessage,
-    setErrorMessage,
-  ] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (!reportLocaleWasChanged.current) {
@@ -145,10 +106,7 @@ export default function ZodiacTestPage() {
     };
   }, [locationQuery]);
 
-  async function handleSubmit(
-    event:
-      FormEvent<HTMLFormElement>,
-  ) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setStatus("submitting");
@@ -156,9 +114,7 @@ export default function ZodiacTestPage() {
 
     if (!selectedLocation) {
       setStatus("error");
-      setErrorMessage(
-        dictionary.errors.invalidBirthCity,
-      );
+      setErrorMessage(dictionary.errors.invalidBirthCity);
       return;
     }
 
@@ -173,8 +129,7 @@ export default function ZodiacTestPage() {
         hour: Number(hour),
         minute: Number(minute),
         second: 0,
-        precision:
-          timePrecision,
+        precision: timePrecision,
       },
 
       location: {
@@ -186,8 +141,7 @@ export default function ZodiacTestPage() {
         longitude: selectedLocation.longitude,
       },
 
-      timeZone:
-        selectedLocation.timeZone,
+      timeZone: selectedLocation.timeZone,
 
       locale: reportLocale,
     };
@@ -195,59 +149,36 @@ export default function ZodiacTestPage() {
     let apiErrorMessage: string | null = null;
 
     try {
-      const response = await fetch(
-        "/api/zodiac/chart",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify(input),
+      const response = await fetch("/api/zodiac/chart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify(input),
+      });
 
-      const data:
-        ZodiacChartApiResponse =
-        await response.json();
+      const data: ZodiacChartApiResponse = await response.json();
 
-      if (
-        !response.ok ||
-        !data.ok
-      ) {
+      if (!response.ok || !data.ok) {
         const details =
-          !data.ok &&
-          data.issues?.length
-            ? ` ${data.issues
-                .map(
-                  (issue) =>
-                    issue.message,
-                )
-                .join(" ")}`
+          !data.ok && data.issues?.length
+            ? ` ${data.issues.map((issue) => issue.message).join(" ")}`
             : "";
 
         apiErrorMessage = `${
-            !data.ok
-              ? data.error
-              : dictionary.errors.chartGenerationFailed
-          }${details}`;
+          !data.ok ? data.error : dictionary.errors.chartGenerationFailed
+        }${details}`;
 
         throw new Error(apiErrorMessage);
       }
 
-      writeStoredZodiacChart(
-        data.chartId,
-        data.result,
-      );
+      writeStoredZodiacChart(data.chartId, data.result);
 
-      router.push(
-        `/zodiac/result/${data.chartId}`,
-      );
+      router.push(`/zodiac/result/${data.chartId}`);
     } catch {
       setStatus("error");
       setErrorMessage(
-        apiErrorMessage ??
-          dictionary.errors.chartGenerationFailed,
+        apiErrorMessage ?? dictionary.errors.chartGenerationFailed,
       );
     }
   }
@@ -257,7 +188,7 @@ export default function ZodiacTestPage() {
       <div className="mx-auto max-w-4xl">
         <Link
           href="/zodiac"
-          className="text-sm font-semibold text-[#68756d]"
+          className="text-sm font-semibold text-[var(--color-text-secondary)]"
         >
           ← {dictionary.backToZodiac}
         </Link>
@@ -281,34 +212,21 @@ export default function ZodiacTestPage() {
           className="mt-10 rounded-[2rem] border border-[#ddd8cd] bg-white p-6 shadow-sm sm:p-9"
         >
           <section>
-            <h2 className="text-xl font-semibold">
-              {dictionary.birthDate}
-            </h2>
+            <h2 className="text-xl font-semibold">{dictionary.birthDate}</h2>
 
             <div className="mt-5 grid gap-4 sm:grid-cols-3">
               <label className="grid gap-2">
-                <span className="text-sm font-semibold">
-                  {dictionary.year}
-                </span>
+                <span className="text-sm font-semibold">{dictionary.year}</span>
                 <select
                   value={year}
-                  onChange={(event) =>
-                    setYear(
-                      event.target.value,
-                    )
-                  }
-                  className="rounded-xl border border-[#cfc9bd] bg-white px-4 py-3"
+                  onChange={(event) => setYear(event.target.value)}
+                  className="ig-input w-full rounded-xl"
                 >
-                  {yearOptions.map(
-                    (option) => (
-                      <option
-                        key={option}
-                        value={option}
-                      >
-                        {option}
-                      </option>
-                    ),
-                  )}
+                  {yearOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
                 </select>
               </label>
 
@@ -318,70 +236,44 @@ export default function ZodiacTestPage() {
                 </span>
                 <select
                   value={month}
-                  onChange={(event) =>
-                    setMonth(
-                      event.target.value,
-                    )
-                  }
-                  className="rounded-xl border border-[#cfc9bd] bg-white px-4 py-3"
+                  onChange={(event) => setMonth(event.target.value)}
+                  className="ig-input w-full rounded-xl"
                 >
-                  {dictionary.months.map(
-                    (
-                      option,
-                      index,
-                    ) => (
-                      <option
-                        key={option}
-                        value={index + 1}
-                      >
-                        {option}
-                      </option>
-                    ),
-                  )}
+                  {dictionary.months.map((option, index) => (
+                    <option key={option} value={index + 1}>
+                      {option}
+                    </option>
+                  ))}
                 </select>
               </label>
 
               <label className="grid gap-2">
-                <span className="text-sm font-semibold">
-                  {dictionary.day}
-                </span>
+                <span className="text-sm font-semibold">{dictionary.day}</span>
                 <input
                   type="number"
                   min="1"
                   max="31"
                   value={day}
-                  onChange={(event) =>
-                    setDay(
-                      event.target.value,
-                    )
-                  }
-                  className="rounded-xl border border-[#cfc9bd] bg-white px-4 py-3"
+                  onChange={(event) => setDay(event.target.value)}
+                  className="ig-input w-full rounded-xl"
                 />
               </label>
             </div>
           </section>
 
           <section className="mt-9 border-t border-[#ece7dc] pt-9">
-            <h2 className="text-xl font-semibold">
-              {dictionary.birthTime}
-            </h2>
+            <h2 className="text-xl font-semibold">{dictionary.birthTime}</h2>
 
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               <label className="grid gap-2">
-                <span className="text-sm font-semibold">
-                  {dictionary.hour}
-                </span>
+                <span className="text-sm font-semibold">{dictionary.hour}</span>
                 <input
                   type="number"
                   min="0"
                   max="23"
                   value={hour}
-                  onChange={(event) =>
-                    setHour(
-                      event.target.value,
-                    )
-                  }
-                  className="rounded-xl border border-[#cfc9bd] bg-white px-4 py-3"
+                  onChange={(event) => setHour(event.target.value)}
+                  className="ig-input w-full rounded-xl"
                 />
               </label>
 
@@ -394,12 +286,8 @@ export default function ZodiacTestPage() {
                   min="0"
                   max="59"
                   value={minute}
-                  onChange={(event) =>
-                    setMinute(
-                      event.target.value,
-                    )
-                  }
-                  className="rounded-xl border border-[#cfc9bd] bg-white px-4 py-3"
+                  onChange={(event) => setMinute(event.target.value)}
+                  className="ig-input w-full rounded-xl"
                 />
               </label>
             </div>
@@ -415,15 +303,8 @@ export default function ZodiacTestPage() {
                     type="radio"
                     name="precision"
                     value="exact"
-                    checked={
-                      timePrecision ===
-                      "exact"
-                    }
-                    onChange={() =>
-                      setTimePrecision(
-                        "exact",
-                      )
-                    }
+                    checked={timePrecision === "exact"}
+                    onChange={() => setTimePrecision("exact")}
                   />
                   {dictionary.exactTime}
                 </label>
@@ -433,15 +314,8 @@ export default function ZodiacTestPage() {
                     type="radio"
                     name="precision"
                     value="approximate"
-                    checked={
-                      timePrecision ===
-                      "approximate"
-                    }
-                    onChange={() =>
-                      setTimePrecision(
-                        "approximate",
-                      )
-                    }
+                    checked={timePrecision === "approximate"}
+                    onChange={() => setTimePrecision("approximate")}
                   />
                   {dictionary.approximateTime}
                 </label>
@@ -450,9 +324,7 @@ export default function ZodiacTestPage() {
           </section>
 
           <section className="mt-9 border-t border-[#ece7dc] pt-9">
-            <h2 className="text-xl font-semibold">
-              {dictionary.birthCity}
-            </h2>
+            <h2 className="text-xl font-semibold">{dictionary.birthCity}</h2>
 
             <div className="relative mt-5 grid gap-2">
               <label
@@ -478,14 +350,14 @@ export default function ZodiacTestPage() {
                   setSelectedLocation(null);
                   setIsLocationSearchOpen(true);
                 }}
-                className="rounded-xl border border-[#cfc9bd] bg-white px-4 py-3"
+                className="ig-input w-full rounded-xl"
               />
 
               {isLocationSearchOpen && locationQuery.trim() ? (
                 <div
                   id="location-search-results"
                   role="listbox"
-                  className="absolute left-0 right-0 top-full z-10 mt-2 max-h-72 overflow-y-auto rounded-2xl border border-[#cfc9bd] bg-white p-2 shadow-lg"
+                  className="absolute left-0 right-0 top-full z-10 mt-2 max-h-72 overflow-y-auto rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-2 shadow-lg"
                 >
                   {locationResults.length > 0 ? (
                     locationResults.map((location) => (
@@ -499,18 +371,18 @@ export default function ZodiacTestPage() {
                           setLocationQuery(location.displayName);
                           setIsLocationSearchOpen(false);
                         }}
-                        className="block w-full rounded-xl px-3 py-3 text-left hover:bg-[#f7f4ee] focus:bg-[#f7f4ee]"
+                        className="block w-full rounded-xl px-3 py-3 text-left transition-colors hover:bg-[var(--color-surface-raised)] focus:bg-[var(--color-surface-raised)]"
                       >
                         <span className="block font-semibold">
                           {location.displayName}
                         </span>
-                        <span className="mt-1 block text-xs text-[#68756d]">
+                        <span className="mt-1 block text-xs text-[var(--color-text-secondary)]">
                           {location.region} · {location.timeZone}
                         </span>
                       </button>
                     ))
                   ) : (
-                    <p className="px-3 py-4 text-sm text-[#68756d]">
+                    <p className="px-3 py-4 text-sm text-[var(--color-text-secondary)]">
                       {dictionary.noMatchingCities}
                     </p>
                   )}
@@ -521,20 +393,11 @@ export default function ZodiacTestPage() {
             {selectedLocation ? (
               <div className="mt-4 rounded-2xl bg-[#f7f4ee] p-4 text-sm leading-6 text-[#58645d]">
                 <p>
-                  {dictionary.timeZone}:{" "}
-                  {
-                    selectedLocation.timeZone
-                  }
+                  {dictionary.timeZone}: {selectedLocation.timeZone}
                 </p>
                 <p>
-                  {dictionary.coordinates}:{" "}
-                  {
-                    selectedLocation.latitude
-                  }
-                  ,{" "}
-                  {
-                    selectedLocation.longitude
-                  }
+                  {dictionary.coordinates}: {selectedLocation.latitude},{" "}
+                  {selectedLocation.longitude}
                 </p>
               </div>
             ) : null}
@@ -585,10 +448,7 @@ export default function ZodiacTestPage() {
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <button
               type="submit"
-              disabled={
-                status ===
-                "submitting"
-              }
+              disabled={status === "submitting"}
               className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#17231d] px-7 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
             >
               {status === "submitting"
@@ -596,7 +456,7 @@ export default function ZodiacTestPage() {
                 : dictionary.generateBirthChart}
             </button>
 
-            <p className="max-w-xl text-sm leading-6 text-[#68756d]">
+            <p className="max-w-xl text-sm leading-6 text-[var(--color-text-secondary)]">
               {dictionary.disclaimer}
             </p>
           </div>
