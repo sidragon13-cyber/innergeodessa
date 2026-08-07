@@ -508,17 +508,22 @@ a {
 }
 
 .profile-intro .eyebrow {
-  color: var(--rust-light);
+  color: var(--color-on-primary);
+}
+
+.profile-intro h2 {
+  color: var(--color-on-primary);
 }
 
 .profile-intro h2 em {
-  color: var(--rust-light);
+  color: var(--color-gold);
   font-weight: 400;
 }
 
 .profile-intro > p:last-child {
   max-width: 580px;
   margin: 38px 0 0;
+  color: var(--color-on-primary);
   font-family: Georgia, "Times New Roman", serif;
   font-size: 17px;
   line-height: 1.65;
@@ -567,7 +572,7 @@ a {
 
 .example-label {
   margin: 0 0 76px;
-  color: var(--rust-light);
+  color: var(--color-gold);
   font-weight: 700;
 }
 
@@ -577,10 +582,15 @@ a {
   align-items: baseline;
   gap: 20px;
   padding: 18px 0;
-  border-top: 1px solid var(--light-line);
+  border-top: 1px solid rgba(248, 245, 237, 0.22);
+}
+
+.identity-result span {
+  color: rgba(248, 245, 237, 0.68);
 }
 
 .identity-result strong {
+  color: var(--color-on-primary);
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(23px, 2.2vw, 32px);
   font-weight: 400;
@@ -590,7 +600,7 @@ a {
 .example-note {
   max-width: 350px;
   margin: 30px 0 0;
-  color: rgba(241, 238, 229, 0.62);
+  color: rgba(248, 245, 237, 0.62);
   line-height: 1.7;
 }
 

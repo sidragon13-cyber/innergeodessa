@@ -24,7 +24,7 @@ export function AccountFrame({
   return (
     <>
       <SiteHeader homePath="/" />
-      <main className="min-h-[70vh] bg-[#efede5] py-14 text-[#26372d] md:py-20">
+      <main className="min-h-[70vh] bg-[#efede5] py-12 text-[#26372d] md:py-20">
         <Container size="content">
           <p className="ig-label text-[var(--color-accent)]">{eyebrow}</p>
           <h1 className="ig-heading-1 mt-4">{title}</h1>
