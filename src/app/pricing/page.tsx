@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { LegalPage } from "@/components/legal-page";
+import { PaddleCheckoutButton } from "@/components/payment/paddle-checkout-button";
 
 export const metadata: Metadata = {
   title: "Pricing | InnerGeo",
@@ -44,12 +45,17 @@ export default function PricingPage() {
           {
             title: "Premium reports",
             content: (
-              <p>
-                Premium reports are planned to provide extended interpretation,
-                deeper personal insight, additional guidance, and enhanced
-                saved-report features. Final pricing will be displayed clearly
-                before any payment is requested.
-              </p>
+              <>
+                <p>
+                  Premium reports provide extended interpretation, deeper
+                  personal insight, additional guidance, and enhanced
+                  saved-report features.
+                </p>
+                <p>
+                  Sandbox test price: USD $6.99 as a one-time purchase.
+                </p>
+                <PaddleCheckoutButton />
+              </>
             ),
           },
           {
@@ -102,10 +108,16 @@ export default function PricingPage() {
           {
             title: "高级报告",
             content: (
-              <p>
-                未来的高级报告计划提供更深入的解读、更多个人洞察、扩展指导以及
-                更完整的报告保存功能。最终价格将在付款前明确展示。
-              </p>
+              <>
+                <p>
+                  高级报告提供更深入的解读、更多个人洞察、扩展指导以及
+                  更完整的报告保存功能。
+                </p>
+                <p>
+                  Sandbox 测试价格：USD $6.99，一次性购买。
+                </p>
+                <PaddleCheckoutButton />
+              </>
             ),
           },
           {

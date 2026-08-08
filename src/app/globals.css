@@ -4536,3 +4536,47 @@ a {
   color: var(--color-ink, currentColor);
   text-decoration-color: currentColor;
 }
+
+.legal-purchase-button {
+  margin-top: 18px;
+  min-height: 48px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--color-primary-active);
+  color: var(--color-on-primary);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.legal-purchase-button:hover {
+  opacity: 0.92;
+}
+
+.legal-purchase-button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.legal-purchase-button {
+  margin-top: 18px;
+  min-height: 48px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--color-primary-active);
+  color: var(--color-on-primary);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.legal-purchase-button:hover {
+  opacity: 0.92;
+}
+
+.legal-purchase-button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}

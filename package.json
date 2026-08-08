@@ -61,6 +61,8 @@
     "test:database-governance": "cd innergeodessa-mvp && backend/.venv/bin/python -m pytest tests/test_database_governance.py -q"
   },
   "dependencies": {
+    "@paddle/paddle-js": "^1.6.4",
+    "@paddle/paddle-node-sdk": "^3.10.0",
     "astronomy-engine": "2.1.19",
     "next": "16.2.11",
     "react": "19.2.4",
