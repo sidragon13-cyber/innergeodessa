@@ -30,6 +30,7 @@ def create_legacy_database(
         "users",
         "auth_sessions",
         "email_verification_tokens",
+        "password_reset_tokens",
         "zodiac_charts",
         "report_entitlements",
     ):
@@ -39,7 +40,7 @@ def create_legacy_database(
             legacy_schema,
         )
     legacy_schema = re.sub(
-        r"CREATE INDEX IF NOT EXISTS idx_(?:auth_sessions|report_entitlements)_[\s\S]*?;\n",
+        r"CREATE INDEX IF NOT EXISTS idx_(?:auth_sessions|email_verification_tokens|password_reset_tokens|report_entitlements)_[\s\S]*?;\n",
         "",
         legacy_schema,
     )

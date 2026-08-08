@@ -31,6 +31,7 @@ export type AccountDictionary = {
     passwordMismatch: string;
     credentials: string;
     emailConflict: string;
+    emailDelivery: string;
     invalidToken: string;
     validation: string;
     unavailable: string;
@@ -64,6 +65,27 @@ export type AccountDictionary = {
     register: string;
     alreadyAuthenticated: string;
     enterAccount: string;
+    forgotPassword: string;
+  };
+  forgot: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    submit: string;
+    submitting: string;
+    successTitle: string;
+    successDescription: string;
+    backToLogin: string;
+  };
+  reset: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    submit: string;
+    submitting: string;
+    successTitle: string;
+    successDescription: string;
+    login: string;
   };
   verification: {
     eyebrow: string;
@@ -112,6 +134,9 @@ export type AccountDictionary = {
     unverified: string;
     unverifiedLimitation: string;
     verifyEmail: string;
+    resendVerification: string;
+    resendingVerification: string;
+    resendComplete: string;
     logout: string;
     loggingOut: string;
     nextPhase: string;
@@ -179,6 +204,8 @@ export const accountDictionaries: Record<
       passwordMismatch: "The passwords do not match.",
       credentials: "The email or password is incorrect.",
       emailConflict: "An account with this email already exists.",
+      emailDelivery:
+        "Your account was created, but email delivery is temporarily unavailable. Log in later and use Resend verification email from your account.",
       invalidToken:
         "This verification token is invalid, expired, or has already been used.",
       validation: "Check the highlighted account information.",
@@ -200,7 +227,7 @@ export const accountDictionaries: Record<
         "The account has been created successfully. You can log in before email verification is complete.",
       unverified: "Your email is not verified yet.",
       emailServicePending:
-        "Formal verification email delivery is not connected yet. Do not assume that an email has been sent.",
+        "A verification email has been sent. Open its secure link to verify your account.",
       goToLogin: "Go to login",
       goToVerification: "Go to email verification",
       developmentVerification: "Development verification link",
@@ -218,6 +245,27 @@ export const accountDictionaries: Record<
       register: "Create one",
       alreadyAuthenticated: "You are already signed in.",
       enterAccount: "Enter account",
+      forgotPassword: "Forgot password?",
+    },
+    forgot: {
+      eyebrow: "Account recovery",
+      title: "Reset your password",
+      description: "Enter your account email. If the account is eligible, InnerGeo will send a secure reset link.",
+      submit: "Send reset link",
+      submitting: "Sending…",
+      successTitle: "Check your email",
+      successDescription: "If the account is eligible, a password-reset email has been sent. The response is the same for every address.",
+      backToLogin: "Back to login",
+    },
+    reset: {
+      eyebrow: "Account recovery",
+      title: "Choose a new password",
+      description: "Use the one-time link from your recovery email to replace your password securely.",
+      submit: "Reset password",
+      submitting: "Resetting…",
+      successTitle: "Password reset complete",
+      successDescription: "Your password has been changed and existing account sessions have been signed out.",
+      login: "Log in with new password",
     },
     verification: {
       eyebrow: "Email verification",
@@ -280,6 +328,9 @@ export const accountDictionaries: Record<
       unverifiedLimitation:
         "At this stage, unverified accounts cannot save results, leave community messages, or purchase reports.",
       verifyEmail: "Verify email",
+      resendVerification: "Resend verification email",
+      resendingVerification: "Sending…",
+      resendComplete: "If the account is eligible, a new verification email has been sent.",
       logout: "Log out",
       loggingOut: "Logging out…",
       nextPhase: "Available in the next phase",
@@ -355,6 +406,8 @@ export const accountDictionaries: Record<
       passwordMismatch: "两次输入的密码不一致。",
       credentials: "邮箱或密码不正确。",
       emailConflict: "该邮箱已存在账户。",
+      emailDelivery:
+        "账户已经创建，但邮件服务暂时不可用。请稍后登录，并在账户中心使用“重新发送验证邮件”。",
       invalidToken: "验证令牌无效、已过期或已经使用。",
       validation: "请检查填写的账户信息。",
       unavailable: "认证服务暂时不可用。",
@@ -375,7 +428,7 @@ export const accountDictionaries: Record<
         "账户已成功创建。邮箱验证完成前也可以登录。",
       unverified: "邮箱尚未验证。",
       emailServicePending:
-        "正式验证邮件服务尚未接入，请不要假定验证邮件已经发送。",
+        "验证邮件已发送，请打开邮件中的安全链接完成验证。",
       goToLogin: "前往登录",
       goToVerification: "前往验证邮箱",
       developmentVerification: "开发环境验证入口",
@@ -392,6 +445,27 @@ export const accountDictionaries: Record<
       register: "创建账户",
       alreadyAuthenticated: "你已经登录。",
       enterAccount: "进入账户中心",
+      forgotPassword: "忘记密码？",
+    },
+    forgot: {
+      eyebrow: "账户恢复",
+      title: "重置密码",
+      description: "输入账户邮箱。如果账户符合条件，InnerGeo 将发送安全的密码重置链接。",
+      submit: "发送重置链接",
+      submitting: "正在发送…",
+      successTitle: "请检查邮箱",
+      successDescription: "如果账户符合条件，密码重置邮件已经发送。无论邮箱是否注册，系统都会显示相同结果。",
+      backToLogin: "返回登录",
+    },
+    reset: {
+      eyebrow: "账户恢复",
+      title: "设置新密码",
+      description: "使用恢复邮件中的一次性链接安全地更换密码。",
+      submit: "重置密码",
+      submitting: "正在重置…",
+      successTitle: "密码重置完成",
+      successDescription: "密码已经更新，现有账户会话也已全部退出。",
+      login: "使用新密码登录",
     },
     verification: {
       eyebrow: "邮箱验证",
@@ -450,6 +524,9 @@ export const accountDictionaries: Record<
       unverifiedLimitation:
         "当前阶段，未验证账户暂不能保存结果、发表社区留言或购买报告。",
       verifyEmail: "前往验证邮箱",
+      resendVerification: "重新发送验证邮件",
+      resendingVerification: "正在发送…",
+      resendComplete: "如果账户符合条件，新的验证邮件已经发送。",
       logout: "退出登录",
       loggingOut: "正在退出…",
       nextPhase: "下一阶段开放",

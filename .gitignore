@@ -74,6 +74,10 @@ innergeodessa-mvp/backend/app/schemas/*
 innergeodessa-mvp/backend/app/routers/*
 !innergeodessa-mvp/backend/app/routers/*.py
 
+!innergeodessa-mvp/backend/app/email/
+innergeodessa-mvp/backend/app/email/*
+!innergeodessa-mvp/backend/app/email/*.py
+
 innergeodessa-mvp/backend/data/*
 !innergeodessa-mvp/backend/data/items.json
 !innergeodessa-mvp/backend/data/riasec-items.json

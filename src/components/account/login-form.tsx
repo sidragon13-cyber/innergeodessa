@@ -88,6 +88,12 @@ export function LoginForm() {
         </label>
       </div>
 
+      <p className="mt-4 text-sm">
+        <Link className="font-semibold underline" href="/account/forgot-password">
+          {dictionary.login.forgotPassword}
+        </Link>
+      </p>
+
       {errorMessage ? (
         <p
           role="alert"

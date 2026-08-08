@@ -41,6 +41,20 @@ class VerifyEmailRequest(BaseModel):
     token: str = Field(min_length=1, max_length=512)
 
 
+class EmailRequest(BaseModel):
+    email: str
+
+    @field_validator("email")
+    @classmethod
+    def validate_email(cls, value: str) -> str:
+        return _validated_email(value)
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str = Field(min_length=1, max_length=512)
+    password: str = Field(min_length=10, max_length=128)
+
+
 class LoginRequest(BaseModel):
     email: str
     password: str = Field(min_length=1, max_length=128)
@@ -67,3 +81,13 @@ class RegisterResponse(BaseModel):
 
 class LoginResponse(BaseModel):
     user: AuthUserResponse
+
+
+class GenericEmailResponse(BaseModel):
+    message: str
+    verificationToken: Optional[str] = None
+    resetToken: Optional[str] = None
+
+
+class ResetPasswordResponse(BaseModel):
+    message: str

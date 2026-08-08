@@ -14,6 +14,8 @@ from typing import Optional
 COOKIE_NAME = "innergeo_session"
 SESSION_DURATION = timedelta(days=30)
 VERIFICATION_TOKEN_DURATION = timedelta(days=1)
+PASSWORD_RESET_TOKEN_DURATION = timedelta(hours=1)
+AUTH_EMAIL_REQUEST_COOLDOWN = timedelta(minutes=2)
 SESSION_MAX_AGE_SECONDS = int(SESSION_DURATION.total_seconds())
 
 SCRYPT_N = 2 ** 14

@@ -5,6 +5,7 @@ import type {
 export type AuthErrorCode =
   | "credentials"
   | "emailConflict"
+  | "emailDelivery"
   | "invalidToken"
   | "validation"
   | "unavailable"
@@ -43,6 +44,9 @@ export async function createAuthRequestError(
   }
   if (response.status === 409 && context === "register") {
     return new AuthRequestError("emailConflict", 409);
+  }
+  if (response.status === 503 && context === "register") {
+    return new AuthRequestError("emailDelivery", 503);
   }
   if (response.status === 503) {
     return new AuthRequestError("unavailable", 503);

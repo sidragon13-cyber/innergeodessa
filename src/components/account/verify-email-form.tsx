@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import { Button, ButtonLink } from "@/components/ui";
 import { useLocale } from "@/components/locale";
@@ -19,6 +19,32 @@ export function VerifyEmailForm() {
   const [submitting, setSubmitting] = useState(false);
   const [verified, setVerified] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const automaticAttempted = useRef(false);
+
+  async function submitToken(value: string) {
+    setErrorMessage("");
+    setSubmitting(true);
+    try {
+      await verifyEmail(value);
+      setToken("");
+      setVerified(true);
+    } catch (error) {
+      setErrorMessage(getAuthErrorMessage(error, dictionary));
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  useEffect(() => {
+    const linkedToken = searchParams.get("token")?.trim();
+    if (!linkedToken || automaticAttempted.current) {
+      return;
+    }
+    automaticAttempted.current = true;
+    void submitToken(linkedToken);
+    // The emailed token is intentionally submitted once on initial load.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -27,16 +53,7 @@ export function VerifyEmailForm() {
       setErrorMessage(dictionary.errors.invalidToken);
       return;
     }
-    setSubmitting(true);
-    try {
-      await verifyEmail(token.trim());
-      setToken("");
-      setVerified(true);
-    } catch (error) {
-      setErrorMessage(getAuthErrorMessage(error, dictionary));
-    } finally {
-      setSubmitting(false);
-    }
+    await submitToken(token.trim());
   }
 
   if (verified) {

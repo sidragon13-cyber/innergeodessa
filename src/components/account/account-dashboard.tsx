@@ -49,10 +49,12 @@ const emptyResources: DashboardResources = {
 export function AccountDashboard() {
   const { locale } = useLocale();
   const dictionary = getAccountDictionary(locale);
-  const { status, user, error, refreshUser, logout } = useAuth();
+  const { status, user, error, refreshUser, resendVerification, logout } = useAuth();
 
   const [loggingOut, setLoggingOut] = useState(false);
   const [actionError, setActionError] = useState("");
+  const [resending, setResending] = useState(false);
+  const [resendComplete, setResendComplete] = useState(false);
   const [historyStatus, setHistoryStatus] = useState<HistoryStatus>("idle");
   const [resources, setResources] =
     useState<DashboardResources>(emptyResources);
@@ -155,6 +157,22 @@ export function AccountDashboard() {
     }
   }
 
+  async function handleResend() {
+    if (!user) {
+      return;
+    }
+    setResending(true);
+    setActionError("");
+    try {
+      await resendVerification(user.email);
+      setResendComplete(true);
+    } catch (requestError) {
+      setActionError(getAuthErrorMessage(requestError, dictionary));
+    } finally {
+      setResending(false);
+    }
+  }
+
   const totalRecords =
     resources.personality.length +
     resources.career.length +
@@ -196,9 +214,15 @@ export function AccountDashboard() {
               {dictionary.dashboard.unverifiedLimitation}
             </p>
 
-            <ButtonLink href="/account/verify-email" className="mt-5">
-              {dictionary.dashboard.verifyEmail}
-            </ButtonLink>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <ButtonLink href="/account/verify-email">
+                {dictionary.dashboard.verifyEmail}
+              </ButtonLink>
+              <Button type="button" variant="secondary" loading={resending} loadingLabel={dictionary.dashboard.resendingVerification} onClick={() => void handleResend()}>
+                {dictionary.dashboard.resendVerification}
+              </Button>
+            </div>
+            {resendComplete ? <p className="mt-4 text-sm text-[#596158]">{dictionary.dashboard.resendComplete}</p> : null}
           </div>
         ) : null}
 

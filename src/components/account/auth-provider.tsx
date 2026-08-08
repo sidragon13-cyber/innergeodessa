@@ -49,6 +49,9 @@ type AuthContextValue = {
   login: (email: string, password: string) => Promise<AuthUser>;
   register: (input: RegisterInput) => Promise<RegisterResult>;
   verifyEmail: (token: string) => Promise<AuthUser>;
+  resendVerification: (email: string) => Promise<void>;
+  forgotPassword: (email: string) => Promise<void>;
+  resetPassword: (token: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 };
 
@@ -166,6 +169,41 @@ export function AuthProvider({
     [refreshUser],
   );
 
+  const postRecoveryRequest = useCallback(
+    async (
+      path: string,
+      body: Record<string, string>,
+      context: "verify" | "general",
+    ): Promise<void> => {
+      const response = await fetch(path, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!response.ok) {
+        throw await createAuthRequestError(response, context);
+      }
+    },
+    [],
+  );
+
+  const resendVerification = useCallback(
+    (email: string) =>
+      postRecoveryRequest("/api/auth/resend-verification", { email }, "general"),
+    [postRecoveryRequest],
+  );
+  const forgotPassword = useCallback(
+    (email: string) =>
+      postRecoveryRequest("/api/auth/forgot-password", { email }, "general"),
+    [postRecoveryRequest],
+  );
+  const resetPassword = useCallback(
+    (token: string, password: string) =>
+      postRecoveryRequest("/api/auth/reset-password", { token, password }, "verify"),
+    [postRecoveryRequest],
+  );
+
   const logout = useCallback(async (): Promise<void> => {
     const response = await fetch("/api/auth/logout", {
       method: "POST",
@@ -186,6 +224,9 @@ export function AuthProvider({
       login,
       register,
       verifyEmail,
+      resendVerification,
+      forgotPassword,
+      resetPassword,
       logout,
     }),
     [
@@ -196,6 +237,9 @@ export function AuthProvider({
       login,
       register,
       verifyEmail,
+      resendVerification,
+      forgotPassword,
+      resetPassword,
       logout,
     ],
   );
