@@ -913,3 +913,23 @@ body {
 }
 
 /* INNERGEO DESIGN SYSTEM V1 — HOME BRAND OVERRIDES END */
+
+/* Final footer cleanup — remove legacy decorative arc and glow only */
+.site-footer::after {
+  content: none !important;
+  display: none !important;
+}
+
+.site-footer-glow {
+  display: none !important;
+}
+
+/* Final footer cleanup — remove legacy decorative arc and glow only */
+.site-footer::after {
+  content: none !important;
+  display: none !important;
+}
+
+.site-footer-glow {
+  display: none !important;
+}

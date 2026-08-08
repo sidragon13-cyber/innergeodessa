@@ -306,8 +306,24 @@ export function SiteFooter({
             {dictionary.footer.zodiac}
           </Link>
 
-          <Link href={`${homePath}#trust`}>
+          <Link href="/pricing">
+            {dictionary.footer.pricing}
+          </Link>
+
+          <Link href="/contact">
+            {dictionary.footer.contact}
+          </Link>
+
+          <Link href="/privacy">
             {dictionary.footer.privacy}
+          </Link>
+
+          <Link href="/terms">
+            {dictionary.footer.terms}
+          </Link>
+
+          <Link href="/refund-policy">
+            {dictionary.footer.refund}
           </Link>
         </nav>
 

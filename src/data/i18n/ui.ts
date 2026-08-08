@@ -83,8 +83,11 @@ export type UiDictionary = {
     personality: string;
     career: string;
     zodiac: string;
+    pricing: string;
+    contact: string;
     privacy: string;
     terms: string;
+    refund: string;
   };
   accessibility: {
     homeLabel: string;
@@ -205,8 +208,11 @@ export const uiDictionaries: Record<
       personality: "Personality",
       career: "Career",
       zodiac: "Zodiac",
-      privacy: "Privacy",
-      terms: "Terms",
+      pricing: "Pricing",
+      contact: "Contact",
+      privacy: "Privacy Policy",
+      terms: "Terms of Service",
+      refund: "Refund Policy",
     },
     accessibility: {
       homeLabel: "InnerGeo home",
@@ -323,8 +329,11 @@ export const uiDictionaries: Record<
       personality: "人格测评",
       career: "职业兴趣",
       zodiac: "星座身份",
-      privacy: "隐私",
-      terms: "条款",
+      pricing: "价格",
+      contact: "联系我们",
+      privacy: "隐私政策",
+      terms: "服务条款",
+      refund: "退款政策",
     },
     accessibility: {
       homeLabel: "InnerGeo 首页",
