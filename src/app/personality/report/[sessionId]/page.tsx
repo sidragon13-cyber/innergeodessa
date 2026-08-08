@@ -35,6 +35,30 @@ type ReportLoadState =
   | "not-completed"
   | "error";
 
+type ReportAccessState =
+  | "loading"
+  | "unlocked"
+  | "locked"
+  | "unauthenticated"
+  | "error";
+
+type ReportAccessResponse = {
+  module: "personality" | "career" | "zodiac";
+  resourceId: string;
+  authenticated: true;
+  emailVerified: true;
+  ownsResource: true;
+  entitlementStatus:
+    | "pending"
+    | "unlocked"
+    | "revoked"
+    | "refunded"
+    | null;
+  canViewFullReport: boolean;
+  canPrint: boolean;
+  canDownloadPdf: boolean;
+};
+
 function readCachedResult(
   storedResult: string | null,
   sessionId: string,
@@ -145,6 +169,8 @@ export default function PersonalityReportPage() {
     useState<PersonalityResultContract | null>(null);
   const [loadState, setLoadState] =
     useState<ReportLoadState>("loading");
+  const [accessState, setAccessState] =
+    useState<ReportAccessState>("loading");
 
   useEffect(() => {
     const previewResult = readCachedResult(
@@ -193,6 +219,57 @@ export default function PersonalityReportPage() {
     };
   }, [sessionId, storageKey]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadReportAccess() {
+      try {
+        const response = await fetch(
+          `/api/account/report-access/personality/${encodeURIComponent(
+            sessionId,
+          )}`,
+          {
+            method: "GET",
+            cache: "no-store",
+          },
+        );
+
+        if (cancelled) {
+          return;
+        }
+
+        if (response.status === 401 || response.status === 403) {
+          setAccessState("unauthenticated");
+          return;
+        }
+
+        if (!response.ok) {
+          setAccessState("error");
+          return;
+        }
+
+        const access =
+          (await response.json()) as ReportAccessResponse;
+
+        setAccessState(
+          access.canViewFullReport
+            ? "unlocked"
+            : "locked",
+        );
+      } catch {
+        if (!cancelled) {
+          setAccessState("error");
+        }
+      }
+    }
+
+    loadReportAccess();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [sessionId]);
+
   const displayResult = result ?? cachedResult;
 
   if (loadState === "loading" && !displayResult) {
@@ -240,6 +317,90 @@ export default function PersonalityReportPage() {
         label={dictionary.states.error.label}
         title={dictionary.states.error.title}
         message={dictionary.states.error.message}
+        sessionId={sessionId}
+        resultLabel={dictionary.states.actions.result}
+        overviewLabel={dictionary.states.actions.overview}
+      />
+    );
+  }
+
+  if (accessState === "loading") {
+    return (
+      <ReportState
+        label={locale === "zh" ? "正在验证访问权限" : "Checking access"}
+        title={
+          locale === "zh"
+            ? "正在确认高级报告权限"
+            : "Confirming premium report access"
+        }
+        message={
+          locale === "zh"
+            ? "请稍候，我们正在确认此报告是否已解锁。"
+            : "Please wait while we confirm whether this report is unlocked."
+        }
+        sessionId={sessionId}
+        resultLabel={dictionary.states.actions.result}
+        overviewLabel={dictionary.states.actions.overview}
+      />
+    );
+  }
+
+  if (accessState === "unauthenticated") {
+    return (
+      <ReportState
+        label={locale === "zh" ? "需要账户验证" : "Account required"}
+        title={
+          locale === "zh"
+            ? "请登录并完成邮箱验证"
+            : "Sign in and verify your email"
+        }
+        message={
+          locale === "zh"
+            ? "高级报告仅向已登录并完成邮箱验证、且拥有该测评结果的用户开放。"
+            : "Premium reports are available only to signed-in, email-verified users who own this assessment result."
+        }
+        sessionId={sessionId}
+        resultLabel={dictionary.states.actions.result}
+        overviewLabel={dictionary.states.actions.overview}
+      />
+    );
+  }
+
+  if (accessState === "locked") {
+    return (
+      <ReportState
+        label={locale === "zh" ? "高级报告" : "Premium report"}
+        title={
+          locale === "zh"
+            ? "完整报告尚未解锁"
+            : "Your full report is not unlocked yet"
+        }
+        message={
+          locale === "zh"
+            ? "你仍然可以查看免费结果。购买高级报告后，此页面将自动开放完整内容、打印和 PDF 下载权限。"
+            : "You can continue viewing your free result. After purchasing the premium report, this page will unlock the full report, printing, and PDF access."
+        }
+        sessionId={sessionId}
+        resultLabel={dictionary.states.actions.result}
+        overviewLabel={dictionary.states.actions.overview}
+      />
+    );
+  }
+
+  if (accessState === "error") {
+    return (
+      <ReportState
+        label={locale === "zh" ? "访问检查失败" : "Access check unavailable"}
+        title={
+          locale === "zh"
+            ? "暂时无法确认报告权限"
+            : "We could not confirm report access"
+        }
+        message={
+          locale === "zh"
+            ? "请稍后重新尝试。你的测评结果不会因此受到影响。"
+            : "Please try again shortly. Your assessment result is not affected."
+        }
         sessionId={sessionId}
         resultLabel={dictionary.states.actions.result}
         overviewLabel={dictionary.states.actions.overview}

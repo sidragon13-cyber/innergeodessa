@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { LegalPage } from "@/components/legal-page";
-import { PaddleCheckoutButton } from "@/components/payment/paddle-checkout-button";
 
 export const metadata: Metadata = {
   title: "Pricing | InnerGeo",
@@ -54,7 +54,9 @@ export default function PricingPage() {
                 <p>
                   Sandbox test price: USD $6.99 as a one-time purchase.
                 </p>
-                <PaddleCheckoutButton />
+                <Link href="/personality" className="legal-purchase-button">
+                  Take the Personality assessment
+                </Link>
               </>
             ),
           },
@@ -116,7 +118,9 @@ export default function PricingPage() {
                 <p>
                   Sandbox 测试价格：USD $6.99，一次性购买。
                 </p>
-                <PaddleCheckoutButton />
+                <Link href="/personality" className="legal-purchase-button">
+                  开始人格测评
+                </Link>
               </>
             ),
           },

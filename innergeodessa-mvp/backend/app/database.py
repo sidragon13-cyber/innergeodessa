@@ -396,6 +396,7 @@ def _verify_migration(conn: sqlite3.Connection) -> None:
         "email_verification_tokens",
         "zodiac_charts",
         "report_entitlements",
+        "payments",
     }
     tables = {
         row["name"]
@@ -417,6 +418,10 @@ def _verify_migration(conn: sqlite3.Connection) -> None:
         "idx_report_entitlements_user_id",
         "idx_report_entitlements_module_resource",
         "idx_report_entitlements_status",
+        "idx_payments_user_id",
+        "idx_payments_resource",
+        "idx_payments_status",
+        "idx_payments_provider_transaction",
     }
     indexes = {
         row["name"]

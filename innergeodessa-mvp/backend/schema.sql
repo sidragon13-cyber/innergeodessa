@@ -118,6 +118,68 @@ CREATE INDEX IF NOT EXISTS idx_report_entitlements_module_resource
 CREATE INDEX IF NOT EXISTS idx_report_entitlements_status
   ON report_entitlements(status);
 
+
+CREATE TABLE IF NOT EXISTS payments (
+  payment_id TEXT PRIMARY KEY,
+
+  provider TEXT NOT NULL
+    CHECK (provider IN ('paddle')),
+
+  provider_event_id TEXT NOT NULL,
+  provider_transaction_id TEXT NOT NULL,
+
+  user_id TEXT NOT NULL,
+
+  module TEXT NOT NULL
+    CHECK (module IN ('personality','career','zodiac')),
+
+  resource_id TEXT NOT NULL,
+
+  product_code TEXT NOT NULL,
+  provider_price_id TEXT,
+
+  currency TEXT NOT NULL,
+  amount INTEGER NOT NULL
+    CHECK (amount >= 0),
+
+  tax_amount INTEGER NOT NULL DEFAULT 0
+    CHECK (tax_amount >= 0),
+
+  status TEXT NOT NULL
+    CHECK (
+      status IN (
+        'pending',
+        'completed',
+        'refunded',
+        'failed'
+      )
+    ),
+
+  created_at TEXT NOT NULL,
+  completed_at TEXT,
+  refunded_at TEXT,
+
+  FOREIGN KEY (user_id)
+    REFERENCES users(user_id)
+    ON DELETE CASCADE,
+
+  UNIQUE (provider, provider_event_id),
+  UNIQUE (provider, provider_transaction_id)
+);
+
+
+CREATE INDEX IF NOT EXISTS idx_payments_user_id
+  ON payments(user_id);
+
+CREATE INDEX IF NOT EXISTS idx_payments_resource
+  ON payments(module, resource_id);
+
+CREATE INDEX IF NOT EXISTS idx_payments_status
+  ON payments(status);
+
+CREATE INDEX IF NOT EXISTS idx_payments_provider_transaction
+  ON payments(provider, provider_transaction_id);
+
 CREATE TABLE IF NOT EXISTS responses (
   session_id TEXT NOT NULL,
   item_id TEXT NOT NULL,

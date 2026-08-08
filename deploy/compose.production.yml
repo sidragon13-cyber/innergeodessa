@@ -9,6 +9,7 @@ services:
     environment:
       INNERGEO_ENV: production
       INNERGEO_COOKIE_SECURE: "true"
+      INNERGEODESSA_INTERNAL_API_SECRET: ${INNERGEODESSA_INTERNAL_API_SECRET:?required}
 
     volumes:
       - type: bind
@@ -38,12 +39,18 @@ services:
     build:
       context: ..
       dockerfile: deploy/frontend.Dockerfile
+      args:
+        NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: ${NEXT_PUBLIC_PADDLE_CLIENT_TOKEN:?required}
+        NEXT_PUBLIC_PADDLE_ENV: ${NEXT_PUBLIC_PADDLE_ENV:?required}
+        NEXT_PUBLIC_PADDLE_PRICE_ID: ${NEXT_PUBLIC_PADDLE_PRICE_ID:?required}
     container_name: innergeo-frontend
     restart: unless-stopped
 
     environment:
       NODE_ENV: production
       INNERGEODESSA_API_URL: http://backend:8000
+      INNERGEODESSA_INTERNAL_API_SECRET: ${INNERGEODESSA_INTERNAL_API_SECRET:?required}
+      PADDLE_WEBHOOK_SECRET: ${PADDLE_WEBHOOK_SECRET:?required}
 
     depends_on:
       backend:

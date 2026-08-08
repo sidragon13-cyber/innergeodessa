@@ -32,6 +32,7 @@ import {
 import {
   SaveAssessmentResult,
 } from "@/components/account";
+import { PaddleCheckoutButton } from "@/components/payment/paddle-checkout-button";
 import {
   useLocale,
 } from "@/components/locale";
@@ -61,6 +62,12 @@ type ResultLoadState =
   | "not-found"
   | "not-completed"
   | "error";
+
+type PremiumAccessState =
+  | "loading"
+  | "owned-locked"
+  | "unlocked"
+  | "unavailable";
 
 function readCachedResult(
   storedResult: string | null,
@@ -122,6 +129,50 @@ export default function PersonalityResultPage() {
     useState<PersonalityResultContract | null>(null);
   const [loadState, setLoadState] =
     useState<ResultLoadState>("loading");
+  const [premiumAccess, setPremiumAccess] =
+    useState<PremiumAccessState>("loading");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadPremiumAccess() {
+      try {
+        const response = await fetch(
+          `/api/account/report-access/personality/${encodeURIComponent(
+            sessionId,
+          )}`,
+          { cache: "no-store" },
+        );
+
+        if (cancelled) {
+          return;
+        }
+
+        if (!response.ok) {
+          setPremiumAccess("unavailable");
+          return;
+        }
+
+        const access = (await response.json()) as {
+          canViewFullReport?: boolean;
+        };
+
+        setPremiumAccess(
+          access.canViewFullReport ? "unlocked" : "owned-locked",
+        );
+      } catch {
+        if (!cancelled) {
+          setPremiumAccess("unavailable");
+        }
+      }
+    }
+
+    void loadPremiumAccess();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [sessionId]);
 
   useEffect(() => {
     const previewResult = readCachedResult(
@@ -577,9 +628,18 @@ export default function PersonalityResultPage() {
                     )}
                   </p>
 
-                  {isPhaseOnePersonalityReportType(
-                    displayResult.type,
-                  ) ? (
+                  {isPhaseOnePersonalityReportType(displayResult.type) &&
+                  premiumAccess === "owned-locked" ? (
+                    <PaddleCheckoutButton
+                      resourceId={sessionId}
+                      label={dictionary.premium.viewCompleteReport(
+                        displayResult.type,
+                      )}
+                      className="mt-8 inline-flex min-h-12 items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-[#f1eee5] hover:text-[#34483a] disabled:cursor-wait disabled:opacity-70"
+                    />
+                  ) : isPhaseOnePersonalityReportType(
+                      displayResult.type,
+                    ) ? (
                     <Link
                       href={`/personality/report/${sessionId}`}
                       className="mt-8 inline-flex min-h-12 items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-[#f1eee5] hover:text-[#34483a]"

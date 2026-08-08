@@ -23,7 +23,15 @@ function getPaddle() {
   return paddlePromise;
 }
 
-export function PaddleCheckoutButton() {
+export function PaddleCheckoutButton({
+  resourceId,
+  className = "legal-purchase-button",
+  label = "Buy Premium Report — $6.99",
+}: {
+  resourceId: string;
+  className?: string;
+  label?: string;
+}) {
   const [loading, setLoading] = useState(false);
 
   async function handleCheckout() {
@@ -50,6 +58,10 @@ export function PaddleCheckoutButton() {
             quantity: 1,
           },
         ],
+        customData: {
+          module: "personality",
+          resourceId,
+        },
       });
     } catch (error) {
       console.error("Unable to open Paddle checkout", error);
@@ -63,9 +75,9 @@ export function PaddleCheckoutButton() {
       type="button"
       onClick={handleCheckout}
       disabled={loading}
-      className="legal-purchase-button"
+      className={className}
     >
-      {loading ? "Opening checkout..." : "Buy Premium Report — $6.99"}
+      {loading ? "Opening checkout..." : label}
     </button>
   );
 }

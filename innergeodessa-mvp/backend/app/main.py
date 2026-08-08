@@ -9,6 +9,7 @@ from .routers import (
     account_router,
     auth_router,
     health_router,
+    internal_payments_router,
     items_router,
     session_router,
 )
@@ -31,3 +32,4 @@ app.include_router(items_router)
 app.include_router(session_router)
 app.include_router(auth_router)
 app.include_router(account_router)
+app.include_router(internal_payments_router)

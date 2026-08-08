@@ -298,6 +298,29 @@ def test_unlocked_entitlement_allows_report(
     assert payload["canPrint"] is True
     assert payload["canDownloadPdf"] is True
 
+    with connect_database(database_path) as conn:
+        email = conn.execute(
+            "SELECT email FROM users WHERE user_id=?",
+            (user_id,),
+        ).fetchone()["email"]
+
+    assert client.post("/api/auth/logout").status_code == 204
+    assert client.post(
+        "/api/auth/login",
+        json={
+            "email": email,
+            "password": "InnerGeo-Test-Password-2026!",
+        },
+    ).status_code == 200
+
+    restored = client.get(
+        "/api/account/report-access/"
+        f"personality/{resource_id}",
+    )
+
+    assert restored.status_code == 200
+    assert restored.json()["canViewFullReport"] is True
+
 def test_other_users_resource_returns_not_found(
     client_and_database,
 ):
