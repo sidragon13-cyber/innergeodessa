@@ -163,8 +163,9 @@ export default function ZodiacResultPage() {
 
     let active = true;
 
-    async function loadChart(): Promise<void> {
+    async function loadChartAndAccess(): Promise<void> {
       setStatus("loading");
+      setPremiumAccess("loading");
 
       try {
         const loadedResult = await loadStoredOrRemoteZodiacChart(chartId);
@@ -176,50 +177,49 @@ export default function ZodiacResultPage() {
         setResultError(null);
         setResult(loadedResult);
         setStatus("ready");
-      } catch {
+
+        const saveResponse = await fetch("/api/account/zodiac-charts", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            chartId,
+            result: loadedResult,
+          }),
+          cache: "no-store",
+        });
+
         if (!active) {
           return;
         }
 
-        setResult(null);
-        setResultError("missingStoredChart");
-        setStatus("error");
-      }
-    }
-
-    void loadChart();
-
-    return () => {
-      active = false;
-    };
-  }, [chartId]);
-
-  useEffect(() => {
-    if (!chartId) {
-      return;
-    }
-
-    let cancelled = false;
-
-    async function loadPremiumAccess() {
-      try {
-        const response = await fetch(
-          `/api/account/report-access/zodiac/${encodeURIComponent(
-            chartId,
-          )}`,
-          { cache: "no-store" },
-        );
-
-        if (cancelled) {
-          return;
-        }
-
-        if (!response.ok) {
+        if (!saveResponse.ok) {
           setPremiumAccess("unavailable");
           return;
         }
 
-        const access = (await response.json()) as {
+        const accessResponse = await fetch(
+          `/api/account/report-access/zodiac/${encodeURIComponent(
+            chartId,
+          )}`,
+          {
+            credentials: "same-origin",
+            cache: "no-store",
+          },
+        );
+
+        if (!active) {
+          return;
+        }
+
+        if (!accessResponse.ok) {
+          setPremiumAccess("unavailable");
+          return;
+        }
+
+        const access = (await accessResponse.json()) as {
           canViewFullReport?: boolean;
         };
 
@@ -229,16 +229,21 @@ export default function ZodiacResultPage() {
             : "owned-locked",
         );
       } catch {
-        if (!cancelled) {
-          setPremiumAccess("unavailable");
+        if (!active) {
+          return;
         }
+
+        setResult(null);
+        setResultError("missingStoredChart");
+        setStatus("error");
+        setPremiumAccess("unavailable");
       }
     }
 
-    void loadPremiumAccess();
+    void loadChartAndAccess();
 
     return () => {
-      cancelled = true;
+      active = false;
     };
   }, [chartId]);
 
