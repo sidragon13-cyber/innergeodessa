@@ -11,16 +11,63 @@ import type {
 function block(
   id: string,
   type: ReportContentBlock["type"],
-  title: string,
-  content: string,
+  titleEn: string,
+  contentEn: string,
   dynamicSlots?: ReportDynamicSlot[],
+): ReportContentBlock;
+
+function block(
+  id: string,
+  type: ReportContentBlock["type"],
+  titleEn: string,
+  contentEn: string,
+  titleZh: string,
+  contentZh: string,
+  dynamicSlots?: ReportDynamicSlot[],
+): ReportContentBlock;
+
+function block(
+  id: string,
+  type: ReportContentBlock["type"],
+  titleEn: string,
+  contentEn: string,
+  fifthArgument?: string | ReportDynamicSlot[],
+  sixthArgument?: string,
+  seventhArgument?: ReportDynamicSlot[],
 ): ReportContentBlock {
+  const usesLocalizedArguments =
+    typeof fifthArgument === "string";
+
+  const titleZh = usesLocalizedArguments
+    ? fifthArgument
+    : undefined;
+
+  const contentZh = usesLocalizedArguments
+    ? sixthArgument
+    : undefined;
+
+  const dynamicSlots = Array.isArray(fifthArgument)
+    ? fifthArgument
+    : seventhArgument;
+
   return {
     id,
     type,
-    title: { en: title },
-    content: { en: content },
-    ...(dynamicSlots ? { dynamicSlots } : {}),
+    title: {
+      en: titleEn,
+      ...(titleZh
+        ? { zh: titleZh }
+        : {}),
+    },
+    content: {
+      en: contentEn,
+      ...(contentZh
+        ? { zh: contentZh }
+        : {}),
+    },
+    ...(dynamicSlots
+      ? { dynamicSlots }
+      : {}),
   };
 }
 
@@ -34,6 +81,8 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Your Complete INTJ Report",
       "This report examines an INTJ preference pattern through strategic architecture, evidence, decisions, communication, work, relationships, stress, and development. It treats the type code as a hypothesis about preferred ways of organising attention—not as a fixed identity, clinical judgement, or promise of competence. Culture, experience, responsibilities, trust, and learned skills can change the visible pattern substantially. Use both recognition and mismatch to refine an account grounded in repeated behaviour.",
+      "你的完整 INTJ 人格报告",
+      "本报告从战略架构、证据判断、决策方式、沟通模式、工作环境、人际关系、压力反应与成长路径等方面，分析 INTJ 的偏好模式。类型代码只是关于注意力组织方式与行为倾向的一种解释假设，并不代表固定身份、临床判断，也不保证能力、成熟度或成就。文化、经历、责任、信任程度与后天技能都可能显著改变外在表现。请同时关注与你相符和不相符的部分，并结合长期、重复出现的真实行为形成更准确的自我理解。",
     ),
   ],
   "personality-overview": [
@@ -42,6 +91,8 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Strategic Architecture and Deliberate Execution",
       "An INTJ pattern often combines long-range pattern recognition, independent analysis, explicit criteria, and an internal preference for coherent structure. The person may build a model of how a system could work, identify leverage points, and invest selectively in changes with durable consequence. This can support strategic depth, but sound execution still requires current evidence, communication, collaboration, and revision. A compelling internal vision is not proof of certainty, superiority, or inevitable success.",
+      "战略架构与审慎执行",
+      "INTJ 的典型模式通常结合了长期趋势识别、独立分析、明确标准以及对内部逻辑一致性的重视。你可能会先构建一个系统如何运作的模型，识别关键杠杆点，再选择性地投入能够产生长期影响的改变。这种倾向有助于形成战略深度，但可靠的执行仍需要持续更新的证据、清晰沟通、有效协作与及时修正。一个有说服力的内部愿景，并不等于绝对正确、优于他人或必然成功。",
     ),
   ],
   "dimension-results": [
@@ -50,6 +101,8 @@ const CONTENT_BY_SECTION: Record<
       "analysis",
       "Reading the Four Dimensions",
       "An INTJ result combines preferences across EI, SN, TF, and JP, but strength and confidence can alter the expression considerably. A more outward EI score may make strategy collaborative, a practical SN result may begin with operational evidence, a balanced TF result can integrate stakeholder consequences, and a flexible JP result may preserve more iteration. The dynamic interpretations below qualify broad type themes. Compare them with behaviour across expertise, culture, role, trust, and pressure.",
+      "理解四个维度",
+      "INTJ 结果由 EI、SN、TF 与 JP 四个维度的偏好共同构成，但偏好强度与置信度会显著影响实际表现。较为外向的 EI 结果可能使战略思考更具协作性；更偏现实的 SN 结果可能从具体运营证据出发；较为平衡的 TF 结果可能同时考虑逻辑标准与相关方影响；较灵活的 JP 结果则可能保留更多试验与调整空间。下方的动态解释会进一步修正宽泛的类型描述。请结合专业经验、文化背景、角色责任、信任程度与压力情境中的真实行为进行判断。",
       [
         {
           id: "intj-ei-strategy",
@@ -85,6 +138,8 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Strengths in Context",
       "Likely INTJ strengths include long-range systems thinking, independent learning, strategic focus, contradiction detection, and willingness to redesign an inefficient structure. The pattern can be useful when complex work requires a coherent architecture beyond immediate demands. These are preferences rather than guaranteed skills. Their value depends on domain knowledge, implementation discipline, intellectual humility, and the ability to make private reasoning available to others. Later sections separate useful independence from isolation and quality from perfectionism.",
+      "情境中的优势",
+      "INTJ 可能表现出的优势包括长期系统思维、独立学习、战略聚焦、识别矛盾以及重新设计低效结构的意愿。当复杂工作需要超越眼前任务、建立一致而可持续的架构时，这些倾向往往具有价值。但它们只是偏好，并不自动等同于成熟技能。其实际效果取决于专业知识、执行纪律、思维谦逊，以及能否把内部推理清晰地呈现给他人。后续章节会进一步区分有价值的独立性与孤立倾向，也会区分高质量标准与完美主义。",
     ),
   ],
   "growth-risks": [
@@ -93,6 +148,8 @@ const CONTENT_BY_SECTION: Record<
       "guidance",
       "Growth Through Tested Architecture",
       "Development may involve exposing assumptions earlier, communicating an unfinished model, distinguishing necessary quality from perfectionism, and inviting operational or relational evidence before commitment hardens. Other risks include solving too much alone, withdrawing when collaboration is inefficient, and confusing a coherent forecast with a certain future. These are not fixed defects. The following sections translate them into practical review points that preserve strategic independence while improving adaptability, trust, and execution.",
+      "通过可验证的架构实现成长",
+      "成长可能意味着更早暴露关键假设，在模型尚未完善时就进行沟通，区分必要的质量标准与完美主义，并在立场固化之前主动引入运营证据与关系反馈。其他风险还包括过度独自解决问题、在协作效率不高时迅速退出，以及把逻辑一致的预测误认为必然发生的未来。这些都不是固定缺陷。后续章节会把这些风险转化为可操作的复盘节点，在保留战略独立性的同时提升适应力、信任与执行效果。",
     ),
   ],
   "core-personality-pattern": [
@@ -543,7 +600,10 @@ export const INTJ_COMPLETE_REPORT:
   CompletePersonalityReportDefinition = {
     personalityType: "INTJ",
     version: COMPLETE_PERSONALITY_REPORT_VERSION,
-    title: { en: "INTJ Complete Personality Report" },
+    title: {
+    en: "INTJ Complete Personality Report",
+    zh: "INTJ 完整人格报告",
+  },
     sections: COMPLETE_PERSONALITY_REPORT_STANDARD.map(
       (section) => ({
         ...section,
