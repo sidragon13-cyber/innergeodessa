@@ -17,7 +17,6 @@ import {
 import {
   createReportDimensions,
   generatePersonalityReport,
-  isPhaseOnePersonalityReportType,
 } from "@/data/report";
 import {
   useLocale,
@@ -401,21 +400,6 @@ export default function PersonalityReportPage() {
             ? "请稍后重新尝试。你的测评结果不会因此受到影响。"
             : "Please try again shortly. Your assessment result is not affected."
         }
-        sessionId={sessionId}
-        resultLabel={dictionary.states.actions.result}
-        overviewLabel={dictionary.states.actions.overview}
-      />
-    );
-  }
-
-  if (!isPhaseOnePersonalityReportType(displayResult.type)) {
-    return (
-      <ReportState
-        label={dictionary.states.unavailable.label}
-        title={dictionary.states.unavailable.title(
-          displayResult.type,
-        )}
-        message={dictionary.states.unavailable.message}
         sessionId={sessionId}
         resultLabel={dictionary.states.actions.result}
         overviewLabel={dictionary.states.actions.overview}
