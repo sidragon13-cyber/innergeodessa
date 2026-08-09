@@ -7,6 +7,7 @@ import type {
   ReportContentBlock,
   ReportDynamicSlot,
 } from "../types";
+import { localizeInfpBlock } from "./localization";
 
 function block(
   id: string,
@@ -49,17 +50,18 @@ function block(
   const dynamicSlots = Array.isArray(fifthArgument)
     ? fifthArgument
     : seventhArgument;
+  const localized = localizeInfpBlock(id);
 
   return {
     id,
     type,
     title: {
       en: titleEn,
-      ...(titleZh ? { zh: titleZh } : {}),
+      zh: titleZh ?? localized.title,
     },
     content: {
       en: contentEn,
-      ...(contentZh ? { zh: contentZh } : {}),
+      zh: contentZh ?? localized.content,
     },
     ...(dynamicSlots ? { dynamicSlots } : {}),
   };
@@ -584,7 +586,7 @@ export const INFP_COMPLETE_REPORT:
   CompletePersonalityReportDefinition = {
     personalityType: "INFP",
     version: COMPLETE_PERSONALITY_REPORT_VERSION,
-    title: { en: "INFP Complete Personality Report" },
+    title: { en: "INFP Complete Personality Report", zh: "INFP 完整人格报告" },
     sections: COMPLETE_PERSONALITY_REPORT_STANDARD.map(
       (section) => ({
         ...section,

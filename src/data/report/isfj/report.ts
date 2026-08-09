@@ -35,16 +35,11 @@ function block(
   sixthArgument?: string,
   seventhArgument?: ReportDynamicSlot[],
 ): ReportContentBlock {
-  const usesLocalizedArguments =
-    typeof fifthArgument === "string";
+  const usesLocalizedArguments = typeof fifthArgument === "string";
 
-  const titleZh = usesLocalizedArguments
-    ? fifthArgument
-    : undefined;
+  const titleZh = usesLocalizedArguments ? fifthArgument : undefined;
 
-  const contentZh = usesLocalizedArguments
-    ? sixthArgument
-    : undefined;
+  const contentZh = usesLocalizedArguments ? sixthArgument : undefined;
 
   const dynamicSlots = Array.isArray(fifthArgument)
     ? fifthArgument
@@ -65,16 +60,15 @@ function block(
   };
 }
 
-const CONTENT_BY_SECTION: Record<
-  string,
-  ReportContentBlock[]
-> = {
+const CONTENT_BY_SECTION: Record<string, ReportContentBlock[]> = {
   "report-identity": [
     block(
       "isfj-identity-summary",
       "summary",
       "Your Report",
       "This complete report interprets an ISFJ preference pattern as a starting point for reflection. It uses the current report, content, and rule version identifiers so later generated results can remain traceable. The type code describes a pattern of preferences; it does not define the whole person or set limits on ability.",
+      "你的完整 ISFJ 人格报告",
+      "本完整报告将 ISFJ 偏好模式作为自我反思的起点进行解读，并使用当前的报告、内容与规则版本标识，以便后续生成的结果保持可追溯。类型代码描述的是一组偏好模式；它既不能定义一个人的全部，也不会限定其能力边界。",
     ),
   ],
   "personality-overview": [
@@ -83,6 +77,8 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "A Considerate, Practical Pattern",
       "The existing free profile introduces a pattern of attentive observation, practical care, reliability, and continuity. This report builds on that foundation without replacing it. The deeper sections examine when those tendencies are useful, when they may become costly, and how an individual can adapt them to context.",
+      "体贴而务实的模式",
+      "现有免费档案介绍了由细致观察、务实关怀、可靠性与连续性构成的倾向。本报告在这一基础上继续深入，而不是取代原有内容。后续章节将探讨这些倾向何时能够发挥价值、何时可能带来代价，以及个人可以如何根据情境灵活调整。",
     ),
   ],
   "dimension-results": [
@@ -91,6 +87,8 @@ const CONTENT_BY_SECTION: Record<
       "analysis",
       "Reading the Four Dimensions",
       "An ISFJ result combines preferences across EI, SN, TF, and JP. The strength and confidence of each result may change how recognisable the overall pattern feels. Later report generation can insert dimension-specific interpretation here, including balanced dimensions that warrant especially cautious language.",
+      "理解四个维度",
+      "ISFJ 结果由 EI、SN、TF 与 JP 四个维度的偏好共同构成。每项结果的强度与置信度，可能改变整体模式给人的典型程度。后续报告会在此插入针对具体维度的解释，其中也包括需要使用更谨慎语言来理解的平衡维度。",
       [
         {
           id: "isfj-ei-strength",
@@ -126,6 +124,8 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Strengths in Context",
       "The free profile identifies practical support, trust building, careful organisation, service awareness, patient follow-through, and continuity as likely strengths. Their value depends on context, choice, skill, and available capacity. Premium sections examine how to use them without allowing dependable contribution to become invisible or unlimited.",
+      "情境中的优势",
+      "免费档案将务实支持、建立信任、细致组织、服务意识、耐心跟进与维持连续性列为可能的优势。它们的价值取决于具体情境、个人选择、实际技能与可用精力。高级章节将进一步探讨如何运用这些优势，同时避免让可靠贡献变得无人看见或没有边界。",
     ),
   ],
   "growth-risks": [
@@ -134,6 +134,8 @@ const CONTENT_BY_SECTION: Record<
       "guidance",
       "Growth Without Self-Erasure",
       "The free growth risks point toward early expression of needs, realistic capacity checks, constructive disagreement, supported change, visible contribution, and specific use of feedback. These are development possibilities rather than fixed weaknesses. The following sections turn them into contextual questions and practical experiments.",
+      "在不抹去自我的前提下成长",
+      "免费档案中的成长风险指向若干发展方向：更早表达需要、现实评估精力、开展建设性分歧、在支持下适应变化、让贡献可见，以及具体运用反馈。这些是发展可能性，而非固定弱点。以下章节会将它们转化为贴近情境的问题与可实践的小型尝试。",
     ),
   ],
   "core-personality-pattern": [
@@ -142,6 +144,8 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Care Patterns",
       "An ISFJ preference pattern may combine attentive observation with memory for personal and practical details. Care is often expressed through dependable action: remembering what matters, maintaining continuity, and completing work that supports another person's daily experience. This can create a quiet form of trust because help is specific and follow-through is visible in outcomes, even when the contributor is not.",
+      "关怀模式",
+      "ISFJ 偏好模式可能把细致观察与对个人及实际细节的记忆结合起来。关怀往往通过可靠行动表达：记住重要之事、维持连续性，并完成能够改善他人日常体验的工作。这会形成一种安静的信任，因为帮助具体可见、结果得到落实，即使贡献者本人并不显眼。",
       [
         {
           id: "isfj-combination-care-structure",
@@ -160,24 +164,32 @@ const CONTENT_BY_SECTION: Record<
       "analysis",
       "Observation, Memory, and Continuity",
       "This pattern is more likely to notice deviations from what has previously kept people or systems functioning. A remembered preference, missed step, or subtle change in tone can become useful contextual evidence. When combined with a desire for completion, those observations support continuity: promises are tracked, routines are protected, and practical gaps are closed before they become disruptive.",
+      "观察、记忆与连续性",
+      "这种模式更容易察觉人或系统偏离以往有效运作方式的细微变化。一项记住的偏好、一个遗漏的步骤，或语气中的微妙变化，都可能成为有用的情境证据。当这些观察与完成任务的意愿结合时，就能支持连续性：承诺得到追踪、常规受到保护，实际缺口也会在造成干扰前被补上。",
     ),
     block(
       "isfj-core-strength",
       "strength",
       "Dependability That Humanises Systems",
       "A practical strength of this pattern is the ability to make structures feel personally responsive. An ISFJ may translate concern into a prepared document, a timely reminder, a comfortable environment, or a carefully completed handover. These actions can increase safety and belonging because other people experience care through consistent details rather than through intention alone.",
+      "让系统更有人情味的可靠性",
+      "这种模式的一项务实优势，是能让结构对个人需要作出更有温度的回应。ISFJ 可能把关心转化为准备充分的文件、及时的提醒、舒适的环境或严谨完成的交接。此类行动能够提升安全感与归属感，因为他人通过持续一致的细节真实体验到关怀，而不只听见良好意图。",
     ),
     block(
       "isfj-core-risk",
       "risk",
       "Becoming Invisible Behind Responsibility",
       "Repeatedly stepping in can make responsibility accumulate around the most dependable person. Others may see a smoothly functioning system without seeing the attention that sustains it. The cost can be fatigue, reduced choice, or an identity organised mainly around being needed. Genuine care is chosen with awareness and capacity; automatic duty is performed because refusal feels unsafe, disloyal, or disappointing.",
+      "在责任背后变得不可见",
+      "反复主动补位，可能让越来越多责任集中到最可靠的人身上。别人看见的是顺畅运作的系统，却未必看见支撑它所需的持续关注。代价可能是疲惫、选择空间缩小，或个人身份主要围绕“被需要”而建立。真正的关怀是在了解自身能力与意愿后作出的选择；自动履行义务，则往往源于拒绝会显得不安全、不忠诚或令人失望。",
     ),
     block(
       "isfj-core-reflection",
       "reflection",
       "Care or Automatic Duty?",
       "Before accepting a responsibility, ask: Did I choose this, or did I assume nobody else would do it? Is the support genuinely mine to provide? What would a smaller, shared, or time-limited commitment look like? This distinction protects the quality of care by connecting it to consent, realistic energy, and mutual responsibility.",
+      "这是关怀，还是自动承担义务？",
+      "接受一项责任前可以问自己：这是我主动选择的吗，还是因为我认定没有别人会做？这份支持确实应该由我提供吗？如果把承诺缩小、与人分担或限定时间，会是什么样子？这样的区分把关怀与同意、现实精力及共同责任联系起来，从而保护关怀本身的质量。",
     ),
   ],
   "motivation-and-needs": [
@@ -186,30 +198,40 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Responsibility, Stability, and Being Useful",
       "ISFJs may feel engaged when their contribution is useful, reliable, and connected to people or communities they trust. Meaningful responsibility can provide a clear place in a system, while stability makes it easier to invest attention over time. Appreciation matters not because every contribution needs praise, but because acknowledgement confirms that effort is visible and reciprocal.",
+      "责任、稳定与发挥实际作用",
+      "当贡献实用、可靠，并与自己信任的人或群体相连时，ISFJ 往往更容易投入。具有意义的责任能够让人在系统中拥有清楚的位置，而稳定性则有助于长期投入注意力。认可之所以重要，并非因为每份贡献都需要赞扬，而是因为它确认付出已被看见，并且关系具有互惠性。",
     ),
     block(
       "isfj-motivation-analysis",
       "analysis",
       "Belonging Through Dependable Contribution",
       "Reliability may become a language of belonging: keeping a promise demonstrates loyalty, and being entrusted with practical responsibility signals inclusion. This can be deeply motivating when expectations are clear and relationships are trustworthy. It is less sustainable when belonging seems conditional on constant availability or when changing a commitment is interpreted as letting people down.",
+      "通过可靠贡献建立归属感",
+      "可靠性可能成为表达归属的一种语言：信守承诺体现忠诚，被托付实际责任则传达接纳。当期待清晰、关系可信时，这会带来很强的动力；但如果归属似乎以随时可用为条件，或调整承诺总被理解为让人失望，这种动力就难以持续。",
     ),
     block(
       "isfj-motivation-strength",
       "strength",
       "Steady Investment in What Matters",
       "When responsibility is meaningful and bounded, this pattern can sustain patient effort after initial enthusiasm fades. The person may preserve knowledge, relationships, and service standards that would otherwise fragment. Their motivation often strengthens when they can see who benefits, understand what good work requires, and trust that colleagues will honour their own commitments.",
+      "持续投入真正重要的事",
+      "当责任既有意义又有边界时，这种模式能在最初热情消退后依然保持耐心投入。个人可能维护那些原本容易分散或流失的知识、关系与服务标准。当能够看见谁从中受益、理解优质工作需要什么，并相信同事也会履行各自承诺时，动力通常会进一步增强。",
     ),
     block(
       "isfj-motivation-risk",
       "risk",
       "External Appreciation as a Measure of Worth",
       "If appreciation becomes the main evidence of value, a quiet response from others may feel like rejection or proof that more effort is required. This can lead to over-delivery, indirect bids for recognition, or disappointment that remains unspoken. The underlying need is legitimate; the risk lies in outsourcing self-evaluation to people who may be inattentive, busy, or accustomed to receiving help.",
+      "用外界认可衡量自我价值",
+      "如果认可成为证明自身价值的主要依据，他人的平淡回应可能被体验为拒绝，或被理解为自己还需要付出更多。这可能导致过度交付、间接寻求肯定，或把失望留在心里。希望被看见是合理需要；风险在于把自我评价交给那些可能不够留意、正忙于他事或已习惯接受帮助的人。",
     ),
     block(
       "isfj-motivation-guidance",
       "guidance",
       "Build More Than One Source of Meaning",
       "Name the needs beneath a commitment: usefulness, connection, stability, mastery, appreciation, or trust. Then identify which can be met internally, which require a direct conversation, and which depend on a healthier environment. Track contribution using outcomes and personal values, not only other people's gratitude. Ask periodically whether the responsibility remains meaningful, fairly shared, and compatible with current capacity.",
+      "建立不止一种意义来源",
+      "说出一项承诺背后的需要：发挥作用、建立连接、获得稳定、提升能力、得到认可或形成信任。然后分辨哪些可以由自己满足，哪些需要直接沟通，哪些依赖更健康的环境。用实际结果与个人价值来衡量贡献，而不只依靠他人的感激。定期检查这项责任是否仍有意义、是否公平分担，以及是否符合当前能力。",
     ),
   ],
   "information-processing": [
@@ -218,30 +240,40 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Practical Memory and Context",
       "This pattern often gives close attention to concrete details, previous experience, and the circumstances surrounding an event. Information becomes meaningful through comparison: what happened before, what changed, and which practical conditions affected the outcome. This may produce nuanced awareness of people, routines, and local realities that broad theories can miss.",
+      "务实记忆与情境",
+      "这种模式通常会密切关注具体细节、过去经验以及事件发生时的周边条件。信息通过比较而产生意义：过去发生了什么、现在改变了什么，以及哪些实际条件影响了结果。这可能带来对人、日常流程与本地现实的细腻理解，而这些往往会被宽泛理论忽略。",
     ),
     block(
       "isfj-information-analysis",
       "analysis",
       "Pattern Recognition Through Comparison",
       "Rather than beginning with an abstract possibility, an ISFJ may build understanding from remembered examples and observable evidence. A new situation is compared with prior cases to identify continuity and difference. This approach can reveal small risk signals and implementation details, especially when the person has enough experience and when memory is checked against current facts.",
+      "通过比较识别模式",
+      "ISFJ 不一定从抽象可能性出发，而可能根据记住的案例与可观察证据逐步建立理解。面对新情况时，会将其与过去案例比较，以辨认延续之处与差异。这种方法尤其能发现细小风险信号和实施细节，前提是个人拥有足够经验，并且愿意用当前事实校验记忆。",
     ),
     block(
       "isfj-information-strength",
       "strength",
       "Context That Improves Practical Judgement",
       "Contextual awareness helps prevent one-size-fits-all solutions. The person may remember that a process failed under a particular constraint, that a client needs information in a specific form, or that a team performs better with a stable handover. Such evidence supports realistic planning and preserves useful knowledge that is rarely captured in formal instructions.",
+      "以情境改善务实判断",
+      "情境意识有助于避免用同一种方案处理所有问题。个人可能记得某个流程曾因特定限制而失败、某位客户需要以特定方式接收信息，或某个团队在稳定交接下表现更好。此类证据支持现实规划，也能保留正式说明中很少记录的有用知识。",
     ),
     block(
       "isfj-information-risk",
       "risk",
       "When Novelty Outruns Reference Points",
       "Highly abstract language, rapid pivots, or proposals with few concrete examples may be harder to evaluate quickly. Caution can increase when consequences for people and operations are unclear. Depending on context, this may look like resistance even when the real need is for usable evidence, implementation detail, or time to construct a reliable mental model.",
+      "当新颖程度超出既有参照",
+      "高度抽象的语言、快速转向，或缺少具体示例的方案，可能难以在短时间内准确评估。当对人和运营的后果不够清楚时，谨慎程度也会提高。视情境而定，这可能被误解为抗拒；实际上需要的往往是可用证据、实施细节，或建立可靠心理模型所需的时间。",
     ),
     block(
       "isfj-information-guidance",
       "guidance",
       "Explore Possibilities Safely",
       "Translate an unfamiliar idea into a small example, prototype, scenario, or reversible trial. Ask what assumption is genuinely new and what resembles previous experience. Compare at least two alternatives rather than only the proposed option and the status quo. Set a review point with observable evidence so exploration does not require blind commitment and caution does not become indefinite delay.",
+      "安全地探索可能性",
+      "把陌生想法转化为小型示例、原型、情境推演或可逆试验。询问其中哪个假设确实全新、哪些部分与过去经验相似。至少比较两个备选方案，而不只是把提案与现状二选一。设定基于可观察证据的复盘点，让探索无需盲目承诺，也避免谨慎变成无限拖延。",
     ),
   ],
   "decision-making": [
@@ -250,62 +282,82 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Human Impact and Dependable Decisions",
       "ISFJ decisions may weigh effects on people, existing obligations, practical consequences, and continuity. A good decision often feels both considerate and workable: it protects important relationships while preserving the routines or resources that make follow-through possible. This orientation can improve implementation because the decision includes people who will live with its consequences.",
+      "兼顾人的影响与可靠落实的决策",
+      "ISFJ 的决策可能会权衡对人的影响、已有义务、实际后果与连续性。一个好的决定往往既体贴又可执行：既保护重要关系，也保留落实所需的流程或资源。这种取向能够改善实施，因为决策过程中已纳入那些将实际承受其后果的人。",
     ),
     block(
       "isfj-decisions-analysis",
       "analysis",
       "Obligations Shape the Choice",
       "Commitments already made may carry significant weight. The person may ask who is relying on the outcome, what disruption a change could cause, and whether a decision can be delivered responsibly. This can support ethical consistency, but it may also make old obligations feel permanent even after conditions, priorities, or personal capacity have changed.",
+      "既有义务如何塑造选择",
+      "已经作出的承诺可能占据很大权重。个人可能会考虑谁依赖这个结果、变化会造成哪些干扰，以及决定能否得到负责任的落实。这有助于保持伦理一致性，但也可能让旧义务显得永久有效，即使条件、优先级或个人能力已经改变。",
     ),
     block(
       "isfj-decisions-strength",
       "strength",
       "Practical Consequence Awareness",
       "This pattern can identify downstream effects that a purely conceptual decision overlooks: training time, emotional impact, handover quality, accessibility, or workload transferred to someone else. By connecting values to practical delivery, an ISFJ may help a group choose an option that is not only appealing in principle but also humane and sustainable in use.",
+      "对实际后果的敏感度",
+      "这种模式能够发现纯概念决策容易忽略的下游影响，例如培训时间、情绪影响、交接质量、可及性，或转嫁给他人的工作量。通过把价值观与实际交付联系起来，ISFJ 可以帮助团队选择不仅原则上吸引人，而且在使用中更人性化、更可持续的方案。",
     ),
     block(
       "isfj-decisions-risk",
       "risk",
       "Conflict Avoidance and Delayed Preference",
       "When disagreement feels likely to damage trust, personal preferences may be postponed until every other concern has been accommodated. The eventual decision can then exceed capacity or conceal important information. Avoiding early tension may create later resentment, inconsistent follow-through, or a sudden refusal that surprises people who believed agreement was genuine.",
+      "回避冲突与延后表达偏好",
+      "当分歧似乎会损害信任时，个人偏好可能被一再推迟，直到其他所有顾虑都得到照顾。最终决定可能因此超出能力范围，或掩盖重要信息。回避早期张力，可能造成后期怨怼、执行不一致，甚至突然拒绝，让原本相信已经达成真诚共识的人感到意外。",
     ),
     block(
       "isfj-decisions-guidance",
       "guidance",
       "A Three-Lens Decision Check",
       "Before committing, review three lenses. Others: who is affected, and what do they actually need rather than what might please them? Evidence: what facts, precedents, and uncertainties support each option? Self-capacity: what time, energy, values, and limits must be included? State a provisional preference before solving every concern, then revise it openly as better information emerges.",
+      "用三个视角检查决策",
+      "作出承诺前，从三个视角复核。他人：谁会受到影响？他们真正需要什么，而不只是怎样做会让他们满意？证据：哪些事实、先例与不确定性支持各个选项？自身能力：必须纳入哪些时间、精力、价值观与界限？先表达一个暂定偏好，不必解决所有顾虑，再随着更好信息出现而公开修正。",
     ),
   ],
-  "communication": [
+  communication: [
     block(
       "isfj-communication-summary",
       "summary",
       "Communication Needs",
       "An ISFJ may communicate care through thoughtful listening, remembered detail, and practical support. Calm, respectful conversation often makes it easier to process meaning and respond carefully. The person may prefer to consider wording before raising a concern, particularly when the relationship matters or when a direct statement could be experienced as unnecessarily harsh.",
+      "沟通需要",
+      "ISFJ 可能通过用心倾听、记住细节与提供实际支持来表达关怀。平静、尊重的对话通常更有利于理解含义并谨慎回应。尤其当关系很重要，或直接表达可能显得不必要地严厉时，个人可能希望先斟酌措辞，再提出顾虑。",
     ),
     block(
       "isfj-communication-analysis",
       "analysis",
       "Indirect Signals and Practical Messages",
       "Preferences may first appear through hints, extra effort, softened language, or an attempt to fix the problem without discussing it. These signals can be considerate, but they rely on others noticing what has not been said. In teams or relationships with different communication styles, practical support may be appreciated while the underlying need remains unknown.",
+      "间接信号与实际信息",
+      "个人偏好最初可能通过暗示、额外付出、缓和措辞，或不经讨论就尝试解决问题来表达。这些信号可以很体贴，却依赖他人注意到那些尚未说出口的内容。在沟通风格不同的团队或关系中，实际支持可能受到感谢，背后的需要却依然无人知晓。",
     ),
     block(
       "isfj-communication-risk",
       "risk",
       "Dissatisfaction That Arrives Late",
       "If discomfort is repeatedly contained to preserve harmony, resentment can accumulate beneath continued helpfulness. The person may become quieter, more irritable, or less flexible before naming the issue. By the time it is discussed, the emotional history is larger than the visible event, making a calm adjustment harder for everyone involved.",
+      "迟到的不满",
+      "如果为了维持和谐而反复压下不适，怨怼可能在持续提供帮助的表面之下逐渐累积。个人可能先变得更沉默、易怒或缺乏弹性，之后才说出问题。等到真正讨论时，背后的情绪历史往往已远大于眼前事件，使平静调整对所有人都更加困难。",
     ),
     block(
       "isfj-communication-guidance",
       "guidance",
       "A Clear Request Framework",
       "Use four parts: observation, impact, need, and request. For example: 'The handover arrived after the deadline; I had to cancel planned work; I need predictable preparation time; can we agree on a noon cutoff or reassign the final check?' Deliver feedback with specific behaviour and consequence. Receive feedback by separating intent, action, and result before deciding what to change.",
+      "清晰提出请求的框架",
+      "使用四个部分：观察、影响、需要与请求。例如：“交接材料在截止时间后才到，我不得不取消原定工作；我需要可预测的准备时间；我们能否约定中午截止，或把最终检查交给别人？”反馈应聚焦具体行为及其后果。接收反馈时，先区分意图、行动与结果，再决定需要改变什么。",
     ),
     block(
       "isfj-communication-reflection",
       "reflection",
       "Say It While It Is Still Small",
       "Identify one concern currently expressed only through extra effort or hints. What is the smallest accurate sentence that would make your position visible? Choose a calm time, make one concrete request, and allow the other person to respond without immediately withdrawing it. Afterwards, review whether directness damaged trust or actually gave the relationship better information.",
+      "趁问题还小时说出来",
+      "找出一个目前只通过额外付出或暗示表达的顾虑。能够让自己立场被看见的最简洁准确表述是什么？选择平静时机，提出一个具体请求，并允许对方回应，不要立刻收回。事后复盘：直接表达真的损害了信任，还是反而为关系提供了更准确的信息？",
     ),
   ],
   "teamwork-and-leadership": [
@@ -314,30 +366,40 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Quiet Coordination and Trust",
       "ISFJs may support teams through preparation, reliable coordination, and memory for decisions, preferences, and unfinished work. Their influence is often embedded in continuity rather than display. People may trust them because commitments are tracked and practical support arrives when needed, even when this contribution is not formally described as leadership.",
+      "安静的协调与信任",
+      "ISFJ 可能通过充分准备、可靠协调，以及记住决定、偏好与未完成事项来支持团队。其影响力常常存在于连续性之中，而非公开表现。即使这种贡献没有被正式称为领导力，人们也可能因为承诺得到追踪、实际支持及时出现而信任他们。",
     ),
     block(
       "isfj-teamwork-analysis",
       "analysis",
       "Service-Based Leadership",
       "Leadership may take the form of making expectations clear, ensuring people have resources, preserving useful knowledge, and noticing who is excluded or overloaded. This can create psychological and operational stability. It is leadership through stewardship: the system works because attention is directed toward both task requirements and the lived experience of the team.",
+      "以服务为基础的领导力",
+      "领导力可能表现为澄清期待、确保人员获得资源、保留有用知识，并留意谁被排除或负担过重。这能够建立心理与运营上的稳定。它是一种守护式领导：系统能够运作，是因为注意力同时放在任务要求与团队成员的真实体验上。",
     ),
     block(
       "isfj-teamwork-strength",
       "strength",
       "Team Memory and Prepared Follow-Through",
       "A strong practical memory can protect teams from repeating avoidable mistakes. The person may retain why a decision was made, which stakeholder needs follow-up, or where a routine breaks under pressure. Preparation then turns that knowledge into agendas, checklists, handovers, and reminders that allow others to perform more reliably.",
+      "团队记忆与有准备的跟进",
+      "良好的实际记忆能够避免团队重复本可避免的错误。个人可能记得某项决定为何作出、哪位相关方仍需跟进，或哪项常规会在压力下失效。随后，准备工作会把这些知识转化为议程、清单、交接与提醒，让其他人更可靠地完成工作。",
     ),
     block(
       "isfj-teamwork-risk",
       "risk",
       "Invisible Labour and Delegation Difficulty",
       "Informal responsibility can expand because doing the task personally feels faster or safer than explaining it. Over time, colleagues may underestimate the work, fail to build capability, or assume the ISFJ prefers to own it. The result can be overload paired with frustration that nobody volunteers for responsibilities they cannot see.",
+      "隐形劳动与委派困难",
+      "非正式责任可能不断扩张，因为亲自完成似乎比解释任务更快、更安全。久而久之，同事可能低估工作量、无法建立能力，或认定 ISFJ 本来就愿意负责。结果可能是一边超负荷，一边又因无人主动承担那些看不见的责任而感到挫败。",
     ),
     block(
       "isfj-teamwork-guidance",
       "guidance",
       "Lead Without Copying Aggressive Styles",
       "Make coordination visible: name ownership, deadlines, dependencies, and decision rights. Delegate outcomes with context and a review point rather than silently correcting every detail. Report operational risks early and document contributions factually. Leadership development does not require becoming forceful or performative; it requires making judgement, standards, boundaries, and expectations available to others.",
+      "不必模仿强势风格也能领导",
+      "让协调工作可见：明确责任归属、截止时间、依赖关系与决策权限。带着背景和复盘点委派结果，而不是默默纠正每个细节。及早报告运营风险，并以事实记录贡献。发展领导力无需变得强硬或表演化；关键是让他人能够看见并理解你的判断、标准、界限与期待。",
     ),
   ],
   "career-environment": [
@@ -346,30 +408,40 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Career Environments",
       "An ISFJ may thrive in structured but humane environments where responsibilities are defined, contribution is practical, and relationships develop through continuity. Useful work is easier to sustain when service quality matters, expectations are credible, and careful follow-through is recognised rather than treated as an unlimited resource.",
+      "职业环境",
+      "ISFJ 可能在结构清晰但有人情味的环境中表现良好：责任有明确界定，贡献具有实际作用，关系也能通过持续合作逐步建立。当服务质量受到重视、期待可信，并且细致跟进得到认可而不被当成无限资源时，有价值的工作更容易长期维持。",
     ),
     block(
       "isfj-career-analysis",
       "analysis",
       "Conditions That Support Contribution",
       "Helpful conditions may include stable priorities, clear ownership, accessible procedures, respectful collaboration, and enough time to understand the people affected by a process. Some change is compatible with this pattern, especially when leaders explain context, stage implementation, and invite practical feedback. Structure is supportive when it clarifies work, not when it prevents reasonable judgement.",
+      "支持贡献的条件",
+      "有利条件可能包括稳定的优先级、清楚的责任归属、易于获取的流程、尊重式协作，以及足够时间理解流程所影响的人。这种模式并不排斥变化，尤其当领导者解释背景、分阶段实施并邀请务实反馈时。结构应通过澄清工作来提供支持，而不是阻止合理判断。",
     ),
     block(
       "isfj-career-example",
       "example",
       "Possible Fields, Not Prescriptions",
       "Service, operations, health, education, administration, client support, quality, coordination, and research support can contain roles that use attentiveness and continuity. These fields are examples rather than guarantees. Actual fit depends on skills, interests, values, qualifications, team culture, workload, autonomy, and the specific design of a role—not on personality type alone.",
+      "可能的领域，而非职业处方",
+      "服务、运营、健康、教育、行政、客户支持、质量管理、协调与研究支持等领域，都可能包含需要细致关注和维持连续性的岗位。这些只是例子，并非保证。真实适配取决于技能、兴趣、价值观、资质、团队文化、工作量、自主程度与岗位具体设计，而不能只凭人格类型判断。",
     ),
     block(
       "isfj-career-risk",
       "risk",
       "Warning Signs in an Unsuitable Environment",
       "Risk rises where priorities change without explanation, emotional labour is expected but unsupported, dependable staff receive endless extra work, or speed consistently overrides care and accuracy. Other warnings include ambiguous authority, public conflict as a default management style, chronic understaffing, and cultures that praise sacrifice while ignoring recovery and fair distribution.",
+      "不适合环境中的警示信号",
+      "如果优先级在没有解释的情况下频繁变化、情绪劳动被视为理所当然却缺乏支持、可靠员工不断接到额外工作，或速度持续压倒关怀与准确性，风险就会升高。其他警示还包括权责模糊、把公开冲突当作默认管理方式、长期人手不足，以及赞美牺牲却忽视恢复与公平分工的文化。",
     ),
     block(
       "isfj-career-guidance",
       "guidance",
       "Career Decision Criteria",
       "Evaluate a role through five questions: Is responsibility clear? Does the work produce a practical outcome you value? Are care, quality, and continuity supported by real resources? Can concerns be raised safely? Is contribution recognised through feedback, development, compensation, or shared responsibility? Compare evidence from interviews, observation, and current employees rather than relying only on job titles.",
+      "职业决策标准",
+      "用五个问题评估岗位：责任是否清晰？工作能否产生你重视的实际结果？关怀、质量与连续性是否得到真实资源支持？提出顾虑是否安全？贡献是否通过反馈、发展机会、薪酬或共同责任得到认可？应比较来自面试、观察与现任员工的证据，而不只依赖职位名称。",
     ),
   ],
   "relationship-dynamics": [
@@ -378,30 +450,40 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Relationship Reciprocity",
       "ISFJs may build closeness through loyalty, remembered details, practical care, and efforts that create emotional safety. They often notice what makes another person comfortable and may express commitment by being available during ordinary demands. These behaviours can deepen trust when care moves in both directions and when needs are spoken rather than assumed.",
+      "关系中的互惠",
+      "ISFJ 可能通过忠诚、记住细节、务实关怀，以及营造情绪安全的努力建立亲密。他们常能留意什么会让对方感到舒适，并可能通过在日常需要中持续出现来表达承诺。当关怀双向流动、需要被说出而非被假定时，这些行为能够加深信任。",
     ),
     block(
       "isfj-relationships-analysis",
       "analysis",
       "Care Carries Expectations",
       "Practical giving is rarely meaningless. It may communicate 'you matter', 'I remember', or 'we can rely on each other'. Problems arise when the hoped-for reciprocity remains unspoken. Another person may appreciate the help without understanding that acknowledgment, initiative, or similar effort is expected in return.",
+      "关怀也承载期待",
+      "实际付出很少毫无含义。它可能在表达“你很重要”“我记得”或“我们可以彼此依靠”。当希望获得的回报始终没有说出口时，问题就会出现。对方可能感谢帮助，却不知道你也期待认可、主动性或类似程度的投入。",
     ),
     block(
       "isfj-relationships-strength",
       "strength",
       "Creating Safety Through Continuity",
       "Remembering preferences, keeping confidences, and following through can make relationships feel secure. This pattern may be especially valuable during illness, transition, or routine strain because support is grounded in what is actually needed. Loyalty becomes healthiest when it includes truthful feedback and allows both people to change.",
+      "通过连续性营造安全感",
+      "记住偏好、保守秘密并兑现承诺，能够让关系更有安全感。这种模式在疾病、转变或日常压力期间尤其宝贵，因为支持以真实需要为依据。忠诚最健康的状态，是其中包含诚实反馈，并允许双方都发生改变。",
     ),
     block(
       "isfj-relationships-risk",
       "risk",
       "Over-Giving and Unspoken Contracts",
       "Difficulty asking directly can lead to giving more in the hope that the need will be noticed. If the response is limited, disappointment may be interpreted as lack of care. Continued over-giving can obscure consent and capacity, while the other person remains unaware that a relational contract has formed.",
+      "过度付出与未说出口的契约",
+      "不容易直接提出需要，可能让人通过付出更多来期待对方自行察觉。如果回应有限，失望便可能被解释为缺乏关心。持续过度付出会模糊同意与能力边界，而对方甚至不知道一份关系契约已经悄然形成。",
     ),
     block(
       "isfj-relationships-guidance",
       "guidance",
       "Make Mutual Responsibility Visible",
       "Name what support means to you, ask what it means to the other person, and negotiate rather than infer. Use boundaries that describe your action: 'I can help for an hour' or 'I need advance notice.' Invite the other person to initiate, repair, and plan. Reciprocity need not be identical, but both people should carry visible responsibility for the relationship.",
+      "让共同责任可见",
+      "说明支持对你意味着什么，也询问它对对方意味着什么，通过协商而不是推测建立共识。使用描述自己行动的界限，例如“我可以帮一个小时”或“我需要提前通知”。邀请对方主动联系、修复与共同规划。互惠不必形式完全相同，但双方都应承担看得见的关系责任。",
     ),
   ],
   "change-and-adaptation": [
@@ -410,6 +492,8 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Change Support",
       "An ISFJ may approach change by asking for context, preparation, and clarity about human and practical consequences. Concern is not necessarily simple stubbornness; it may reflect awareness of dependencies, accumulated knowledge, and people who will absorb implementation costs. This perspective can improve change when it is included early rather than dismissed.",
+      "为变化提供支持",
+      "ISFJ 面对变化时，可能会寻求背景、准备空间，以及对人和实际后果的清晰说明。担忧不一定只是固执；它也可能反映对依赖关系、累积知识和实施成本承担者的敏感。如果这种视角在早期就被纳入，而不是被忽视，它可以提升变革质量。",
       [
         {
           id: "isfj-combination-change-flexibility",
@@ -423,24 +507,32 @@ const CONTENT_BY_SECTION: Record<
       "analysis",
       "Preserving Continuity During Transition",
       "A staged transition allows essential routines, relationships, and knowledge to remain available while new methods are tested. The person may adapt more readily when they understand why change is needed, what remains stable, who is responsible, and how problems will be corrected. Preparation turns uncertainty into a sequence of manageable commitments.",
+      "在转变期间保持连续性",
+      "分阶段转变可以在测试新方法的同时，保留关键常规、关系与知识。如果理解为何需要改变、哪些部分保持稳定、由谁负责，以及问题将如何得到纠正，个人往往更容易适应。充分准备能够把不确定性转化为一系列可管理的承诺。",
     ),
     block(
       "isfj-change-strength",
       "strength",
       "Risk Awareness That Protects Implementation",
       "This pattern can identify practical failure points: missing training, unclear handovers, unrealistic timelines, or stakeholders whose needs were not considered. Such caution is constructive when it is expressed as testable questions and paired with alternatives. It helps a group distinguish an exciting proposal from a change that people can actually sustain.",
+      "保护实施质量的风险意识",
+      "这种模式能够发现实际失效点，例如培训缺失、交接不清、时间表不现实，或某些相关方的需要未被考虑。当谨慎以可检验的问题表达，并同时提供替代方案时，它就是建设性的，能够帮助团队区分令人兴奋的提案与人们真正可以持续执行的变化。",
     ),
     block(
       "isfj-change-risk",
       "risk",
       "Evidence-Based Caution or Fear-Based Delay?",
       "Caution becomes costly when no amount of information feels sufficient, when past difficulty is treated as proof that a new approach cannot work, or when avoiding discomfort becomes the hidden objective. Fear-based delay protects short-term familiarity but may increase long-term disruption by postponing learning and reducing available options.",
+      "这是基于证据的谨慎，还是源于恐惧的拖延？",
+      "如果无论获得多少信息都觉得不足，把过去的困难当成新方法不可能成功的证明，或把避免不适变成隐藏目标，谨慎就会产生代价。源于恐惧的拖延虽然保护了短期熟悉感，却可能因推迟学习、减少可选方案而加剧长期干扰。",
     ),
     block(
       "isfj-change-guidance",
       "guidance",
       "Use Reversible Experiments",
       "Define what must be protected, then test one limited change with clear support, measures, and a review date. Record expected benefits and specific risks before the trial so both can be evaluated fairly. Ask what evidence would justify continuing, adapting, or stopping. This creates safety through learning rather than requiring certainty before movement.",
+      "使用可逆试验",
+      "先明确必须保护什么，再通过支持措施、衡量指标与复盘日期清晰的小范围变化进行测试。试验前记录预期收益与具体风险，以便公平评估双方。说明哪些证据支持继续、调整或停止。这样，安全感来自持续学习，而不是要求行动前就拥有确定性。",
     ),
   ],
   "stress-and-recovery": [
@@ -449,30 +541,40 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Stress Signals",
       "Stress may develop quietly when duties accumulate faster than they are questioned or shared. An ISFJ can continue meeting visible obligations while internal flexibility and energy decline. Early recognition matters because the outward appearance of reliability may delay support until overload is already affecting mood, judgement, or health.",
+      "压力信号",
+      "当职责累积的速度超过质疑或分担它们的速度时，压力可能悄然形成。ISFJ 即使内在弹性与精力正在下降，仍可能继续完成外部可见的义务。及早识别十分重要，因为可靠的外在表现可能延误支持，直到过载已经影响情绪、判断或健康。",
     ),
     block(
       "isfj-stress-analysis",
       "analysis",
       "The Silent Overload Sequence",
       "A possible sequence is increased responsibility, reduced personal time, reluctance to disappoint others, and continued effort without clear acknowledgment. The person may then withdraw, become unusually irritable, ruminate about past mistakes, or feel deeply unappreciated. Familiar routines can become rigid because any additional uncertainty feels impossible to absorb.",
+      "无声过载的过程",
+      "一种可能的过程是：责任增加、个人时间减少、不愿让他人失望，并在缺少明确认可的情况下继续付出。之后，个人可能退缩、变得异常易怒、反复思考过去错误，或深感不受重视。熟悉常规可能变得僵化，因为任何额外不确定性都让人觉得无法承受。",
     ),
     block(
       "isfj-stress-evidence",
       "evidence",
       "Early Warning Signs to Track",
       "Useful signals may include saying yes before checking capacity, replaying small errors, losing patience with ordinary requests, avoiding messages, resenting help that was never requested, or feeling that only personal supervision prevents failure. A change from the individual's normal pattern matters more than whether every listed sign is present.",
+      "值得追踪的早期警示",
+      "有用信号可能包括：尚未检查能力就答应请求、反复回想小错误、对普通请求失去耐心、回避消息、怨恨从未明确要求的帮助，或觉得只有亲自监督才能避免失败。与个人平常模式相比发生的变化，比是否出现清单中的每个信号更重要。",
     ),
     block(
       "isfj-stress-risk",
       "risk",
       "When Duty Blocks Recovery",
       "Recovery can be postponed because rest appears irresponsible while tasks remain unfinished. Yet continuing at reduced capacity may increase mistakes and dependency on the same person. Feeling unappreciated can also make support difficult to accept if help arrives only after a crisis or does not match the care previously given.",
+      "当责任感阻碍恢复",
+      "只要任务尚未完成，休息就可能显得不负责任，因此恢复一再被推迟。然而在能力下降时继续工作，可能增加错误，也会让系统更加依赖同一个人。感到不被重视也会使人难以接受支持，尤其当帮助直到危机后才出现，或与自己过去提供的关怀并不相称。",
     ),
     block(
       "isfj-stress-guidance",
       "guidance",
       "Reduce Load Before Optimising",
       "Start by reducing or redistributing responsibility, clarifying the next essential task, and creating protected rest. Ask one trusted person for specific support rather than waiting to be noticed. Delay nonessential commitments and restore flexibility gradually. This section supports reflection and planning; it is not medical advice or a substitute for qualified mental or physical healthcare.",
+      "先减轻负担，再考虑优化",
+      "首先减少或重新分配责任，明确下一个最必要的任务，并安排受到保护的休息时间。向一位可信赖的人具体说明需要什么支持，而不是等待对方自行察觉。推迟非必要承诺，逐步恢复弹性。本节用于支持反思与规划，不构成医疗建议，也不能替代合格的心理或身体健康服务。",
     ),
   ],
   "growth-roadmap": [
@@ -481,6 +583,8 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Boundary Practice",
       "Growth for an ISFJ does not require becoming less caring. It involves making care more deliberate, visible, and sustainable. Key themes include direct needs, manageable disagreement, exploration of alternatives, prioritisation, delegation, and a broader sense of identity than usefulness alone.",
+      "练习建立界限",
+      "ISFJ 的成长并不要求减少关怀，而是让关怀变得更有意识、更可见、更可持续。关键主题包括直接表达需要、承受可管理的分歧、探索替代方案、确定优先级、委派责任，以及建立一种不只依赖“有用”来定义的更广泛身份。",
       [
         {
           id: "isfj-combination-boundary-risk",
@@ -494,24 +598,32 @@ const CONTENT_BY_SECTION: Record<
       "analysis",
       "From Automatic Help to Chosen Contribution",
       "A useful development shift is inserting a pause between noticing a need and taking responsibility for it. The pause allows questions about ownership, priority, energy, and alternatives. This does not remove generosity; it directs generosity toward commitments that are freely chosen and realistically maintained.",
+      "从自动帮助转向自主选择的贡献",
+      "一个有用的发展转变，是在察觉需要与承担责任之间加入暂停。这个暂停让人有机会检查责任归属、优先级、精力与替代方案。它不会消除慷慨，而是把慷慨导向那些自由选择且现实可维持的承诺。",
     ),
     block(
       "isfj-growth-risk",
       "risk",
       "Development That Becomes Another Duty",
       "Growth plans can reproduce the same over-responsibility they are meant to solve. Trying to set perfect boundaries, communicate flawlessly, delegate everything, and explore every alternative at once may create a new standard of self-criticism. Sustainable change uses small experiments and treats discomfort as information rather than failure.",
+      "当成长变成另一项义务",
+      "成长计划可能重现它本想解决的过度负责。试图一次做到完美设限、毫无瑕疵地沟通、委派所有事情并探索每个选项，可能制造新的自我批评标准。可持续改变依靠小型试验，并把不适视为信息，而非失败。",
     ),
     block(
       "isfj-growth-guidance",
       "guidance",
       "Priority Development Practices",
       "Practise one direct need each week, tolerate one respectful disagreement without immediate repair, and generate one alternative before defaulting to precedent. Rank commitments by consequence rather than familiarity. Delegate a complete outcome with a review point. Protect recurring energy for activity that has value even when nobody else benefits.",
+      "优先发展的实践",
+      "每周直接表达一项需要；容许一次尊重的分歧存在，不立即修复；在依循先例前提出一个替代方案。按照后果而不是熟悉程度排列承诺。委派一个完整结果并设定复盘点。固定保留一些精力给即使无人受益、对自己仍有价值的活动。",
     ),
     block(
       "isfj-growth-action",
       "action",
       "Measurable Growth Indicators",
       "Track the percentage of requests answered after a capacity check, the number of responsibilities with named co-owners, and how often a need is stated before resentment appears. Other indicators include protected recovery time, experiments with unfamiliar options, and a monthly description of identity using qualities beyond being useful, reliable, or needed.",
+      "可衡量的成长指标",
+      "追踪经过能力检查后才回复的请求比例、明确共同负责人的责任数量，以及在怨怼出现前说出需要的次数。其他指标包括受到保护的恢复时间、对陌生选项的试验，以及每月一次用“有用、可靠或被需要”之外的品质描述自己的身份。",
     ),
   ],
   "ninety-day-action-plan": [
@@ -520,36 +632,48 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Sustainable Service",
       "This plan turns insight into three manageable phases. It focuses first on awareness, then on communication practice, and finally on a sustainable pattern of contribution and adaptation. Choose actions that fit current capacity; consistency with a small plan is more useful than completing every suggestion.",
+      "可持续的服务",
+      "本计划将洞察转化为三个可管理阶段：先培养觉察，再练习沟通，最后建立可持续的贡献与适应模式。选择符合当前能力的行动；持续执行一个小计划，比完成每一项建议更有价值。",
     ),
     block(
       "isfj-action-days-1-30",
       "action",
       "Days 1–30: Awareness and Capacity Audit",
       "Objective: understand where responsibility and energy are currently going. Actions: (1) list recurring commitments and their true time cost; (2) mark each as chosen, negotiated, or assumed; (3) record energy before and after five common tasks; (4) identify two invisible responsibilities; (5) pause before new commitments. Success indicators: a complete capacity map, three lower-priority tasks identified, and at least five delayed yes/no responses. Review questions: Which duties are genuinely mine? Where does usefulness replace choice?",
+      "第 1–30 天：觉察与能力审计",
+      "目标：了解当前责任与精力流向。行动：（1）列出重复承诺及真实时间成本；（2）将其标记为自主选择、协商达成或默认承担；（3）记录五项常见任务前后的精力；（4）找出两项隐形责任；（5）接受新承诺前暂停。成功指标：完成能力地图、找出三项较低优先级任务，并至少五次延后是/否答复。复盘问题：哪些职责确实属于我？哪些地方用“有用”取代了自主选择？",
     ),
     block(
       "isfj-action-days-31-60",
       "action",
       "Days 31–60: Boundary and Communication Practice",
       "Objective: make needs and limits visible while they are still manageable. Actions: (1) use the observation-impact-need-request framework once each week; (2) set one time or scope boundary; (3) ask directly for one form of support; (4) allow one respectful disagreement without over-explaining; (5) document one contribution factually. Success indicators: four clear requests, two renegotiated commitments, and less reliance on hints. Review questions: What response did directness actually produce? Which wording felt both honest and respectful?",
+      "第 31–60 天：界限与沟通练习",
+      "目标：趁需要与限制仍可管理时，让它们被看见。行动：（1）每周使用一次“观察—影响—需要—请求”框架；（2）建立一个时间或范围界限；（3）直接请求一种支持；（4）容许一次尊重的分歧，不作过度解释；（5）以事实记录一项贡献。成功指标：提出四次清晰请求、重新协商两项承诺，并减少依赖暗示。复盘问题：直接表达实际带来了什么回应？哪些措辞既诚实又尊重？",
     ),
     block(
       "isfj-action-days-61-90",
       "action",
       "Days 61–90: Sustainable Contribution and Adaptation",
       "Objective: create a repeatable pattern of shared responsibility and safe experimentation. Actions: (1) delegate one outcome with a review point; (2) run one reversible change experiment; (3) protect a weekly recovery block; (4) decline or reduce one misaligned request; (5) review commitments with a trusted person. Success indicators: one responsibility remains delegated, recovery time occurs in three of four weeks, and the experiment produces usable evidence. Review questions: What became more sustainable? What support or structure should continue?",
+      "第 61–90 天：可持续贡献与适应",
+      "目标：建立可重复的共同责任与安全试验模式。行动：（1）委派一个结果并设复盘点；（2）开展一项可逆变化试验；（3）每周保护一段恢复时间；（4）拒绝或缩减一个不匹配的请求；（5）与可信赖的人复核承诺。成功指标：一项责任持续由他人承担、四周中至少三周落实恢复时间，且试验产生可用证据。复盘问题：哪些方面变得更可持续？哪些支持或结构应继续保留？",
     ),
     block(
       "isfj-action-review",
       "reflection",
       "Day 90 Review",
       "Compare current capacity, resentment, recovery, and direct communication with the first-month baseline. Keep the practices that reduced hidden work or increased honest choice. Adjust any action that became performative or burdensome. Select one next-quarter focus: clearer ownership, broader exploration, relationship reciprocity, or recovery. Progress is demonstrated by a more sustainable pattern, not by perfect compliance with the plan.",
+      "第 90 天复盘",
+      "把当前能力、怨怼程度、恢复情况与直接沟通，和第一个月的基线比较。保留那些减少隐形劳动或增加真诚选择的实践；调整任何变得表演化或造成负担的行动。为下一季度选择一个重点：更清晰的责任归属、更广泛的探索、关系互惠或恢复。进步体现为更可持续的模式，而不是完美遵守计划。",
     ),
     block(
       "isfj-action-guidance",
       "guidance",
       "Adjust the Plan to Real Capacity",
       "Treat the phases as a sequence, not a performance target. If illness, caregiving, workload, or another major demand reduces capacity, keep one small awareness practice and postpone expansion. If an action repeatedly fails, reduce its frequency or ask what support is missing. Do not turn boundary practice into another obligation that must be completed for other people's approval.",
+      "根据真实能力调整计划",
+      "把各阶段视为依次推进的过程，而不是绩效目标。如果疾病、照护、工作量或其他重大需求降低能力，只保留一项小型觉察练习，并推迟扩展。如果某项行动反复失败，就降低频率，或检查缺少什么支持。不要让界限练习变成另一项必须完成、以换取他人认可的义务。",
     ),
   ],
   methodology: [
@@ -558,39 +682,47 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Interpretation Notes",
       "This V1 report combines a personality type definition with a structure prepared for later dynamic dimension and confidence analysis. Type-level content provides a coherent hypothesis; future rule-generated slots can qualify it using the strength, balance, and combination of assessment dimensions without changing canonical section IDs.",
+      "解读说明",
+      "这份 V1 报告把人格类型定义与为后续动态维度和置信度分析准备的结构结合起来。类型层内容提供一致的解释假设；未来由规则生成的动态位置，可依据评估维度的强度、平衡程度与组合对其加以限定，同时不改变规范的章节 ID。",
     ),
     block(
       "isfj-method-analysis",
       "analysis",
       "Preferences Are Not Fixed Abilities",
       "Personality preferences describe tendencies in attention, decision-making, and approach. They do not establish competence, values, behaviour in every setting, or a permanent identity. Results may vary with context, language, stress, experience, culture, and response style. Low-confidence or closely balanced dimensions require especially cautious interpretation and greater reliance on lived evidence.",
+      "偏好并非固定能力",
+      "人格偏好描述注意力、决策与行动方式上的倾向，并不能证明能力、价值观、所有情境中的行为或永久身份。结果可能随情境、语言、压力、经验、文化与作答方式变化。低置信度或接近平衡的维度尤其需要谨慎解读，并更多依靠真实生活证据。",
     ),
     block(
       "isfj-method-guidance",
       "guidance",
       "Responsible Use and Limitations",
       "The report supports self-reflection, conversation, and development planning. It is not a clinical diagnosis and is not medical advice. It should not be used as the sole basis for hiring, medical, legal, educational, financial, relationship, or major life decisions. Important decisions require relevant evidence, qualified guidance where appropriate, and consideration of the person's actual circumstances.",
+      "负责任的使用方式与限制",
+      "本报告用于支持自我反思、对话与发展规划，不是临床诊断，也不构成医疗建议。它不应被用作招聘、医疗、法律、教育、财务、关系或重大人生决策的唯一依据。重要决定需要相关证据、适当情况下的专业指导，以及对个人真实处境的充分考虑。",
     ),
     block(
       "isfj-method-version",
       "evidence",
       "Version Information",
       "Report version: 1.0.0. Content version: 1.0.0. Rule version: 1.0.0. Version identifiers support traceability as report content and dynamic interpretation rules evolve. A generated report should retain the versions used at generation time so later updates do not silently alter the meaning of an earlier result.",
+      "版本信息",
+      "报告版本：1.0.0。内容版本：1.0.0。规则版本：1.0.0。随着报告内容与动态解释规则演进，版本标识用于保证可追溯性。生成后的报告应保留生成时使用的版本，以免后续更新在未说明的情况下改变早期结果的含义。",
     ),
   ],
 };
 
-export const ISFJ_COMPLETE_REPORT:
-  CompletePersonalityReportDefinition = {
-    personalityType: "ISFJ",
-    version: COMPLETE_PERSONALITY_REPORT_VERSION,
-    title: { en: "ISFJ Complete Personality Report" },
-    sections: COMPLETE_PERSONALITY_REPORT_STANDARD.map(
-      (section) => ({
-        ...section,
-        title: { ...section.title },
-        description: { ...section.description },
-        contentBlocks: CONTENT_BY_SECTION[section.id] ?? [],
-      }),
-    ),
-  };
+export const ISFJ_COMPLETE_REPORT: CompletePersonalityReportDefinition = {
+  personalityType: "ISFJ",
+  version: COMPLETE_PERSONALITY_REPORT_VERSION,
+  title: {
+    en: "ISFJ Complete Personality Report",
+    zh: "ISFJ 完整人格报告",
+  },
+  sections: COMPLETE_PERSONALITY_REPORT_STANDARD.map((section) => ({
+    ...section,
+    title: { ...section.title },
+    description: { ...section.description },
+    contentBlocks: CONTENT_BY_SECTION[section.id] ?? [],
+  })),
+};

@@ -4,6 +4,7 @@ import type {
   PreferenceLetter,
   ReportRuleDefinition,
 } from "../../rules";
+import { localizeIntpRule } from "../localization";
 
 interface DimensionRuleConfig {
   dimension: DimensionCode;
@@ -119,6 +120,9 @@ export const INTP_DIMENSION_RULES:
             config.secondDirection,
           ),
       );
+      const balancedLocalized = localizeIntpRule(
+        `intp-rule-${config.dimension.toLowerCase()}-balanced`,
+      );
       const balancedRule: ReportRuleDefinition = {
         id: `intp-${config.dimension.toLowerCase()}-balanced`,
         personalityType: "INTP",
@@ -139,9 +143,11 @@ export const INTP_DIMENSION_RULES:
             blockType: "analysis",
             title: {
               en: `${config.dimension} Is Exactly Balanced`,
+              zh: balancedLocalized.title,
             },
             content: {
               en: `${config.balancedDirection} ${config.guidance}`,
+              zh: balancedLocalized.content,
             },
           },
         ],
@@ -165,6 +171,9 @@ function createDirectionalRule(
   direction: string,
 ): ReportRuleDefinition {
   const dimensionId = config.dimension.toLowerCase();
+  const localized = localizeIntpRule(
+    `intp-rule-${dimensionId}-${preference.toLowerCase()}-${band}`,
+  );
 
   return {
     id: `intp-${dimensionId}-${preference.toLowerCase()}-${band}`,
@@ -186,9 +195,11 @@ function createDirectionalRule(
         blockType: "analysis",
         title: {
           en: `${preference} Preference · ${bandLabel(band)}`,
+          zh: localized.title,
         },
         content: {
           en: `${direction} ${BAND_CONTEXT[band]} ${config.guidance}`,
+          zh: localized.content,
         },
       },
     ],

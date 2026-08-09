@@ -4,6 +4,7 @@ import type {
   PreferenceLetter,
   ReportRuleDefinition,
 } from "../../rules";
+import { localizeRule } from "../localization";
 
 interface DimensionRuleConfig {
   dimension: DimensionCode;
@@ -139,9 +140,11 @@ export const ENFJ_DIMENSION_RULES:
             blockType: "analysis",
             title: {
               en: `${config.dimension} Is Exactly Balanced`,
+              zh: localizeRule(`enfj-${config.dimension.toLowerCase()}-balanced`).title,
             },
             content: {
               en: `${config.balancedDirection} ${config.guidance}`,
+              zh: localizeRule(`enfj-${config.dimension.toLowerCase()}-balanced`).content,
             },
           },
         ],
@@ -165,9 +168,11 @@ function createDirectionalRule(
   direction: string,
 ): ReportRuleDefinition {
   const dimensionId = config.dimension.toLowerCase();
+  const ruleId = `enfj-${dimensionId}-${preference.toLowerCase()}-${band}`;
+  const localized = localizeRule(ruleId);
 
   return {
-    id: `enfj-${dimensionId}-${preference.toLowerCase()}-${band}`,
+    id: ruleId,
     personalityType: "ENFJ",
     priority,
     conditions: [
@@ -186,9 +191,11 @@ function createDirectionalRule(
         blockType: "analysis",
         title: {
           en: `${preference} Preference · ${bandLabel(band)}`,
+          zh: localized.title,
         },
         content: {
           en: `${direction} ${BAND_CONTEXT[band]} ${config.guidance}`,
+          zh: localized.content,
         },
       },
     ],

@@ -1,6 +1,7 @@
 import type {
   ReportRuleDefinition,
 } from "../../rules";
+import { localizeIsfpRule } from "../localization";
 
 export const ISFP_CONFIDENCE_RULES:
   readonly ReportRuleDefinition[] = [
@@ -67,6 +68,7 @@ function averageRule(
   title: string,
   content: string,
 ): ReportRuleDefinition {
+  const localized = localizeIsfpRule(`${id}-block`);
   return {
     id,
     personalityType: "ISFP",
@@ -91,8 +93,7 @@ function averageRule(
         targetSlotId: "isfp-overall-confidence",
         blockId: `${id}-block`,
         blockType: "guidance",
-        title: { en: title },
-        content: { en: content },
+        title: { en: title, zh: localized.title }, content: { en: content, zh: localized.content },
       },
     ],
     exclusiveGroup: "isfp-average-confidence",
@@ -107,6 +108,7 @@ function balancedRule(
   title: string,
   content: string,
 ): ReportRuleDefinition {
+  const localized = localizeIsfpRule(`${id}-block`);
   return {
     id,
     personalityType: "ISFP",
@@ -125,8 +127,7 @@ function balancedRule(
         targetSlotId: "isfp-balanced-dimensions",
         blockId: `${id}-block`,
         blockType: "analysis",
-        title: { en: title },
-        content: { en: content },
+        title: { en: title, zh: localized.title }, content: { en: content, zh: localized.content },
       },
     ],
     exclusiveGroup: "isfp-balanced-count",

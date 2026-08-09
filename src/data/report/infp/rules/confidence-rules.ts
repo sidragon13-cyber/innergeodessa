@@ -1,6 +1,7 @@
 import type {
   ReportRuleDefinition,
 } from "../../rules";
+import { localizeInfpRule } from "../localization";
 
 export const INFP_CONFIDENCE_RULES:
   readonly ReportRuleDefinition[] = [
@@ -67,6 +68,7 @@ function averageRule(
   title: string,
   content: string,
 ): ReportRuleDefinition {
+  const localized = localizeInfpRule(`${id}-block`);
   return {
     id,
     personalityType: "INFP",
@@ -91,8 +93,7 @@ function averageRule(
         targetSlotId: "infp-overall-confidence",
         blockId: `${id}-block`,
         blockType: "guidance",
-        title: { en: title },
-        content: { en: content },
+        title: { en: title, zh: localized.title }, content: { en: content, zh: localized.content },
       },
     ],
     exclusiveGroup: "infp-average-confidence",
@@ -107,6 +108,7 @@ function balancedRule(
   title: string,
   content: string,
 ): ReportRuleDefinition {
+  const localized = localizeInfpRule(`${id}-block`);
   return {
     id,
     personalityType: "INFP",
@@ -125,8 +127,7 @@ function balancedRule(
         targetSlotId: "infp-balanced-dimensions",
         blockId: `${id}-block`,
         blockType: "analysis",
-        title: { en: title },
-        content: { en: content },
+        title: { en: title, zh: localized.title }, content: { en: content, zh: localized.content },
       },
     ],
     exclusiveGroup: "infp-balanced-count",

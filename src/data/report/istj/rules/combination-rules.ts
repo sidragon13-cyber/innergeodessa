@@ -2,6 +2,7 @@ import type {
   DimensionRuleCondition,
   ReportRuleDefinition,
 } from "../../rules";
+import { localizeIstjRule } from "../localization";
 
 const NON_BALANCED_BANDS = [
   "borderline",
@@ -144,6 +145,7 @@ function combinationRule(
   title: string,
   content: string,
 ): ReportRuleDefinition {
+  const localized = localizeIstjRule(`${id}-block`);
   return {
     id,
     personalityType: "ISTJ",
@@ -155,8 +157,8 @@ function combinationRule(
         targetSlotId,
         blockId: `${id}-block`,
         blockType: "analysis",
-        title: { en: title },
-        content: { en: content },
+        title: { en: title, zh: localized.title },
+        content: { en: content, zh: localized.content },
       },
     ],
     tags: ["combination"],
@@ -173,6 +175,7 @@ function aggregateCombinationRule(
   title: string,
   content: string,
 ): ReportRuleDefinition {
+  const localized = localizeIstjRule(`${id}-block`);
   return {
     id,
     personalityType: "ISTJ",
@@ -191,8 +194,8 @@ function aggregateCombinationRule(
         targetSlotId,
         blockId: `${id}-block`,
         blockType: "guidance",
-        title: { en: title },
-        content: { en: content },
+        title: { en: title, zh: localized.title },
+        content: { en: content, zh: localized.content },
       },
     ],
     tags: ["combination"],
