@@ -97,7 +97,21 @@ export function ReportDocument({
       return dictionary.labels.actionPlan;
     }
 
-    return dictionary.labels.fallback(type);
+    const localizedLabels: Record<string, { en: string; zh: string }> = {
+    summary: { en: "Summary", zh: "摘要" },
+    analysis: { en: "Analysis", zh: "分析" },
+    action: { en: "Action", zh: "行动" },
+    reflection: { en: "Reflection", zh: "反思" },
+    guidance: { en: "Guidance", zh: "指引" },
+  };
+
+  const localizedLabel = localizedLabels[normalized];
+
+  if (localizedLabel) {
+    return localizedLabel[locale];
+  }
+
+  return dictionary.labels.fallback(type);
   }
 
   return (
@@ -141,6 +155,9 @@ export function ReportDocument({
             )}
             badge={getAccessLabel(section.access)}
             tableOfContentsId="report-table-of-contents"
+            backToContentsLabel={
+              locale === "zh" ? "返回目录" : "Back to contents"
+            }
             blocks={section.contentBlocks.map(
               (contentBlock) => ({
                 id: contentBlock.id,

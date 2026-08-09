@@ -17,6 +17,7 @@ export interface ReportSectionProps {
   badge?: ReactNode;
   blocks: readonly ReportSectionBlock[];
   tableOfContentsId: string;
+  backToContentsLabel?: ReactNode;
 }
 
 export function ReportSection({
@@ -27,6 +28,7 @@ export function ReportSection({
   badge,
   blocks,
   tableOfContentsId,
+  backToContentsLabel = "Back to contents",
 }: ReportSectionProps) {
   return (
     <section
@@ -70,7 +72,7 @@ export function ReportSection({
           href={`#${tableOfContentsId}`}
           className="ig-label inline-flex min-h-10 items-center text-[var(--color-text-muted)] underline decoration-[var(--color-border-strong)] underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-focus)]"
         >
-          Back to contents
+          {backToContentsLabel}
         </a>
       </div>
     </section>
