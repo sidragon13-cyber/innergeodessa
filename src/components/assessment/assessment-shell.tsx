@@ -96,7 +96,7 @@ export function AssessmentShell({
     <main className="min-h-screen bg-[#f1eee5] text-[#20231d]">
       <header className="border-b border-black/20">
         <Container
-          className="flex min-h-20 items-center justify-between gap-6"
+          className="flex min-h-20 items-center justify-between gap-4 sm:gap-6"
         >
           <Link
             href="/"
@@ -108,7 +108,7 @@ export function AssessmentShell({
             </span>
           </Link>
 
-          <div className="flex items-center gap-5">
+          <div className="flex flex-col items-end gap-1 sm:flex-row sm:items-center sm:gap-5">
             <Link
               href="/"
               className="text-xs font-bold uppercase tracking-[0.16em]"
@@ -116,7 +116,7 @@ export function AssessmentShell({
               {locale === "zh" ? "首页" : "Home"}
             </Link>
 
-            <span className="text-right text-xs font-bold uppercase tracking-[0.16em]">
+            <span className="text-right text-[0.68rem] font-bold uppercase tracking-[0.14em] sm:text-xs sm:tracking-[0.16em]">
               {dictionary.shell.questionCounter(
                 currentQuestion,
                 itemCount,
