@@ -37,6 +37,13 @@ type LoadStatus =
   | "ready"
   | "error";
 
+type AccessState =
+  | "loading"
+  | "unlocked"
+  | "locked"
+  | "unauthenticated"
+  | "error";
+
 type LoadError =
   | "missingChartId"
   | "missingStoredChart";
@@ -102,6 +109,9 @@ export default function ZodiacReportPage() {
     setLoadError,
   ] = useState<LoadError | null>(null);
 
+  const [accessState, setAccessState] =
+    useState<AccessState>("loading");
+
   useEffect(() => {
     if (!chartId) {
       return;
@@ -142,6 +152,65 @@ export default function ZodiacReportPage() {
 
     return () => {
       active = false;
+    };
+  }, [chartId]);
+
+  useEffect(() => {
+    if (!chartId) {
+      return;
+    }
+
+    let cancelled = false;
+
+    async function loadReportAccess() {
+      try {
+        const response = await fetch(
+          `/api/account/report-access/zodiac/${encodeURIComponent(
+            chartId,
+          )}`,
+          {
+            method: "GET",
+            cache: "no-store",
+          },
+        );
+
+        if (cancelled) {
+          return;
+        }
+
+        if (
+          response.status === 401 ||
+          response.status === 403
+        ) {
+          setAccessState("unauthenticated");
+          return;
+        }
+
+        if (!response.ok) {
+          setAccessState("error");
+          return;
+        }
+
+        const access = (await response.json()) as {
+          canViewFullReport?: boolean;
+        };
+
+        setAccessState(
+          access.canViewFullReport
+            ? "unlocked"
+            : "locked",
+        );
+      } catch {
+        if (!cancelled) {
+          setAccessState("error");
+        }
+      }
+    }
+
+    void loadReportAccess();
+
+    return () => {
+      cancelled = true;
     };
   }, [chartId]);
 
@@ -205,6 +274,130 @@ export default function ZodiacReportPage() {
             href: "/zodiac/test",
             label: dictionary.navigation.newBirthChart,
             variant: "secondary",
+          },
+        ]}
+      />
+    );
+  }
+
+  if (accessState === "loading") {
+    return (
+      <ReportState
+        eyebrow={
+          locale === "zh"
+            ? "正在验证访问权限"
+            : "Checking access"
+        }
+        title={
+          locale === "zh"
+            ? "正在确认星座报告权限"
+            : "Confirming zodiac report access"
+        }
+        message={
+          locale === "zh"
+            ? "请稍候，我们正在确认此完整星座报告是否已经解锁。"
+            : "Please wait while we confirm whether this full zodiac report is unlocked."
+        }
+        actions={[
+          {
+            href: `/zodiac/result/${chartId}`,
+            label:
+              locale === "zh"
+                ? "返回星座结果"
+                : "Back to zodiac result",
+          },
+        ]}
+      />
+    );
+  }
+
+  if (accessState === "unauthenticated") {
+    return (
+      <ReportState
+        eyebrow={
+          locale === "zh"
+            ? "需要账户验证"
+            : "Account required"
+        }
+        title={
+          locale === "zh"
+            ? "请登录并完成邮箱验证"
+            : "Sign in and verify your email"
+        }
+        message={
+          locale === "zh"
+            ? "完整星座报告仅向已登录、完成邮箱验证并拥有该星盘的用户开放。"
+            : "Full zodiac reports are available only to signed-in, email-verified users who own this chart."
+        }
+        actions={[
+          {
+            href: `/zodiac/result/${chartId}`,
+            label:
+              locale === "zh"
+                ? "返回星座结果"
+                : "Back to zodiac result",
+          },
+        ]}
+      />
+    );
+  }
+
+  if (accessState === "locked") {
+    return (
+      <ReportState
+        eyebrow={
+          locale === "zh"
+            ? "高级星座报告"
+            : "Premium zodiac report"
+        }
+        title={
+          locale === "zh"
+            ? "完整星座报告尚未解锁"
+            : "Your full zodiac report is not unlocked yet"
+        }
+        message={
+          locale === "zh"
+            ? "你仍然可以查看免费星座结果。购买完整星座报告后，此页面将开放完整内容、打印和 PDF 权限。"
+            : "You can continue viewing your free zodiac result. After purchasing the full report, this page will unlock the complete content, printing, and PDF access."
+        }
+        actions={[
+          {
+            href: `/zodiac/result/${chartId}`,
+            label:
+              locale === "zh"
+                ? "返回结果并购买完整报告"
+                : "Back to result and purchase report",
+          },
+        ]}
+      />
+    );
+  }
+
+  if (accessState === "error") {
+    return (
+      <ReportState
+        eyebrow={
+          locale === "zh"
+            ? "访问检查失败"
+            : "Access check unavailable"
+        }
+        title={
+          locale === "zh"
+            ? "暂时无法确认报告权限"
+            : "We could not confirm report access"
+        }
+        message={
+          locale === "zh"
+            ? "请稍后重新尝试。你的星座测试结果不会受到影响。"
+            : "Please try again shortly. Your zodiac result is not affected."
+        }
+        actions={[
+          {
+            href: `/zodiac/result/${chartId}`,
+            label:
+              locale === "zh"
+                ? "返回星座结果"
+                : "Back to zodiac result",
           },
         ]}
       />

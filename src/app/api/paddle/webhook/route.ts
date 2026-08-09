@@ -58,7 +58,11 @@ export async function POST(request: Request) {
       "customData.resourceId",
     );
 
-    if (module !== "personality") {
+    if (
+      module !== "personality" &&
+      module !== "career" &&
+      module !== "zodiac"
+    ) {
       throw new InvalidFulfillmentEventError("Unsupported payment module");
     }
 
@@ -94,7 +98,12 @@ export async function POST(request: Request) {
           providerTransactionId: transaction.id,
           module,
           resourceId,
-          productCode: "personality-premium-report-v1",
+          productCode:
+            module === "personality"
+              ? "personality-premium-report-v1"
+              : module === "career"
+                ? "career-premium-report-v1"
+                : "zodiac-premium-report-v1",
           providerPriceId: priceIds[0],
           currency: transaction.currencyCode,
           amount,

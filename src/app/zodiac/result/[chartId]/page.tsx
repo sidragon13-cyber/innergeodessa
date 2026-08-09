@@ -3,6 +3,9 @@
 import Link from "next/link";
 
 import { ButtonLink } from "@/components/ui";
+import {
+  PaddleCheckoutButton,
+} from "@/components/payment/paddle-checkout-button";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
@@ -25,6 +28,12 @@ import {
 } from "@/data/i18n";
 
 type ResultStatus = "loading" | "ready" | "error";
+
+type PremiumAccessState =
+  | "loading"
+  | "owned-locked"
+  | "unlocked"
+  | "unavailable";
 
 type ResultError = "missingChartId" | "missingStoredChart";
 
@@ -144,6 +153,9 @@ export default function ZodiacResultPage() {
 
   const [resultError, setResultError] = useState<ResultError | null>(null);
 
+  const [premiumAccess, setPremiumAccess] =
+    useState<PremiumAccessState>("loading");
+
   useEffect(() => {
     if (!chartId) {
       return;
@@ -179,6 +191,54 @@ export default function ZodiacResultPage() {
 
     return () => {
       active = false;
+    };
+  }, [chartId]);
+
+  useEffect(() => {
+    if (!chartId) {
+      return;
+    }
+
+    let cancelled = false;
+
+    async function loadPremiumAccess() {
+      try {
+        const response = await fetch(
+          `/api/account/report-access/zodiac/${encodeURIComponent(
+            chartId,
+          )}`,
+          { cache: "no-store" },
+        );
+
+        if (cancelled) {
+          return;
+        }
+
+        if (!response.ok) {
+          setPremiumAccess("unavailable");
+          return;
+        }
+
+        const access = (await response.json()) as {
+          canViewFullReport?: boolean;
+        };
+
+        setPremiumAccess(
+          access.canViewFullReport
+            ? "unlocked"
+            : "owned-locked",
+        );
+      } catch {
+        if (!cancelled) {
+          setPremiumAccess("unavailable");
+        }
+      }
+    }
+
+    void loadPremiumAccess();
+
+    return () => {
+      cancelled = true;
     };
   }, [chartId]);
 
@@ -500,9 +560,35 @@ export default function ZodiacResultPage() {
           {dictionary.report.description}
         </p>
 
-        <ButtonLink href={`/zodiac/report/${chartId}`} size="large">
-          {dictionary.report.action}
-        </ButtonLink>
+    {premiumAccess === "owned-locked" ? (
+      <PaddleCheckoutButton
+        module="zodiac"
+        resourceId={chartId}
+        label={
+          locale === "zh"
+            ? "购买完整星座报告 — $6.99"
+            : "Buy Full Zodiac Report — $6.99"
+        }
+        className="mt-6 inline-flex min-h-12 items-center justify-center bg-[var(--color-primary)] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-on-primary)] transition-colors disabled:cursor-wait disabled:opacity-70"
+      />
+    ) : premiumAccess === "unlocked" ? (
+      <ButtonLink
+        href={`/zodiac/report/${chartId}`}
+        size="large"
+      >
+        {dictionary.report.action}
+      </ButtonLink>
+    ) : (
+      <button
+        type="button"
+        disabled
+        className="mt-6 inline-flex min-h-12 cursor-not-allowed items-center justify-center bg-[var(--color-primary)] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-on-primary)] opacity-70"
+      >
+        {locale === "zh"
+          ? "正在确认报告权限"
+          : "Checking report access"}
+      </button>
+    )}
       </section>
 
       <ResultNavigation

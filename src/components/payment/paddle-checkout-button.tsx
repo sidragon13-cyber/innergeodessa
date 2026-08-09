@@ -25,10 +25,12 @@ function getPaddle() {
 
 export function PaddleCheckoutButton({
   resourceId,
+  module = "personality",
   className = "legal-purchase-button",
   label = "Buy Premium Report — $6.99",
 }: {
   resourceId: string;
+  module?: "personality" | "career" | "zodiac";
   className?: string;
   label?: string;
 }) {
@@ -59,7 +61,7 @@ export function PaddleCheckoutButton({
           },
         ],
         customData: {
-          module: "personality",
+          module,
           resourceId,
         },
       });

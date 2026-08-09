@@ -59,25 +59,53 @@ def fulfill_paddle_payment(
 ) -> FulfillmentResult:
     conn.execute("BEGIN IMMEDIATE")
 
-    resource = conn.execute(
-        """SELECT session_id, module, status, owner_user_id
-           FROM sessions
-           WHERE session_id=?""",
-        (payload.resourceId,),
-    ).fetchone()
+    if payload.module == "zodiac":
+        resource = conn.execute(
+            """SELECT chart_id, owner_user_id
+               FROM zodiac_charts
+               WHERE chart_id=?""",
+            (payload.resourceId,),
+        ).fetchone()
 
-    if resource is None:
-        raise ResourceNotFoundError("The assessment resource was not found.")
-    if resource["module"] != "personality":
-        raise UnsupportedResourceModuleError(
-            "The payment resource is not a Personality session."
+        if resource is None:
+            raise ResourceNotFoundError("The Zodiac chart was not found.")
+        if not resource["owner_user_id"]:
+            raise InvalidResourceError("The Zodiac chart has no owner.")
+
+        user_id = resource["owner_user_id"]
+    else:
+        internal_module = (
+            "personality"
+            if payload.module == "personality"
+            else "riasec"
+            if payload.module == "career"
+            else None
         )
-    if resource["status"] != "completed":
-        raise InvalidResourceError("The Personality session is not completed.")
-    if not resource["owner_user_id"]:
-        raise InvalidResourceError("The Personality session has no owner.")
 
-    user_id = resource["owner_user_id"]
+        if internal_module is None:
+            raise UnsupportedResourceModuleError(
+                "The payment resource module is not supported."
+            )
+
+        resource = conn.execute(
+            """SELECT session_id, module, status, owner_user_id
+               FROM sessions
+               WHERE session_id=?""",
+            (payload.resourceId,),
+        ).fetchone()
+
+        if resource is None:
+            raise ResourceNotFoundError("The assessment resource was not found.")
+        if resource["module"] != internal_module:
+            raise UnsupportedResourceModuleError(
+                "The payment resource module does not match the assessment."
+            )
+        if resource["status"] != "completed":
+            raise InvalidResourceError("The assessment session is not completed.")
+        if not resource["owner_user_id"]:
+            raise InvalidResourceError("The assessment session has no owner.")
+
+        user_id = resource["owner_user_id"]
     existing = conn.execute(
         """SELECT * FROM payments
            WHERE provider='paddle'
@@ -106,7 +134,7 @@ def fulfill_paddle_payment(
              product_code, provider_price_id, currency, amount,
              tax_amount, status, created_at, completed_at
            ) VALUES (
-             ?, 'paddle', ?, ?, ?, 'personality', ?, ?, ?, ?, ?, ?,
+             ?, 'paddle', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
              'completed', ?, ?
            )""",
         (
@@ -114,6 +142,7 @@ def fulfill_paddle_payment(
             payload.providerEventId,
             payload.providerTransactionId,
             user_id,
+            payload.module,
             payload.resourceId,
             payload.productCode,
             payload.providerPriceId,
@@ -131,7 +160,7 @@ def fulfill_paddle_payment(
              payment_provider, payment_reference, created_at,
              updated_at, unlocked_at, revoked_at
            ) VALUES (
-             ?, ?, 'personality', ?, 'unlocked', 'paddle', ?, ?, ?, ?, NULL
+             ?, ?, ?, ?, 'unlocked', 'paddle', ?, ?, ?, ?, NULL
            )
            ON CONFLICT(user_id, module, resource_id) DO UPDATE SET
              status='unlocked',
@@ -143,6 +172,7 @@ def fulfill_paddle_payment(
         (
             entitlement_id,
             user_id,
+            payload.module,
             payload.resourceId,
             payload.providerTransactionId,
             now,

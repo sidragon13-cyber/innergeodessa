@@ -12,6 +12,9 @@ import {
   SaveAssessmentResult,
 } from "@/components/account";
 import {
+  PaddleCheckoutButton,
+} from "@/components/payment/paddle-checkout-button";
+import {
   ResultHeader,
   ResultNavigation,
   ResultShell,
@@ -33,6 +36,12 @@ type ResultStatus =
   | "loading"
   | "ready"
   | "error";
+
+type PremiumAccessState =
+  | "loading"
+  | "owned-locked"
+  | "unlocked"
+  | "unavailable";
 
 function formatDate(
   value: string,
@@ -105,6 +114,8 @@ export default function CareerResultPage() {
     );
   const [errorMessage, setErrorMessage] =
     useState("");
+  const [premiumAccess, setPremiumAccess] =
+    useState<PremiumAccessState>("loading");
 
   useEffect(() => {
     let active = true;
@@ -171,6 +182,50 @@ export default function CareerResultPage() {
       active = false;
     };
   }, [sessionId, dictionary]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadPremiumAccess() {
+      try {
+        const response = await fetch(
+          `/api/account/report-access/career/${encodeURIComponent(
+            sessionId,
+          )}`,
+          { cache: "no-store" },
+        );
+
+        if (cancelled) {
+          return;
+        }
+
+        if (!response.ok) {
+          setPremiumAccess("unavailable");
+          return;
+        }
+
+        const access = (await response.json()) as {
+          canViewFullReport?: boolean;
+        };
+
+        setPremiumAccess(
+          access.canViewFullReport
+            ? "unlocked"
+            : "owned-locked",
+        );
+      } catch {
+        if (!cancelled) {
+          setPremiumAccess("unavailable");
+        }
+      }
+    }
+
+    void loadPremiumAccess();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [sessionId]);
 
   const totalAnswered = useMemo(() => {
     if (!result) {
@@ -457,14 +512,37 @@ export default function CareerResultPage() {
           {dictionary.report.description}
         </p>
 
-        <Link
-          href={`/career/report/${sessionId}`}
-          className="mt-8 inline-flex min-h-12 items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] transition-colors hover:bg-[#f1eee5] hover:text-[#34483a]"
-        >
-          {dictionary.report.action(
-            result.code,
-          )}
-        </Link>
+        {premiumAccess === "owned-locked" ? (
+          <PaddleCheckoutButton
+            module="career"
+            resourceId={sessionId}
+            label={
+              locale === "zh"
+                ? "购买完整职业报告 — $6.99"
+                : "Buy Full Career Report — $6.99"
+            }
+            className="mt-8 inline-flex min-h-12 items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] transition-colors hover:bg-[#f1eee5] hover:text-[#34483a] disabled:cursor-wait disabled:opacity-70"
+          />
+        ) : premiumAccess === "unlocked" ? (
+          <Link
+            href={`/career/report/${sessionId}`}
+            className="mt-8 inline-flex min-h-12 items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] transition-colors hover:bg-[#f1eee5] hover:text-[#34483a]"
+          >
+            {dictionary.report.action(
+              result.code,
+            )}
+          </Link>
+        ) : (
+          <button
+            type="button"
+            disabled
+            className="mt-8 inline-flex min-h-12 cursor-not-allowed items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] opacity-70"
+          >
+            {locale === "zh"
+              ? "正在确认报告权限"
+              : "Checking report access"}
+          </button>
+        )}
 
         <SaveAssessmentResult
           module="career"
