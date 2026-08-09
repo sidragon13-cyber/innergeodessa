@@ -513,16 +513,23 @@ export default function CareerResultPage() {
         </p>
 
         {premiumAccess === "owned-locked" ? (
-          <PaddleCheckoutButton
-            module="career"
-            resourceId={sessionId}
-            label={
-              locale === "zh"
-                ? "购买完整职业报告 — $6.99"
-                : "Buy Full Career Report — $6.99"
-            }
-            className="mt-8 inline-flex min-h-12 items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] transition-colors hover:bg-[#f1eee5] hover:text-[#34483a] disabled:cursor-wait disabled:opacity-70"
-          />
+          <>
+            <PaddleCheckoutButton
+              module="career"
+              resourceId={sessionId}
+              label={
+                locale === "zh"
+                  ? "购买完整职业报告 — $9.99"
+                  : "Buy Full Career Report — $9.99"
+              }
+              className="mt-8 inline-flex min-h-12 items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] transition-colors hover:bg-[#f1eee5] hover:text-[#34483a] disabled:cursor-wait disabled:opacity-70"
+            />
+            <p className="mt-3 max-w-xl text-sm leading-6 text-[#d6ddd6]">
+              {locale === "zh"
+                ? "基础测试可随时免费重测。每次新的完整报告需单独购买；已购买报告永久保留。"
+                : "Free retakes anytime. Each new Premium Report is purchased separately; previously purchased reports remain available permanently."}
+            </p>
+          </>
         ) : premiumAccess === "unlocked" ? (
           <Link
             href={`/career/report/${sessionId}`}

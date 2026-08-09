@@ -141,7 +141,7 @@ export const personalityResultDictionaries: Record<
 
     premium: {
       viewCompleteReport: (personalityType) =>
-        `VIEW COMPLETE ${personalityType} REPORT`,
+        `VIEW COMPLETE ${personalityType} REPORT — $7.99`,
     },
 
     navigation: {
@@ -216,7 +216,7 @@ export const personalityResultDictionaries: Record<
 
     premium: {
       viewCompleteReport: (personalityType) =>
-        `查看完整 ${personalityType} 人格报告`,
+        `查看完整 ${personalityType} 人格报告 — $7.99`,
     },
 
     navigation: {

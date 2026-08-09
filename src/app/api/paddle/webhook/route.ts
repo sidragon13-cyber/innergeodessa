@@ -40,9 +40,8 @@ export async function POST(request: Request) {
   }
 
   const internalSecret = process.env.INNERGEODESSA_INTERNAL_API_SECRET;
-  const expectedPriceId = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID;
 
-  if (!internalSecret || !expectedPriceId) {
+  if (!internalSecret) {
     console.error("Missing payment fulfillment configuration");
     return new NextResponse("Fulfillment not configured", { status: 500 });
   }
@@ -64,6 +63,19 @@ export async function POST(request: Request) {
       module !== "zodiac"
     ) {
       throw new InvalidFulfillmentEventError("Unsupported payment module");
+    }
+
+    const expectedPriceId =
+      module === "personality"
+        ? process.env.NEXT_PUBLIC_PADDLE_PERSONALITY_PRICE_ID
+        : module === "career"
+          ? process.env.NEXT_PUBLIC_PADDLE_CAREER_PRICE_ID
+          : process.env.NEXT_PUBLIC_PADDLE_ZODIAC_PRICE_ID;
+
+    if (!expectedPriceId) {
+      throw new InvalidFulfillmentEventError(
+        `Missing Paddle price configuration for ${module}`,
+      );
     }
 
     const priceIds = transaction.items.map((item) => item.price?.id);

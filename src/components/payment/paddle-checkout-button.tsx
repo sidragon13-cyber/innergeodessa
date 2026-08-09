@@ -27,7 +27,7 @@ export function PaddleCheckoutButton({
   resourceId,
   module = "personality",
   className = "legal-purchase-button",
-  label = "Buy Premium Report — $6.99",
+  label = "Buy Premium Report — $7.99",
 }: {
   resourceId: string;
   module?: "personality" | "career" | "zodiac";
@@ -37,10 +37,15 @@ export function PaddleCheckoutButton({
   const [loading, setLoading] = useState(false);
 
   async function handleCheckout() {
-    const priceId = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID;
+    const priceId =
+      module === "personality"
+        ? process.env.NEXT_PUBLIC_PADDLE_PERSONALITY_PRICE_ID
+        : module === "career"
+          ? process.env.NEXT_PUBLIC_PADDLE_CAREER_PRICE_ID
+          : process.env.NEXT_PUBLIC_PADDLE_ZODIAC_PRICE_ID;
 
     if (!priceId) {
-      console.error("Missing NEXT_PUBLIC_PADDLE_PRICE_ID");
+      console.error(`Missing Paddle price ID for ${module}`);
       return;
     }
 
