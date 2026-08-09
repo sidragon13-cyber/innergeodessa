@@ -211,9 +211,13 @@ export const COMPLETE_PERSONALITY_REPORT_STANDARD:
       order: 17,
       category: "action-plan",
       access: "premium",
-      title: { en: "90-Day Action Plan" },
+      title: {
+        en: "90-Day Action Plan",
+        zh: "90天行动计划",
+      },
       description: {
         en: "Translates report insights into a focused ninety-day action plan.",
+        zh: "将报告中的关键洞察转化为聚焦、可执行并可持续复盘的90天行动计划。",
       },
       contentBlocks: [],
     },

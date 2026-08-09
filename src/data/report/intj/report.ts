@@ -158,6 +158,8 @@ const CONTENT_BY_SECTION: Record<
       "summary",
       "Internal Vision and System Coherence",
       "The central INTJ pattern often involves forming an internal model of future direction and organising choices around its underlying logic. The person may look beyond current symptoms to identify the architecture producing them, then select a focused route for change. At its best, this creates patient leverage rather than reactive activity. The dynamic slots below qualify how strategy changes with confidence, balance, and access to adjacent preferences.",
+      "内在愿景与系统一致性",
+      "INTJ 的核心模式通常表现为先在内心建立一个关于未来方向的模型，再依据其底层逻辑组织选择。你可能不会只处理眼前症状，而是试图识别造成这些现象的系统架构，并从中找到最值得投入的改变路径。成熟的表现不是不断反应，而是通过耐心分析找到能够产生长期影响的杠杆点。下方的动态解释会进一步说明，当维度置信度、平衡程度以及相邻偏好的可用性发生变化时，这种战略方式可能如何调整。",
       [
         {
           id: "intj-combination-architecture",
@@ -176,24 +178,32 @@ const CONTENT_BY_SECTION: Record<
       "analysis",
       "Building the Architecture Before the Activity",
       "An INTJ may first ask what system would make the desired outcome repeatable. Instead of treating each issue separately, the person examines incentives, dependencies, information flow, and future consequences. This can prevent wasted effort and produce durable design. It becomes limiting when planning stays private or when present facts are forced to fit the model. Architecture must remain a testable explanation of reality, not a substitute for contact with it.",
+      "先建立架构，再投入行动",
+      "面对目标时，INTJ 往往首先思考：什么样的系统能够让理想结果被稳定地重复实现？与其孤立处理每一个问题，你更可能考察激励机制、相互依赖、信息流动以及长期后果。这能够减少无效投入，并形成更加持久的设计。但如果规划始终停留在个人内部，或者现实事实被迫去迎合既有模型，这种优势就会转化为限制。架构应当始终是一种可以被现实检验和修正的解释，而不能替代对现实本身的持续接触。",
     ),
     block(
       "intj-core-strength",
       "strength",
       "Concentrated Long-Range Leverage",
       "A developed expression can sustain attention on a consequential objective while resisting short-term noise. The INTJ may identify a small structural change that improves many downstream decisions, sequence work around dependencies, and protect resources for outcomes that take time. This strategic concentration is strongest when review points invite disconfirming evidence and when collaborators understand enough of the model to exercise judgement rather than merely follow instructions.",
+      "聚焦长期杠杆效应",
+      "成熟的 INTJ 往往能够持续关注真正重要的长期目标，而不轻易被短期噪音带离方向。你可能识别出一个看似很小、却能改善大量后续决策的结构性改变，并按照依赖关系安排工作顺序，为需要时间才能产生结果的事项保护资源。这种战略聚焦最有价值的条件，是在关键复盘节点主动寻找能够推翻原有判断的证据，同时让协作者充分理解模型，使他们能够自主判断，而不是仅仅执行指令。",
     ),
     block(
       "intj-core-risk",
       "risk",
       "When Coherence Becomes Premature Certainty",
       "A model that explains many observations can begin to feel complete before critical assumptions have been tested. The INTJ may discount local objections as short-term thinking or interpret disagreement as failure to understand the system. This can create elegant plans with weak adoption or hidden operational costs. Confidence should rise when the architecture survives serious evidence, not simply because it has become internally consistent.",
+      "当逻辑一致变成过早确定",
+      "一个能够解释大量现象的模型，很容易在关键假设尚未真正接受检验之前，就让人产生“已经完整”的感觉。INTJ 可能把局部反对意见视为短期思维，或者把不同意见理解成对方没有看懂整个系统。结果可能是一个逻辑优雅的方案，却缺乏实际接受度，或者隐藏着未被看见的运营成本。对模型的信心应该来自它经受住了严肃证据的挑战，而不是仅仅因为内部逻辑已经足够一致。",
     ),
     block(
       "intj-core-reflection",
       "reflection",
       "What Could Change the Model?",
       "Choose one strategic conclusion you currently hold. Which observations support it, which assumptions connect those observations, and what evidence would require revision? Who has access to facts you do not? Share the model before it is finished and ask for the strongest counterexample. The goal is not to surrender independent judgement, but to ensure independence produces a design that can withstand reality outside your own reasoning.",
+      "什么证据会改变你的模型？",
+      "选择一个你目前相信的重要战略结论。哪些观察支持它？这些观察之间依赖了哪些假设？什么样的证据出现时，你必须修改结论？还有谁掌握着你无法直接获得的事实？尝试在模型尚未完全成形时就分享它，并主动要求他人提出最有力的反例。这样做不是放弃独立判断，而是确保独立思考最终形成的设计，能够经受你个人推理之外真实世界的检验。",
     ),
   ],
   "motivation-and-needs": [
