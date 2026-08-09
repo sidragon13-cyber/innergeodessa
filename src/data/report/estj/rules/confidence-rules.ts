@@ -1,6 +1,7 @@
 import type {
   ReportRuleDefinition,
 } from "../../rules";
+import { localizeRule } from "../localization";
 
 export const ESTJ_CONFIDENCE_RULES:
   readonly ReportRuleDefinition[] = [
@@ -67,6 +68,7 @@ function averageRule(
   title: string,
   content: string,
 ): ReportRuleDefinition {
+  const localized = localizeRule(id);
   return {
     id,
     personalityType: "ESTJ",
@@ -91,8 +93,8 @@ function averageRule(
         targetSlotId: "estj-overall-confidence",
         blockId: `${id}-block`,
         blockType: "guidance",
-        title: { en: title },
-        content: { en: content },
+        title: { en: title, zh: localized.title },
+        content: { en: content, zh: localized.content },
       },
     ],
     exclusiveGroup: "estj-average-confidence",
@@ -107,6 +109,7 @@ function balancedRule(
   title: string,
   content: string,
 ): ReportRuleDefinition {
+  const localized = localizeRule(id);
   return {
     id,
     personalityType: "ESTJ",
@@ -125,8 +128,8 @@ function balancedRule(
         targetSlotId: "estj-balanced-dimensions",
         blockId: `${id}-block`,
         blockType: "analysis",
-        title: { en: title },
-        content: { en: content },
+        title: { en: title, zh: localized.title },
+        content: { en: content, zh: localized.content },
       },
     ],
     exclusiveGroup: "estj-balanced-count",

@@ -80,7 +80,9 @@ export function createPersonalityLocalizer(
     }
 
     if (id.includes("confidence-average")) {
-      const band = id.split("-").at(-1) ?? "moderate";
+      const band = id.includes("very-strong")
+        ? "very-strong"
+        : id.split("-").at(-1) ?? "moderate";
       return {
         title: `整体置信度｜${BAND_LABEL[band] ?? "情境化理解"}`,
         content: `整体置信度说明 ${config.type} 偏好模式在当前测量中的清晰程度，并不衡量智力、成熟度或专业能力。置信度较低时，应更多比较不同角色与情境；置信度较高时，也要留意熟悉偏好是否因过度使用而遮蔽反证、相邻偏好和他人的经验。`,

@@ -4,6 +4,7 @@ import type {
   PreferenceLetter,
   ReportRuleDefinition,
 } from "../../rules";
+import { localizeRule } from "../localization";
 
 interface DimensionRuleConfig {
   dimension: DimensionCode;
@@ -119,8 +120,10 @@ export const ESTJ_DIMENSION_RULES:
             config.secondDirection,
           ),
       );
+      const balancedRuleId = `estj-${config.dimension.toLowerCase()}-balanced`;
+      const balancedLocalized = localizeRule(balancedRuleId);
       const balancedRule: ReportRuleDefinition = {
-        id: `estj-${config.dimension.toLowerCase()}-balanced`,
+        id: balancedRuleId,
         personalityType: "ESTJ",
         priority: 200,
         conditions: [
@@ -139,9 +142,11 @@ export const ESTJ_DIMENSION_RULES:
             blockType: "analysis",
             title: {
               en: `${config.dimension} Is Exactly Balanced`,
+              zh: balancedLocalized.title,
             },
             content: {
               en: `${config.balancedDirection} ${config.guidance}`,
+              zh: balancedLocalized.content,
             },
           },
         ],
@@ -165,9 +170,11 @@ function createDirectionalRule(
   direction: string,
 ): ReportRuleDefinition {
   const dimensionId = config.dimension.toLowerCase();
+  const ruleId = `estj-${dimensionId}-${preference.toLowerCase()}-${band}`;
+  const localized = localizeRule(ruleId);
 
   return {
-    id: `estj-${dimensionId}-${preference.toLowerCase()}-${band}`,
+    id: ruleId,
     personalityType: "ESTJ",
     priority,
     conditions: [
@@ -186,9 +193,11 @@ function createDirectionalRule(
         blockType: "analysis",
         title: {
           en: `${preference} Preference · ${bandLabel(band)}`,
+          zh: localized.title,
         },
         content: {
           en: `${direction} ${BAND_CONTEXT[band]} ${config.guidance}`,
+          zh: localized.content,
         },
       },
     ],
