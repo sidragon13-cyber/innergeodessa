@@ -1,6 +1,9 @@
 import {
   getCompletePersonalityReport,
 } from "../src/data/report/generator/registry";
+import {
+  getReportRules,
+} from "../src/data/report/generator/rule-registry";
 
 const personalityTypes = [
   "ISTJ",
@@ -21,68 +24,213 @@ const personalityTypes = [
   "ENTJ",
 ] as const;
 
-const missing: string[] = [];
+type PersonalityType =
+  (typeof personalityTypes)[number];
+
+type ValidationResult = {
+  staticMissing: string[];
+  dynamicMissing: string[];
+};
+
+const results = new Map<
+  PersonalityType,
+  ValidationResult
+>();
 
 for (const personalityType of personalityTypes) {
+  const staticMissing: string[] = [];
+  const dynamicMissing: string[] = [];
+
   const report =
     getCompletePersonalityReport(personalityType);
 
   if (!report) {
-    missing.push(`${personalityType}: report missing`);
+    staticMissing.push(
+      `${personalityType}: report missing`,
+    );
+  } else {
+    if (!report.title.zh) {
+      staticMissing.push(
+        `${personalityType}: report title.zh`,
+      );
+    }
+
+    for (const section of report.sections) {
+      if (!section.title.zh) {
+        staticMissing.push(
+          `${personalityType}/${section.id}: section title.zh`,
+        );
+      }
+
+      if (!section.description.zh) {
+        staticMissing.push(
+          `${personalityType}/${section.id}: section description.zh`,
+        );
+      }
+
+      for (const block of section.contentBlocks) {
+        if (block.title && !block.title.zh) {
+          staticMissing.push(
+            `${personalityType}/${section.id}/${block.id}: block title.zh`,
+          );
+        }
+
+        if (!block.content.zh) {
+          staticMissing.push(
+            `${personalityType}/${section.id}/${block.id}: block content.zh`,
+          );
+        }
+      }
+    }
+  }
+
+  const rules = getReportRules(personalityType);
+
+  for (const rule of rules) {
+    for (const content of rule.content) {
+      if (content.title && !content.title.zh) {
+        dynamicMissing.push(
+          `${personalityType}/${rule.id}/${content.blockId}: rule title.zh`,
+        );
+      }
+
+      if (!content.content.zh) {
+        dynamicMissing.push(
+          `${personalityType}/${rule.id}/${content.blockId}: rule content.zh`,
+        );
+      }
+    }
+  }
+
+  results.set(personalityType, {
+    staticMissing,
+    dynamicMissing,
+  });
+}
+
+let totalStaticMissing = 0;
+let totalDynamicMissing = 0;
+
+console.log(
+  "===== PERSONALITY REPORT LOCALE SUMMARY =====",
+);
+
+console.log(
+  `${"TYPE".padEnd(6)} ${"STATIC".padStart(8)} ${"DYNAMIC".padStart(9)} ${"TOTAL".padStart(8)}`,
+);
+
+console.log("-".repeat(35));
+
+for (const personalityType of personalityTypes) {
+  const result = results.get(personalityType);
+
+  if (!result) {
     continue;
   }
 
-  if (!report.title.zh) {
-    missing.push(`${personalityType}: report title.zh`);
-  }
+  const staticCount = result.staticMissing.length;
+  const dynamicCount =
+    result.dynamicMissing.length;
+  const total = staticCount + dynamicCount;
 
-  for (const section of report.sections) {
-    if (!section.title.zh) {
-      missing.push(
-        `${personalityType}/${section.id}: section title.zh`,
-      );
-    }
+  totalStaticMissing += staticCount;
+  totalDynamicMissing += dynamicCount;
 
-    if (!section.description.zh) {
-      missing.push(
-        `${personalityType}/${section.id}: section description.zh`,
-      );
-    }
-
-    for (const block of section.contentBlocks) {
-      if (block.title && !block.title.zh) {
-        missing.push(
-          `${personalityType}/${section.id}/${block.id}: block title.zh`,
-        );
-      }
-
-      if (!block.content.zh) {
-        missing.push(
-          `${personalityType}/${section.id}/${block.id}: block content.zh`,
-        );
-      }
-    }
-  }
+  console.log(
+    `${personalityType.padEnd(6)} ` +
+      `${String(staticCount).padStart(8)} ` +
+      `${String(dynamicCount).padStart(9)} ` +
+      `${String(total).padStart(8)}`,
+  );
 }
 
-if (missing.length > 0) {
+const grandTotal =
+  totalStaticMissing + totalDynamicMissing;
+
+console.log("-".repeat(35));
+
+console.log(
+  `TOTAL  ${String(totalStaticMissing).padStart(8)} ` +
+    `${String(totalDynamicMissing).padStart(9)} ` +
+    `${String(grandTotal).padStart(8)}`,
+);
+
+console.log();
+
+if (grandTotal > 0) {
   console.error(
-    `FAIL — ${missing.length} Chinese personality report fields are missing.`,
+    `FAIL — ${grandTotal} Chinese personality report fields are missing.`,
   );
 
-  for (const item of missing.slice(0, 120)) {
-    console.error(`- ${item}`);
-  }
+  for (const personalityType of personalityTypes) {
+    const result = results.get(personalityType);
 
-  if (missing.length > 120) {
+    if (!result) {
+      continue;
+    }
+
+    const total =
+      result.staticMissing.length +
+      result.dynamicMissing.length;
+
+    if (total === 0) {
+      continue;
+    }
+
     console.error(
-      `...and ${missing.length - 120} more missing fields.`,
+      `\n===== ${personalityType} =====`,
     );
+
+    if (result.staticMissing.length > 0) {
+      console.error(
+        `Static missing: ${result.staticMissing.length}`,
+      );
+
+      for (
+        const item of result.staticMissing.slice(
+          0,
+          20,
+        )
+      ) {
+        console.error(`- ${item}`);
+      }
+
+      if (result.staticMissing.length > 20) {
+        console.error(
+          `...and ${
+            result.staticMissing.length - 20
+          } more static fields.`,
+        );
+      }
+    }
+
+    if (result.dynamicMissing.length > 0) {
+      console.error(
+        `Dynamic missing: ${result.dynamicMissing.length}`,
+      );
+
+      for (
+        const item of result.dynamicMissing.slice(
+          0,
+          20,
+        )
+      ) {
+        console.error(`- ${item}`);
+      }
+
+      if (result.dynamicMissing.length > 20) {
+        console.error(
+          `...and ${
+            result.dynamicMissing.length - 20
+          } more dynamic fields.`,
+        );
+      }
+    }
   }
 
   process.exit(1);
 }
 
 console.log(
-  "PASS — all personality report content includes English and Chinese.",
+  "PASS — all personality report static and dynamic content includes English and Chinese.",
 );
