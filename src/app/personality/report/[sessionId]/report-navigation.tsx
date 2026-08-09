@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+
+import { useLocale } from "@/components/locale";
 
 export interface ReportNavigationProps {
   sessionId: string;
@@ -7,6 +11,8 @@ export interface ReportNavigationProps {
 export function ReportNavigation({
   sessionId,
 }: ReportNavigationProps) {
+  const { locale } = useLocale();
+
   return (
     <div className="report-interactive-only mt-12 flex flex-col gap-4 border-t border-[#c8c2b5] pt-8 sm:flex-row">
       <Link
@@ -20,7 +26,14 @@ export function ReportNavigation({
         href="/personality"
         className="inline-flex min-h-12 items-center justify-center border border-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em]"
       >
-        Personality overview
+        {locale === "zh" ? "人格测评首页" : "Personality overview"}
+      </Link>
+
+      <Link
+        href="/"
+        className="inline-flex min-h-12 items-center justify-center px-6 text-xs font-bold uppercase tracking-[0.14em]"
+      >
+        {locale === "zh" ? "首页" : "Home"}
       </Link>
     </div>
   );

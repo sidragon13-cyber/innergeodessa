@@ -186,12 +186,21 @@ export default function ZodiacTestPage() {
   return (
     <main className="min-h-screen bg-[#f7f4ee] px-6 py-14 text-[#17231d]">
       <div className="mx-auto max-w-4xl">
-        <Link
-          href="/zodiac"
-          className="text-sm font-semibold text-[var(--color-text-secondary)]"
-        >
-          ← {dictionary.backToZodiac}
-        </Link>
+        <div className="flex items-center justify-between gap-4">
+          <Link
+            href="/zodiac"
+            className="text-sm font-semibold text-[var(--color-text-secondary)]"
+          >
+            ← {dictionary.backToZodiac}
+          </Link>
+
+          <Link
+            href="/"
+            className="text-sm font-semibold text-[var(--color-text-secondary)]"
+          >
+            {locale === "zh" ? "首页" : "Home"}
+          </Link>
+        </div>
 
         <div className="mt-10">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#8a4f43]">

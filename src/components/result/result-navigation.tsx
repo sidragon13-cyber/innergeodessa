@@ -1,3 +1,6 @@
+"use client";
+
+import { useLocale } from "@/components/locale";
 import { ButtonLink } from "@/components/ui";
 
 export interface ResultNavigationAction {
@@ -16,6 +19,8 @@ export function ResultNavigation({
   secondary,
   className = "",
 }: ResultNavigationProps) {
+  const { locale } = useLocale();
+
   return (
     <div
       className={[
@@ -29,6 +34,10 @@ export function ResultNavigation({
 
       <ButtonLink href={secondary.href} variant="secondary">
         {secondary.label}
+      </ButtonLink>
+
+      <ButtonLink href="/" variant="quiet">
+        {locale === "zh" ? "首页" : "Home"}
       </ButtonLink>
     </div>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 import {
@@ -97,19 +98,31 @@ export function AssessmentShell({
         <Container
           className="flex min-h-20 items-center justify-between gap-6"
         >
-          <span className="font-serif text-xl font-bold tracking-[-0.04em]">
+          <Link
+            href="/"
+            className="font-serif text-xl font-bold tracking-[-0.04em]"
+          >
             Inner
             <span className="italic text-[#a64a2c]">
               Geo
             </span>
-          </span>
+          </Link>
 
-          <span className="text-right text-xs font-bold uppercase tracking-[0.16em]">
-            {dictionary.shell.questionCounter(
-              currentQuestion,
-              itemCount,
-            )}
-          </span>
+          <div className="flex items-center gap-5">
+            <Link
+              href="/"
+              className="text-xs font-bold uppercase tracking-[0.16em]"
+            >
+              {locale === "zh" ? "首页" : "Home"}
+            </Link>
+
+            <span className="text-right text-xs font-bold uppercase tracking-[0.16em]">
+              {dictionary.shell.questionCounter(
+                currentQuestion,
+                itemCount,
+              )}
+            </span>
+          </div>
         </Container>
       </header>
 
