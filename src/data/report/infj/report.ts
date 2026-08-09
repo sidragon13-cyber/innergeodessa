@@ -11,15 +11,56 @@ import type {
 function block(
   id: string,
   type: ReportContentBlock["type"],
-  title: string,
-  content: string,
+  titleEn: string,
+  contentEn: string,
   dynamicSlots?: ReportDynamicSlot[],
+): ReportContentBlock;
+
+function block(
+  id: string,
+  type: ReportContentBlock["type"],
+  titleEn: string,
+  contentEn: string,
+  titleZh: string,
+  contentZh: string,
+  dynamicSlots?: ReportDynamicSlot[],
+): ReportContentBlock;
+
+function block(
+  id: string,
+  type: ReportContentBlock["type"],
+  titleEn: string,
+  contentEn: string,
+  fifthArgument?: string | ReportDynamicSlot[],
+  sixthArgument?: string,
+  seventhArgument?: ReportDynamicSlot[],
 ): ReportContentBlock {
+  const usesLocalizedArguments =
+    typeof fifthArgument === "string";
+
+  const titleZh = usesLocalizedArguments
+    ? fifthArgument
+    : undefined;
+
+  const contentZh = usesLocalizedArguments
+    ? sixthArgument
+    : undefined;
+
+  const dynamicSlots = Array.isArray(fifthArgument)
+    ? fifthArgument
+    : seventhArgument;
+
   return {
     id,
     type,
-    title: { en: title },
-    content: { en: content },
+    title: {
+      en: titleEn,
+      ...(titleZh ? { zh: titleZh } : {}),
+    },
+    content: {
+      en: contentEn,
+      ...(contentZh ? { zh: contentZh } : {}),
+    },
     ...(dynamicSlots ? { dynamicSlots } : {}),
   };
 }
