@@ -582,12 +582,16 @@ export default function CareerResultPage() {
           primary={{
             href: "/career/test",
             label:
-              dictionary.navigation.retake,
+              locale === "zh"
+                ? "重新进行职业兴趣测评"
+                : "Retake career assessment",
           }}
           secondary={{
             href: "/career",
             label:
-              dictionary.navigation.overview,
+              locale === "zh"
+                ? "返回职业兴趣首页"
+                : "Career overview",
           }}
         />
       </div>

@@ -518,8 +518,11 @@ export default function ZodiacReportPage() {
             label: dictionary.navigation.backToZodiacResult,
           }}
           secondary={{
-            href: "/zodiac/test",
-            label: dictionary.navigation.createAnotherChart,
+            href: "/zodiac",
+            label:
+              locale === "zh"
+                ? "返回星座首页"
+                : "Zodiac overview",
           }}
         />
 

@@ -606,11 +606,17 @@ export default function ZodiacResultPage() {
       <ResultNavigation
         primary={{
           href: "/zodiac/test",
-          label: dictionary.navigation.createAnotherChart,
+          label:
+            locale === "zh"
+              ? "重新创建星盘"
+              : "Create another chart",
         }}
         secondary={{
           href: "/zodiac",
-          label: dictionary.navigation.backToZodiacIdentity,
+          label:
+            locale === "zh"
+              ? "返回星座首页"
+              : "Zodiac overview",
         }}
       />
 

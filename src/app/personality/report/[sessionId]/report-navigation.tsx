@@ -19,7 +19,7 @@ export function ReportNavigation({
         href={`/personality/result/${sessionId}`}
         className="inline-flex min-h-12 items-center justify-center bg-[#34483a] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5]"
       >
-        Back to free result
+        {locale === "zh" ? "返回人格测试结果" : "Back to personality result"}
       </Link>
 
       <Link

@@ -702,11 +702,17 @@ export default function PersonalityResultPage() {
           className="mt-12"
           primary={{
             href: "/personality/test",
-            label: dictionary.navigation.retake,
+            label:
+              locale === "zh"
+                ? "重新进行人格测评"
+                : "Retake personality assessment",
           }}
           secondary={{
             href: "/personality",
-            label: dictionary.navigation.overview,
+            label:
+              locale === "zh"
+                ? "返回人格测评首页"
+                : "Personality overview",
           }}
         />
     </ResultShell>
