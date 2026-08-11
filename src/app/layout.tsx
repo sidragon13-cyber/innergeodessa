@@ -13,7 +13,7 @@ import "./brand-home.css";
 export const metadata: Metadata = {
   title: "InnerGeo — Self-Discovery, Thoughtfully Mapped",
   description:
-    "Explore your personality, career interests, and zodiac identity through three thoughtful self-discovery experiences.",
+    "Explore personality, career interests, kids interest discovery, and zodiac identity through four thoughtful self-discovery experiences.",
 };
 
 export default function RootLayout({

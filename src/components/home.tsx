@@ -206,6 +206,25 @@ export function HomeExploreSection() {
   const dictionary = getUiDictionary(locale);
   const explore = dictionary.home.explore;
 
+  const isChineseLocale = String(locale)
+    .toLowerCase()
+    .startsWith("zh");
+
+  const kidsProduct = {
+    title: isChineseLocale
+      ? "儿童兴趣探索"
+      : "Kids Interest Discovery",
+    description: isChineseLocale
+      ? "通过适龄问题，发现孩子自然产生兴趣的方向，建立属于他们自己的兴趣地图。"
+      : "Discover the areas a child is naturally drawn to through age-appropriate questions and build an individual interest map.",
+    metadata: isChineseLocale
+      ? "6–12岁 · 兴趣发现"
+      : "Ages 6–12 · Interest Discovery",
+    cta: isChineseLocale
+      ? "开始探索"
+      : "Start Exploring",
+  };
+
   const products: Product[] = [
     {
       number: "01",
@@ -229,6 +248,16 @@ export function HomeExploreSection() {
     },
     {
       number: "03",
+      id: "kids",
+      title: kidsProduct.title,
+      description: kidsProduct.description,
+      metadata: kidsProduct.metadata,
+      cta: kidsProduct.cta,
+      symbol: "K",
+      href: "/kids",
+    },
+    {
+      number: "04",
       id: "zodiac",
       title: explore.products.zodiac.title,
       description: explore.products.zodiac.description,
@@ -300,6 +329,14 @@ export function SiteFooter({
 
           <Link href="/career">
             {dictionary.footer.career}
+          </Link>
+
+          <Link href="/kids">
+            {String(locale)
+              .toLowerCase()
+              .startsWith("zh")
+              ? "儿童兴趣"
+              : "Kids"}
           </Link>
 
           <Link href="/zodiac">
