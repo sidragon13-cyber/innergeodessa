@@ -28,6 +28,7 @@ const ASSESSMENT_MODULES: readonly AssessmentModule[] = [
   "personality",
   "riasec",
   "zodiac",
+  "kids",
 ];
 
 const EMPTY_QUESTION_BANK: AssessmentQuestionBank =

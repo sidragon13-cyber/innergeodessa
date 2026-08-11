@@ -87,13 +87,26 @@ CREATE TABLE IF NOT EXISTS sessions (
   consent INTEGER NOT NULL CHECK (consent IN (0,1)),
   language TEXT NOT NULL DEFAULT 'en',
   module TEXT NOT NULL DEFAULT 'personality'
-    CHECK (module IN ('personality','riasec')),
+    CHECK (module IN ('personality','riasec','kids')),
+  form TEXT CHECK (form IN ('k68','k912')),
   started_at TEXT NOT NULL,
   completed_at TEXT,
   status TEXT NOT NULL DEFAULT 'active',
   owner_user_id TEXT,
   claim_secret_hash TEXT,
   claimed_at TEXT,
+  CHECK (
+    (
+      module='kids'
+      AND form IS NOT NULL
+      AND form IN ('k68','k912')
+    )
+    OR
+    (
+      module IN ('personality','riasec')
+      AND form IS NULL
+    )
+  ),
   FOREIGN KEY (owner_user_id) REFERENCES users(user_id) ON DELETE SET NULL
 );
 
@@ -311,6 +324,71 @@ CREATE TABLE IF NOT EXISTS riasec_session_responses (
   FOREIGN KEY (session_id) REFERENCES sessions(session_id) ON DELETE CASCADE,
   FOREIGN KEY (item_record_id)
     REFERENCES riasec_question_items(item_record_id)
+);
+
+CREATE TABLE IF NOT EXISTS kids_question_items (
+  item_record_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  question_bank_version TEXT NOT NULL,
+  form TEXT NOT NULL CHECK (form IN ('k68','k912')),
+  source_item_id TEXT NOT NULL,
+  domain TEXT NOT NULL CHECK (
+    domain IN (
+      'create','discover','build','think',
+      'connect','lead','move','express'
+    )
+  ),
+  wording_en TEXT NOT NULL,
+  wording_zh TEXT NOT NULL,
+  visual_support TEXT NOT NULL
+    CHECK (visual_support IN ('none','required','helpful')),
+  master_asset_path TEXT,
+  display_asset_path TEXT,
+  scoring_version TEXT NOT NULL,
+  status TEXT NOT NULL,
+  master_order INTEGER NOT NULL,
+  CHECK (
+    (
+      visual_support='none'
+      AND master_asset_path IS NULL
+      AND display_asset_path IS NULL
+    )
+    OR
+    (
+      visual_support IN ('required','helpful')
+      AND master_asset_path IS NOT NULL
+      AND display_asset_path IS NOT NULL
+    )
+  ),
+  FOREIGN KEY (question_bank_version)
+    REFERENCES question_banks(question_bank_version),
+  UNIQUE (question_bank_version, source_item_id),
+  UNIQUE (question_bank_version, master_order)
+);
+
+CREATE TABLE IF NOT EXISTS kids_session_question_items (
+  session_id TEXT NOT NULL,
+  item_record_id INTEGER NOT NULL,
+  display_order INTEGER NOT NULL,
+  PRIMARY KEY (session_id, item_record_id),
+  UNIQUE (session_id, display_order),
+  FOREIGN KEY (session_id)
+    REFERENCES sessions(session_id) ON DELETE CASCADE,
+  FOREIGN KEY (item_record_id)
+    REFERENCES kids_question_items(item_record_id)
+);
+
+CREATE TABLE IF NOT EXISTS kids_session_responses (
+  session_id TEXT NOT NULL,
+  item_record_id INTEGER NOT NULL,
+  raw_value INTEGER NOT NULL
+    CHECK (raw_value BETWEEN 1 AND 5),
+  response_time_ms INTEGER,
+  answered_at TEXT NOT NULL,
+  PRIMARY KEY (session_id, item_record_id),
+  FOREIGN KEY (session_id)
+    REFERENCES sessions(session_id) ON DELETE CASCADE,
+  FOREIGN KEY (item_record_id)
+    REFERENCES kids_question_items(item_record_id)
 );
 
 CREATE TABLE IF NOT EXISTS riasec_results (

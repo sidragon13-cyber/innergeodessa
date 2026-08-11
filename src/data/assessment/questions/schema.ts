@@ -3,7 +3,8 @@ import type { SupportedLocale } from "../../shared/localization";
 export type AssessmentModule =
   | "personality"
   | "riasec"
-  | "zodiac";
+  | "zodiac"
+  | "kids";
 
 export type AssessmentQuestionStatus =
   | "draft"

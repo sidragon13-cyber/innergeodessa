@@ -1,0 +1,595 @@
+InnerGeo Kids — Release Visual Audit Source V1
+
+Scope: Release Form items only
+K68 Selected: 32
+K912 Selected: 40
+Total Selected: 72
+
+Visual Classification to assign:
+REQUIRED = image/graphic materially needed to understand the item fairly
+HELPFUL = text works, but visual support materially improves age-appropriate comprehension
+TEXT = text alone is sufficient and adding an image may add noise or bias
+
+============================================================
+AGES 6–8 / KIDS-K68-RF-V1
+============================================================
+
+ID: K68-CREATE-01
+EN: Would you enjoy making a picture in your own style?
+ZH: 你会喜欢按照自己的想法创作一幅图画吗？
+Construct: Original visual expression
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-CREATE-02
+EN: Would you enjoy inventing a new creature or character?
+ZH: 你会喜欢自己想出一种新的动物或角色吗？
+Construct: Imaginative creation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-CREATE-04
+EN: Would you enjoy making up a new rhythm or sound pattern?
+ZH: 你会喜欢自己创造一种新的节奏或声音组合吗？
+Construct: Sound-based creation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-CREATE-05
+EN: Would you enjoy turning simple materials into something unusual?
+ZH: 你会喜欢把一些简单材料变成一个特别的东西吗？
+Construct: Creative transformation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-DISCOVER-01
+EN: If something changed in a surprising way, would you enjoy finding out why?
+ZH: 如果一件东西发生了意想不到的变化，你会喜欢弄清楚为什么吗？
+Construct: Causal investigation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-DISCOVER-02
+EN: Would you enjoy trying two different ways to see which one works?
+ZH: 你会喜欢尝试两种不同的方法，看看哪一种会成功吗？
+Construct: Simple experimentation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-DISCOVER-03
+EN: Would you enjoy looking closely at something unusual to find small clues?
+ZH: 你会喜欢仔细观察一个特别的东西，寻找里面的小线索吗？
+Construct: Observation and evidence seeking
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-DISCOVER-04
+EN: Would you enjoy finding out what makes something move, grow, or change?
+ZH: 你会喜欢弄清楚是什么让一个东西移动、生长或发生变化吗？
+Construct: Mechanism curiosity
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-BUILD-01
+EN: Would you enjoy figuring out how several pieces could fit together?
+ZH: 你会喜欢想办法把几块东西组合在一起吗？
+Construct: Assembly interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-BUILD-02
+EN: Would you enjoy making a simple bridge, tower, or shelter from ordinary materials?
+ZH: 你会喜欢用普通材料做一个小桥、塔或小棚子吗？
+Construct: Construction interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-BUILD-03
+EN: If a simple object stopped working, would you enjoy looking at it to see how it might be fixed?
+ZH: 如果一个简单物品不能正常用了，你会喜欢看看它可以怎么修好吗？
+Construct: Repair interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-BUILD-06
+EN: Would you enjoy testing something you built to see whether it works?
+ZH: 你会喜欢测试自己做的东西，看看它能不能正常工作吗？
+Construct: Build-test cycle
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-THINK-01
+EN: Would you enjoy finding the rule in a pattern?
+ZH: 你会喜欢找出一个图案或排列中的规律吗？
+Construct: Pattern reasoning interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-THINK-02
+EN: Would you enjoy working out which piece should come next?
+ZH: 你会喜欢想一想接下来应该是哪一块吗？
+Construct: Sequencing interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-THINK-03
+EN: Would you enjoy sorting things using a rule you discovered?
+ZH: 你会喜欢按照自己发现的规律给一些东西分类吗？
+Construct: Classification interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-THINK-04
+EN: Would you enjoy thinking about what might happen after each move in a game?
+ZH: 你会喜欢想一想游戏中每一步之后可能会发生什么吗？
+Construct: Strategic reasoning interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-CONNECT-01
+EN: Would you enjoy showing another child how to do something you understand?
+ZH: 你会喜欢把自己会做的事情教给另一个小朋友吗？
+Construct: Teaching/helping interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-CONNECT-02
+EN: Would you enjoy working with someone so both of you can finish a task?
+ZH: 你会喜欢和另一个人一起合作，把一件事情完成吗？
+Construct: Cooperative engagement
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-CONNECT-03
+EN: Would you enjoy taking turns showing another child how to do an activity?
+ZH: 你会喜欢和另一个小朋友轮流教对方怎么做一项活动吗？
+Construct: Enjoyment of supportive explanation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-CONNECT-05
+EN: Would you enjoy helping two people understand each other's ideas?
+ZH: 你会喜欢帮助两个人理解彼此的想法吗？
+Construct: Interpersonal understanding and support
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-LEAD-01
+EN: If a group wanted to start a game, would you enjoy suggesting how to begin?
+ZH: 如果一群小朋友想开始一个游戏，你会喜欢提出怎么开始吗？
+Construct: Initiative
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-LEAD-02
+EN: Would you enjoy helping a group choose who will do each part of a shared activity?
+ZH: 你会喜欢帮助一个小组决定大家在共同活动中分别做哪一部分吗？
+Construct: Group coordination
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-LEAD-04
+EN: If a group had several ideas, would you enjoy helping the group choose one and get started?
+ZH: 如果一个小组有好几个想法，你会喜欢帮助大家选出一个，并开始行动吗？
+Construct: Decision coordination and action initiation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-LEAD-05
+EN: Would you enjoy starting a small project and inviting other people to join?
+ZH: 你会喜欢发起一个小项目，并邀请其他人一起参加吗？
+Construct: Project initiation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-MOVE-01
+EN: Would you enjoy exploring an outdoor place and noticing what is around you?
+ZH: 你会喜欢到户外探索，并观察周围有什么吗？
+Construct: Active outdoor exploration
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-MOVE-03
+EN: Would you enjoy a game where you learn by moving instead of sitting still?
+ZH: 你会喜欢一种需要边活动边学习、而不是一直坐着的游戏吗？
+Construct: Movement-based participation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-MOVE-05
+EN: Would you enjoy exploring how different places feel when you move through them?
+ZH: 你会喜欢通过走动和探索，感受不同地方有什么不一样吗？
+Construct: Physical/environmental exploration
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-MOVE-06
+EN: Would you enjoy exploring a challenge by moving around in a way that works for you?
+ZH: 你会喜欢用适合自己的移动方式去探索一个挑战吗？
+Construct: Accessible active exploration
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-EXPRESS-01
+EN: Would you enjoy telling someone a story you made up?
+ZH: 你会喜欢把自己编的故事讲给别人听吗？
+Construct: Story communication
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-EXPRESS-02
+EN: Would you enjoy explaining an idea so other people can understand it?
+ZH: 你会喜欢把一个想法讲清楚，让别人能够理解吗？
+Construct: Idea communication
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-EXPRESS-03
+EN: Would you enjoy acting out a scene or pretending to be a character?
+ZH: 你会喜欢表演一个小场景，或者扮演一个角色吗？
+Construct: Performance expression
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K68-EXPRESS-05
+EN: Would you enjoy making a short message, story, picture sequence, or performance to explain something?
+ZH: 你会喜欢用短消息、故事、连续图画或表演来说明一件事情吗？
+Construct: Multi-modal communication
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+============================================================
+AGES 9–12 / KIDS-K912-RF-V1
+============================================================
+
+ID: K912-CREATE-01
+EN: Would you enjoy developing your own visual style for a poster, page, object, or digital design?
+ZH: 你会喜欢为海报、页面、物品或数字作品设计属于自己的视觉风格吗？
+Construct: Original visual style development
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-CREATE-03
+EN: If you were given several simple materials, would you enjoy experimenting with different ways to turn them into something new?
+ZH: 如果给你一些简单材料，你会喜欢尝试不同的方法，把它们变成一个新的东西吗？
+Construct: Experimental creation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-CREATE-04
+EN: Would you enjoy inventing a character, world, scene, or concept that did not exist before?
+ZH: 你会喜欢创造一个以前不存在的角色、世界、场景或概念吗？
+Construct: Imaginative creation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-CREATE-06
+EN: If two people solved the same creative task in very different ways, would you enjoy finding a third approach of your own?
+ZH: 如果两个人用很不同的方法完成同一个创意任务，你会喜欢再想出一种自己的方法吗？
+Construct: Original alternative generation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-CREATE-07
+EN: How much would you enjoy improving the look, feel, or experience of something by changing its design?
+ZH: 你有多喜欢通过改变设计，让一个东西的外观、感觉或使用体验得到改善？
+Construct: Design-oriented interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-DISCOVER-01
+EN: Would you enjoy investigating why something unexpected happened instead of accepting the first explanation?
+ZH: 如果发生了一件意外的事情，你会喜欢继续调查原因，而不是马上接受第一个解释吗？
+Construct: Causal investigation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-DISCOVER-03
+EN: Would you enjoy testing two different explanations to see which one fits the evidence better?
+ZH: 你会喜欢测试两种不同的解释，看看哪一种和证据更符合吗？
+Construct: Hypothesis comparison
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-DISCOVER-04
+EN: If you noticed a pattern changing over time, would you enjoy collecting more observations to understand what is happening?
+ZH: 如果你发现一个规律随着时间发生变化，你会喜欢继续观察并收集更多信息，弄清楚发生了什么吗？
+Construct: Longer-form observation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-DISCOVER-05
+EN: Would you enjoy exploring how a natural, technological, or human system works beneath the surface?
+ZH: 你会喜欢深入探索一个自然、技术或人类系统背后是如何运作的吗？
+Construct: Systems curiosity
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-DISCOVER-06
+EN: Would you enjoy noticing small differences between examples and using them as clues to explain a larger pattern?
+ZH: 你会喜欢观察不同例子之间的小差别，并用这些差别作为线索去理解更大的规律吗？
+Construct: Evidence-to-pattern investigation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-BUILD-01
+EN: Would you enjoy designing and assembling a simple object from separate parts?
+ZH: 你会喜欢设计一个简单物品，并把不同的零件组合起来吗？
+Construct: Assembly interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-BUILD-02
+EN: If something simple was unstable or did not work properly, would you enjoy changing its structure to improve it?
+ZH: 如果一个简单的东西不够稳，或者不能正常工作，你会喜欢改变它的结构，让它变得更好吗？
+Construct: Physical improvement interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-BUILD-03
+EN: Would you enjoy testing different materials to see which one works best for a practical purpose?
+ZH: 你会喜欢测试不同材料，看看哪一种更适合完成一个实际用途吗？
+Construct: Material experimentation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-BUILD-04
+EN: Would you enjoy taking apart a safe, simple object to understand how its physical parts fit together?
+ZH: 你会喜欢拆开一个安全、简单的物品，看看它的各个部分是怎样组合在一起的吗？
+Construct: Mechanical structure interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-BUILD-06
+EN: Would you enjoy turning a rough plan or sketch into something physical that can actually be used or tested?
+ZH: 你会喜欢把一个简单计划或草图变成可以真正使用或测试的实体东西吗？
+Construct: Plan-to-physical implementation
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-THINK-01
+EN: Would you enjoy working out the hidden rule behind a pattern or arrangement?
+ZH: 你会喜欢找出一个图案或排列背后的隐藏规律吗？
+Construct: Pattern reasoning interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-THINK-02
+EN: Would you enjoy comparing several possible strategies before deciding which one to try?
+ZH: 你会喜欢先比较几种可能的方法，再决定尝试哪一种吗？
+Construct: Strategic comparison interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-THINK-03
+EN: If a problem had several rules that all had to be followed, would you enjoy finding a solution that fits them together?
+ZH: 如果一个问题需要同时遵守几个规则，你会喜欢找出一个能同时符合这些规则的解决方法吗？
+Construct: Constraint reasoning interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-THINK-04
+EN: Would you enjoy organising information into groups based on a rule or relationship you notice?
+ZH: 你会喜欢根据自己发现的规律或关系，把信息分成不同的组吗？
+Construct: Classification interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-THINK-06
+EN: Would you enjoy looking at several clues and working out the relationship that connects them?
+ZH: 你会喜欢观察几个线索，并找出把它们联系起来的关系吗？
+Construct: Logical integration interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-CONNECT-01
+EN: Would you enjoy helping someone understand a topic by explaining it in a way that makes sense to them?
+ZH: 你会喜欢用对方容易理解的方法，帮助别人弄懂一个话题吗？
+Construct: Supportive explanation interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-CONNECT-02
+EN: Would you enjoy working with someone to help them practise a skill they are trying to improve?
+ZH: 你会喜欢和别人一起练习，帮助他们提升正在学习的一项技能吗？
+Construct: Development support interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-CONNECT-03
+EN: If two people misunderstood each other, would you enjoy helping them understand what each person meant?
+ZH: 如果两个人互相误解了，你会喜欢帮助他们弄清楚彼此真正想表达的意思吗？
+Construct: Interpersonal understanding interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-CONNECT-04
+EN: Would you enjoy listening to someone's idea and asking questions that help them develop it further?
+ZH: 你会喜欢听别人的想法，并通过提问帮助他们把这个想法发展得更完整吗？
+Construct: Developmental listening interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-CONNECT-08
+EN: Would you enjoy changing how you support someone depending on what helps them understand or practise best?
+ZH: 你会喜欢根据别人更容易理解或练习的方式，调整自己支持他们的方法吗？
+Construct: Adaptive interpersonal support interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-LEAD-01
+EN: Would you enjoy starting a group activity and helping everyone understand how to begin?
+ZH: 你会喜欢发起一个小组活动，并帮助大家弄清楚应该怎样开始吗？
+Construct: Initiative interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-LEAD-02
+EN: Would you enjoy organising different roles so a group can work toward the same goal?
+ZH: 你会喜欢安排不同的角色，让一个小组可以一起朝同一个目标前进吗？
+Construct: Coordination interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-LEAD-03
+EN: If a group had several good ideas, would you enjoy helping the group choose a direction and begin acting on it?
+ZH: 如果一个小组有几个不错的想法，你会喜欢帮助大家选出一个方向，并开始行动吗？
+Construct: Decision initiation interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-LEAD-05
+EN: Would you enjoy helping a group turn a general idea into a clear set of shared actions?
+ZH: 你会喜欢帮助一个小组把一个大致想法变成大家可以一起执行的具体行动吗？
+Construct: Shared-action coordination interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-LEAD-06
+EN: Would you enjoy helping a group stay focused when people begin moving in different directions?
+ZH: 当小组里的大家开始朝不同方向行动时，你会喜欢帮助大家重新集中到共同目标上吗？
+Construct: Goal coordination interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-MOVE-01
+EN: Would you enjoy exploring a place by moving through it and noticing how different areas feel or work?
+ZH: 你会喜欢通过在一个地方移动和探索，感受不同区域有什么不同、是什么感觉或怎样运作的吗？
+Construct: Movement-based environmental exploration
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-MOVE-02
+EN: Would you enjoy learning about something by moving through the environment and interacting directly with different parts of it?
+ZH: 你会喜欢通过在环境中移动，并直接和其中不同的部分互动来了解一件事情吗？
+Construct: Active environmental learning interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-MOVE-04
+EN: Would you enjoy an activity where you can move between several different stations and choose what to explore next?
+ZH: 你会喜欢在几个不同的活动点之间移动，并自己选择下一步想探索什么吗？
+Construct: Self-directed movement exploration
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-MOVE-05
+EN: Would you enjoy exploring ordinary natural materials or nearby outdoor features by observing, touching, moving around, or interacting with them?
+ZH: 你会喜欢通过观察、触摸、移动或互动，探索身边普通的自然材料或户外环境吗？
+Construct: Accessible local nature exploration interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-MOVE-08
+EN: Would you enjoy exploring the same space through different routes or ways of moving?
+ZH: 你会喜欢用不同的路线或移动方式去探索同一个空间吗？
+Construct: Movement-route exploration interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-EXPRESS-01
+EN: Would you enjoy finding a clear and interesting way to explain an idea to other people?
+ZH: 你会喜欢寻找一种清楚又有意思的方法，把一个想法讲明白给别人听吗？
+Construct: Idea communication interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-EXPRESS-02
+EN: Would you enjoy turning something you learned into a story, presentation, visual explanation, or demonstration?
+ZH: 你会喜欢把自己学到的东西变成故事、展示、视觉说明或演示吗？
+Construct: Knowledge expression interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-EXPRESS-03
+EN: Would you enjoy deciding how to tell the same story using different words, images, sounds, or performances?
+ZH: 你会喜欢用不同的文字、图像、声音或表演方式来讲述同一个故事吗？
+Construct: Narrative expression variation interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-EXPRESS-04
+EN: Would you enjoy changing how you communicate an idea depending on who you are explaining it to?
+ZH: 你会喜欢根据不同的人，改变自己表达同一个想法的方式吗？
+Construct: Audience-aware expression interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]
+
+ID: K912-EXPRESS-05
+EN: If you had an idea you cared about, would you enjoy choosing the best way to share it through words, images, sound, or performance?
+ZH: 如果你有一个很想分享的想法，你会喜欢在文字、图像、声音或表演中选择最合适的方式表达它吗？
+Construct: Multi-modal expression interest
+Visual Class: [TO REVIEW]
+Visual Reason: [TO REVIEW]
+Visual Concept: [TO REVIEW]

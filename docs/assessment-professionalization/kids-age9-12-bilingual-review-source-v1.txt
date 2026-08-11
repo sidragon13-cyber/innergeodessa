@@ -1,0 +1,67 @@
+InnerGeo Kids Ages 9–12 — Bilingual Review Source V1
+Items: 64
+
+K912-CREATE-01 | EN: Would you enjoy developing your own visual style for a poster, page, object, or digital design? | ZH: 你会喜欢为海报、页面、物品或数字作品设计属于自己的视觉风格吗？ | Construct: Original visual style development
+K912-CREATE-02 | EN: Would you enjoy taking an ordinary idea and finding a more original way to present it? | ZH: 你会喜欢把一个普通的想法，用更有创意的方式表现出来吗？ | Construct: Creative transformation
+K912-CREATE-03 | EN: If you were given several simple materials, would you enjoy experimenting with different ways to turn them into something new? | ZH: 如果给你一些简单材料，你会喜欢尝试不同的方法，把它们变成一个新的东西吗？ | Construct: Experimental creation
+K912-CREATE-04 | EN: Would you enjoy inventing a character, world, scene, or concept that did not exist before? | ZH: 你会喜欢创造一个以前不存在的角色、世界、场景或概念吗？ | Construct: Imaginative creation
+K912-CREATE-05 | EN: Would you enjoy experimenting with colour, shape, sound, movement, or words until an idea feels more like your own? | ZH: 你会喜欢不断尝试颜色、形状、声音、动作或文字，直到一个想法更有自己的特色吗？ | Construct: Creative experimentation
+K912-CREATE-06 | EN: If two people solved the same creative task in very different ways, would you enjoy finding a third approach of your own? | ZH: 如果两个人用很不同的方法完成同一个创意任务，你会喜欢再想出一种自己的方法吗？ | Construct: Original alternative generation
+K912-CREATE-07 | EN: How much would you enjoy improving the look, feel, or experience of something by changing its design? | ZH: 你有多喜欢通过改变设计，让一个东西的外观、感觉或使用体验变得不同？ | Construct: Design-oriented interest
+K912-CREATE-08 | EN: Would you enjoy making several different versions of the same creative idea to see how each one changes the result? | ZH: 你会喜欢把同一个创意做成几个不同版本，看看不同变化会带来什么效果吗？ | Construct: Creative variation interest
+K912-DISCOVER-01 | EN: Would you enjoy investigating why something unexpected happened instead of accepting the first explanation? | ZH: 如果发生了一件意外的事情，你会喜欢继续调查原因，而不是马上接受第一个解释吗？ | Construct: Causal investigation
+K912-DISCOVER-02 | EN: Would you enjoy comparing evidence from several sources before deciding what you think happened? | ZH: 你会喜欢比较来自几个不同来源的线索或证据，再判断事情可能是怎么发生的吗？ | Construct: Evidence comparison
+K912-DISCOVER-03 | EN: Would you enjoy testing two different explanations to see which one fits the evidence better? | ZH: 你会喜欢测试两种不同的解释，看看哪一种和证据更符合吗？ | Construct: Hypothesis comparison
+K912-DISCOVER-04 | EN: If you noticed a pattern changing over time, would you enjoy collecting more observations to understand what is happening? | ZH: 如果你发现一个规律随着时间发生变化，你会喜欢继续观察并收集更多信息，弄清楚发生了什么吗？ | Construct: Longer-form observation
+K912-DISCOVER-05 | EN: Would you enjoy exploring how a natural, technological, or human system works beneath the surface? | ZH: 你会喜欢深入探索一个自然、技术或人类系统背后是如何运作的吗？ | Construct: Systems curiosity
+K912-DISCOVER-06 | EN: Would you enjoy noticing small differences between examples and using them as clues to explain a larger pattern? | ZH: 你会喜欢观察不同例子之间的小差别，并用这些差别作为线索去理解更大的规律吗？ | Construct: Evidence-to-pattern investigation
+K912-DISCOVER-07 | EN: How much would you enjoy exploring a question when the answer is not immediately obvious? | ZH: 当一个问题没有马上就能看出的答案时，你有多喜欢继续探索它？ | Construct: Open-ended investigation interest
+K912-DISCOVER-08 | EN: Would you enjoy comparing new evidence with your first idea to see whether another explanation might fit better? | ZH: 你会喜欢把新的证据和自己最开始的想法进行比较，看看是否还有其他更合适的解释吗？ | Construct: Evidence comparison interest
+K912-BUILD-01 | EN: Would you enjoy designing and assembling a simple object from separate parts? | ZH: 你会喜欢把不同的零件设计并组合成一个简单物品吗？ | Construct: Assembly interest
+K912-BUILD-02 | EN: If something simple was unstable or did not work properly, would you enjoy changing its structure to improve it? | ZH: 如果一个简单的东西不够稳，或者不能正常工作，你会喜欢改变它的结构，让它变得更好吗？ | Construct: Physical improvement interest
+K912-BUILD-03 | EN: Would you enjoy testing different materials to see which one works best for a practical purpose? | ZH: 你会喜欢测试不同材料，看看哪一种更适合完成一个实际用途吗？ | Construct: Material experimentation
+K912-BUILD-04 | EN: Would you enjoy taking apart a safe, simple object to understand how its physical parts fit together? | ZH: 你会喜欢拆开一个安全、简单的物品，看看它的各个部分是怎样组合在一起的吗？ | Construct: Mechanical structure interest
+K912-BUILD-05 | EN: Would you enjoy building a simple structure and then changing it after seeing where it bends, moves, or becomes unstable? | ZH: 你会喜欢先搭建一个简单结构，再观察它哪里会弯、移动或不稳定，然后继续修改吗？ | Construct: Build-test-improve cycle
+K912-BUILD-06 | EN: Would you enjoy turning a rough plan or sketch into something physical that can actually be used or tested? | ZH: 你会喜欢把一个简单计划或草图变成可以真正使用或测试的实体东西吗？ | Construct: Plan-to-physical implementation
+K912-BUILD-07 | EN: How much would you enjoy changing, joining, arranging, or testing physical materials or objects to solve a practical problem? | ZH: 你有多喜欢通过改变、组合、排列或测试实体材料和物品来解决实际问题？ | Construct: Practical material engagement interest
+K912-BUILD-08 | EN: Would you enjoy comparing different versions of something you built to see which design works better for its purpose? | ZH: 你会喜欢比较自己做出的不同版本，看看哪一种设计更适合它的用途吗？ | Construct: Practical design comparison interest
+K912-THINK-01 | EN: Would you enjoy working out the hidden rule behind a pattern or arrangement? | ZH: 你会喜欢找出一个图案或排列背后的隐藏规律吗？ | Construct: Pattern reasoning interest
+K912-THINK-02 | EN: Would you enjoy comparing several possible strategies before deciding which one to try? | ZH: 你会喜欢先比较几种可能的方法，再决定尝试哪一种吗？ | Construct: Strategic comparison interest
+K912-THINK-03 | EN: If a problem had several rules that all had to be followed, would you enjoy finding a solution that fits them together? | ZH: 如果一个问题需要同时遵守几个规则，你会喜欢找出一个能同时符合这些规则的解决方法吗？ | Construct: Constraint reasoning interest
+K912-THINK-04 | EN: Would you enjoy organising information into groups based on a rule or relationship you notice? | ZH: 你会喜欢根据自己发现的规律或关系，把信息分成不同的组吗？ | Construct: Classification interest
+K912-THINK-05 | EN: Would you enjoy planning several steps ahead when solving a strategy problem or game? | ZH: 在解决策略问题或游戏时，你会喜欢提前想好接下来的几步吗？ | Construct: Forward planning interest
+K912-THINK-06 | EN: Would you enjoy looking at several clues and working out the relationship that connects them? | ZH: 你会喜欢观察几个线索，并找出把它们联系起来的关系吗？ | Construct: Logical integration interest
+K912-THINK-07 | EN: How much would you enjoy a challenge where the main task is figuring out rules, relationships, or strategies? | ZH: 如果一个挑战主要需要找规律、看关系或想策略，你有多喜欢这样的活动？ | Construct: Structured reasoning interest
+K912-THINK-08 | EN: Would you enjoy looking at the same logical problem in two different ways and comparing how the approaches work? | ZH: 你会喜欢用两种不同的思路看同一个逻辑问题，并比较这些方法有什么不同吗？ | Construct: Alternative reasoning approach interest
+K912-CONNECT-01 | EN: Would you enjoy helping someone understand a topic by explaining it in a way that makes sense to them? | ZH: 你会喜欢用对方容易理解的方法，帮助别人弄懂一个话题吗？ | Construct: Supportive explanation interest
+K912-CONNECT-02 | EN: Would you enjoy working with someone to help them practise a skill they are trying to improve? | ZH: 你会喜欢和别人一起练习，帮助他们提升正在学习的一项技能吗？ | Construct: Development support interest
+K912-CONNECT-03 | EN: If two people misunderstood each other, would you enjoy helping them understand what each person meant? | ZH: 如果两个人互相误解了，你会喜欢帮助他们弄清楚彼此真正想表达的意思吗？ | Construct: Interpersonal understanding interest
+K912-CONNECT-04 | EN: Would you enjoy listening to someone's idea and asking questions that help them develop it further? | ZH: 你会喜欢听别人的想法，并通过提问帮助他们把这个想法发展得更完整吗？ | Construct: Developmental listening interest
+K912-CONNECT-05 | EN: Would you enjoy working with another person to help them understand or practise something they want to learn? | ZH: 你会喜欢和另一个人一起，帮助他理解或练习自己想学习的事情吗？ | Construct: One-to-one learning support interest
+K912-CONNECT-06 | EN: Would you enjoy taking turns with another person explaining how each of you approached the same task? | ZH: 你会喜欢和另一个人轮流讲一讲，你们各自是怎样完成同一个任务的吗？ | Construct: Mutual explanation interest
+K912-CONNECT-07 | EN: How much would you enjoy an activity where your main role is helping another person learn, understand, or improve? | ZH: 如果一项活动主要是帮助别人学习、理解或进步，你有多喜欢这样的活动？ | Construct: Helping-development interest
+K912-CONNECT-08 | EN: Would you enjoy changing how you support someone depending on what helps them understand or practise best? | ZH: 你会喜欢根据别人更容易理解或练习的方式，调整自己支持他们的方法吗？ | Construct: Adaptive interpersonal support interest
+K912-LEAD-01 | EN: Would you enjoy starting a group activity and helping everyone understand how to begin? | ZH: 你会喜欢发起一个小组活动，并帮助大家弄清楚应该怎样开始吗？ | Construct: Initiative interest
+K912-LEAD-02 | EN: Would you enjoy organising different roles so a group can work toward the same goal? | ZH: 你会喜欢安排不同的角色，让一个小组可以一起朝同一个目标前进吗？ | Construct: Coordination interest
+K912-LEAD-03 | EN: If a group had several good ideas, would you enjoy helping the group choose a direction and begin acting on it? | ZH: 如果一个小组有几个不错的想法，你会喜欢帮助大家选出一个方向，并开始行动吗？ | Construct: Decision initiation interest
+K912-LEAD-04 | EN: Would you enjoy proposing an idea to a group and helping turn it into something everyone can begin doing? | ZH: 你会喜欢向一个小组提出想法，并帮助把它变成大家可以开始行动的事情吗？ | Construct: Initiative-to-action interest
+K912-LEAD-05 | EN: Would you enjoy helping a group turn a general idea into a clear set of shared actions? | ZH: 你会喜欢帮助一个小组把一个大致想法变成大家可以一起执行的具体行动吗？ | Construct: Shared-action coordination interest
+K912-LEAD-06 | EN: Would you enjoy helping a group stay focused when people begin moving in different directions? | ZH: 当小组里的大家开始朝不同方向行动时，你会喜欢帮助大家重新集中到共同目标上吗？ | Construct: Goal coordination interest
+K912-LEAD-07 | EN: How much would you enjoy helping a small group turn an idea into coordinated action? | ZH: 你有多喜欢帮助一个小组把一个想法变成大家协调一致的实际行动？ | Construct: Action coordination interest
+K912-LEAD-08 | EN: Would you enjoy helping a group compare two possible plans and choose how to organise the next step? | ZH: 你会喜欢帮助一个小组比较两个可能的方案，并决定下一步怎样组织行动吗？ | Construct: Adaptive group coordination interest
+K912-MOVE-01 | EN: Would you enjoy exploring a place by moving through it and noticing how different areas feel or work? | ZH: 你会喜欢通过在一个地方移动和探索，观察不同区域有什么不同、是怎样运作的吗？ | Construct: Movement-based environmental exploration
+K912-MOVE-02 | EN: Would you enjoy learning about something by moving through the environment and interacting directly with different parts of it? | ZH: 你会喜欢通过在环境中移动，并直接和其中不同的部分互动来了解一件事情吗？ | Construct: Active environmental learning interest
+K912-MOVE-03 | EN: If you were learning about a natural place, would you enjoy exploring the environment directly and observing what is around you? | ZH: 如果你在了解一个自然环境，你会喜欢亲自去探索，并观察周围有什么吗？ | Construct: Nature exploration interest
+K912-MOVE-04 | EN: Would you enjoy an activity where you can move between several different stations and choose what to explore next? | ZH: 你会喜欢在几个不同的活动点之间移动，并自己选择下一步想探索什么吗？ | Construct: Self-directed movement exploration
+K912-MOVE-05 | EN: Would you enjoy exploring ordinary natural materials or nearby outdoor features by observing, touching, moving around, or interacting with them? | ZH: 你会喜欢通过观察、触摸、移动或互动，探索身边普通的自然材料或户外环境吗？ | Construct: Accessible local nature exploration interest
+K912-MOVE-06 | EN: Would you enjoy exploring a space by moving between different points and discovering what each area offers? | ZH: 你会喜欢在一个空间的不同地点之间移动探索，并发现每个区域有什么不同吗？ | Construct: Spatial exploration interest
+K912-MOVE-07 | EN: How much would you enjoy activities where you learn mainly through active participation and direct interaction with the environment? | ZH: 如果一项活动主要需要通过主动参与和直接与环境互动来学习，你有多喜欢这样的活动？ | Construct: Experiential movement interest
+K912-MOVE-08 | EN: Would you enjoy exploring the same space through different routes or ways of moving? | ZH: 你会喜欢用不同的路线或移动方式去探索同一个空间吗？ | Construct: Movement-route exploration interest
+K912-EXPRESS-01 | EN: Would you enjoy finding a clear and interesting way to explain an idea to other people? | ZH: 你会喜欢寻找一种清楚又有意思的方法，把自己的想法表达给别人吗？ | Construct: Idea communication interest
+K912-EXPRESS-02 | EN: Would you enjoy turning something you learned into a story, presentation, visual explanation, or demonstration? | ZH: 你会喜欢把自己学到的东西变成故事、展示、视觉说明或演示吗？ | Construct: Knowledge expression interest
+K912-EXPRESS-03 | EN: Would you enjoy deciding how to tell the same story using different words, images, sounds, or performances? | ZH: 你会喜欢用不同的文字、图像、声音或表演方式来讲述同一个故事吗？ | Construct: Narrative expression variation interest
+K912-EXPRESS-04 | EN: Would you enjoy changing how you communicate an idea depending on who you are explaining it to? | ZH: 你会喜欢根据不同的人，改变自己表达同一个想法的方式吗？ | Construct: Audience-aware expression interest
+K912-EXPRESS-05 | EN: If you had an idea you cared about, would you enjoy choosing the best way to share it through words, images, sound, or performance? | ZH: 如果你有一个很想分享的想法，你会喜欢在文字、图像、声音或表演中选择合适的方式表达它吗？ | Construct: Multi-modal expression interest
+K912-EXPRESS-06 | EN: Would you enjoy turning one idea into a short message, visual explanation, or performance in your own style? | ZH: 你会喜欢把一个想法用自己的方式变成简短的信息、视觉说明或表演吗？ | Construct: Personal meaning expression interest
+K912-EXPRESS-07 | EN: How much would you enjoy activities where communicating ideas is one of the main parts of what you do? | ZH: 如果一项活动的重要部分是表达和传递想法，你有多喜欢这样的活动？ | Construct: Communication activity interest
+K912-EXPRESS-08 | EN: Would you enjoy expressing the same idea in two different ways and comparing how each version feels? | ZH: 你会喜欢用两种不同的方式表达同一个想法，并比较两个版本带来的不同感觉吗？ | Construct: Expression variation interest

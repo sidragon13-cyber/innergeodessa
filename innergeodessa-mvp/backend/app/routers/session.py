@@ -23,7 +23,10 @@ def start_session(payload: StartRequest):
         raise HTTPException(400, "Consent is required.")
 
     try:
-        module_config = get_assessment_module_config(payload.module)
+        module_config = get_assessment_module_config(
+            payload.module,
+            payload.form,
+        )
     except ValueError as error:
         raise HTTPException(400, str(error)) from error
 
@@ -36,34 +39,58 @@ def start_session(payload: StartRequest):
         conn.execute(
             """INSERT INTO sessions(
                  session_id, consent, language, started_at,
-                 question_bank_version, module, claim_secret_hash
+                 question_bank_version, module, form,
+                 claim_secret_hash
                )
-               VALUES (?,1,?,?,?,?,?)""",
+               VALUES (?,1,?,?,?,?,?,?)""",
             (
                 session_id,
                 payload.language,
                 now,
                 module_config.question_bank_version,
                 module_config.module,
+                module_config.form,
                 claim_secret_hash,
             ),
         )
         if module_config.module == "riasec":
             snapshot_table = "riasec_session_question_items"
             item_table = "riasec_question_items"
+        elif module_config.module == "kids":
+            snapshot_table = "kids_session_question_items"
+            item_table = "kids_question_items"
         else:
             snapshot_table = "session_question_items"
             item_table = "question_bank_items"
 
-        conn.execute(
-            f"""INSERT INTO {snapshot_table}(
-                  session_id, item_record_id, display_order
-                )
-                SELECT ?, item_record_id, master_order
-                FROM {item_table}
-                WHERE question_bank_version=?""",
-            (session_id, module_config.question_bank_version),
-        )
+        if module_config.module == "kids":
+            conn.execute(
+                f"""INSERT INTO {snapshot_table}(
+                      session_id, item_record_id, display_order
+                    )
+                    SELECT ?, item_record_id, master_order
+                    FROM {item_table}
+                    WHERE question_bank_version=?
+                      AND form=?""",
+                (
+                    session_id,
+                    module_config.question_bank_version,
+                    module_config.form,
+                ),
+            )
+        else:
+            conn.execute(
+                f"""INSERT INTO {snapshot_table}(
+                      session_id, item_record_id, display_order
+                    )
+                    SELECT ?, item_record_id, master_order
+                    FROM {item_table}
+                    WHERE question_bank_version=?""",
+                (
+                    session_id,
+                    module_config.question_bank_version,
+                ),
+            )
 
         snapshot_count = conn.execute(
             f"""SELECT COUNT(*)
@@ -88,7 +115,7 @@ def start_session(payload: StartRequest):
                 },
             )
 
-    return {
+    response = {
         "session_id": session_id,
         "claim_secret": claim_secret,
         "started_at": now,
@@ -97,6 +124,11 @@ def start_session(payload: StartRequest):
             module_config.question_bank_version
         ),
     }
+
+    if module_config.module == "kids":
+        response["form"] = module_config.form
+
+    return response
 
 
 @router.get("/api/sessions/{session_id}/items")

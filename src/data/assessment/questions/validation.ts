@@ -20,6 +20,7 @@ const ASSESSMENT_MODULES: readonly AssessmentModule[] = [
   "personality",
   "riasec",
   "zodiac",
+  "kids",
 ];
 
 const QUESTION_STATUSES: readonly AssessmentQuestionStatus[] = [
