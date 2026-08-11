@@ -22,7 +22,7 @@
 | T08 Difference 11 leaves cluster | PASS | Clear Exploration Pattern | Clear Exploration Pattern | 50.5 | 50 | 1 | 11 | 0 |
 | T09 Cluster gap exactly 15 | PASS | Blended Interest Pattern | Blended Interest Pattern | 56.88 | 50 | 2 | 15 | 0 |
 | T10 Four-domain leading cluster | PASS | Clear Exploration Pattern | Clear Exploration Pattern | 62.5 | 55 | 4 | 15 | 1 |
-| T11 K68 discrete 6.25 increments | PASS | Blended Interest Pattern | Blended Interest Pattern | 50.0 | 56.25 | 2 | 18.75 | 0 |
+| T11 K68 discrete 12.5 increments | PASS | Blended Interest Pattern | Blended Interest Pattern | 46.88 | 50 | 2 | 25 | 4 |
 | T12 K912 discrete 5-point increments | PASS | Blended Interest Pattern | Blended Interest Pattern | 55.62 | 50 | 2 | 15 | 0 |
 | T13 Mean exactly 45 — not Emerging | PASS | Broad Explorer | Broad Explorer | 45 | 15 | 6 | 5 | 11 |
 | T14 Max exactly 60 — not Emerging | PASS | Clear Exploration Pattern | Clear Exploration Pattern | 38.75 | 35 | 1 | 15 | 2 |
@@ -41,7 +41,7 @@
 - 11-point cluster exclusion
 - 15-point cluster-gap boundary
 - Four-domain leading cluster
-- K68 6.25-point discrete score increments
+- K68 12.5-point discrete score increments
 - K912 5-point discrete score increments
 - Mean = 45 boundary
 - Max = 60 boundary

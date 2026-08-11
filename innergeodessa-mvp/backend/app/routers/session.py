@@ -135,7 +135,7 @@ def start_session(payload: StartRequest):
 def get_session_items(session_id: str):
     with connect() as conn:
         session = conn.execute(
-            """SELECT question_bank_version, module
+            """SELECT question_bank_version, module, form
                FROM sessions WHERE session_id=?""",
             (session_id,),
         ).fetchone()
@@ -173,6 +173,30 @@ def get_session_items(session_id: str):
                    ORDER BY sqi.display_order""",
                 (session_id,),
             ).fetchall()
+        elif session["module"] == "kids":
+            rows = conn.execute(
+                """SELECT item.source_item_id AS item_id,
+                          item.form,
+                          item.domain,
+                          item.wording_en,
+                          item.wording_zh,
+                          item.visual_support,
+                          item.display_asset_path AS visual_asset_path,
+                          snapshot.display_order AS master_order,
+                          item.question_bank_version
+                   FROM kids_session_question_items snapshot
+                   JOIN kids_question_items item
+                     ON item.item_record_id=snapshot.item_record_id
+                   WHERE snapshot.session_id=?
+                     AND item.form=?
+                     AND item.question_bank_version=?
+                   ORDER BY snapshot.display_order""",
+                (
+                    session_id,
+                    session["form"],
+                    session["question_bank_version"],
+                ),
+            ).fetchall()
         else:
             raise HTTPException(400, "Session module is not supported.")
     return [dict(row) for row in rows]
@@ -182,7 +206,8 @@ def get_session_items(session_id: str):
 def get_session_result(session_id: str):
     with connect() as conn:
         session = conn.execute(
-            """SELECT status, question_bank_version, completed_at, module
+            """SELECT status, question_bank_version, completed_at,
+                      module, form
                FROM sessions
                WHERE session_id=?""",
             (session_id,),
@@ -211,6 +236,15 @@ def get_session_result(session_id: str):
                    WHERE session_id=?""",
                 (session_id,),
             ).fetchone()
+        elif session["module"] == "kids":
+            result = conn.execute(
+                """SELECT result_json,
+                          scoring_version,
+                          calculated_at
+                   FROM kids_results
+                   WHERE session_id=?""",
+                (session_id,),
+            ).fetchone()
         else:
             raise HTTPException(400, "Session module is not supported.")
         if not result:
@@ -218,6 +252,112 @@ def get_session_result(session_id: str):
                 500,
                 "Completed session result is missing.",
             )
+
+    if session["module"] == "kids":
+        try:
+            persisted = json.loads(
+                result["result_json"]
+            )
+        except (
+            json.JSONDecodeError,
+            TypeError,
+        ) as error:
+            raise HTTPException(
+                500,
+                "Completed Kids session result is invalid.",
+            ) from error
+
+        if not isinstance(
+            persisted,
+            dict,
+        ):
+            raise HTTPException(
+                500,
+                "Completed Kids session result is invalid.",
+            )
+
+        if (
+            result["scoring_version"]
+            != "KIDS-SCORING-V1"
+            or persisted.get(
+                "scoringVersion"
+            )
+            != "KIDS-SCORING-V1"
+        ):
+            raise HTTPException(
+                500,
+                "Completed Kids session scoring version is invalid.",
+            )
+
+        if (
+            persisted.get(
+                "questionBankVersion"
+            )
+            != session[
+                "question_bank_version"
+            ]
+            or persisted.get(
+                "releaseFormVersion"
+            )
+            != session[
+                "question_bank_version"
+            ]
+        ):
+            raise HTTPException(
+                500,
+                "Completed Kids session release is invalid.",
+            )
+
+        if session["form"] == "k68":
+            expected_age_form = "K68"
+        elif session["form"] == "k912":
+            expected_age_form = "K912"
+        else:
+            raise HTTPException(
+                500,
+                "Completed Kids session form is invalid.",
+            )
+
+        if (
+            persisted.get(
+                "ageForm"
+            )
+            != expected_age_form
+        ):
+            raise HTTPException(
+                500,
+                "Completed Kids session age form is invalid.",
+            )
+
+        domain_results = persisted.get(
+            "domainResults"
+        )
+
+        if (
+            not isinstance(
+                domain_results,
+                list,
+            )
+            or len(domain_results) != 8
+        ):
+            raise HTTPException(
+                500,
+                "Completed Kids session domain result is invalid.",
+            )
+
+        return {
+            "resultId": session_id,
+            **persisted,
+            "sessionId": session_id,
+            "module": "kids",
+            "status": "completed",
+            "completedAt": (
+                session["completed_at"]
+            ),
+            "calculatedAt": (
+                result["calculated_at"]
+            ),
+        }
 
     if session["module"] == "riasec":
         try:
@@ -279,7 +419,9 @@ def save_answer(session_id: str, payload: AnswerRequest):
     now = datetime.now(timezone.utc).isoformat()
     with connect() as conn:
         session = conn.execute(
-            "SELECT status, module FROM sessions WHERE session_id=?",
+            """SELECT status, module, form, question_bank_version
+               FROM sessions
+               WHERE session_id=?""",
             (session_id,),
         ).fetchone()
         if not session:
@@ -307,6 +449,41 @@ def save_answer(session_id: str, payload: AnswerRequest):
                 (session_id, payload.item_id),
             ).fetchone()
             response_table = "session_responses"
+        elif session["module"] == "kids":
+            if session["form"] == "k68":
+                allowed_values = {1, 3, 5}
+            elif session["form"] == "k912":
+                allowed_values = {1, 2, 3, 4, 5}
+            else:
+                raise HTTPException(
+                    500,
+                    "Kids session form is invalid.",
+                )
+
+            if payload.value not in allowed_values:
+                raise HTTPException(
+                    400,
+                    "Response value is not allowed for this Kids form.",
+                )
+
+            item = conn.execute(
+                """SELECT snapshot.item_record_id
+                   FROM kids_session_question_items snapshot
+                   JOIN kids_question_items item
+                     ON item.item_record_id=snapshot.item_record_id
+                   WHERE snapshot.session_id=?
+                     AND item.source_item_id=?
+                     AND item.form=?
+                     AND item.question_bank_version=?""",
+                (
+                    session_id,
+                    payload.item_id,
+                    session["form"],
+                    session["question_bank_version"],
+                ),
+            ).fetchone()
+
+            response_table = "kids_session_responses"
         else:
             raise HTTPException(400, "Session module is not supported.")
         if not item:

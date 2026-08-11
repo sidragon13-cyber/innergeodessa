@@ -90,6 +90,17 @@ def initialize(
                 ),
             )
 
+            _apply_migration(
+                conn,
+                migration_id="20260811_005_kids_results",
+                description=(
+                    "Add persisted Kids assessment result table."
+                ),
+                operation=lambda: (
+                    _ensure_kids_results_table(conn),
+                ),
+            )
+
             _register_question_banks(conn)
 
             _apply_migration(
@@ -691,6 +702,22 @@ def _upsert_kids_items(
     )
 
 
+def _ensure_kids_results_table(
+    conn: sqlite3.Connection,
+) -> None:
+    conn.execute(
+        """CREATE TABLE IF NOT EXISTS kids_results (
+             session_id TEXT PRIMARY KEY,
+             result_json TEXT NOT NULL,
+             scoring_version TEXT NOT NULL,
+             calculated_at TEXT NOT NULL,
+             FOREIGN KEY (session_id)
+               REFERENCES sessions(session_id)
+               ON DELETE CASCADE
+           )"""
+    )
+
+
 def _verify_migration(conn: sqlite3.Connection) -> None:
     required_tables = {
         "schema_migrations",
@@ -704,6 +731,7 @@ def _verify_migration(conn: sqlite3.Connection) -> None:
         "kids_question_items",
         "kids_session_question_items",
         "kids_session_responses",
+        "kids_results",
     }
     tables = {
         row["name"]

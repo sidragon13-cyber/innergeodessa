@@ -39,7 +39,7 @@ The frozen scoring system includes:
 
 SHA-256:
 
-`9f148c616b43708e03964df4cccb94bfb181d91d51611d7b78367379d507355e`
+`7d07d83e0633e984d92f15de26babe3b28f2ffa1df31da53cda82fef9ae456bd`
 
 ### Scoring Logic Revision
 
@@ -47,7 +47,7 @@ SHA-256:
 
 SHA-256:
 
-`eef40bfd97c3dce1e6f21e80ad915254ec13118358ee24a3de47a807ae4a5281`
+`b0581dc878d6db8e0349661d6b62bf182bf25440bb2bf86788f659f1328db6ac`
 
 ### Boundary Tests
 
@@ -55,7 +55,7 @@ SHA-256:
 
 SHA-256:
 
-`584f40c8f94d1a8311b167add3b9728c781965442f5b26e84da4c33078998f3a`
+`b4fed8bd93200ac6a4f1f59ccd27dace04bfd38fcb24bd881ff823c616a522c9`
 
 ---
 
@@ -84,7 +84,7 @@ Validated cases include:
 - 11-point cluster exclusion;
 - 15-point cluster-gap boundary;
 - four-domain leading cluster;
-- K68 6.25-point score increments;
+- K68 12.5-point score increments;
 - K912 5-point score increments;
 - Mean = 45 boundary;
 - Max = 60 boundary;
@@ -278,3 +278,27 @@ Administration differs by form:
 K68 uses three anchors in the common scoring space. No interpolation, reverse scoring, or silent imputation is introduced.
 
 The response contract is versioned separately as `KIDS-RESPONSE-V1`.
+
+---
+
+## 12. K68 Response-Resolution Consistency Correction — 2026-08-11
+
+Before executable scoring implementation, the K68 discrete normalised resolution was corrected from an incompatible derived statement of `6.25` points to the mathematically attainable `12.5` points under `KIDS-RESPONSE-V1`.
+
+No response values, scoring formula, thresholds, classification precedence, or scoring version changed.
+
+Correction record:
+
+`kids-k68-scoring-resolution-consistency-v1.md`
+
+SHA-256:
+
+`59f06f4bce7a5798a644391a9e318831dd61ec9df008ecad4e3313cd276f9aa3`
+
+Current source-document hashes:
+
+- Scoring Architecture: `7d07d83e0633e984d92f15de26babe3b28f2ffa1df31da53cda82fef9ae456bd`
+- Scoring Logic Revision: `b0581dc878d6db8e0349661d6b62bf182bf25440bb2bf86788f659f1328db6ac`
+- Boundary Tests: `b4fed8bd93200ac6a4f1f59ccd27dace04bfd38fcb24bd881ff823c616a522c9`
+
+`KIDS-SCORING-V1` remains the active frozen scoring version.

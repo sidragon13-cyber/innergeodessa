@@ -391,6 +391,15 @@ CREATE TABLE IF NOT EXISTS kids_session_responses (
     REFERENCES kids_question_items(item_record_id)
 );
 
+CREATE TABLE IF NOT EXISTS kids_results (
+  session_id TEXT PRIMARY KEY,
+  result_json TEXT NOT NULL,
+  scoring_version TEXT NOT NULL,
+  calculated_at TEXT NOT NULL,
+  FOREIGN KEY (session_id)
+    REFERENCES sessions(session_id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS riasec_results (
   session_id TEXT PRIMARY KEY,
   code TEXT NOT NULL,

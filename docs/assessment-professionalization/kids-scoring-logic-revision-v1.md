@@ -417,7 +417,7 @@ Preferred language:
 
 K68 domain-score increments:
 
-6.25 points.
+12.5 points.
 
 K912 domain-score increments:
 

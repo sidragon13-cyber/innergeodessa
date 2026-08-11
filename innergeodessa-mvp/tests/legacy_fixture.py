@@ -44,15 +44,26 @@ def create_legacy_database(
         "",
         legacy_schema,
     )
-    legacy_schema = legacy_schema.replace(
-        """  status TEXT NOT NULL DEFAULT 'active',
-  owner_user_id TEXT,
-  claim_secret_hash TEXT,
-  claimed_at TEXT,
-  FOREIGN KEY (owner_user_id) REFERENCES users(user_id) ON DELETE SET NULL
-""",
-        "  status TEXT NOT NULL DEFAULT 'active'\n",
+    legacy_sessions_schema = """CREATE TABLE IF NOT EXISTS sessions (
+  session_id TEXT PRIMARY KEY,
+  consent INTEGER NOT NULL CHECK (consent IN (0,1)),
+  language TEXT NOT NULL DEFAULT 'en',
+  started_at TEXT NOT NULL,
+  completed_at TEXT,
+  status TEXT NOT NULL DEFAULT 'active'
+);
+"""
+
+    legacy_schema, session_replacements = re.subn(
+        r"CREATE TABLE IF NOT EXISTS sessions \([\s\S]*?\);\n",
+        legacy_sessions_schema,
+        legacy_schema,
+        count=1,
     )
+    if session_replacements != 1:
+        raise ValueError(
+            "Legacy sessions fixture could not normalize current schema."
+        )
     current_items = json.loads(
         items_path.read_text(encoding="utf-8")
     )
