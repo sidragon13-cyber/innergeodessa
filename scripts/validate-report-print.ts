@@ -13,6 +13,12 @@ const reportContentBlockSource = readSource(
 const sharedPrintButtonSource = readSource(
   "src/components/report/report-print-button.tsx",
 );
+const personalityPrintButtonSource = readSource(
+  "src/app/personality/report/[sessionId]/print-report-button.tsx",
+);
+const personalityReportDictionarySource = readSource(
+  "src/data/i18n/personality-report.ts",
+);
 const globalStylesSource = readSource("src/app/globals.css");
 
 assert(
@@ -33,12 +39,30 @@ assert(
 );
 
 assert(
-  normaliseWhitespace(
+  /label:\s*string/.test(
     sharedPrintButtonSource,
-  )
-    .toUpperCase()
-    .includes("PRINT / SAVE AS PDF"),
-  "The shared print control must use the approved label.",
+  ) &&
+    normaliseWhitespace(
+      sharedPrintButtonSource,
+    ).includes("{label}"),
+  "The shared print control must render its caller-provided localized label.",
+);
+
+assert(
+  /label=\{dictionary\.print\.label\}/.test(
+    personalityPrintButtonSource,
+  ),
+  "The personality print adapter must pass the localized print label.",
+);
+
+assert(
+  personalityReportDictionarySource.includes(
+    'label: "Print / Save as PDF"',
+  ) &&
+    personalityReportDictionarySource.includes(
+      'label: "打印 / 保存为 PDF"',
+    ),
+  "The personality report dictionary must retain the approved English and Chinese print labels.",
 );
 
 assert(
