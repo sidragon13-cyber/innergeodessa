@@ -72,6 +72,7 @@ export default function PersonalityTestPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const submitLockRef = useRef(false);
+  const terminalCompletionRef = useRef(false);
   const [saveMessage, setSaveMessage] = useState("");
   const [completionResult, setCompletionResult] =
     useState<PersonalityResultContract | null>(null);
@@ -311,6 +312,7 @@ export default function PersonalityTestPage() {
           JSON.stringify(persistedResult),
         );
 
+        terminalCompletionRef.current = true;
         router.push(`/personality/result/${sessionId}`);
         return;
       }
@@ -323,8 +325,10 @@ export default function PersonalityTestPage() {
           : dictionary.personalityTest.errors.saveAnswer,
       );
     } finally {
-      submitLockRef.current = false;
-      setIsSaving(false);
+      if (!terminalCompletionRef.current) {
+        submitLockRef.current = false;
+        setIsSaving(false);
+      }
     }
   }
 
