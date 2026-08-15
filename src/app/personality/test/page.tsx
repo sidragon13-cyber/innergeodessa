@@ -71,6 +71,7 @@ export default function PersonalityTestPage() {
     useState<AssessmentViewStatus>("loading");
   const [errorMessage, setErrorMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const submitLockRef = useRef(false);
   const [saveMessage, setSaveMessage] = useState("");
   const [completionResult, setCompletionResult] =
     useState<PersonalityResultContract | null>(null);
@@ -237,7 +238,8 @@ export default function PersonalityTestPage() {
     if (
       selectedValue === undefined ||
       !sessionId ||
-      isSaving
+      isSaving ||
+      submitLockRef.current
     ) {
       return;
     }
@@ -248,6 +250,7 @@ export default function PersonalityTestPage() {
       return;
     }
 
+    submitLockRef.current = true;
     setIsSaving(true);
     setSaveMessage("");
     setCompletionResult(null);
@@ -320,6 +323,7 @@ export default function PersonalityTestPage() {
           : dictionary.personalityTest.errors.saveAnswer,
       );
     } finally {
+      submitLockRef.current = false;
       setIsSaving(false);
     }
   }
