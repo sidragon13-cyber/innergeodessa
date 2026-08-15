@@ -158,9 +158,15 @@ assert(
 
 assert(
   apiSource.includes(
-    "buildFixedPersonalityReportPayload",
-  ),
-  "Protected API must build exactly one fixed personality report payload.",
+    "buildFixedPersonalityReportFromAssessmentResult",
+  ) &&
+    !apiSource.includes(
+      "buildFixedPersonalityReportPayload",
+    ) &&
+    !apiSource.includes(
+      "createReportDimensions",
+    ),
+  "Protected API must delegate Assessment-to-Report assembly to the formal fixed-report Adapter.",
 );
 
 assert(
@@ -263,12 +269,15 @@ console.log(
 
 assert(
   previewSource.includes(
-    "buildFixedPersonalityReportPayload",
+    "buildFixedPersonalityReportFromAssessmentResult",
   ) &&
-    previewSource.includes(
+    !previewSource.includes(
+      "buildFixedPersonalityReportPayload",
+    ) &&
+    !previewSource.includes(
       "createReportDimensions",
     ),
-  "Local preview API must build the same fixed report payload as production.",
+  "Local preview API must delegate Assessment-to-Report assembly to the same formal fixed-report Adapter as production.",
 );
 
 assert(

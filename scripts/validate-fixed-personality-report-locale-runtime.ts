@@ -252,8 +252,8 @@ assert.match(
 
 assert.match(
   accountRoute,
-  /buildFixedPersonalityReportPayload\([\s\S]*?resultData\.type,[\s\S]*?createReportDimensions\([\s\S]*?resultData,[\s\S]*?\),[\s\S]*?reportLocale,[\s\S]*?\)/,
-  "Account report API must forward reportLocale into the fixed report payload.",
+  /buildFixedPersonalityReportFromAssessmentResult\(\s*resultData,\s*reportLocale,\s*\)/,
+  "Account report API must forward resultData and reportLocale through the formal fixed-report Adapter.",
 );
 
 assert.doesNotMatch(
@@ -270,8 +270,8 @@ assert.match(
 
 assert.match(
   previewRoute,
-  /buildFixedPersonalityReportPayload\([\s\S]*?createReportDimensions\([\s\S]*?reportResult[\s\S]*?\),[\s\S]*?reportLocale,[\s\S]*?\)/,
-  "Preview report API must forward separate reportResult and reportLocale inputs.",
+  /buildFixedPersonalityReportFromAssessmentResult\(\s*reportResult,\s*reportLocale,\s*\)/,
+  "Preview report API must forward separate reportResult and reportLocale inputs through the formal fixed-report Adapter.",
 );
 
 console.log("ACCOUNT_API_LOCALE=PASS");

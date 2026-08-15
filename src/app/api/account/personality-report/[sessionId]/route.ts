@@ -3,12 +3,8 @@ import {
 } from "@/data/assessment/scoring/personality/schema";
 
 import {
-  createReportDimensions,
-} from "@/data/report/generator/from-assessment-result";
-
-import {
-  buildFixedPersonalityReportPayload,
-} from "@/data/report/fixed-assets/fixed-report-payload";
+  buildFixedPersonalityReportFromAssessmentResult,
+} from "@/data/report/fixed-assets/fixed-report-adapter";
 
 const BACKEND_URL =
   process.env.INNERGEODESSA_API_URL ??
@@ -183,11 +179,8 @@ export async function GET(
     }
 
     const payload =
-      buildFixedPersonalityReportPayload(
-        resultData.type,
-        createReportDimensions(
-          resultData,
-        ),
+      buildFixedPersonalityReportFromAssessmentResult(
+        resultData,
         reportLocale,
       );
 

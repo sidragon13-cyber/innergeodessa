@@ -3,12 +3,8 @@ import {
 } from "@/data/assessment/scoring/personality/schema";
 
 import {
-  createReportDimensions,
-} from "@/data/report/generator/from-assessment-result";
-
-import {
-  buildFixedPersonalityReportPayload,
-} from "@/data/report/fixed-assets/fixed-report-payload";
+  buildFixedPersonalityReportFromAssessmentResult,
+} from "@/data/report/fixed-assets/fixed-report-adapter";
 
 const NO_STORE_HEADERS = {
   "Cache-Control":
@@ -125,11 +121,8 @@ export async function POST(
   }
 
   const payload =
-    buildFixedPersonalityReportPayload(
-      reportResult.type,
-      createReportDimensions(
-        reportResult,
-      ),
+    buildFixedPersonalityReportFromAssessmentResult(
+      reportResult,
       reportLocale,
     );
 
