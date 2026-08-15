@@ -165,6 +165,10 @@ export default function PersonalityResultPage() {
     useState<ResultLoadState>("loading");
   const [premiumAccess, setPremiumAccess] =
     useState<PremiumAccessState>("loading");
+  const [
+    premiumAccessRevision,
+    setPremiumAccessRevision,
+  ] = useState(0);
 
   const isPreviewSession =
     sessionId.startsWith("preview-");
@@ -214,7 +218,11 @@ export default function PersonalityResultPage() {
     return () => {
       cancelled = true;
     };
-  }, [isPreviewSession, sessionId]);
+  }, [
+    isPreviewSession,
+    sessionId,
+    premiumAccessRevision,
+  ]);
 
   useEffect(() => {
     const previewResult = readCachedResult(
@@ -774,6 +782,12 @@ export default function PersonalityResultPage() {
                     module="personality"
                     sessionId={sessionId}
                     className="mt-8"
+                    onSaved={() => {
+                      setPremiumAccess("loading");
+                      setPremiumAccessRevision(
+                        (revision) => revision + 1,
+                      );
+                    }}
                   />
                 </div>
 

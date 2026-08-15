@@ -25,6 +25,7 @@ export interface SaveAssessmentResultProps {
   module: AssessmentModule;
   sessionId: string;
   className?: string;
+  onSaved?: () => void;
 }
 
 function getClaimStorageKey(
@@ -56,6 +57,7 @@ export function SaveAssessmentResult({
   module,
   sessionId,
   className = "",
+  onSaved,
 }: SaveAssessmentResultProps) {
   const { status: authStatus, user } = useAuth();
   const { locale } = useLocale();
@@ -166,6 +168,7 @@ export function SaveAssessmentResult({
 
       setClaimSecret(null);
       setSaveState("saved");
+      onSaved?.();
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : dictionary.error,
