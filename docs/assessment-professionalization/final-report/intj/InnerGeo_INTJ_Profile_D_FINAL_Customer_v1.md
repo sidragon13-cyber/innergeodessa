@@ -2,7 +2,7 @@
 
 ## Profile D — Highly Clear Preference Profile
 
-**人格类型：INTJ**
+**人格类型：INTJ**  
 **报告主题：战略型系统构建者｜Strategic System Builder**
 
 *该主题描述的是本次测评中呈现出的偏好组合与解释方向，不代表相关能力已经得到验证。*
@@ -47,7 +47,7 @@ Profile D意味着：
 
 > **这四个方向在本次测量中都表现得非常清晰。**
 
-因此，与A、B、C相比，你可能更容易从INTJ的基础框架中获得较高的自我识别度。
+由于四个维度在本次测量中都处于 Highly Clear 区间，你可能更容易从 INTJ 基础框架中形成较明确的自我识别；这不代表更高等级或更高能力。
 
 但这也是Profile D最需要注意的地方：
 
@@ -197,10 +197,10 @@ T偏好使你更容易建立逻辑框架。
 
 > **Model → Evidence → Counter-Evidence → Test → Update**
 
-模型
-→ 证据
-→ 反证
-→ 测试
+模型  
+→ 证据  
+→ 反证  
+→ 测试  
 → 更新
 
 这比单纯增加分析深度更有价值。
@@ -510,9 +510,9 @@ Profile D用户可能较容易觉得某些工作环境“很适合自己”。
 
 > **Preference Fit + Capability + Market Value + Results**
 
-偏好匹配
-+ 能力
-+ 市场价值
+偏好匹配  
++ 能力  
++ 市场价值  
 + 结果
 
 只有四者结合，才形成职业竞争力。
@@ -620,10 +620,10 @@ Profile D需要主动补充：
 
 > **Learn → Apply → Challenge → Revise → Integrate**
 
-学习
-→ 应用
-→ 挑战
-→ 修正
+学习  
+→ 应用  
+→ 挑战  
+→ 修正  
 → 整合
 
 其中Profile D最关键的是：
@@ -749,10 +749,10 @@ Profile D已经不需要继续确认：
 
 > **Domain Expertise × Judgment × Execution × Communication × Adaptability**
 
-领域专业
-× 判断
-× 执行
-× 沟通
+领域专业  
+× 判断  
+× 执行  
+× 沟通  
 × 适应
 
 INTJ只提供偏好框架。
@@ -1093,10 +1093,10 @@ Profile D意味着：
 
 > **Understand → Apply → Challenge → Expand → Balance**
 
-理解
-→ 应用
-→ 挑战
-→ 扩展
+理解  
+→ 应用  
+→ 挑战  
+→ 扩展  
 → 平衡
 
 Profile D真正重要的是：
@@ -1177,4 +1177,6 @@ Profile路由规则：
 
 **精确分数差异本身不产生额外能力、成功、职业或心理推断。**
 
+
+**Profile 只用于选择报告解释路径与发展主题。A/B/C/D 不构成人格等级、能力等级、成熟度等级或价值排序。**
 *— InnerGeo INTJ Professional Personality Report · Profile D —*

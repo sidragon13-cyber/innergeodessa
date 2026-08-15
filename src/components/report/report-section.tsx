@@ -12,6 +12,7 @@ export interface ReportSectionBlock {
 export interface ReportSectionProps {
   id: string;
   order: number;
+  sectionLabel?: ReactNode;
   title: ReactNode;
   description?: ReactNode;
   badge?: ReactNode;
@@ -23,6 +24,7 @@ export interface ReportSectionProps {
 export function ReportSection({
   id,
   order,
+  sectionLabel = `Section ${order}`,
   title,
   description,
   badge,
@@ -38,7 +40,7 @@ export function ReportSection({
       <header className="personality-report-section-header report-print-section-heading-group border-b border-[#d8d2c6] p-7 md:p-9">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="ig-label text-[var(--color-text-muted)]">
-            Section {order}
+            {sectionLabel}
           </p>
 
           {badge ? (

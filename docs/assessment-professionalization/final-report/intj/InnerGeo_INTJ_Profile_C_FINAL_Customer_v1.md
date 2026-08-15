@@ -2,7 +2,7 @@
 
 ## Profile C — Clear Preference Profile
 
-**人格类型：INTJ**
+**人格类型：INTJ**  
 **报告主题：战略型系统构建者｜Strategic System Builder**
 
 *该主题描述的是本次测评中呈现出的偏好组合与解释方向，不代表相关能力已经得到验证。*
@@ -101,10 +101,10 @@ Profile C的报告重点，是在已有较清晰偏好基础上讨论：
 
 这就是一个关键区别：
 
-> **Preference｜偏好**
+> **Preference｜偏好**  
 > 只是更自然的方向。
 
-> **Capability｜能力**
+> **Capability｜能力**  
 > 需要学习、训练、经验和反馈。
 
 Profile C的价值，就是帮助你把两者连接起来。
@@ -211,9 +211,9 @@ N偏好使模式、关联、趋势和长期可能性更容易进入你的注意�
 
 > **Pattern → Evidence → Test → Revision**
 
-模式
-→ 证据
-→ 测试
+模式  
+→ 证据  
+→ 测试  
 → 修正
 
 这比单纯“看懂趋势”更接近真正的专业判断。
@@ -280,9 +280,9 @@ T偏好使逻辑、一致性、标准和因果成为重要判断参照。
 
 > **Reasoning + Feasibility + Acceptance + Feedback**
 
-逻辑
-+ 可行性
-+ 接受度
+逻辑  
++ 可行性  
++ 接受度  
 + 反馈
 
 这会让判断从“理论上正确”进一步走向“现实中有效”。
@@ -461,16 +461,16 @@ Profile C最重要的信息不是：
 
 但：
 
-喜欢分析
+喜欢分析  
 ≠ 分析质量高
 
-喜欢规划
+喜欢规划  
 ≠ 执行能力强
 
-喜欢长期思考
+喜欢长期思考  
 ≠ 战略判断准确
 
-偏好逻辑
+偏好逻辑  
 ≠ 决策一定正确
 
 因此，Profile C必须主动区分：
@@ -621,10 +621,10 @@ Profile C的重点是：
 
 > **Learn → Apply → Produce → Review → Improve**
 
-学习
-→ 应用
-→ 产出
-→ 复盘
+学习  
+→ 应用  
+→ 产出  
+→ 复盘  
 → 提升
 
 ---
@@ -745,10 +745,10 @@ Profile C意味着你已经有较稳定的偏好结构可以参考。
 
 > **Domain + Capability + Experience + Network + Results**
 
-领域
-+ 能力
-+ 经验
-+ 网络
+领域  
++ 能力  
++ 经验  
++ 网络  
 + 结果
 
 人格只帮助你思考：
@@ -793,7 +793,7 @@ Profile C意味着你已经有较稳定的偏好结构可以参考。
 
 例如：
 
-> 核心：AI产品
+> 核心：AI产品  
 > 支持：数据分析 + 商业理解 + 项目管理 + 沟通
 
 这比同时追逐多个互不相关的方向更容易形成长期优势。
@@ -1094,10 +1094,10 @@ Profile C意味着：
 
 > **Understand → Apply → Practice → Validate → Develop**
 
-理解
-→ 应用
-→ 实践
-→ 验证
+理解  
+→ 应用  
+→ 实践  
+→ 验证  
 → 发展
 
 Profile C真正重要的是：
@@ -1175,4 +1175,6 @@ Profile路由规则：
 
 **精确分数差异本身不产生额外能力、成功、职业或心理推断。**
 
+
+**Profile 只用于选择报告解释路径与发展主题。A/B/C/D 不构成人格等级、能力等级、成熟度等级或价值排序。**
 *— InnerGeo INTJ Professional Personality Report · Profile C —*

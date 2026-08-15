@@ -207,7 +207,7 @@ def get_session_result(session_id: str):
     with connect() as conn:
         session = conn.execute(
             """SELECT status, question_bank_version, completed_at,
-                      module, form
+                      module, form, language
                FROM sessions
                WHERE session_id=?""",
             (session_id,),
@@ -388,6 +388,7 @@ def get_session_result(session_id: str):
     return {
         "sessionId": session_id,
         "status": "completed",
+        "language": session["language"],
         "type": result["personality_type"],
         "scores": {
             "EI": result["ei_score"],

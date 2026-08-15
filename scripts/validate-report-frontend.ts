@@ -157,6 +157,7 @@ function createResult(
   return {
     sessionId: `frontend-${type.toLowerCase()}`,
     status: "completed",
+    language: "en",
     type,
     scores: { ...baseScores },
     confidence: { ...baseConfidence },

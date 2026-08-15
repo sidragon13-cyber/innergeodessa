@@ -4128,20 +4128,37 @@ a {
     margin: 0;
   }
 
+  /*
+   * Professional print density:
+   * use the full A4 text column while preserving the narrower
+   * 72ch measure for on-screen long-form reading.
+   */
+  .personality-report .ig-reading-width {
+    max-width: none !important;
+  }
+
+  /*
+   * The assessment table uses a desktop-oriented minimum width
+   * on screen. A4 print must fit the available content column.
+   */
+  .personality-report table {
+    min-width: 0 !important;
+  }
+
   .personality-report-header {
-    padding-bottom: 6mm;
+    padding-bottom: 5mm;
     border-color: #777777;
   }
 
   .report-table-of-contents {
-    margin-top: 8mm !important;
-    padding: 5mm !important;
+    margin-top: 6mm !important;
+    padding: 4mm !important;
     border-color: #999999;
   }
 
   .report-table-of-contents ol {
     display: block;
-    margin-top: 4mm !important;
+    margin-top: 3mm !important;
   }
 
   .report-table-of-contents li {
@@ -4154,7 +4171,7 @@ a {
     display: grid;
     grid-template-columns: auto 1fr auto;
     min-height: 0;
-    padding: 2.5mm 0;
+    padding: 2mm 0;
     text-decoration: none;
   }
 
@@ -4168,11 +4185,11 @@ a {
   }
 
   .personality-report-sections {
-    margin-top: 8mm;
+    margin-top: 6mm;
   }
 
   .personality-report-sections > .personality-report-section {
-    margin-top: 7mm !important;
+    margin-top: 5mm !important;
     border-color: #999999;
   }
 
@@ -4188,13 +4205,13 @@ a {
   }
 
   .personality-report-section-header {
-    padding: 5mm;
+    padding: 4mm;
     border-color: #b5b5b5;
   }
 
   .report-print-flow-block {
     min-height: 0;
-    padding: 5mm;
+    padding: 3.5mm 4mm;
   }
 
   .report-print-content-heading-group {
@@ -4239,6 +4256,125 @@ a {
   .personality-report dd {
     orphans: 3;
     widows: 3;
+  }
+
+  /*
+   * Fixed personality report print density.
+   *
+   * The fixed-report AST renderer nests its typography inside
+   * .fixed-report-rich-content, so the legacy direct-child
+   * ReportContentBlock paragraph rules do not reach it.
+   *
+   * Keep the spacious Web presentation unchanged; compact only
+   * the A4 print representation.
+   */
+  .personality-report .fixed-report-rich-content > p {
+    margin-top: 2mm !important;
+    margin-bottom: 2mm !important;
+    line-height: 1.45 !important;
+  }
+
+  .personality-report .fixed-report-rich-content > ul,
+  .personality-report .fixed-report-rich-content > ol {
+    margin-top: 2.5mm !important;
+    margin-bottom: 2.5mm !important;
+    padding-left: 5mm !important;
+  }
+
+  .personality-report .fixed-report-rich-content > ul > li,
+  .personality-report .fixed-report-rich-content > ol > li {
+    line-height: 1.45 !important;
+  }
+
+  .personality-report .fixed-report-rich-content > ul > li + li,
+  .personality-report .fixed-report-rich-content > ol > li + li {
+    margin-top: 1mm !important;
+  }
+
+  /*
+   * Compact short keyword lists in print only.
+   *
+   * Short items (<= 7 visible characters) may share a row.
+   * Longer narrative items always span the full text column.
+   */
+  .personality-report .fixed-report-short-list {
+    display: grid !important;
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+    column-gap: 5mm;
+    row-gap: 1.5mm;
+    padding-left: 0 !important;
+    list-style: none !important;
+  }
+
+  .personality-report .fixed-report-short-list > li {
+    position: relative;
+    margin-top: 0 !important;
+    padding-left: 4mm !important;
+  }
+
+  .personality-report .fixed-report-short-list > li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+  }
+
+  .personality-report .fixed-report-short-list-item {
+    grid-column: auto;
+  }
+
+  .personality-report .fixed-report-long-list-item {
+    grid-column: 1 / -1;
+  }
+
+  .personality-report .fixed-report-rich-content > blockquote {
+    margin-top: 3mm !important;
+    margin-bottom: 3mm !important;
+    padding-left: 3mm !important;
+  }
+
+  .personality-report .fixed-report-rich-content > blockquote > div {
+    line-height: 1.45 !important;
+  }
+
+  .personality-report .fixed-report-rich-content > .overflow-x-auto {
+    margin-top: 3mm !important;
+    margin-bottom: 3mm !important;
+    overflow: visible !important;
+  }
+
+  .personality-report .fixed-report-rich-content table th,
+  .personality-report .fixed-report-rich-content table td {
+    padding: 1.8mm 2mm !important;
+    line-height: 1.4 !important;
+  }
+
+  .personality-report .fixed-report-rich-content > hr {
+    margin-top: 4mm !important;
+    margin-bottom: 4mm !important;
+  }
+
+  .personality-report .fixed-report-rich-content > h2 {
+    margin-top: 4.5mm !important;
+    margin-bottom: 2mm !important;
+  }
+
+  .personality-report .fixed-report-rich-content > h3 {
+    margin-top: 4mm !important;
+    margin-bottom: 2mm !important;
+  }
+
+  .personality-report .fixed-report-rich-content > h4 {
+    margin-top: 3mm !important;
+    margin-bottom: 1.5mm !important;
+  }
+
+  .personality-report .fixed-report-rich-content > :first-child {
+    margin-top: 0 !important;
+  }
+
+  .personality-report .fixed-report-rich-content > :last-child {
+    margin-bottom: 0 !important;
   }
 }
 

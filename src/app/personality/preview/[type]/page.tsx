@@ -1,9 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import {
+  useParams,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { useEffect } from "react";
 
+import { useLocale } from "@/components/locale";
 import {
   PERSONALITY_TIE_RULE,
   type PersonalityResultContract,
@@ -15,6 +20,8 @@ const PREVIEW_TIMESTAMP = "2026-01-01T00:00:00.000Z";
 export default function PersonalityPreviewPage() {
   const params = useParams<{ type: string }>();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { locale } = useLocale();
 
   const personalityType = params.type.trim().toUpperCase();
   const profile = getPersonalityProfile(personalityType);
@@ -30,12 +37,13 @@ export default function PersonalityPreviewPage() {
     const previewResult: PersonalityResultContract = {
       sessionId,
       status: "completed",
+      language: locale,
       type: profile.type,
       scores: {
         EI: profile.type[0] === "E" ? 8 : -8,
-        SN: profile.type[1] === "S" ? 7 : -7,
+        SN: profile.type[1] === "S" ? -7 : 7,
         TF: profile.type[2] === "T" ? 7 : -7,
-        JP: profile.type[3] === "J" ? 9 : -9,
+        JP: profile.type[3] === "J" ? -9 : 9,
       },
       confidence: {
         EI: 0.8,
@@ -60,10 +68,13 @@ export default function PersonalityPreviewPage() {
       JSON.stringify(previewResult),
     );
 
-    router.replace(
-      `/personality/result/${sessionId}`,
-    );
-  }, [personalityType, profile, router]);
+    const destination =
+      searchParams.get("report") === "1"
+        ? `/personality/report/${sessionId}`
+        : `/personality/result/${sessionId}`;
+
+    router.replace(destination);
+  }, [locale, personalityType, profile, router, searchParams]);
 
   if (!profile) {
     return (

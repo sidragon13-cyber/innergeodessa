@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import {
+  useParams,
+} from "next/navigation";
+
 import {
   useEffect,
   useState,
@@ -9,69 +12,59 @@ import {
 } from "react";
 
 import {
-  fetchPersonalityResult,
   isPersonalityResultContract,
-  PersonalityResultRequestError,
   type PersonalityResultContract,
 } from "@/data/assessment/scoring/personality";
-import {
-  createReportDimensions,
-  generatePersonalityReport,
-} from "@/data/report";
+
 import {
   useLocale,
 } from "@/components/locale";
+
 import {
   getPersonalityReportDictionary,
 } from "@/data/i18n";
 
-import { ReportDocument } from "./report-document";
+import {
+  fetchFixedPersonalityReport,
+  FixedPersonalityReportRequestError,
+  isFixedPersonalityReportDelivery,
+  type FixedPersonalityReportDelivery,
+} from "@/data/report/fixed-assets/fixed-report-client";
 
-type ReportLoadState =
+import {
+  FixedReportDocument,
+} from "./fixed-report-document";
+
+type FixedReportLoadState =
   | "loading"
   | "ready"
-  | "not-found"
-  | "not-completed"
-  | "error";
-
-type ReportAccessState =
-  | "loading"
-  | "unlocked"
   | "locked"
   | "unauthenticated"
+  | "not-found"
   | "error";
 
-type ReportAccessResponse = {
-  module: "personality" | "career" | "zodiac";
-  resourceId: string;
-  authenticated: true;
-  emailVerified: true;
-  ownsResource: true;
-  entitlementStatus:
-    | "pending"
-    | "unlocked"
-    | "revoked"
-    | "refunded"
-    | null;
-  canViewFullReport: boolean;
-  canPrint: boolean;
-  canDownloadPdf: boolean;
-};
-
 function readCachedResult(
-  storedResult: string | null,
-  sessionId: string,
+  storedResult:
+    string | null,
+  sessionId:
+    string,
 ): PersonalityResultContract | null {
   if (!storedResult) {
     return null;
   }
 
   try {
-    const parsed: unknown = JSON.parse(storedResult);
+    const parsed: unknown =
+      JSON.parse(
+        storedResult,
+      );
 
     return (
-      isPersonalityResultContract(parsed) &&
-      parsed.sessionId === sessionId
+      isPersonalityResultContract(
+        parsed,
+      ) &&
+      parsed.sessionId ===
+        sessionId
     )
       ? parsed
       : null;
@@ -82,20 +75,6 @@ function readCachedResult(
 
 function subscribeToSessionStorage() {
   return () => {};
-}
-
-function getFailureState(error: unknown): ReportLoadState {
-  if (error instanceof PersonalityResultRequestError) {
-    if (error.status === 404) {
-      return "not-found";
-    }
-
-    if (error.status === 409) {
-      return "not-completed";
-    }
-  }
-
-  return "error";
 }
 
 function ReportState({
@@ -149,292 +128,411 @@ function ReportState({
 }
 
 export default function PersonalityReportPage() {
-  const params = useParams<{ sessionId: string }>();
-  const sessionId = params.sessionId;
-  const { locale } = useLocale();
-  const dictionary =
-    getPersonalityReportDictionary(locale);
-  const storageKey = `innergeodessa-result-${sessionId}`;
-  const storedResult = useSyncExternalStore(
-    subscribeToSessionStorage,
-    () => sessionStorage.getItem(storageKey),
-    () => null,
-  );
-  const cachedResult = readCachedResult(
-    storedResult,
-    sessionId,
-  );
-  const [result, setResult] =
-    useState<PersonalityResultContract | null>(null);
-  const [loadState, setLoadState] =
-    useState<ReportLoadState>("loading");
-  const [accessState, setAccessState] =
-    useState<ReportAccessState>("loading");
+  const params =
+    useParams<{
+      sessionId: string;
+    }>();
 
-  useEffect(() => {
-    const previewResult = readCachedResult(
-      sessionStorage.getItem(storageKey),
+  const sessionId =
+    params.sessionId;
+
+  const {
+    locale,
+  } = useLocale();
+
+  const storageKey =
+    `innergeodessa-result-${sessionId}`;
+
+  const storedResult =
+    useSyncExternalStore(
+      subscribeToSessionStorage,
+      () =>
+        sessionStorage.getItem(
+          storageKey,
+        ),
+      () => null,
+    );
+
+  const cachedResult =
+    readCachedResult(
+      storedResult,
       sessionId,
     );
 
-    if (
-      sessionId.startsWith("preview-") &&
-      previewResult?.questionBankVersion === "preview"
-    ) {
-      return;
-    }
+  const isPreviewSession =
+    sessionId.startsWith(
+      "preview-",
+    );
 
-    let cancelled = false;
+  const previewResult =
+    isPreviewSession &&
+    cachedResult?.questionBankVersion ===
+      "preview"
+      ? cachedResult
+      : null;
 
-    async function loadPersistedResult() {
+  const [
+    delivery,
+    setDelivery,
+  ] =
+    useState<FixedPersonalityReportDelivery | null>(
+      null,
+    );
+
+  const [
+    loadState,
+    setLoadState,
+  ] =
+    useState<FixedReportLoadState>(
+      "loading",
+    );
+
+  useEffect(() => {
+    let cancelled =
+      false;
+
+    setDelivery(null);
+    setLoadState(
+      "loading",
+    );
+
+    async function loadReport() {
       try {
-        const persistedResult =
-          await fetchPersonalityResult(sessionId);
+        let nextDelivery:
+          FixedPersonalityReportDelivery;
+
+        if (isPreviewSession) {
+          if (!previewResult) {
+            if (!cancelled) {
+              setLoadState(
+                "error",
+              );
+            }
+
+            return;
+          }
+
+          const response =
+            await fetch(
+              `/api/dev/personality-report-preview/${encodeURIComponent(
+                sessionId,
+              )}`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type":
+                    "application/json",
+                },
+                body:
+                  JSON.stringify(
+                    previewResult,
+                  ),
+                cache: "no-store",
+              },
+            );
+
+          const body: unknown =
+            await response
+              .json()
+              .catch(
+                () => null,
+              );
+
+          if (
+            !response.ok ||
+            !isFixedPersonalityReportDelivery(
+              body,
+            ) ||
+            body.sessionId !==
+              sessionId
+          ) {
+            throw new Error(
+              "Unable to load fixed personality preview.",
+            );
+          }
+
+          nextDelivery =
+            body;
+        } else {
+          nextDelivery =
+            await fetchFixedPersonalityReport(
+              sessionId,
+            );
+        }
 
         if (cancelled) {
           return;
         }
 
-        setResult(persistedResult);
-        setLoadState("ready");
-        sessionStorage.setItem(
-          storageKey,
-          JSON.stringify(persistedResult),
+        setDelivery(
+          nextDelivery,
+        );
+
+        setLoadState(
+          "ready",
         );
       } catch (error) {
         if (cancelled) {
           return;
         }
 
-        setResult(null);
-        setLoadState(getFailureState(error));
+        setDelivery(null);
+
+        if (
+          !isPreviewSession &&
+          error instanceof
+            FixedPersonalityReportRequestError
+        ) {
+          if (
+            error.code ===
+              "authentication-required"
+          ) {
+            setLoadState(
+              "unauthenticated",
+            );
+
+            return;
+          }
+
+          if (
+            error.code ===
+              "report-locked"
+          ) {
+            setLoadState(
+              "locked",
+            );
+
+            return;
+          }
+
+          if (
+            error.code ===
+              "resource-not-found"
+          ) {
+            setLoadState(
+              "not-found",
+            );
+
+            return;
+          }
+        }
+
+        setLoadState(
+          "error",
+        );
       }
     }
 
-    loadPersistedResult();
+    void loadReport();
 
     return () => {
-      cancelled = true;
+      cancelled =
+        true;
     };
-  }, [sessionId, storageKey]);
+  }, [
+    isPreviewSession,
+    sessionId,
+    storedResult,
+  ]);
 
-  useEffect(() => {
-    let cancelled = false;
+  const reportLocale =
+    delivery?.locale ??
+    locale;
 
-    async function loadReportAccess() {
-      try {
-        const response = await fetch(
-          `/api/account/report-access/personality/${encodeURIComponent(
-            sessionId,
-          )}`,
-          {
-            method: "GET",
-            cache: "no-store",
-          },
-        );
-
-        if (cancelled) {
-          return;
-        }
-
-        if (response.status === 401 || response.status === 403) {
-          setAccessState("unauthenticated");
-          return;
-        }
-
-        if (!response.ok) {
-          setAccessState("error");
-          return;
-        }
-
-        const access =
-          (await response.json()) as ReportAccessResponse;
-
-        setAccessState(
-          access.canViewFullReport
-            ? "unlocked"
-            : "locked",
-        );
-      } catch {
-        if (!cancelled) {
-          setAccessState("error");
-        }
-      }
-    }
-
-    loadReportAccess();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [sessionId]);
-
-  const displayResult = result ?? cachedResult;
-
-  if (loadState === "loading" && !displayResult) {
-    return (
-      <ReportState
-        label={dictionary.states.loading.label}
-        title={dictionary.states.loading.title}
-        message={dictionary.states.loading.message}
-        sessionId={sessionId}
-        resultLabel={dictionary.states.actions.result}
-        overviewLabel={dictionary.states.actions.overview}
-      />
+  const dictionary =
+    getPersonalityReportDictionary(
+      reportLocale,
     );
-  }
 
-  if (loadState === "not-found") {
+  if (
+    loadState === "loading"
+  ) {
     return (
       <ReportState
-        label={dictionary.states.notFound.label}
-        title={dictionary.states.notFound.title}
-        message={dictionary.states.notFound.message}
-        sessionId={sessionId}
-        resultLabel={dictionary.states.actions.result}
-        overviewLabel={dictionary.states.actions.overview}
-      />
-    );
-  }
-
-  if (loadState === "not-completed") {
-    return (
-      <ReportState
-        label={dictionary.states.notCompleted.label}
-        title={dictionary.states.notCompleted.title}
-        message={dictionary.states.notCompleted.message}
-        sessionId={sessionId}
-        resultLabel={dictionary.states.actions.result}
-        overviewLabel={dictionary.states.actions.overview}
-      />
-    );
-  }
-
-  if (loadState === "error" || !displayResult) {
-    return (
-      <ReportState
-        label={dictionary.states.error.label}
-        title={dictionary.states.error.title}
-        message={dictionary.states.error.message}
-        sessionId={sessionId}
-        resultLabel={dictionary.states.actions.result}
-        overviewLabel={dictionary.states.actions.overview}
-      />
-    );
-  }
-
-  if (accessState === "loading") {
-    return (
-      <ReportState
-        label={locale === "zh" ? "正在验证访问权限" : "Checking access"}
+        label={
+          reportLocale === "zh"
+            ? "正在加载报告"
+            : "Loading report"
+        }
         title={
-          locale === "zh"
-            ? "正在确认高级报告权限"
-            : "Confirming premium report access"
+          reportLocale === "zh"
+            ? "正在验证并准备完整报告"
+            : "Preparing your complete report"
         }
         message={
-          locale === "zh"
-            ? "请稍候，我们正在确认此报告是否已解锁。"
-            : "Please wait while we confirm whether this report is unlocked."
+          reportLocale === "zh"
+            ? "请稍候，我们正在验证报告权限并加载你的完整人格报告。"
+            : "Please wait while we verify access and load your complete personality report."
         }
-        sessionId={sessionId}
-        resultLabel={dictionary.states.actions.result}
-        overviewLabel={dictionary.states.actions.overview}
+        sessionId={
+          sessionId
+        }
+        resultLabel={
+          dictionary.states.actions
+            .result
+        }
+        overviewLabel={
+          dictionary.states.actions
+            .overview
+        }
       />
     );
   }
 
-  if (accessState === "unauthenticated") {
+  if (
+    loadState ===
+    "unauthenticated"
+  ) {
     return (
       <ReportState
-        label={locale === "zh" ? "需要账户验证" : "Account required"}
+        label={
+          reportLocale === "zh"
+            ? "需要账户验证"
+            : "Account required"
+        }
         title={
-          locale === "zh"
+          reportLocale === "zh"
             ? "请登录并完成邮箱验证"
             : "Sign in and verify your email"
         }
         message={
-          locale === "zh"
+          reportLocale === "zh"
             ? "高级报告仅向已登录并完成邮箱验证、且拥有该测评结果的用户开放。"
             : "Premium reports are available only to signed-in, email-verified users who own this assessment result."
         }
-        sessionId={sessionId}
-        resultLabel={dictionary.states.actions.result}
-        overviewLabel={dictionary.states.actions.overview}
+        sessionId={
+          sessionId
+        }
+        resultLabel={
+          dictionary.states.actions
+            .result
+        }
+        overviewLabel={
+          dictionary.states.actions
+            .overview
+        }
       />
     );
   }
 
-  if (accessState === "locked") {
+  if (
+    loadState === "locked"
+  ) {
     return (
       <ReportState
-        label={locale === "zh" ? "高级报告" : "Premium report"}
+        label={
+          reportLocale === "zh"
+            ? "高级报告"
+            : "Premium report"
+        }
         title={
-          locale === "zh"
+          reportLocale === "zh"
             ? "完整报告尚未解锁"
             : "Your full report is not unlocked yet"
         }
         message={
-          locale === "zh"
-            ? "你仍然可以查看免费结果。购买高级报告后，此页面将自动开放完整内容、打印和 PDF 下载权限。"
+          reportLocale === "zh"
+            ? "你仍然可以查看免费结果。购买高级报告后，此页面将开放完整内容、打印和 PDF 权限。"
             : "You can continue viewing your free result. After purchasing the premium report, this page will unlock the full report, printing, and PDF access."
         }
-        sessionId={sessionId}
-        resultLabel={dictionary.states.actions.result}
-        overviewLabel={dictionary.states.actions.overview}
+        sessionId={
+          sessionId
+        }
+        resultLabel={
+          dictionary.states.actions
+            .result
+        }
+        overviewLabel={
+          dictionary.states.actions
+            .overview
+        }
       />
     );
   }
 
-  if (accessState === "error") {
+  if (
+    loadState ===
+    "not-found"
+  ) {
     return (
       <ReportState
-        label={locale === "zh" ? "访问检查失败" : "Access check unavailable"}
+        label={
+          dictionary.states
+            .notFound.label
+        }
         title={
-          locale === "zh"
-            ? "暂时无法确认报告权限"
-            : "We could not confirm report access"
+          dictionary.states
+            .notFound.title
         }
         message={
-          locale === "zh"
+          dictionary.states
+            .notFound.message
+        }
+        sessionId={
+          sessionId
+        }
+        resultLabel={
+          dictionary.states.actions
+            .result
+        }
+        overviewLabel={
+          dictionary.states.actions
+            .overview
+        }
+      />
+    );
+  }
+
+  if (
+    loadState === "error" ||
+    !delivery
+  ) {
+    return (
+      <ReportState
+        label={
+          reportLocale === "zh"
+            ? "报告加载失败"
+            : "Report unavailable"
+        }
+        title={
+          reportLocale === "zh"
+            ? "暂时无法加载完整报告"
+            : "We could not load your complete report"
+        }
+        message={
+          reportLocale === "zh"
             ? "请稍后重新尝试。你的测评结果不会因此受到影响。"
             : "Please try again shortly. Your assessment result is not affected."
         }
-        sessionId={sessionId}
-        resultLabel={dictionary.states.actions.result}
-        overviewLabel={dictionary.states.actions.overview}
-      />
-    );
-  }
-
-  let report;
-
-  try {
-    report = generatePersonalityReport({
-      sessionId,
-      personalityType: displayResult.type,
-      dimensions: createReportDimensions(displayResult),
-      accessLevel: "premium",
-      locale,
-      generatedAt: displayResult.calculatedAt,
-    });
-  } catch {
-    return (
-      <ReportState
-        label={dictionary.states.generationError.label}
-        title={dictionary.states.generationError.title}
-        message={dictionary.states.generationError.message}
-        sessionId={sessionId}
-        resultLabel={dictionary.states.actions.result}
-        overviewLabel={dictionary.states.actions.overview}
+        sessionId={
+          sessionId
+        }
+        resultLabel={
+          dictionary.states.actions
+            .result
+        }
+        overviewLabel={
+          dictionary.states.actions
+            .overview
+        }
       />
     );
   }
 
   return (
-    <ReportDocument
-      locale={locale}
-      report={report}
+    <FixedReportDocument
+      locale={
+        delivery.locale
+      }
+      sessionId={
+        delivery.sessionId
+      }
+      generatedAt={
+        delivery.generatedAt
+      }
+      report={
+        delivery.report
+      }
     />
   );
 }

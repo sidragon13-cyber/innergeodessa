@@ -2,6 +2,7 @@ import type {
   PersonalityDimension,
   PersonalityType,
 } from "../../personality";
+import type { SupportedLocale } from "../../../shared";
 
 export type PersonalityDimensionScores = Readonly<
   Record<PersonalityDimension, number>
@@ -19,6 +20,7 @@ export interface PersonalityResultContract
   extends PersonalityScoreContract {
   sessionId: string;
   status: "completed";
+  language: SupportedLocale;
   questionBankVersion: string;
   completedAt: string;
   calculatedAt: string;
@@ -36,6 +38,7 @@ export function isPersonalityResultContract(
   return (
     isNonEmptyString(value.sessionId) &&
     value.status === "completed" &&
+    (value.language === "en" || value.language === "zh") &&
     isPersonalityType(value.type) &&
     isDimensionRecord(value.scores, isFiniteNumber) &&
     isDimensionRecord(value.confidence, isConfidence) &&

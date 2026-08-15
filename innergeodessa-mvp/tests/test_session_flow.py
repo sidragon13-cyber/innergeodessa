@@ -58,10 +58,10 @@ def answer_all(client, session_id, items, value=3):
         assert response.status_code == 200, response.text
 
 
-def complete_new_session(client):
+def complete_new_session(client, language="en"):
     session = client.post(
         "/api/sessions",
-        json={"consent": True, "language": "en"},
+        json={"consent": True, "language": language},
     ).json()
     session_id = session["session_id"]
     items = client.get(
@@ -191,7 +191,10 @@ def test_completed_session_can_retrieve_persisted_result(
     monkeypatch,
 ):
     client, _database_path = client_and_database
-    session, completed = complete_new_session(client)
+    session, completed = complete_new_session(
+        client,
+        language="zh",
+    )
 
     def reject_rescoring(*_args, **_kwargs):
         raise AssertionError("GET result must not run the scorer")
@@ -210,6 +213,7 @@ def test_completed_session_can_retrieve_persisted_result(
     assert response.json() == {
         "sessionId": session["session_id"],
         "status": "completed",
+        "language": "zh",
         "type": completed["type"],
         "scores": completed["scores"],
         "confidence": completed["confidence"],

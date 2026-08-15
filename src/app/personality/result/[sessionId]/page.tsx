@@ -36,6 +36,16 @@ import {
 import {
   getPersonalityResultDictionary,
 } from "@/data/i18n";
+import {
+  createReportDimensions,
+} from "@/data/report/generator/from-assessment-result";
+import {
+  resolvePersonalityPreferenceBandVariables,
+} from "@/data/report/generator/preference-band-variables";
+import {
+  resolvePersonalityReportProfile,
+  type PersonalityReportProfile,
+} from "@/data/report/generator/profile-resolver";
 
 type DimensionKey =
   | "EI"
@@ -44,6 +54,31 @@ type DimensionKey =
   | "JP";
 
 const dimensions: DimensionKey[] = ["EI", "SN", "TF", "JP"];
+
+const REPORT_PROFILE_PRESENTATION: Record<
+  PersonalityReportProfile,
+  {
+    name: string;
+    developmentTheme: string;
+  }
+> = {
+  A: {
+    name: "Boundary-Aware Preference Profile｜边界感知偏好路径",
+    developmentTheme: "Explore & Validate｜探索与验证",
+  },
+  B: {
+    name: "Moderate Preference Profile｜温和偏好路径",
+    developmentTheme: "Clarify & Experiment｜澄清与实验",
+  },
+  C: {
+    name: "Clear Preference Profile｜明显偏好路径",
+    developmentTheme: "Apply & Develop｜应用与发展",
+  },
+  D: {
+    name: "Highly Clear Preference Profile｜高度清晰偏好路径",
+    developmentTheme: "Expand & Balance｜扩展与平衡",
+  },
+};
 
 function formatConfidence(value: number | undefined) {
   if (value === undefined) {
@@ -110,8 +145,6 @@ export default function PersonalityResultPage() {
   const params = useParams<{ sessionId: string }>();
   const sessionId = params.sessionId;
   const { locale } = useLocale();
-  const dictionary =
-    getPersonalityResultDictionary(locale);
   const storageKey = `innergeodessa-result-${sessionId}`;
   const storedResult = useSyncExternalStore(
     subscribeToSessionStorage,
@@ -129,7 +162,15 @@ export default function PersonalityResultPage() {
   const [premiumAccess, setPremiumAccess] =
     useState<PremiumAccessState>("loading");
 
+  const isPreviewSession =
+    sessionId.startsWith("preview-");
+
   useEffect(() => {
+    if (isPreviewSession) {
+      setPremiumAccess("unlocked");
+      return;
+    }
+
     let cancelled = false;
 
     async function loadPremiumAccess() {
@@ -169,7 +210,7 @@ export default function PersonalityResultPage() {
     return () => {
       cancelled = true;
     };
-  }, [sessionId]);
+  }, [isPreviewSession, sessionId]);
 
   useEffect(() => {
     const previewResult = readCachedResult(
@@ -219,6 +260,9 @@ export default function PersonalityResultPage() {
   }, [sessionId, storageKey]);
 
   const displayResult = result ?? cachedResult;
+  const resultLocale = displayResult?.language ?? locale;
+  const dictionary =
+    getPersonalityResultDictionary(resultLocale);
 
   if (loadState === "loading" && !displayResult) {
     return (
@@ -280,24 +324,43 @@ export default function PersonalityResultPage() {
 
   const profile = getPersonalityProfile(displayResult.type);
 
+  const reportDimensions =
+    createReportDimensions(displayResult);
+
+  const reportBandVariables =
+    resolvePersonalityPreferenceBandVariables(
+      displayResult.type,
+      reportDimensions,
+    );
+
+  const reportProfile =
+    resolvePersonalityReportProfile(
+      reportBandVariables,
+    );
+
+  const reportProfilePresentation =
+    REPORT_PROFILE_PRESENTATION[
+      reportProfile
+    ];
+
   const personalityName = profile
-    ? getLocalizedText(profile.identity.name, locale)
+    ? getLocalizedText(profile.identity.name, resultLocale)
     : "";
 
   const shortName = profile
-    ? getLocalizedText(profile.identity.shortName, locale)
+    ? getLocalizedText(profile.identity.shortName, resultLocale)
     : "";
 
   const tagline = profile
-    ? getLocalizedText(profile.identity.tagline, locale)
+    ? getLocalizedText(profile.identity.tagline, resultLocale)
     : "";
 
   const keywords = profile
-    ? getLocalizedStringList(profile.identity.keywords, locale)
+    ? getLocalizedStringList(profile.identity.keywords, resultLocale)
     : [];
 
   const overviewParagraphs = profile
-    ? getLocalizedStringList(profile.overview.paragraphs, locale)
+    ? getLocalizedStringList(profile.overview.paragraphs, resultLocale)
     : [];
 
   return (
@@ -358,6 +421,38 @@ export default function PersonalityResultPage() {
           }
         />
 
+        <section className="mt-8 border border-[#c8c2b5] bg-[#f7f4ec] p-5 md:flex md:items-center md:justify-between md:gap-10 md:p-6">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6d746b]">
+              Report Profile｜报告解释路径
+            </p>
+
+            <p className="mt-2 text-xl font-semibold text-[#26372d]">
+              Profile {reportProfile}
+            </p>
+
+            <p className="mt-1 text-sm leading-6 text-[#596158]">
+              {reportProfilePresentation.name}
+            </p>
+          </div>
+
+          <div className="mt-5 border-t border-[#d4cec1] pt-5 md:mt-0 md:min-w-[300px] md:border-l md:border-t-0 md:pl-8 md:pt-0">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6d746b]">
+              Development Theme｜发展主题
+            </p>
+
+            <p className="mt-2 font-semibold text-[#26372d]">
+              {reportProfilePresentation.developmentTheme}
+            </p>
+
+            <p className="mt-2 text-xs leading-5 text-[#6d746b]">
+              {resultLocale === "zh"
+                ? "Profile 用于选择报告解释路径，不代表能力、成熟度或人格等级。"
+                : "Profile selects the report interpretation path; it is not a level of ability, maturity, or personality quality."}
+            </p>
+          </div>
+        </section>
+
         {profile ? (
           <>
             <section className="mt-12 grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
@@ -369,7 +464,7 @@ export default function PersonalityResultPage() {
                 <h2 className="mt-4 text-3xl font-semibold leading-tight md:text-4xl">
                   {getLocalizedText(
                     profile.overview.headline,
-                    locale,
+                    resultLocale,
                   )}
                 </h2>
               </div>
@@ -382,7 +477,7 @@ export default function PersonalityResultPage() {
                 <p className="border-l-2 border-[#34483a] pl-5 font-semibold text-[#26372d]">
                   {getLocalizedText(
                     profile.overview.summary,
-                    locale,
+                    resultLocale,
                   )}
                 </p>
               </div>
@@ -400,13 +495,13 @@ export default function PersonalityResultPage() {
                     className="bg-[#f7f4ec] p-7 md:p-9"
                   >
                     <h3 className="text-xl font-semibold">
-                      {getLocalizedText(trait.title, locale)}
+                      {getLocalizedText(trait.title, resultLocale)}
                     </h3>
 
                     <p className="mt-4 leading-7 text-[#596158]">
                       {getLocalizedText(
                         trait.description,
-                        locale,
+                        resultLocale,
                       )}
                     </p>
                   </article>
@@ -491,14 +586,14 @@ export default function PersonalityResultPage() {
                         <h3 className="font-semibold">
                           {getLocalizedText(
                             strength.title,
-                            locale,
+                            resultLocale,
                           )}
                         </h3>
 
                         <p className="mt-3 leading-7 text-[#596158]">
                           {getLocalizedText(
                             strength.description,
-                            locale,
+                            resultLocale,
                           )}
                         </p>
                       </article>
@@ -520,14 +615,14 @@ export default function PersonalityResultPage() {
                         <h3 className="font-semibold">
                           {getLocalizedText(
                             risk.title,
-                            locale,
+                            resultLocale,
                           )}
                         </h3>
 
                         <p className="mt-3 leading-7 text-[#596158]">
                           {getLocalizedText(
                             risk.description,
-                            locale,
+                            resultLocale,
                           )}
                         </p>
 
@@ -539,7 +634,7 @@ export default function PersonalityResultPage() {
                           <p className="mt-2 leading-7 text-[#596158]">
                             {getLocalizedText(
                               risk.growthAction,
-                              locale,
+                              resultLocale,
                             )}
                           </p>
                         </div>
@@ -559,7 +654,7 @@ export default function PersonalityResultPage() {
                 {profile.careerGroups.map((group) => {
                   const roles = getLocalizedStringList(
                     group.roles,
-                    locale,
+                    resultLocale,
                   );
 
                   return (
@@ -570,14 +665,14 @@ export default function PersonalityResultPage() {
                       <h3 className="text-xl font-semibold">
                         {getLocalizedText(
                           group.category,
-                          locale,
+                          resultLocale,
                         )}
                       </h3>
 
                       <p className="mt-4 leading-7 text-[#596158]">
                         {getLocalizedText(
                           group.description,
-                          locale,
+                          resultLocale,
                         )}
                       </p>
 
@@ -599,7 +694,7 @@ export default function PersonalityResultPage() {
               <p className="mt-6 max-w-4xl text-sm leading-7 text-[#6d746b]">
                 {getLocalizedText(
                   profile.careerNotice,
-                  locale,
+                  resultLocale,
                 )}
               </p>
             </section>
@@ -614,14 +709,14 @@ export default function PersonalityResultPage() {
                   <h2 className="mt-4 text-3xl font-semibold md:text-4xl">
                     {getLocalizedText(
                       profile.premiumPreview.headline,
-                      locale,
+                      resultLocale,
                     )}
                   </h2>
 
                   <p className="mt-5 leading-7 text-[#d6ddd6]">
                     {getLocalizedText(
                       profile.premiumPreview.introduction,
-                      locale,
+                      resultLocale,
                     )}
                   </p>
 
@@ -635,7 +730,7 @@ export default function PersonalityResultPage() {
                         className="mt-8 inline-flex min-h-12 items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-[#f1eee5] hover:text-[#34483a] disabled:cursor-wait disabled:opacity-70"
                       />
                       <p className="mt-3 max-w-xl text-sm leading-6 text-[#c9d1c9]">
-                        {locale === "zh"
+                        {resultLocale === "zh"
                           ? "基础测试可随时免费重测。每次新的完整报告需单独购买；已购买报告永久保留。"
                           : "Free retakes anytime. Each new Premium Report is purchased separately; previously purchased reports remain available permanently."}
                       </p>
@@ -657,7 +752,7 @@ export default function PersonalityResultPage() {
                     >
                       {getLocalizedText(
                         profile.premiumPreview.callToAction,
-                        locale,
+                        resultLocale,
                       )}
                     </button>
                   )}
@@ -679,14 +774,14 @@ export default function PersonalityResultPage() {
                         <h3 className="font-semibold">
                           {getLocalizedText(
                             section.title,
-                            locale,
+                            resultLocale,
                           )}
                         </h3>
 
                         <p className="mt-3 text-sm leading-6 text-[#d6ddd6]">
                           {getLocalizedText(
                             section.description,
-                            locale,
+                            resultLocale,
                           )}
                         </p>
                       </article>
@@ -703,14 +798,14 @@ export default function PersonalityResultPage() {
           primary={{
             href: "/personality/test",
             label:
-              locale === "zh"
+              resultLocale === "zh"
                 ? "重新进行人格测评"
                 : "Retake personality assessment",
           }}
           secondary={{
             href: "/personality",
             label:
-              locale === "zh"
+              resultLocale === "zh"
                 ? "返回人格测评首页"
                 : "Personality overview",
           }}
