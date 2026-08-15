@@ -3,6 +3,7 @@
 import Link from "next/link";
 import {
   useParams,
+  useSearchParams,
 } from "next/navigation";
 
 import {
@@ -140,6 +141,18 @@ export default function PersonalityReportPage() {
     locale,
   } = useLocale();
 
+  const searchParams =
+    useSearchParams();
+
+  const requestedLocale =
+    searchParams.get("locale");
+
+  const requestLocale =
+    requestedLocale === "en" ||
+    requestedLocale === "zh"
+      ? requestedLocale
+      : locale;
+
   const storageKey =
     `innergeodessa-result-${sessionId}`;
 
@@ -224,9 +237,12 @@ export default function PersonalityReportPage() {
                     "application/json",
                 },
                 body:
-                  JSON.stringify(
-                    previewResult,
-                  ),
+                  JSON.stringify({
+                    result:
+                      previewResult,
+                    locale:
+                      requestLocale,
+                  }),
                 cache: "no-store",
               },
             );
@@ -257,6 +273,7 @@ export default function PersonalityReportPage() {
           nextDelivery =
             await fetchFixedPersonalityReport(
               sessionId,
+              requestLocale,
             );
         }
 
@@ -331,13 +348,14 @@ export default function PersonalityReportPage() {
     };
   }, [
     isPreviewSession,
+    requestLocale,
     sessionId,
     storedResult,
   ]);
 
   const reportLocale =
     delivery?.locale ??
-    locale;
+    requestLocale;
 
   const dictionary =
     getPersonalityReportDictionary(

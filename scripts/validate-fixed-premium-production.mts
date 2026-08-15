@@ -369,7 +369,6 @@ const unlockedAccess = {
 const persistedResult = {
   sessionId: SESSION_ID,
   status: "completed",
-  language: "zh",
   type: "INTJ",
 
   scores: {
@@ -409,7 +408,7 @@ async function invokeRoute():
   Promise<Response> {
   return getFixedPremiumReport(
     new Request(
-      `http://localhost/api/account/personality-report/${SESSION_ID}`,
+      `http://localhost/api/account/personality-report/${SESSION_ID}?locale=zh`,
       {
         headers: {
           Cookie:

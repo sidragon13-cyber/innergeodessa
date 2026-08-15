@@ -85,21 +85,40 @@ export async function POST(
     );
   }
 
+  const previewRequest =
+    typeof input === "object" &&
+    input !== null
+      ? input as {
+          result?: unknown;
+          locale?: unknown;
+        }
+      : null;
+
+  const reportResult =
+    previewRequest?.result;
+
+  const reportLocale =
+    previewRequest?.locale;
+
   if (
     !isPersonalityResultContract(
-      input,
+      reportResult,
     ) ||
-    input.sessionId !==
+    reportResult.sessionId !==
       sessionId ||
-    input.questionBankVersion !==
-      "preview"
+    reportResult.questionBankVersion !==
+      "preview" ||
+    (
+      reportLocale !== "en" &&
+      reportLocale !== "zh"
+    )
   ) {
     return jsonResponse(
       {
         code:
           "invalid-preview-result",
         detail:
-          "The preview result does not satisfy the personality result contract.",
+          "The preview report request does not satisfy the required result and locale contract.",
       },
       400,
     );
@@ -107,23 +126,23 @@ export async function POST(
 
   const payload =
     buildFixedPersonalityReportPayload(
-      input.type,
+      reportResult.type,
       createReportDimensions(
-        input,
+        reportResult,
       ),
-      input.language,
+      reportLocale,
     );
 
   return jsonResponse(
     {
       sessionId:
-        input.sessionId,
+        reportResult.sessionId,
 
       locale:
-        input.language,
+        reportLocale,
 
       generatedAt:
-        input.calculatedAt,
+        reportResult.calculatedAt,
 
       report:
         payload,

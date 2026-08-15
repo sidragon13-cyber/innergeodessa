@@ -44,7 +44,6 @@ export default function PersonalityPreviewPage() {
     const previewResult: PersonalityResultContract = {
       sessionId,
       status: "completed",
-      language: previewLocale,
       type: profile.type,
       scores: {
         EI: profile.type[0] === "E" ? 8 : -8,
@@ -77,8 +76,8 @@ export default function PersonalityPreviewPage() {
 
     const destination =
       searchParams.get("report") === "1"
-        ? `/personality/report/${sessionId}`
-        : `/personality/result/${sessionId}`;
+        ? `/personality/report/${sessionId}?locale=${previewLocale}`
+        : `/personality/result/${sessionId}?locale=${previewLocale}`;
 
     router.replace(destination);
   }, [locale, personalityType, profile, router, searchParams]);

@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import {
+  useParams,
+  useSearchParams,
+} from "next/navigation";
 import {
   useEffect,
   useState,
@@ -145,6 +148,7 @@ export default function PersonalityResultPage() {
   const params = useParams<{ sessionId: string }>();
   const sessionId = params.sessionId;
   const { locale } = useLocale();
+  const searchParams = useSearchParams();
   const storageKey = `innergeodessa-result-${sessionId}`;
   const storedResult = useSyncExternalStore(
     subscribeToSessionStorage,
@@ -260,7 +264,16 @@ export default function PersonalityResultPage() {
   }, [sessionId, storageKey]);
 
   const displayResult = result ?? cachedResult;
-  const resultLocale = displayResult?.language ?? locale;
+
+  const requestedLocale =
+    searchParams.get("locale");
+
+  const resultLocale =
+    requestedLocale === "en" ||
+    requestedLocale === "zh"
+      ? requestedLocale
+      : locale;
+
   const dictionary =
     getPersonalityResultDictionary(resultLocale);
 

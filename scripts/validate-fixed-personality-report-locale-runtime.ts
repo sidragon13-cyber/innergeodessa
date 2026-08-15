@@ -238,16 +238,40 @@ const previewRoute =
     "utf8",
   );
 
+assert.doesNotMatch(
+  accountRoute,
+  /resultData\.language/,
+  "Account report API must not read locale from PersonalityResultContract.",
+);
+
 assert.match(
   accountRoute,
-  /buildFixedPersonalityReportPayload\(\s*resultData\.type,\s*createReportDimensions\(\s*resultData,\s*\),\s*resultData\.language,\s*\)/,
-  "Account report API must forward resultData.language into the fixed report payload.",
+  /searchParams\.get\(\s*["']locale["']\s*\)/,
+  "Account report API must read locale from the report request.",
+);
+
+assert.match(
+  accountRoute,
+  /buildFixedPersonalityReportPayload\([\s\S]*?resultData\.type,[\s\S]*?createReportDimensions\([\s\S]*?resultData,[\s\S]*?\),[\s\S]*?reportLocale,[\s\S]*?\)/,
+  "Account report API must forward reportLocale into the fixed report payload.",
+);
+
+assert.doesNotMatch(
+  previewRoute,
+  /input\.language/,
+  "Preview report API must not read locale from PersonalityResultContract.",
 );
 
 assert.match(
   previewRoute,
-  /buildFixedPersonalityReportPayload\(\s*input\.type,\s*createReportDimensions\(\s*input,\s*\),\s*input\.language,\s*\)/,
-  "Preview report API must forward input.language into the fixed report payload.",
+  /locale/,
+  "Preview report API must receive locale separately from the assessment result.",
+);
+
+assert.match(
+  previewRoute,
+  /buildFixedPersonalityReportPayload\([\s\S]*?createReportDimensions\([\s\S]*?reportResult[\s\S]*?\),[\s\S]*?reportLocale,[\s\S]*?\)/,
+  "Preview report API must forward separate reportResult and reportLocale inputs.",
 );
 
 console.log("ACCOUNT_API_LOCALE=PASS");

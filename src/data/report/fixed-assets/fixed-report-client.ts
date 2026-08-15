@@ -89,12 +89,13 @@ export class FixedPersonalityReportRequestError
 
 export async function fetchFixedPersonalityReport(
   sessionId: string,
+  locale: SupportedLocale,
 ): Promise<FixedPersonalityReportDelivery> {
   const response =
     await fetch(
       `/api/account/personality-report/${encodeURIComponent(
         sessionId,
-      )}`,
+      )}?locale=${encodeURIComponent(locale)}`,
       {
         method: "GET",
         cache: "no-store",

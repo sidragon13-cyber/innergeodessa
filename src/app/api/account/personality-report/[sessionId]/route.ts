@@ -52,6 +52,26 @@ export async function GET(
       );
     }
 
+    const requestedLocale =
+      new URL(request.url).searchParams.get("locale");
+
+    if (
+      requestedLocale !== null &&
+      requestedLocale !== "en" &&
+      requestedLocale !== "zh"
+    ) {
+      return errorResponse(
+        "invalid-request",
+        "The personality report locale is invalid.",
+        400,
+      );
+    }
+
+    const reportLocale =
+      requestedLocale === "en"
+        ? "en"
+        : "zh";
+
     const backendHeaders =
       createBackendHeaders(
         request,
@@ -168,7 +188,7 @@ export async function GET(
         createReportDimensions(
           resultData,
         ),
-        resultData.language,
+        reportLocale,
       );
 
     return jsonResponse(
@@ -177,7 +197,7 @@ export async function GET(
           resultData.sessionId,
 
         locale:
-          resultData.language,
+          reportLocale,
 
         generatedAt:
           resultData.calculatedAt,
