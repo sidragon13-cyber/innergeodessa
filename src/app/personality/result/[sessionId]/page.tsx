@@ -144,6 +144,13 @@ function getFailureState(error: unknown): ResultLoadState {
   return "error";
 }
 
+const POST_PAYMENT_ACCESS_RETRY_DELAYS_MS = [
+  0,
+  1000,
+  2500,
+  5000,
+] as const;
+
 export default function PersonalityResultPage() {
   const params = useParams<{ sessionId: string }>();
   const sessionId = params.sessionId;
@@ -745,6 +752,21 @@ export default function PersonalityResultPage() {
                     <>
                       <PaddleCheckoutButton
                         resourceId={sessionId}
+                        onCompleted={() => {
+                          setPremiumAccess("loading");
+
+                          for (
+                            const delay of
+                            POST_PAYMENT_ACCESS_RETRY_DELAYS_MS
+                          ) {
+                            window.setTimeout(() => {
+                              setPremiumAccessRevision(
+                                (revision) =>
+                                  revision + 1,
+                              );
+                            }, delay);
+                          }
+                        }}
                         label={dictionary.premium.viewCompleteReport(
                           displayResult.type,
                         )}

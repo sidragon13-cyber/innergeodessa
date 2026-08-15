@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { initializePaddle, type Paddle } from "@paddle/paddle-js";
+import {
+  CheckoutEventNames,
+  initializePaddle,
+  type Paddle,
+} from "@paddle/paddle-js";
 
 let paddlePromise: Promise<Paddle | undefined> | null = null;
 
@@ -28,11 +32,13 @@ export function PaddleCheckoutButton({
   module = "personality",
   className = "legal-purchase-button",
   label = "Buy Premium Report — $7.99",
+  onCompleted,
 }: {
   resourceId: string;
   module?: "personality" | "career" | "zodiac";
   className?: string;
   label?: string;
+  onCompleted?: () => void;
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -57,6 +63,17 @@ export function PaddleCheckoutButton({
       if (!paddle) {
         throw new Error("Paddle failed to initialize");
       }
+
+      paddle.Update({
+        eventCallback: (event) => {
+          if (
+            event.name ===
+            CheckoutEventNames.CHECKOUT_COMPLETED
+          ) {
+            onCompleted?.();
+          }
+        },
+      });
 
       paddle.Checkout.open({
         items: [
