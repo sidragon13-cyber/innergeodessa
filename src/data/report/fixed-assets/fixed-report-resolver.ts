@@ -14,6 +14,10 @@ import {
   type PersonalityReportProfile,
 } from "../generator/profile-resolver";
 import {
+  resolvePreferenceBandVariableForLocale,
+  type PersonalityReportLocale,
+} from "../shared/preference-band-locale";
+import {
   FIXED_PERSONALITY_REPORT_MARKDOWN,
 } from "./generated-report-markdown";
 
@@ -38,6 +42,7 @@ export interface ResolvedFixedPersonalityReport {
 export function resolveFixedPersonalityReport(
   personalityType: PersonalityTypeCode,
   dimensions: Record<DimensionCode, DimensionResult>,
+  locale: PersonalityReportLocale = "zh",
 ): ResolvedFixedPersonalityReport {
   const preferenceBandVariables =
     resolvePersonalityPreferenceBandVariables(
@@ -52,18 +57,20 @@ export function resolveFixedPersonalityReport(
 
   const asset =
     FIXED_PERSONALITY_REPORT_MARKDOWN[
-      personalityType
-    ][profile];
+      locale
+    ][personalityType][profile];
 
   const markdown = substituteReportVariables(
     asset.markdown,
     preferenceBandVariables,
+    locale,
   );
 
   assertResolvedReportIdentity(
     markdown,
     personalityType,
     profile,
+    locale,
   );
 
   assertNoUnresolvedVariables(markdown);
@@ -81,6 +88,7 @@ export function resolveFixedPersonalityReport(
 function substituteReportVariables(
   markdown: string,
   variables: PersonalityPreferenceBandVariables,
+  locale: PersonalityReportLocale,
 ): string {
   let resolved = markdown;
 
@@ -93,6 +101,13 @@ function substituteReportVariables(
     const variable = variables[dimension];
     const direction = variable.direction;
 
+    const localizedVariable =
+      resolvePreferenceBandVariableForLocale(
+        direction,
+        variable.clarity,
+        locale,
+      );
+
     const replacements: Readonly<
       Record<string, string>
     > = {
@@ -100,10 +115,13 @@ function substituteReportVariables(
         formatClarity(variable.clarity),
 
       [`{{${direction}_BAND_CN}}`]:
-        variable.bandLabelZh,
+        localizedVariable.bandLabel,
+
+      [`{{${direction}_BAND_EN}}`]:
+        localizedVariable.bandLabel,
 
       [`{{${direction}_BAND_BLOCK}}`]:
-        variable.content,
+        localizedVariable.content,
     };
 
     for (const [
@@ -137,10 +155,16 @@ function assertResolvedReportIdentity(
   markdown: string,
   personalityType: PersonalityTypeCode,
   profile: PersonalityReportProfile,
+  locale: PersonalityReportLocale,
 ): void {
+  const expectedTitle =
+    locale === "zh"
+      ? `InnerGeo ${personalityType} 专业人格报告`
+      : `InnerGeo ${personalityType} Professional Personality Report`;
+
   if (
     !markdown.includes(
-      `InnerGeo ${personalityType} 专业人格报告`,
+      expectedTitle,
     )
   ) {
     throw new Error(
@@ -164,7 +188,7 @@ function assertNoUnresolvedVariables(
 ): void {
   const unresolved =
     markdown.match(
-      /\{\{[A-Z]+_(?:SCORE|BAND_CN|BAND_BLOCK)\}\}/g,
+      /\{\{[A-Z]+_(?:SCORE|BAND_CN|BAND_EN|BAND_BLOCK)\}\}/g,
     );
 
   if (unresolved?.length) {

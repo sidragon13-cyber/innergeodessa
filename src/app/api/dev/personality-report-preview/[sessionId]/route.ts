@@ -111,6 +111,7 @@ export async function POST(
       createReportDimensions(
         input,
       ),
+      input.language,
     );
 
   return jsonResponse(

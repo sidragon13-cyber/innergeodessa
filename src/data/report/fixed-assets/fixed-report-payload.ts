@@ -12,6 +12,10 @@ import type {
 } from "../shared/preference-clarity";
 
 import type {
+  PersonalityReportLocale,
+} from "../shared/preference-band-locale";
+
+import type {
   PersonalityPreferenceBandVariables,
 } from "../generator/preference-band-variables";
 
@@ -128,11 +132,15 @@ export function buildFixedPersonalityReportPayload(
       DimensionCode,
       DimensionResult
     >,
+
+  locale:
+    PersonalityReportLocale = "zh",
 ): FixedPersonalityReportPayload {
   const resolved =
     resolveFixedPersonalityReport(
       personalityType,
       dimensions,
+      locale,
     );
 
   const richDocument =

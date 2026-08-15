@@ -168,6 +168,7 @@ export async function GET(
         createReportDimensions(
           resultData,
         ),
+        resultData.language,
       );
 
     return jsonResponse(

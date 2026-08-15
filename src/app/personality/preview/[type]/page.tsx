@@ -34,10 +34,17 @@ export default function PersonalityPreviewPage() {
     const sessionId =
       `preview-${personalityType.toLowerCase()}`;
 
+    const previewLocale =
+      searchParams.get("locale") === "en"
+        ? "en"
+        : searchParams.get("locale") === "zh"
+          ? "zh"
+          : locale;
+
     const previewResult: PersonalityResultContract = {
       sessionId,
       status: "completed",
-      language: locale,
+      language: previewLocale,
       type: profile.type,
       scores: {
         EI: profile.type[0] === "E" ? 8 : -8,

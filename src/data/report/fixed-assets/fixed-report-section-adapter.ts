@@ -50,13 +50,18 @@ const CANONICAL_SECTIONS:
       id: "data-summary",
       matches: (title) =>
         title ===
-        "数据摘要｜Data Summary",
+          "数据摘要｜Data Summary" ||
+        title ===
+          "Data Summary",
     },
     {
       id: "core-personality-profile",
       matches: (title) =>
         title.startsWith(
           "01｜核心人格画像",
+        ) ||
+        title.startsWith(
+          "01｜Core Personality Profile",
         ),
     },
     {
@@ -64,6 +69,9 @@ const CANONICAL_SECTIONS:
       matches: (title) =>
         title.startsWith(
           "02｜思维与决策结构",
+        ) ||
+        title.startsWith(
+          "02｜Thinking & Decision Structure",
         ),
     },
     {
@@ -71,6 +79,9 @@ const CANONICAL_SECTIONS:
       matches: (title) =>
         title.startsWith(
           "03｜你的个人维度结构",
+        ) ||
+        title.startsWith(
+          "03｜Your Preference Dimension Structure",
         ),
     },
     {
@@ -79,6 +90,9 @@ const CANONICAL_SECTIONS:
       matches: (title) =>
         title.startsWith(
           "04｜核心特征、环境与潜在盲点",
+        ) ||
+        title.startsWith(
+          "04｜Core Characteristics, Environments & Potential Blind Spots",
         ),
     },
     {
@@ -87,6 +101,9 @@ const CANONICAL_SECTIONS:
       matches: (title) =>
         title.startsWith(
           "05｜职业、学习与亲密关系适配",
+        ) ||
+        title.startsWith(
+          "05｜Career, Learning & Close Relationships",
         ),
     },
     {
@@ -95,6 +112,9 @@ const CANONICAL_SECTIONS:
       matches: (title) =>
         title.startsWith(
           "06｜未来环境与发展方向",
+        ) ||
+        title.startsWith(
+          "06｜Future Environments & Development Direction",
         ),
     },
     {
@@ -102,6 +122,9 @@ const CANONICAL_SECTIONS:
       matches: (title) =>
         title.startsWith(
           "07｜机会与能力地图",
+        ) ||
+        title.startsWith(
+          "07｜Opportunity & Capability Map",
         ),
     },
     {
@@ -109,6 +132,9 @@ const CANONICAL_SECTIONS:
       matches: (title) =>
         title.startsWith(
           "08｜个人未来地图",
+        ) ||
+        title.startsWith(
+          "08｜Personal Future Map",
         ),
     },
     {
@@ -116,17 +142,22 @@ const CANONICAL_SECTIONS:
       matches: (title) =>
         title.startsWith(
           "09｜如何正确理解这份报告",
+        ) ||
+        title.startsWith(
+          "09｜How to Read This Report",
         ),
     },
     {
       id: "conclusion",
       matches: (title) =>
-        title === "最终结论",
+        title === "最终结论" ||
+        title === "Conclusion",
     },
     {
       id: "disclaimer",
       matches: (title) =>
-        title === "免责声明",
+        title === "免责声明" ||
+        title === "Disclaimer",
     },
     {
       id: "appendix",
