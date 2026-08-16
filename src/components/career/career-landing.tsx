@@ -150,21 +150,25 @@ export function CareerLanding() {
 
       <Container
         as="section"
-        className="career-context"
+        size="wide"
+        className={styles.contextSection}
       >
-        <div className="career-context-heading">
-          <p className="eyebrow">
-            {dictionary.context.eyebrow}
-          </p>
-          <h2>{dictionary.context.title}</h2>
-        </div>
+        <div className={styles.contextGrid}>
+          <div className={styles.contextHeading}>
+            <p className="eyebrow">
+              {dictionary.context.eyebrow}
+            </p>
 
-        <div className="career-context-copy">
-          {dictionary.context.paragraphs.map(
-            (paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ),
-          )}
+            <h2>{dictionary.context.title}</h2>
+          </div>
+
+          <div className={styles.contextCopy}>
+            {dictionary.context.paragraphs.map(
+              (paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ),
+            )}
+          </div>
         </div>
       </Container>
 

@@ -108,11 +108,11 @@ export const careerLandingDictionaries: Record<
     },
 
     context: {
-      eyebrow: "Look beyond the title",
-      title: "Why career interests matter",
+      eyebrow: "Why interests matter",
+      title: "Career direction starts before the job title.",
       paragraphs: [
-        "Career decisions are shaped by more than job titles. Sustained interest often grows from the activities you enjoy, the problems you want to solve, and the environments where your attention feels naturally engaged.",
-        "You may prefer working with people, systems, ideas, creativity, structure, or practical action—and those interests may develop over time. A useful career direction also considers skills, values, opportunities, education, circumstances, and real-world experience.",
+        "Career-interest assessment focuses not on one job that is best for you, but on the activities, problems and environments that are more likely to keep you engaged.",
+        "Understanding these interest signals can help you explore career fields, work environments and development paths with more direction.",
       ],
     },
 
@@ -308,11 +308,11 @@ export const careerLandingDictionaries: Record<
     },
 
     context: {
-      eyebrow: "不只看职业名称",
-      title: "为什么职业兴趣很重要",
+      eyebrow: "为什么先理解兴趣",
+      title: "职业方向，不只是从职位名称开始。",
       paragraphs: [
-        "职业决定并不只是由职位名称决定。持续的兴趣往往来自你喜欢参与的活动、希望解决的问题，以及能够让你自然投入注意力的环境。",
-        "你可能更喜欢与人、系统、思想、创意、结构或实际行动打交道，而这些兴趣也会随时间发展。适合的职业方向还需要综合技能、价值观、机会、教育背景、现实条件和实际经验。",
+        "职业兴趣测评关注的，不是“哪一个职业最适合你”，而是哪些活动、问题与环境更容易让你愿意持续投入。",
+        "理解这些兴趣线索，可以帮助你更有方向地探索职业领域、工作环境与发展路径。",
       ],
     },
 

@@ -315,6 +315,70 @@
   bottom: 10%;
 }
 
+.contextSection {
+  padding-top: 0;
+  padding-bottom: clamp(78px, 8vw, 108px);
+}
+
+.contextGrid {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 0.9fr)
+    minmax(0, 1.1fr);
+  gap: clamp(54px, 7vw, 96px);
+  align-items: start;
+  padding:
+    clamp(42px, 4.5vw, 58px)
+    clamp(44px, 5vw, 68px);
+  border: 1.5px solid
+    var(--brand-border, #ddd8cf);
+  border-radius: 24px;
+  background:
+    rgba(255, 255, 255, 0.58);
+}
+
+.contextHeading h2 {
+  max-width: 470px;
+  margin: 14px 0 0;
+  color:
+    var(--brand-text, #3d3a38);
+  font-family:
+    var(
+      --font-display,
+      "Source Serif 4",
+      Georgia,
+      serif
+    );
+  font-size:
+    clamp(34px, 3.2vw, 46px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.contextCopy {
+  display: grid;
+  gap: 18px;
+  max-width: 620px;
+  padding-top: 4px;
+}
+
+.contextCopy p {
+  margin: 0;
+  color:
+    var(--brand-text-secondary, #6f706f);
+  font-size: 15.5px;
+  line-height: 1.78;
+}
+
+.contextCopy p:first-child {
+  color:
+    var(--brand-text, #3d3a38);
+  font-size: 17px;
+  line-height: 1.72;
+}
+
 @media (max-width: 1050px) {
   .heroGrid {
     grid-template-columns:
@@ -339,6 +403,16 @@
 }
 
 @media (max-width: 900px) {
+  .contextGrid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 42px 38px;
+  }
+
+  .contextCopy {
+    max-width: 720px;
+  }
+
   .hero {
     padding-top: 30px;
     padding-bottom: 72px;
@@ -371,6 +445,28 @@
 }
 
 @media (max-width: 620px) {
+  .contextSection {
+    padding-bottom: 60px;
+  }
+
+  .contextGrid {
+    gap: 24px;
+    padding: 34px 24px;
+    border-radius: 20px;
+  }
+
+  .contextHeading h2 {
+    font-size: 34px;
+  }
+
+  .contextCopy p {
+    font-size: 14.5px;
+  }
+
+  .contextCopy p:first-child {
+    font-size: 15.5px;
+  }
+
   .hero {
     padding-top: 20px;
     padding-bottom: 58px;
