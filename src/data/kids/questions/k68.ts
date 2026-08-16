@@ -113,7 +113,16 @@ export const k68Questions = [
       en: "Would you enjoy showing another child how to do something you understand?",
       zh: "你会喜欢把自己会做的事情教给另一个小朋友吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K68-CONNECT-01",
+      masterPath: "/assets/kids/k68/helpful/K68-CONNECT-01-v1.png",
+      displayPath: "/assets/kids/k68/helpful/K68-CONNECT-01-v1.png",
+      alt: {
+        en: "Would you enjoy showing another child how to do something you understand?",
+        zh: "你会喜欢把自己会做的事情教给另一个小朋友吗？",
+      },
+    },
   },
   {
     id: "kids-k68-lead-01",
@@ -196,7 +205,16 @@ export const k68Questions = [
       en: "Would you enjoy trying two different ways to see which one works?",
       zh: "你会喜欢尝试两种不同的方法，看看哪一种会成功吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K68-DISCOVER-02",
+      masterPath: "/assets/kids/k68/helpful/K68-DISCOVER-02-v1.png",
+      displayPath: "/assets/kids/k68/helpful/K68-DISCOVER-02-v1.png",
+      alt: {
+        en: "Would you enjoy trying two different ways to see which one works?",
+        zh: "你会喜欢尝试两种不同的方法，看看哪一种会成功吗？",
+      },
+    },
   },
   {
     id: "kids-k68-build-02",
@@ -256,7 +274,16 @@ export const k68Questions = [
       en: "Would you enjoy working with someone so both of you can finish a task?",
       zh: "你会喜欢和另一个人一起合作，把一件事情完成吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K68-CONNECT-02",
+      masterPath: "/assets/kids/k68/helpful/K68-CONNECT-02-v1.png",
+      displayPath: "/assets/kids/k68/helpful/K68-CONNECT-02-v1.png",
+      alt: {
+        en: "Would you enjoy working with someone so both of you can finish a task?",
+        zh: "你会喜欢和另一个人一起合作，把一件事情完成吗？",
+      },
+    },
   },
   {
     id: "kids-k68-lead-02",
@@ -270,7 +297,16 @@ export const k68Questions = [
       en: "Would you enjoy helping a group choose who will do each part of a shared activity?",
       zh: "你会喜欢帮助一个小组决定大家在共同活动中分别做哪一部分吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K68-LEAD-02",
+      masterPath: "/assets/kids/k68/helpful/K68-LEAD-02-v1.png",
+      displayPath: "/assets/kids/k68/helpful/K68-LEAD-02-v1.png",
+      alt: {
+        en: "Would you enjoy helping a group choose who will do each part of a shared activity?",
+        zh: "你会喜欢帮助一个小组决定大家在共同活动中分别做哪一部分吗？",
+      },
+    },
   },
   {
     id: "kids-k68-move-03",
@@ -330,7 +366,16 @@ export const k68Questions = [
       en: "Would you enjoy inventing a new creature or character?",
       zh: "你会喜欢自己想出一种新的动物或角色吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K68-CREATE-02",
+      masterPath: "/assets/kids/k68/helpful/K68-CREATE-02-v1.png",
+      displayPath: "/assets/kids/k68/helpful/K68-CREATE-02-v1.png",
+      alt: {
+        en: "Would you enjoy inventing a new creature or character?",
+        zh: "你会喜欢自己想出一种新的动物或角色吗？",
+      },
+    },
   },
   {
     id: "kids-k68-build-03",
@@ -367,7 +412,16 @@ export const k68Questions = [
       en: "Would you enjoy sorting things using a rule you discovered?",
       zh: "你会喜欢按照自己发现的规律给一些东西分类吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "required",
+      assetId: "K68-THINK-03",
+      masterPath: "/assets/kids/k68/required/K68-THINK-03-v1.png",
+      displayPath: "/assets/kids/k68/required/K68-THINK-03-v1.png",
+      alt: {
+        en: "Would you enjoy sorting things using a rule you discovered?",
+        zh: "你会喜欢按照自己发现的规律给一些东西分类吗？",
+      },
+    },
   },
   {
     id: "kids-k68-connect-03",
@@ -542,7 +596,16 @@ export const k68Questions = [
       en: "Would you enjoy helping two people understand each other's ideas?",
       zh: "你会喜欢帮助两个人理解彼此的想法吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K68-CONNECT-05",
+      masterPath: "/assets/kids/k68/helpful/K68-CONNECT-05-v1.png",
+      displayPath: "/assets/kids/k68/helpful/K68-CONNECT-05-v1.png",
+      alt: {
+        en: "Would you enjoy helping two people understand each other's ideas?",
+        zh: "你会喜欢帮助两个人理解彼此的想法吗？",
+      },
+    },
   },
   {
     id: "kids-k68-lead-05",
@@ -556,7 +619,16 @@ export const k68Questions = [
       en: "Would you enjoy starting a small project and inviting other people to join?",
       zh: "你会喜欢发起一个小项目，并邀请其他人一起参加吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K68-LEAD-05",
+      masterPath: "/assets/kids/k68/helpful/K68-LEAD-05-v1.png",
+      displayPath: "/assets/kids/k68/helpful/K68-LEAD-05-v1.png",
+      alt: {
+        en: "Would you enjoy starting a small project and inviting other people to join?",
+        zh: "你会喜欢发起一个小项目，并邀请其他人一起参加吗？",
+      },
+    },
   },
   {
     id: "kids-k68-move-06",
@@ -593,7 +665,16 @@ export const k68Questions = [
       en: "Would you enjoy making a short message, story, picture sequence, or performance to explain something?",
       zh: "你会喜欢用短消息、故事、连续图画或表演来说明一件事情吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K68-EXPRESS-05",
+      masterPath: "/assets/kids/k68/helpful/K68-EXPRESS-05-v1.png",
+      displayPath: "/assets/kids/k68/helpful/K68-EXPRESS-05-v1.png",
+      alt: {
+        en: "Would you enjoy making a short message, story, picture sequence, or performance to explain something?",
+        zh: "你会喜欢用短消息、故事、连续图画或表演来说明一件事情吗？",
+      },
+    },
   },
   {
     id: "kids-k68-create-05",
@@ -630,7 +711,16 @@ export const k68Questions = [
       en: "Would you enjoy finding out what makes something move, grow, or change?",
       zh: "你会喜欢弄清楚是什么让一个东西移动、生长或发生变化吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K68-DISCOVER-04",
+      masterPath: "/assets/kids/k68/helpful/K68-DISCOVER-04-v1.png",
+      displayPath: "/assets/kids/k68/helpful/K68-DISCOVER-04-v1.png",
+      alt: {
+        en: "Would you enjoy finding out what makes something move, grow, or change?",
+        zh: "你会喜欢弄清楚是什么让一个东西移动、生长或发生变化吗？",
+      },
+    },
   },
   {
     id: "kids-k68-build-06",
