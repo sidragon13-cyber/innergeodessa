@@ -58,7 +58,10 @@ export type CareerLandingDictionary = {
     eyebrow: string;
     title: string;
     description: string;
-    items: readonly string[];
+    items: readonly {
+      title: string;
+      description: string;
+    }[];
   };
 
   disclaimer: {
@@ -229,16 +232,31 @@ export const careerLandingDictionaries: Record<
     },
 
     guidance: {
-      eyebrow: "Assessment guidance",
-      title: "Answer from genuine interest",
+      eyebrow: "Before you begin",
+      title: "Answer according to what genuinely interests you.",
       description:
-        "Curiosity is different from competence. Consider what draws you in, even when you are still learning.",
+        "You do not need to choose the more prestigious career answer, and you do not need to judge your interests by your current skill level.",
       items: [
-        "Answer according to genuine interest, not social expectations.",
-        "Distinguish what you enjoy from what you are already good at.",
-        "Avoid choosing answers only because a career seems prestigious or profitable.",
-        "Think across school, work, hobbies, projects, and daily life.",
-        "Use the result as evidence for reflection rather than a final decision.",
+        {
+          title: "Answer what interests you",
+          description:
+            "Choose based on the activities and questions that genuinely draw your attention.",
+        },
+        {
+          title: "Do not answer what seems more prestigious",
+          description:
+            "Avoid shaping answers around status, income, or a career image you think you should prefer.",
+        },
+        {
+          title: "Do not answer by current skill level",
+          description:
+            "Interest and current competence are different questions. You can be interested in something you are still learning.",
+        },
+        {
+          title: "Interests can change with experience",
+          description:
+            "Your result reflects your current response pattern and may evolve as your experiences expand.",
+        },
       ],
     },
 
@@ -419,16 +437,31 @@ export const careerLandingDictionaries: Record<
     },
 
     guidance: {
-      eyebrow: "作答指导",
-      title: "根据真实兴趣作答",
+      eyebrow: "开始之前",
+      title: "按照真正吸引你的活动作答。",
       description:
-        "兴趣和能力并不完全相同。即使你仍在学习，也应考虑哪些事情能够真正吸引你。",
+        "不需要选择更体面的职业答案，也不需要按照当前技能高低来判断自己的兴趣。",
       items: [
-        "根据真实兴趣作答，而不是迎合社会期待。",
-        "区分你喜欢做的事情和你目前已经擅长的事情。",
-        "不要只因为某个职业看起来体面或收入较高而选择答案。",
-        "综合考虑学习、工作、兴趣爱好、个人项目和日常生活。",
-        "把结果作为反思依据，而不是最终职业决定。",
+        {
+          title: "回答“我感兴趣什么”",
+          description:
+            "依据真正能够吸引你注意力的活动、问题和体验作答。",
+        },
+        {
+          title: "不要回答“什么职业更体面”",
+          description:
+            "不要因为社会地位、收入或理想职业形象而改变自己的真实答案。",
+        },
+        {
+          title: "不要按当前技能高低作答",
+          description:
+            "兴趣和当前能力是不同的问题；即使仍在学习，也可能对某个方向有真实兴趣。",
+        },
+        {
+          title: "兴趣可以随着经历变化",
+          description:
+            "结果反映的是你当前回答所呈现的兴趣结构，也可能随着经验增加而发生变化。",
+        },
       ],
     },
 

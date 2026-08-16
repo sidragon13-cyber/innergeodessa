@@ -316,31 +316,44 @@ export function CareerLanding() {
         </div>
       </Container>
 
-      <section className="career-guidance">
-        <Container>
-          <div className="career-section-heading">
-            <div>
-              <p className="eyebrow">
-                {dictionary.guidance.eyebrow}
-              </p>
-              <h2>{dictionary.guidance.title}</h2>
-            </div>
+      <Container
+        as="section"
+        size="wide"
+        className={styles.guidanceSection}
+      >
+        <div className={styles.guidanceHeader}>
+          <div>
+            <p className="eyebrow">
+              {dictionary.guidance.eyebrow}
+            </p>
 
-            <p>{dictionary.guidance.description}</p>
+            <h2>{dictionary.guidance.title}</h2>
           </div>
 
-          <div className="career-guidance-grid">
-            {dictionary.guidance.items.map(
-              (item, index) => (
-                <article key={item}>
-                  <span>0{index + 1}</span>
-                  <p>{item}</p>
-                </article>
-              ),
-            )}
-          </div>
-        </Container>
-      </section>
+          <p className={styles.guidanceIntro}>
+            {dictionary.guidance.description}
+          </p>
+        </div>
+
+        <div className={styles.guidanceGrid}>
+          {dictionary.guidance.items.map(
+            (item, index) => (
+              <article
+                className={styles.guidanceCard}
+                key={item.title}
+              >
+                <span className={styles.guidanceIndex}>
+                  0{index + 1}
+                </span>
+
+                <h3>{item.title}</h3>
+
+                <p>{item.description}</p>
+              </article>
+            ),
+          )}
+        </div>
+      </Container>
 
       <section className="career-disclaimer">
         <Container className="career-disclaimer-inner">
