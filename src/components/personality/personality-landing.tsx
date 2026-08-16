@@ -147,48 +147,58 @@ export function PersonalityLanding() {
       <Container
         as="section"
         id="dimensions"
-        className="dimensions-section"
+        size="wide"
+        className={styles.dimensionsSection}
       >
-        <div className="personality-section-heading">
-          <p className="eyebrow">
-            {dictionary.dimensions.eyebrow}
-          </p>
+        <div className={styles.dimensionsHeading}>
+          <div>
+            <p className={styles.eyebrow}>
+              {dictionary.dimensions.eyebrow}
+            </p>
 
-          <h2>
-            {dictionary.dimensions.title}
-          </h2>
+            <h2>
+              {dictionary.dimensions.title}
+            </h2>
+          </div>
 
-          <p>
+          <p className={styles.dimensionsBoundary}>
             {dictionary.dimensions.description}
           </p>
         </div>
 
-        <div className="dimension-list">
+        <div className={styles.dimensionGrid}>
           {dictionary.dimensions.items.map(
             (dimension) => (
               <article
-                className="dimension-row"
+                className={styles.dimensionCard}
                 key={dimension.number}
               >
-                <span className="dimension-number">
-                  {dimension.number}
-                </span>
+                <div className={styles.dimensionCardTop}>
+                  <span className={styles.dimensionNumber}>
+                    {dimension.number}
+                  </span>
 
-                <div className="dimension-name">
-                  <p>{dimension.name}</p>
-                  <h3>{dimension.spectrum}</h3>
+                  <span className={styles.dimensionName}>
+                    {dimension.name}
+                  </span>
                 </div>
 
-                <p className="dimension-description">
+                <h3>{dimension.spectrum}</h3>
+
+                <p className={styles.dimensionDescription}>
                   {dimension.description}
                 </p>
 
                 <div
-                  className="dimension-initials"
+                  className={styles.dimensionCardAxis}
                   aria-hidden="true"
                 >
                   <span>{dimension.initials[0]}</span>
-                  <i />
+
+                  <div className={styles.dimensionCardTrack}>
+                    <i />
+                  </div>
+
                   <span>{dimension.initials[1]}</span>
                 </div>
               </article>
