@@ -223,32 +223,60 @@ export function CareerLanding() {
 
       <Container
         as="section"
-        className="interest-pattern"
+        size="wide"
+        className={styles.patternSection}
       >
-        <div className="interest-pattern-heading">
-          <p className="eyebrow">
-            {dictionary.pattern.eyebrow}
-          </p>
-          <h2>{dictionary.pattern.title}</h2>
-        </div>
+        <div className={styles.patternGrid}>
+          <div className={styles.patternHeading}>
+            <p className="eyebrow">
+              {dictionary.pattern.eyebrow}
+            </p>
 
-        <div className="pattern-body">
-          <p>{dictionary.pattern.paragraphs[0]}</p>
-
-          <div
-            className="pattern-examples"
-            aria-label={dictionary.pattern.exampleLabel}
-          >
-            <span>{dimensions[1].title}</span>
-            <i>+</i>
-            <span>{dimensions[2].title}</span>
-            <em>{dictionary.pattern.orLabel}</em>
-            <span>{dimensions[4].title}</span>
-            <i>+</i>
-            <span>{dimensions[3].title}</span>
+            <h2>{dictionary.pattern.title}</h2>
           </div>
 
-          <p>{dictionary.pattern.paragraphs[1]}</p>
+          <div className={styles.patternContent}>
+            <p className={styles.patternLead}>
+              {dictionary.pattern.paragraphs[0]}
+            </p>
+
+            <div
+              className={styles.patternExamples}
+              aria-label={dictionary.pattern.exampleLabel}
+            >
+              <article className={styles.patternExample}>
+                <span className={styles.exampleLabel}>
+                  {dictionary.pattern.exampleLabel}
+                </span>
+
+                <div className={styles.exampleCombination}>
+                  <strong>I</strong>
+                  <span>{dimensions[1].title}</span>
+                  <i aria-hidden="true">+</i>
+                  <strong>A</strong>
+                  <span>{dimensions[2].title}</span>
+                </div>
+              </article>
+
+              <article className={styles.patternExample}>
+                <span className={styles.exampleLabel}>
+                  {dictionary.pattern.exampleLabel}
+                </span>
+
+                <div className={styles.exampleCombination}>
+                  <strong>E</strong>
+                  <span>{dimensions[4].title}</span>
+                  <i aria-hidden="true">+</i>
+                  <strong>S</strong>
+                  <span>{dimensions[3].title}</span>
+                </div>
+              </article>
+            </div>
+
+            <p className={styles.patternNote}>
+              {dictionary.pattern.paragraphs[1]}
+            </p>
+          </div>
         </div>
       </Container>
 
@@ -276,26 +304,6 @@ export function CareerLanding() {
           </ol>
         </Container>
       </section>
-
-      <Container
-        as="section"
-        className="beyond-section"
-      >
-        <div className="beyond-heading">
-          <p className="eyebrow">
-            {dictionary.beyond.eyebrow}
-          </p>
-          <h2>{dictionary.beyond.title}</h2>
-        </div>
-
-        <div className="beyond-grid">
-          {dictionary.beyond.paragraphs.map(
-            (paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ),
-          )}
-        </div>
-      </Container>
 
       <section className="career-guidance">
         <Container>

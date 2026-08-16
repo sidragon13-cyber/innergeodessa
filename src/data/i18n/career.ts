@@ -192,13 +192,14 @@ export const careerLandingDictionaries: Record<
     },
 
     pattern: {
-      eyebrow: "Your interest pattern",
-      title: "A combination, not a rigid label",
+      eyebrow: "Interest Pattern",
+      title:
+        "The most useful signal is often the pattern, not one highest score.",
       paragraphs: [
-        "The assessment highlights your strongest interest areas, supporting dimensions, preferred activities, and the environments that may feel energising—or require more deliberate effort.",
-        "Combinations help widen exploration. They are starting points for questions and real-world research, not instructions about the one career you should pursue.",
+        "All six dimensions form your interest profile. The strongest two or three often provide useful clues about the activities, problems, roles and environments worth exploring further.",
+        "The same career field can contain very different kinds of work, and one interest pattern can connect to many occupations. Use combinations as starting points for exploration, not as instructions about one career you must choose.",
       ],
-      exampleLabel: "Example combinations",
+      exampleLabel: "Example",
       orLabel: "or",
     },
 
@@ -386,13 +387,13 @@ export const careerLandingDictionaries: Record<
     },
 
     pattern: {
-      eyebrow: "你的职业兴趣模式",
-      title: "兴趣组合，而不是固定标签",
+      eyebrow: "兴趣组合",
+      title: "真正有价值的，不只是最高的一项兴趣。",
       paragraphs: [
-        "测评会展示你最突出的兴趣领域、辅助维度、偏好的活动，以及哪些环境可能让你更有动力，或需要投入更多有意识的努力。",
-        "兴趣组合能够拓宽职业探索范围。它们是提出问题和开展现实研究的起点，而不是规定你只能从事某一种职业。",
+        "六个维度共同构成你的兴趣结构，其中最突出的两到三个维度，往往更适合作为观察活动类型、问题类型、角色与工作环境的线索。",
+        "同一个职业领域可能包含完全不同的工作内容，而同一种兴趣组合也可以连接多个职业方向。组合用于帮助你提出更好的探索问题，而不是规定唯一职业选择。",
       ],
-      exampleLabel: "兴趣组合示例",
+      exampleLabel: "示例",
       orLabel: "或者",
     },
 
