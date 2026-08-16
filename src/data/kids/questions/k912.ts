@@ -44,7 +44,16 @@ export const k912Questions = [
       en: "Would you enjoy investigating why something unexpected happened instead of accepting the first explanation?",
       zh: "如果发生了一件意外的事情，你会喜欢继续调查原因，而不是马上接受第一个解释吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K912-DISCOVER-01",
+      masterPath: "/assets/kids/k912/helpful/K912-DISCOVER-01-v1.png",
+      displayPath: "/assets/kids/k912/helpful/web/K912-DISCOVER-01-v1.webp",
+      alt: {
+        en: "Would you enjoy investigating why something unexpected happened instead of accepting the first explanation?",
+        zh: "如果发生了一件意外的事情，你会喜欢继续调查原因，而不是马上接受第一个解释吗？",
+      },
+    },
   },
   {
     id: "kids-k912-build-01",
@@ -104,7 +113,16 @@ export const k912Questions = [
       en: "Would you enjoy helping someone understand a topic by explaining it in a way that makes sense to them?",
       zh: "你会喜欢用对方容易理解的方法，帮助别人弄懂一个话题吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K912-CONNECT-01",
+      masterPath: "/assets/kids/k912/helpful/K912-CONNECT-01-v1.png",
+      displayPath: "/assets/kids/k912/helpful/web/K912-CONNECT-01-v1.webp",
+      alt: {
+        en: "Would you enjoy helping someone understand a topic by explaining it in a way that makes sense to them?",
+        zh: "你会喜欢用对方容易理解的方法，帮助别人弄懂一个话题吗？",
+      },
+    },
   },
   {
     id: "kids-k912-lead-01",
@@ -118,7 +136,16 @@ export const k912Questions = [
       en: "Would you enjoy starting a group activity and helping everyone understand how to begin?",
       zh: "你会喜欢发起一个小组活动，并帮助大家弄清楚应该怎样开始吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K912-LEAD-01",
+      masterPath: "/assets/kids/k912/helpful/K912-LEAD-01-v1.png",
+      displayPath: "/assets/kids/k912/helpful/web/K912-LEAD-01-v1.webp",
+      alt: {
+        en: "Would you enjoy starting a group activity and helping everyone understand how to begin?",
+        zh: "你会喜欢发起一个小组活动，并帮助大家弄清楚应该怎样开始吗？",
+      },
+    },
   },
   {
     id: "kids-k912-move-01",
@@ -155,7 +182,16 @@ export const k912Questions = [
       en: "Would you enjoy finding a clear and interesting way to explain an idea to other people?",
       zh: "你会喜欢寻找一种清楚又有意思的方法，把一个想法讲明白给别人听吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K912-EXPRESS-01",
+      masterPath: "/assets/kids/k912/helpful/K912-EXPRESS-01-v1.png",
+      displayPath: "/assets/kids/k912/helpful/web/K912-EXPRESS-01-v1.webp",
+      alt: {
+        en: "Would you enjoy finding a clear and interesting way to explain an idea to other people?",
+        zh: "你会喜欢寻找一种清楚又有意思的方法，把一个想法讲明白给别人听吗？",
+      },
+    },
   },
   {
     id: "kids-k912-discover-03",
@@ -238,7 +274,16 @@ export const k912Questions = [
       en: "Would you enjoy working with someone to help them practise a skill they are trying to improve?",
       zh: "你会喜欢和别人一起练习，帮助他们提升正在学习的一项技能吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K912-CONNECT-02",
+      masterPath: "/assets/kids/k912/helpful/K912-CONNECT-02-v1.png",
+      displayPath: "/assets/kids/k912/helpful/web/K912-CONNECT-02-v1.webp",
+      alt: {
+        en: "Would you enjoy working with someone to help them practise a skill they are trying to improve?",
+        zh: "你会喜欢和别人一起练习，帮助他们提升正在学习的一项技能吗？",
+      },
+    },
   },
   {
     id: "kids-k912-lead-02",
@@ -252,7 +297,16 @@ export const k912Questions = [
       en: "Would you enjoy organising different roles so a group can work toward the same goal?",
       zh: "你会喜欢安排不同的角色，让一个小组可以一起朝同一个目标前进吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K912-LEAD-02",
+      masterPath: "/assets/kids/k912/helpful/K912-LEAD-02-v1.png",
+      displayPath: "/assets/kids/k912/helpful/web/K912-LEAD-02-v1.webp",
+      alt: {
+        en: "Would you enjoy organising different roles so a group can work toward the same goal?",
+        zh: "你会喜欢安排不同的角色，让一个小组可以一起朝同一个目标前进吗？",
+      },
+    },
   },
   {
     id: "kids-k912-move-02",
@@ -395,7 +449,16 @@ export const k912Questions = [
       en: "If a group had several good ideas, would you enjoy helping the group choose a direction and begin acting on it?",
       zh: "如果一个小组有几个不错的想法，你会喜欢帮助大家选出一个方向，并开始行动吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K912-LEAD-03",
+      masterPath: "/assets/kids/k912/helpful/K912-LEAD-03-v1.png",
+      displayPath: "/assets/kids/k912/helpful/web/K912-LEAD-03-v1.webp",
+      alt: {
+        en: "If a group had several good ideas, would you enjoy helping the group choose a direction and begin acting on it?",
+        zh: "如果一个小组有几个不错的想法，你会喜欢帮助大家选出一个方向，并开始行动吗？",
+      },
+    },
   },
   {
     id: "kids-k912-move-04",
@@ -455,7 +518,16 @@ export const k912Questions = [
       en: "Would you enjoy inventing a character, world, scene, or concept that did not exist before?",
       zh: "你会喜欢创造一个以前不存在的角色、世界、场景或概念吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K912-CREATE-04",
+      masterPath: "/assets/kids/k912/helpful/K912-CREATE-04-v1.png",
+      displayPath: "/assets/kids/k912/helpful/web/K912-CREATE-04-v1.webp",
+      alt: {
+        en: "Would you enjoy inventing a character, world, scene, or concept that did not exist before?",
+        zh: "你会喜欢创造一个以前不存在的角色、世界、场景或概念吗？",
+      },
+    },
   },
   {
     id: "kids-k912-discover-04",
@@ -515,7 +587,16 @@ export const k912Questions = [
       en: "Would you enjoy listening to someone's idea and asking questions that help them develop it further?",
       zh: "你会喜欢听别人的想法，并通过提问帮助他们把这个想法发展得更完整吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K912-CONNECT-04",
+      masterPath: "/assets/kids/k912/helpful/K912-CONNECT-04-v1.png",
+      displayPath: "/assets/kids/k912/helpful/web/K912-CONNECT-04-v1.webp",
+      alt: {
+        en: "Would you enjoy listening to someone's idea and asking questions that help them develop it further?",
+        zh: "你会喜欢听别人的想法，并通过提问帮助他们把这个想法发展得更完整吗？",
+      },
+    },
   },
   {
     id: "kids-k912-lead-05",
@@ -529,7 +610,16 @@ export const k912Questions = [
       en: "Would you enjoy helping a group turn a general idea into a clear set of shared actions?",
       zh: "你会喜欢帮助一个小组把一个大致想法变成大家可以一起执行的具体行动吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K912-LEAD-05",
+      masterPath: "/assets/kids/k912/helpful/K912-LEAD-05-v1.png",
+      displayPath: "/assets/kids/k912/helpful/web/K912-LEAD-05-v1.webp",
+      alt: {
+        en: "Would you enjoy helping a group turn a general idea into a clear set of shared actions?",
+        zh: "你会喜欢帮助一个小组把一个大致想法变成大家可以一起执行的具体行动吗？",
+      },
+    },
   },
   {
     id: "kids-k912-move-05",
@@ -566,7 +656,16 @@ export const k912Questions = [
       en: "Would you enjoy changing how you communicate an idea depending on who you are explaining it to?",
       zh: "你会喜欢根据不同的人，改变自己表达同一个想法的方式吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K912-EXPRESS-04",
+      masterPath: "/assets/kids/k912/helpful/K912-EXPRESS-04-v1.png",
+      displayPath: "/assets/kids/k912/helpful/web/K912-EXPRESS-04-v1.webp",
+      alt: {
+        en: "Would you enjoy changing how you communicate an idea depending on who you are explaining it to?",
+        zh: "你会喜欢根据不同的人，改变自己表达同一个想法的方式吗？",
+      },
+    },
   },
   {
     id: "kids-k912-create-06",
@@ -649,7 +748,16 @@ export const k912Questions = [
       en: "Would you enjoy changing how you support someone depending on what helps them understand or practise best?",
       zh: "你会喜欢根据别人更容易理解或练习的方式，调整自己支持他们的方法吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K912-CONNECT-08",
+      masterPath: "/assets/kids/k912/helpful/K912-CONNECT-08-v1.png",
+      displayPath: "/assets/kids/k912/helpful/web/K912-CONNECT-08-v1.webp",
+      alt: {
+        en: "Would you enjoy changing how you support someone depending on what helps them understand or practise best?",
+        zh: "你会喜欢根据别人更容易理解或练习的方式，调整自己支持他们的方法吗？",
+      },
+    },
   },
   {
     id: "kids-k912-lead-06",
@@ -663,7 +771,16 @@ export const k912Questions = [
       en: "Would you enjoy helping a group stay focused when people begin moving in different directions?",
       zh: "当小组里的大家开始朝不同方向行动时，你会喜欢帮助大家重新集中到共同目标上吗？",
     },
-    visual: { support: "none" },
+    visual: {
+      support: "helpful",
+      assetId: "K912-LEAD-06",
+      masterPath: "/assets/kids/k912/helpful/K912-LEAD-06-v1.png",
+      displayPath: "/assets/kids/k912/helpful/web/K912-LEAD-06-v1.webp",
+      alt: {
+        en: "Would you enjoy helping a group stay focused when people begin moving in different directions?",
+        zh: "当小组里的大家开始朝不同方向行动时，你会喜欢帮助大家重新集中到共同目标上吗？",
+      },
+    },
   },
   {
     id: "kids-k912-move-08",
