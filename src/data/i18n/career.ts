@@ -204,21 +204,17 @@ export const careerLandingDictionaries: Record<
     },
 
     resultPreview: {
-      eyebrow: "Result preview",
-      title: "What your result may include",
+      eyebrow: "Your result",
+      title: "See the structure behind your career interests.",
       description:
-        "A structured overview for comparing possibilities—not a claim to identify your perfect career.",
+        "Your result does not choose a career for you. It organises the interest signals you can compare, understand and explore further.",
       items: [
-        "Primary and secondary interest dimensions",
-        "An explanation of your RIASEC pattern",
-        "Preferred tasks and environments",
-        "Possible career families",
-        "Education and learning directions",
-        "Transferable strengths",
-        "Development areas",
-        "Questions for further exploration",
-        "Possible links with personality and values",
-        "Practical next-step recommendations",
+        "Your RIASEC interest code",
+        "A complete ranking across all six dimensions",
+        "Your most prominent 2–3 interest directions",
+        "Interest combinations and possible work environments",
+        "Career fields worth further exploration",
+        "A complete Career Interest Report for deeper review",
       ],
     },
 
@@ -398,21 +394,17 @@ export const careerLandingDictionaries: Record<
     },
 
     resultPreview: {
-      eyebrow: "结果预览",
-      title: "你的结果可能包括什么",
+      eyebrow: "你的结果",
+      title: "完成测评后，你会看到自己的职业兴趣结构。",
       description:
-        "通过结构化信息帮助你比较不同可能性，而不是声称能够找出唯一完美的职业。",
+        "结果不是替你选择一个职业，而是整理出可以继续理解、比较和探索的兴趣线索。",
       items: [
-        "主要与辅助职业兴趣维度",
-        "对 RIASEC 兴趣模式的解释",
-        "偏好的任务和工作环境",
-        "可能适合探索的职业类别",
-        "教育与学习方向",
-        "可迁移的优势",
-        "需要发展的领域",
-        "用于进一步探索的问题",
-        "职业兴趣与人格、价值观的潜在联系",
-        "可执行的下一步建议",
+        "你的 RIASEC 兴趣代码",
+        "六个兴趣维度的完整排序",
+        "最突出的 2–3 个兴趣方向",
+        "兴趣组合与可能的工作环境",
+        "值得继续探索的职业领域",
+        "可进一步查看的完整职业兴趣报告",
       ],
     },
 

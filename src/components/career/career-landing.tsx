@@ -280,30 +280,41 @@ export function CareerLanding() {
         </div>
       </Container>
 
-      <section className="career-results">
-        <Container className="career-results-inner">
-          <div className="career-results-heading">
+      <Container
+        as="section"
+        size="wide"
+        className={styles.resultSection}
+      >
+        <div className={styles.resultCard}>
+          <div className={styles.resultSummary}>
             <p className="eyebrow">
               {dictionary.resultPreview.eyebrow}
             </p>
+
             <h2>{dictionary.resultPreview.title}</h2>
-            <p>{dictionary.resultPreview.description}</p>
+
+            <p className={styles.resultDescription}>
+              {dictionary.resultPreview.description}
+            </p>
           </div>
 
-          <ol>
-            {dictionary.resultPreview.items.map(
-              (item, index) => (
-                <li key={item}>
-                  <span>
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  {item}
-                </li>
-              ),
-            )}
-          </ol>
-        </Container>
-      </section>
+          <div className={styles.resultDetails}>
+            <ol className={styles.resultList}>
+              {dictionary.resultPreview.items.map(
+                (item, index) => (
+                  <li key={item}>
+                    <span>
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+
+                    <p>{item}</p>
+                  </li>
+                ),
+              )}
+            </ol>
+          </div>
+        </div>
+      </Container>
 
       <section className="career-guidance">
         <Container>
