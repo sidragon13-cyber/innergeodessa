@@ -10,20 +10,23 @@ type LegalSection = {
   content: ReactNode;
 };
 
+type LocalizedText = {
+  en: string;
+  zh: string;
+};
+
+type LocalizedLines = {
+  en: readonly string[];
+  zh: readonly string[];
+};
+
 type LegalPageProps = {
-  eyebrow: {
-    en: string;
-    zh: string;
-  };
-  title: {
-    en: string;
-    zh: string;
-  };
-  intro: {
-    en: string;
-    zh: string;
-  };
-  updated?: string;
+  eyebrow: LocalizedText;
+  title: LocalizedText;
+  titleLines?: LocalizedLines;
+  intro: LocalizedText;
+  updated?: string | LocalizedText;
+  pageClassName?: string;
   sections: {
     en: readonly LegalSection[];
     zh: readonly LegalSection[];
@@ -33,8 +36,10 @@ type LegalPageProps = {
 export function LegalPage({
   eyebrow,
   title,
+  titleLines,
   intro,
   updated = "8 August 2026",
+  pageClassName,
   sections,
 }: LegalPageProps) {
   const { locale } = useLocale();
@@ -42,22 +47,41 @@ export function LegalPage({
   const copy = {
     eyebrow: eyebrow[locale],
     title: title[locale],
+    titleLines: titleLines?.[locale],
     intro: intro[locale],
+    updated:
+      typeof updated === "string"
+        ? updated
+        : updated[locale],
     sections: sections[locale],
   };
 
   return (
-    <main id="top">
+    <main
+      id="top"
+      className={pageClassName}
+    >
       <SiteHeader homePath="/" />
 
       <section className="legal-hero">
         <div className="legal-shell">
           <p className="eyebrow">{copy.eyebrow}</p>
-          <h1>{copy.title}</h1>
+          <h1>
+            {copy.titleLines
+              ? copy.titleLines.map((line) => (
+                  <span
+                    key={line}
+                    className="legal-title-line"
+                  >
+                    {line}
+                  </span>
+                ))
+              : copy.title}
+          </h1>
           <p className="legal-intro">{copy.intro}</p>
           <p className="legal-updated">
             {locale === "zh" ? "最后更新：" : "Last updated: "}
-            {updated}
+            {copy.updated}
           </p>
         </div>
       </section>

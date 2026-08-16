@@ -74,13 +74,16 @@ export function SiteHeader({ homePath = "" }: { homePath?: string }) {
       <div className="flex items-center gap-4">
         <nav aria-label={dictionary.navigation.primaryLabel}>
           <Link href={`${homePath}#explore`}>
-            {dictionary.navigation.explore}
+            {dictionary.navigation.assessments}
           </Link>
-          <Link href={`${homePath}#how-it-works`}>
-            {dictionary.navigation.howItWorks}
+          <Link href="/zodiac">
+            {dictionary.navigation.zodiac}
           </Link>
           <Link href="/about">
             {dictionary.navigation.about}
+          </Link>
+          <Link href="/pricing">
+            {dictionary.navigation.pricing}
           </Link>
           <AccountHeaderLink />
         </nav>
@@ -124,8 +127,8 @@ export function Hero() {
   return (
     <Container
       as="section"
-      size="full"
-      className="hero max-w-[1400px] px-0 sm:px-0 lg:px-0"
+      size="wide"
+      className="hero px-0 sm:px-0 lg:px-0"
     >
       <div className="hero-copy">
         <p className="eyebrow">{hero.eyebrow}</p>
@@ -149,7 +152,7 @@ export function Hero() {
         </div>
       </div>
 
-      <BrandHeroVisual />
+      <BrandHeroVisual locale={locale} />
     </Container>
   );
 }
@@ -274,7 +277,10 @@ export function HomeExploreSection() {
       spacing="large"
       className="explore-section"
     >
-      <Container>
+      <Container
+        size="wide"
+        className="explore-shell"
+      >
         <SectionHeading
           eyebrow={explore.eyebrow}
           title={explore.title}
@@ -295,79 +301,140 @@ export function SiteFooter({
 }) {
   const { locale } = useLocale();
   const dictionary = getUiDictionary(locale);
+  const isZh = String(locale)
+    .toLowerCase()
+    .startsWith("zh");
+
+  const footerCopy = isZh
+    ? {
+        platform:
+          "在线自我探索与数字测评平台",
+        explore: "探索",
+        support: "关于与支持",
+        legal: "政策",
+        about: "关于 InnerGeo",
+        methodology: "方法与使用边界",
+        kids: "儿童兴趣",
+        principles: [
+          "结构化测评",
+          "数字报告",
+          "清晰使用边界",
+          "隐私与用户控制",
+        ],
+      }
+    : {
+        platform:
+          "Online self-discovery & digital assessment platform",
+        explore: "Explore",
+        support: "About & Support",
+        legal: "Legal",
+        about: "About InnerGeo",
+        methodology: "Methodology & Use Boundaries",
+        kids: "Kids Interests",
+        principles: [
+          "Structured Assessments",
+          "Digital Reports",
+          "Clear Boundaries",
+          "Privacy & User Control",
+        ],
+      };
 
   return (
     <footer className="site-footer">
-      <div
-        className="site-footer-glow"
-        aria-hidden="true"
-      />
-
-      <Container
-        size="full"
-        className="site-footer-inner max-w-[1400px]"
-      >
-        <div className="site-footer-brand">
-          <BrandLogo
-            href={homePath || "/"}
-            compact
-            className="footer-wordmark"
-          />
-
-          <p>{dictionary.footer.tagline}</p>
-        </div>
-
-        <nav
-          className="site-footer-navigation"
-          aria-label={
-            dictionary.footer.navigationLabel
-          }
+      <div className="site-footer-principles">
+        <Container
+          size="wide"
+          className="site-footer-principles-inner px-0 sm:px-0 lg:px-0"
         >
-          <Link href="/personality">
-            {dictionary.footer.personality}
-          </Link>
+          {footerCopy.principles.map((principle) => (
+            <span key={principle}>{principle}</span>
+          ))}
+        </Container>
+      </div>
 
-          <Link href="/career">
-            {dictionary.footer.career}
-          </Link>
+      <div className="site-footer-body">
+        <Container
+          size="wide"
+          className="site-footer-inner px-0 sm:px-0 lg:px-0"
+        >
+          <div className="site-footer-grid">
+            <div className="site-footer-brand">
+              <BrandLogo
+                href={homePath || "/"}
+                compact
+                className="footer-wordmark"
+              />
 
-          <Link href="/kids">
-            {String(locale)
-              .toLowerCase()
-              .startsWith("zh")
-              ? "儿童兴趣"
-              : "Kids"}
-          </Link>
+              <p>{footerCopy.platform}</p>
+            </div>
 
-          <Link href="/zodiac">
-            {dictionary.footer.zodiac}
-          </Link>
+            <div className="site-footer-column">
+              <h3>{footerCopy.explore}</h3>
+              <nav aria-label={footerCopy.explore}>
+                <Link href="/personality">
+                  {dictionary.footer.personality}
+                </Link>
+                <Link href="/career">
+                  {dictionary.footer.career}
+                </Link>
+                <Link href="/kids">
+                  {footerCopy.kids}
+                </Link>
+                <Link href="/zodiac">
+                  {dictionary.footer.zodiac}
+                </Link>
+                <Link href="/pricing">
+                  {dictionary.footer.pricing}
+                </Link>
+              </nav>
+            </div>
 
-          <Link href="/pricing">
-            {dictionary.footer.pricing}
-          </Link>
+            <div className="site-footer-column">
+              <h3>{footerCopy.support}</h3>
+              <nav aria-label={footerCopy.support}>
+                <Link href="/about">
+                  {footerCopy.about}
+                </Link>
+                <Link href="/methodology">
+                  {footerCopy.methodology}
+                </Link>
+                <Link href="/contact">
+                  {dictionary.footer.contact}
+                </Link>
+              </nav>
+            </div>
 
-          <Link href="/contact">
-            {dictionary.footer.contact}
-          </Link>
+            <div className="site-footer-column">
+              <h3>{footerCopy.legal}</h3>
+              <nav aria-label={footerCopy.legal}>
+                <Link href="/privacy">
+                  {dictionary.footer.privacy}
+                </Link>
+                <Link href="/terms">
+                  {dictionary.footer.terms}
+                </Link>
+                <Link href="/refund-policy">
+                  {dictionary.footer.refund}
+                </Link>
+              </nav>
+            </div>
+          </div>
 
-          <Link href="/privacy">
-            {dictionary.footer.privacy}
-          </Link>
+          <div className="site-footer-bottom">
+            <p className="site-footer-copyright">
+              © 2026 InnerGeo. All rights reserved.
+            </p>
 
-          <Link href="/terms">
-            {dictionary.footer.terms}
-          </Link>
-
-          <Link href="/refund-policy">
-            {dictionary.footer.refund}
-          </Link>
-        </nav>
-
-        <p className="site-footer-copyright">
-          © 2026 InnerGeo. All rights reserved.
-        </p>
-      </Container>
+            <Link
+              className="site-footer-methodology-link"
+              href="/methodology"
+            >
+              {footerCopy.methodology}
+              <span aria-hidden="true">↗</span>
+            </Link>
+          </div>
+        </Container>
+      </div>
     </footer>
   );
 }
@@ -383,47 +450,70 @@ export function HomeProfileSection() {
       spacing="large"
       className="profile-section"
     >
-      <Container className="profile-inner">
-        <SectionHeading
-          eyebrow={profile.eyebrow}
-          title={
-            <>
-              {profile.title}
-              <br />
-              <em>{profile.emphasizedTitle}</em>
-            </>
-          }
-          description={<p>{profile.description}</p>}
-          className="profile-intro"
-        />
-
-        <div className="profile-example">
-          <div className="profile-orbit" aria-hidden="true">
-            <CompassMark />
+      <Container
+        size="wide"
+        className="profile-shell"
+      >
+        <div className="inner-map-card">
+          <div className="inner-map-copy">
+            <SectionHeading
+              eyebrow={profile.eyebrow}
+              title={
+                <>
+                  {profile.title}
+                  <br />
+                  <em>{profile.emphasizedTitle}</em>
+                </>
+              }
+              description={<p>{profile.description}</p>}
+              className="profile-intro"
+            />
           </div>
 
-          <p className="example-label">
-            {profile.exampleLabel}
-          </p>
+          <div className="inner-map-preview">
+            <div
+              className="inner-map-grid"
+              aria-hidden="true"
+            />
 
-          <div className="identity-result">
-            <span>{profile.personalityLabel}</span>
-            <strong>INTP</strong>
+            <svg
+              className="inner-map-connections"
+              viewBox="0 0 620 440"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path d="M142 105C212 118 246 158 310 220" />
+              <path d="M478 105C410 122 372 164 310 220" />
+              <path d="M145 334C216 319 252 278 310 220" />
+              <path d="M478 334C410 316 372 272 310 220" />
+              <circle cx="310" cy="220" r="7" />
+            </svg>
+
+            <div className="inner-map-node inner-map-node-personality">
+              <span>01</span>
+              <strong>{profile.personalityLabel}</strong>
+            </div>
+
+            <div className="inner-map-node inner-map-node-career">
+              <span>02</span>
+              <strong>{profile.careerLabel}</strong>
+            </div>
+
+            <div className="inner-map-node inner-map-node-kids">
+              <span>03</span>
+              <strong>{profile.kidsLabel}</strong>
+            </div>
+
+            <div className="inner-map-node inner-map-node-zodiac">
+              <span>04</span>
+              <strong>{profile.zodiacLabel}</strong>
+            </div>
+
+            <div className="inner-map-summary">
+              <p>{profile.mapTitle}</p>
+              <strong>{profile.mapStatus}</strong>
+            </div>
           </div>
-
-          <div className="identity-result">
-            <span>{profile.careerLabel}</span>
-            <strong>{profile.careerExample}</strong>
-          </div>
-
-          <div className="identity-result">
-            <span>{profile.zodiacLabel}</span>
-            <strong>{profile.zodiacExample}</strong>
-          </div>
-
-          <p className="example-note">
-            {profile.note}
-          </p>
         </div>
       </Container>
     </Section>
@@ -441,7 +531,10 @@ export function HomeValuesSection() {
       spacing="large"
       className="value-section"
     >
-      <Container>
+      <Container
+        size="wide"
+        className="value-shell"
+      >
         <div className="value-heading">
           <p className="eyebrow">{values.eyebrow}</p>
           <h2>{values.title}</h2>
@@ -469,35 +562,62 @@ export function HomeValuesSection() {
   );
 }
 
-export function HomeTrustSection() {
+export function HomeMethodologyTeaser() {
   const { locale } = useLocale();
-  const dictionary = getUiDictionary(locale);
-  const trust = dictionary.home.trust;
+  const isZh = String(locale)
+    .toLowerCase()
+    .startsWith("zh");
+
+  const copy = isZh
+    ? {
+        eyebrow: "方法与使用边界",
+        title: "清晰的方法，明确的边界",
+        description:
+          "InnerGeo 用于自我理解、兴趣发现与方向探索。我们同时清楚说明测评结果适合如何使用、不能代表什么，以及数字报告的服务范围。",
+        boundary:
+          "不提供医学或心理诊断，也不以测评结果替代教育、职业或其他重要个人决定。",
+        action: "了解方法与使用边界",
+      }
+    : {
+        eyebrow: "Methodology & Use Boundaries",
+        title: "Clear methods. Clear boundaries.",
+        description:
+          "InnerGeo supports self-understanding, interest discovery and direction exploration. We also explain how results should be used, what they cannot represent, and the scope of our digital reports.",
+        boundary:
+          "InnerGeo does not provide medical or psychological diagnosis, and assessment results do not replace important education, career or personal decisions.",
+        action: "Explore methodology & boundaries",
+      };
 
   return (
-    <Section
-      id="trust"
-      spacing="large"
-      className="trust-section"
-    >
-      <Container className="trust-inner">
-        <SectionHeading
-          eyebrow={trust.eyebrow}
-          title={trust.title}
-          className="trust-heading"
-        />
+    <section className="methodology-teaser-section">
+      <Container
+        size="wide"
+        className="methodology-teaser-shell px-0 sm:px-0 lg:px-0"
+      >
+        <div className="methodology-teaser-copy">
+          <p className="methodology-teaser-eyebrow">
+            {copy.eyebrow}
+          </p>
 
-        <ul>
-          {trust.points.map((point, index) => (
-            <li key={point}>
-              <span aria-hidden="true">
-                0{index + 1}
-              </span>
-              {point}
-            </li>
-          ))}
-        </ul>
+          <h2>{copy.title}</h2>
+
+          <p className="methodology-teaser-description">
+            {copy.description}
+          </p>
+
+          <p className="methodology-teaser-boundary">
+            {copy.boundary}
+          </p>
+        </div>
+
+        <Link
+          className="methodology-teaser-link"
+          href="/methodology"
+        >
+          <span>{copy.action}</span>
+          <strong aria-hidden="true">↗</strong>
+        </Link>
       </Container>
-    </Section>
+    </section>
   );
 }

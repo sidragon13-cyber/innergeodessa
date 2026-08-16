@@ -5,9 +5,10 @@ import type {
 export type UiDictionary = {
   navigation: {
     primaryLabel: string;
-    explore: string;
-    howItWorks: string;
+    assessments: string;
+    zodiac: string;
     about: string;
+    pricing: string;
   };
   home: {
     hero: {
@@ -55,7 +56,10 @@ export type UiDictionary = {
       exampleLabel: string;
       personalityLabel: string;
       careerLabel: string;
+      kidsLabel: string;
       zodiacLabel: string;
+      mapTitle: string;
+      mapStatus: string;
       careerExample: string;
       zodiacExample: string;
       note: string;
@@ -101,19 +105,20 @@ export const uiDictionaries: Record<
   en: {
     navigation: {
       primaryLabel: "Primary navigation",
-      explore: "Explore",
-      howItWorks: "How It Works",
+      assessments: "Assessments",
+      zodiac: "Zodiac",
       about: "About",
+      pricing: "Pricing",
     },
     home: {
       hero: {
-        eyebrow: "Your inner coordinates",
-        title: "Discover who you are.",
-        emphasizedTitle: "Find where you may thrive.",
+        eyebrow: "Understand yourself · Explore direction",
+        title: "Understand Yourself.",
+        emphasizedTitle: "Find Your Direction.",
         description:
-          "Explore your personality, career interests, and zodiac identity through three thoughtful self-discovery experiences.",
+          "Explore yourself through three structured assessments—Personality, Career Interests and Kids Interests—alongside an independent Zodiac Interests experience.",
         primaryAction: "Start Exploring",
-        note: "Begin with any test. No account required.",
+        note: "InnerGeo does not make decisions for you. It helps you see yourself more clearly.",
         personalityLabel: "Personality",
         careerLabel: "Career",
         zodiacLabel: "Zodiac",
@@ -121,9 +126,9 @@ export const uiDictionaries: Record<
       },
       explore: {
         eyebrow: "Explore yourself",
-        title: "Three ways to understand yourself",
+        title: "Choose a Starting Point. Get to Know Yourself.",
         description:
-          "Start anywhere. Each experience offers a different lens on what makes you, you.",
+          "Personality, Career Interests, Kids Interests and Zodiac Interests offer different ways to explore. Choose the path that feels right for you and start from here.",
         products: {
           personality: {
             title: "Personality Test",
@@ -149,56 +154,59 @@ export const uiDictionaries: Record<
         },
       },
       profile: {
-        eyebrow: "How it comes together",
-        title: "One profile.",
-        emphasizedTitle: "Three dimensions.",
+        eyebrow: "Different explorations, connected",
+        title: "Every exploration",
+        emphasizedTitle: "helps you see a little more of yourself.",
         description:
-          "Each result becomes part of your InnerGeo identity profile, helping you understand yourself from different perspectives.",
-        exampleLabel: "Example identity",
+          "Personality, Career Interests, Kids Interests and Zodiac Interests do not define you. Each exploration offers a new perspective, helping you connect the clues and gradually form your own Inner Map.",
+        exampleLabel: "Inner Map preview",
         personalityLabel: "Personality",
-        careerLabel: "Career interests",
-        zodiacLabel: "Zodiac",
+        careerLabel: "Career Interests",
+        kidsLabel: "Kids Interests",
+        zodiacLabel: "Zodiac Interests",
+        mapTitle: "Your Inner Map",
+        mapStatus: "Still evolving",
         careerExample: "Investigative · Artistic",
         zodiacExample: "Scorpio",
         note:
-          "A preview of how three perspectives can sit together. Saving profiles is not yet available.",
+          "Different perspectives can connect without putting you into a fixed box.",
       },
       values: {
-        eyebrow: "Thoughtful by design",
-        title: "More than a label",
+        eyebrow: "How to use your results",
+        title: "Turn results into information you can understand and use",
         description:
-          "Results are starting points for reflection—not boxes to put yourself in.",
+          "InnerGeo does more than return a type or score. Each product explains preferences, interests and exploration clues, while also showing how those results should—and should not—be interpreted.",
         items: [
           {
             number: "01",
-            title: "Understand your patterns",
+            title: "Understand patterns and preferences",
             description:
-              "Notice the preferences and tendencies that shape how you move through everyday life.",
+              "Personality assessment explains preferences in energy, information processing, decision-making and approach to daily life. It helps identify patterns rather than ranking intelligence, ability or personal worth.",
           },
           {
             number: "02",
-            title: "Explore suitable directions",
+            title: "Identify interests and environments",
             description:
-              "Use your interests and natural inclinations as thoughtful starting points for what comes next.",
+              "Career Interests and Kids Interests help identify activities, learning or work environments and interest areas that may be more naturally engaging, providing more specific clues for further exploration.",
           },
           {
             number: "03",
-            title: "Connect through shared identities",
+            title: "Find next-step exploration clues",
             description:
-              "See where your perspective overlaps with others as community features develop in a later phase.",
+              "Results and in-depth digital reports organize patterns into directions and questions you can explore further. They support comparison and reflection, but do not make career, education or life decisions for you.",
           },
         ],
         futureNote:
-          "Community features are planned for a later phase.",
+          "Personality, Career Interests and Kids Interests are structured assessments. Zodiac Interests is a separate interest-exploration experience with a different methodological boundary.",
       },
       trust: {
-        eyebrow: "A considered approach",
-        title: "Designed for reflection, not diagnosis.",
+        eyebrow: "Clear boundaries",
+        title: "What InnerGeo can do—and what it cannot",
         points: [
-          "Results are designed for self-exploration and personal reflection.",
-          "InnerGeo does not provide medical or psychological diagnosis.",
-          "No account is required for the initial experience.",
-          "Privacy and user control will guide future development.",
+          "Assessments and reports support self-understanding, interest discovery and direction exploration. They are not medical, psychological or mental-health diagnosis.",
+          "Results describe preferences, interests and self-reported patterns. They do not measure intelligence, determine personal ability or predict future performance.",
+          "Career and education content provides exploration clues and reference points. It is not a hiring decision, admissions judgment, professional qualification assessment or individualized licensed career service.",
+          "Paid digital reports provide deeper interpretation and direction-oriented reference. They are not medical care, psychotherapy, legal advice, financial advice or another regulated professional service.",
         ],
       },
     },
@@ -222,19 +230,20 @@ export const uiDictionaries: Record<
   zh: {
     navigation: {
       primaryLabel: "主要导航",
-      explore: "探索",
-      howItWorks: "如何运作",
-      about: "关于我们",
+      assessments: "测评",
+      zodiac: "星座",
+      about: "关于",
+      pricing: "价格",
     },
     home: {
       hero: {
-        eyebrow: "你的内在坐标",
-        title: "发现真实的自己。",
-        emphasizedTitle: "找到可能更适合你的方向。",
+        eyebrow: "认识自己 · 探索方向",
+        title: "认识自己，",
+        emphasizedTitle: "找到更适合的方向。",
         description:
-          "通过人格类型、职业兴趣与星座身份三种自我探索体验，从不同角度理解自己。",
+          "通过人格、职业兴趣与儿童兴趣三类结构化测评，以及独立的星座兴趣探索，从不同角度理解自己、发现兴趣，并找到更清晰的方向。",
         primaryAction: "开始探索",
-        note: "可从任意一项开始，无需注册账户。",
+        note: "InnerGeo 不替你做决定，只帮助你更清楚地看见自己。",
         personalityLabel: "人格",
         careerLabel: "职业",
         zodiacLabel: "星座",
@@ -242,9 +251,9 @@ export const uiDictionaries: Record<
       },
       explore: {
         eyebrow: "探索自己",
-        title: "从三个角度理解自己",
+        title: "选择一个起点，开始认识自己",
         description:
-          "可从任意一项开始。每一种体验都会提供不同的视角，帮助你更全面地认识自己。",
+          "人格、职业兴趣、儿童兴趣与星座兴趣，提供不同的探索入口。选择适合你的方式，从这里开始。",
         products: {
           personality: {
             title: "人格类型测评",
@@ -270,56 +279,59 @@ export const uiDictionaries: Record<
         },
       },
       profile: {
-        eyebrow: "三种结果如何结合",
-        title: "一份个人档案。",
-        emphasizedTitle: "三个理解维度。",
+        eyebrow: "不同探索，彼此连接",
+        title: "每一次探索，",
+        emphasizedTitle: "都让你多看见一点自己。",
         description:
-          "每一项结果都会成为你的 InnerGeo 身份档案的一部分，帮助你从不同角度理解自己。",
-        exampleLabel: "身份档案示例",
-        personalityLabel: "人格类型",
+          "人格、职业兴趣、儿童兴趣与星座兴趣不会替你定义自己。每一次探索只是提供一个新的视角，帮助你慢慢连接线索，形成属于自己的 Inner Map。",
+        exampleLabel: "Inner Map 预览",
+        personalityLabel: "人格探索",
         careerLabel: "职业兴趣",
-        zodiacLabel: "星座身份",
+        kidsLabel: "儿童兴趣",
+        zodiacLabel: "星座兴趣",
+        mapTitle: "你的探索地图",
+        mapStatus: "仍在不断形成",
         careerExample: "研究型 · 艺术型",
         zodiacExample: "天蝎座",
         note:
-          "这是三种视角组合后的示例。个人档案保存功能尚未开放。",
+          "不同的视角可以彼此连接，而不是把你放进固定的框架。",
       },
       values: {
-        eyebrow: "经过审慎设计",
-        title: "不只是一个标签",
+        eyebrow: "测评结果如何使用",
+        title: "把结果变成可理解、可行动的信息",
         description:
-          "测评结果是反思与探索的起点，而不是限制你的固定框架。",
+          "InnerGeo 不只返回一个类型或分数。不同产品会解释你的偏好、兴趣和探索线索，并说明这些结果适合如何使用，以及不应该被如何解读。",
         items: [
           {
             number: "01",
-            title: "理解自己的模式",
+            title: "理解行为与偏好模式",
             description:
-              "观察影响你日常思考、选择与行动方式的倾向和偏好。",
+              "人格测评用于解释你在能量获取、信息处理、决策和生活方式上的偏好倾向，帮助你识别相对稳定的模式，而不是判断智力、能力高低或个人价值。",
           },
           {
             number: "02",
-            title: "探索适合的方向",
+            title: "识别兴趣与环境偏好",
             description:
-              "把兴趣与自然倾向作为起点，审慎探索未来可能的发展方向。",
+              "职业兴趣与儿童兴趣测评用于识别更容易引发投入的活动类型、学习或工作环境和兴趣领域，为后续探索提供更加具体的线索。",
           },
           {
             number: "03",
-            title: "通过共同身份建立连接",
+            title: "形成下一步探索线索",
             description:
-              "随着社区功能在后续阶段逐步开放，发现你与他人在观点和身份上的交集。",
+              "结果和深入数字报告会把相关模式整理成可以继续验证的方向与问题，帮助你比较和思考不同选择，但不会替你决定职业、教育或人生道路。",
           },
         ],
         futureNote:
-          "社区功能计划在后续阶段开放。",
+          "人格、职业兴趣与儿童兴趣属于结构化测评；Zodiac Interests 是独立的兴趣探索内容，两者采用不同的方法边界。",
       },
       trust: {
-        eyebrow: "审慎而清晰的方法",
-        title: "用于自我反思，而不是医学诊断。",
+        eyebrow: "使用边界",
+        title: "清楚说明 InnerGeo 能做什么，也说明不能做什么",
         points: [
-          "测评结果用于自我探索与个人反思。",
-          "InnerGeo 不提供医学或心理诊断。",
-          "初次体验无需注册账户。",
-          "未来开发将以隐私保护和用户控制为核心原则。",
+          "测评与报告用于自我理解、兴趣发现和方向探索，不用于医学、心理或精神健康诊断。",
+          "结果描述的是偏好、兴趣与自我报告形成的模式，不用于衡量智力、判断个人能力高低，也不预测未来表现。",
+          "职业与教育相关内容用于提供探索线索和参考，不构成招聘决定、录取判断、职业资格评估或个别化的持牌职业咨询服务。",
+          "付费数字报告提供更深入的结果解释与方向参考，不等同于医疗、心理治疗、法律、财务或其他受监管的专业服务。",
         ],
       },
     },

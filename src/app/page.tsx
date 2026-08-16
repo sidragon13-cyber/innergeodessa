@@ -3,7 +3,7 @@ import {
   HomeExploreSection,
   HomeTrustMetrics,
   HomeProfileSection,
-  HomeTrustSection,
+  HomeMethodologyTeaser,
   HomeValuesSection,
   SiteFooter,
   SiteHeader,
@@ -22,7 +22,7 @@ export default function Home() {
 
       <HomeValuesSection />
 
-      <HomeTrustSection />
+      <HomeMethodologyTeaser />
 
       <SiteFooter />
     </main>

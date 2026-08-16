@@ -66,227 +66,129 @@ export function BrandLogo({
         <strong className="brand-name">
           InnerGeo
         </strong>
-
-        <span
-          className="brand-name-divider"
-          aria-hidden="true"
-        >
-          <span className="brand-divider-dot" />
-          <span className="brand-divider-line" />
-          <span className="brand-divider-star">
-            ✦
-          </span>
-          <span className="brand-divider-line" />
-          <span className="brand-divider-dot" />
-        </span>
-
-        {!compact ? (
-          <small>
-            Understand Yourself. Shape Your Future.
-          </small>
-        ) : null}
       </span>
     </Link>
   );
 }
 
-export function BrandHeroVisual() {
+export function BrandHeroVisual({
+  locale = "en",
+}: {
+  locale?: "en" | "zh";
+}) {
+  const copy =
+    locale === "zh"
+      ? {
+          origin: "你在这里",
+          explore: "探索",
+          understand: "理解",
+          direction: "方向",
+          caption: "从理解自己，到找到方向",
+        }
+      : {
+          origin: "You are here",
+          explore: "Explore",
+          understand: "Understand",
+          direction: "Direction",
+          caption: "From insight to direction",
+        };
+
   return (
-    <div className="brand-map">
+    <div className="brand-map brand-direction-map">
       <div
-        className="brand-map-orbit brand-map-orbit-one"
-        aria-hidden="true"
-      />
-      <div
-        className="brand-map-orbit brand-map-orbit-two"
-        aria-hidden="true"
-      />
-      <div
-        className="brand-map-orbit brand-map-orbit-three"
+        className="brand-direction-grid"
         aria-hidden="true"
       />
 
       <svg
-        className="brand-map-constellation"
-        viewBox="0 0 800 600"
+        className="brand-direction-contours"
+        viewBox="0 0 720 540"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path d="M-70 420C72 326 148 346 236 292C326 237 344 137 461 111C566 87 632 148 790 43" />
+        <path d="M-84 469C49 383 147 402 265 339C374 281 398 188 500 160C599 133 663 177 788 105" />
+        <path d="M-48 511C70 450 165 458 290 402C421 343 474 263 579 236C650 218 713 230 790 192" />
+        <path d="M420 -40C372 67 391 143 465 209C532 269 619 293 760 302" />
+      </svg>
+
+      <div className="brand-direction-coordinates brand-direction-coordinates-top">
+        <span>X 04.58</span>
+        <span>Y 12.36</span>
+      </div>
+
+      <div className="brand-direction-coordinates brand-direction-coordinates-side">
+        <span>INNER MAP</span>
+        <span>01—04</span>
+      </div>
+
+      <svg
+        className="brand-direction-route"
+        viewBox="0 0 720 540"
         fill="none"
         aria-hidden="true"
       >
         <path
-          d="M98 390L115 505L274 515L290 402L98 390ZM290 402L410 350L505 277L600 186"
-          stroke="currentColor"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          className="brand-direction-route-shadow"
+          d="M102 422C175 386 205 396 276 348C338 306 365 261 426 232C493 200 544 214 615 143"
         />
-
-        {[
-          [98, 390],
-          [115, 505],
-          [274, 515],
-          [290, 402],
-          [410, 350],
-          [505, 277],
-          [600, 186],
-        ].map(([cx, cy]) => (
-          <circle
-            key={`${cx}-${cy}`}
-            cx={cx}
-            cy={cy}
-            r="10"
-            fill="currentColor"
-          />
-        ))}
-
         <path
-          d="M600 186L716 78M638 210L716 78"
-          stroke="var(--brand-gold)"
-          strokeWidth="2"
-          strokeDasharray="4 8"
+          className="brand-direction-route-line"
+          d="M102 422C175 386 205 396 276 348C338 306 365 261 426 232C493 200 544 214 615 143"
+        />
+        <path
+          className="brand-direction-route-final"
+          d="M615 143C638 124 657 104 675 78"
         />
       </svg>
 
-      <div
-        className="brand-map-north-star"
-        aria-hidden="true"
-      >
-        <span className="brand-map-star-core">
-          ✦
+      <div className="brand-direction-node brand-direction-node-origin">
+        <span className="brand-direction-point">
+          <span />
         </span>
-        <span className="brand-map-star-small star-one">
-          ✦
-        </span>
-        <span className="brand-map-star-small star-two">
-          ✦
-        </span>
-        <span className="brand-map-star-small star-three">
-          ✦
+        <span className="brand-direction-label">
+          <strong>{copy.origin}</strong>
+          <small>01 / ORIGIN</small>
         </span>
       </div>
 
-      <HeroModule
-        href="/personality"
-        className="brand-map-module-personality"
-        icon={<PersonalityIcon />}
-        title="MBTI"
-        description="Understand your inner patterns."
-      />
+      <div className="brand-direction-node brand-direction-node-explore">
+        <span className="brand-direction-point">
+          <span />
+        </span>
+        <span className="brand-direction-label">
+          <strong>{copy.explore}</strong>
+          <small>02 / EXPLORE</small>
+        </span>
+      </div>
 
-      <HeroModule
-        href="/career"
-        className="brand-map-module-career"
-        icon={<CareerIcon />}
-        title="RIASEC"
-        description="Discover your strengths and ideal paths."
-      />
+      <div className="brand-direction-node brand-direction-node-understand">
+        <span className="brand-direction-point">
+          <span />
+        </span>
+        <span className="brand-direction-label">
+          <strong>{copy.understand}</strong>
+          <small>03 / INSIGHT</small>
+        </span>
+      </div>
 
-      <HeroModule
-        href="/zodiac"
-        className="brand-map-module-zodiac"
-        icon={<ZodiacIcon />}
-        title="Zodiac"
-        description="Explore your cosmic blueprint and natural rhythm."
-      />
+      <div className="brand-direction-node brand-direction-node-direction">
+        <span className="brand-direction-point brand-direction-point-final">
+          <span />
+        </span>
+        <span className="brand-direction-label">
+          <strong>{copy.direction}</strong>
+          <small>04 / DIRECTION</small>
+        </span>
+      </div>
 
-      <p className="brand-map-caption">
-        Three perspectives · One evolving self
+      <p className="brand-direction-caption">
+        {copy.caption}
       </p>
     </div>
   );
 }
 
-function HeroModule({
-  href,
-  className,
-  icon,
-  title,
-  description,
-}: {
-  href: string;
-  className: string;
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className={`brand-map-module ${className}`}
-    >
-      <span className="brand-map-module-symbol">
-        {icon}
-      </span>
-
-      <span className="brand-map-module-copy">
-        <strong>{title}</strong>
-        <small>{description}</small>
-      </span>
-    </Link>
-  );
-}
-
-function PersonalityIcon() {
-  return (
-    <svg viewBox="0 0 32 32" fill="none">
-      <circle
-        cx="16"
-        cy="10"
-        r="5"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M7 27c0-6 3.7-10 9-10s9 4 9 10"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function CareerIcon() {
-  return (
-    <svg viewBox="0 0 32 32" fill="none">
-      <rect
-        x="4"
-        y="10"
-        width="24"
-        height="16"
-        rx="2"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M11 10V7h10v3M4 17h24M13 17v3h6v-3"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function ZodiacIcon() {
-  return (
-    <svg viewBox="0 0 32 32" fill="none">
-      <path
-        d="M16 3l2.6 9.4L28 16l-9.4 3.6L16 29l-2.6-9.4L4 16l9.4-3.6L16 3Z"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinejoin="round"
-      />
-      <circle
-        cx="16"
-        cy="16"
-        r="3"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      />
-    </svg>
-  );
-}
 
 export function BrandTrustStrip({
   locale,
@@ -296,75 +198,119 @@ export function BrandTrustStrip({
   const content =
     locale === "zh"
       ? {
-          eyebrow: "全球广泛采用的测评方法",
+          eyebrow: "InnerGeo 是什么",
+          title: "在线自我探索与数字测评平台",
           description:
-            "InnerGeo 建立于国际成熟的人格、职业兴趣与自我探索框架之上，相关方法长期应用于企业、大学、招聘、咨询与人才发展领域。",
-          organizations: "1,000+",
-          organizationsLabel:
-            "采用相关测评框架的企业与机构",
-          participants: "100,000+",
-          participantsLabel:
-            "全球专业和研究应用中的测评参与者",
-          assessments: "3",
-          assessmentsLabel:
-            "核心自我探索系统",
+            "InnerGeo 提供人格、职业兴趣、儿童兴趣等结构化测评，以及独立的星座兴趣探索。用户可在线完成探索、获得结果，并选择购买更深入的数字报告，用于理解自己、发现兴趣与探索方向。",
+          flow:
+            "在线测评 → 查看结果 → 可选购深入数字报告",
+          services: [
+            {
+              number: "01",
+              title: "在线测评",
+              description:
+                "完成结构化问卷或引导式探索体验，获得个人结果与基础解读。",
+            },
+            {
+              number: "02",
+              title: "数字报告",
+              description:
+                "可选购更深入的数字报告，获得扩展解读、个人洞察与方向参考。",
+            },
+            {
+              number: "03",
+              title: "自我探索",
+              description:
+                "帮助理解性格、兴趣与可能的方向，用于个人探索与反思，不提供医学或心理诊断。",
+            },
+          ],
         }
       : {
-          eyebrow:
-            "Built on widely adopted assessment frameworks",
+          eyebrow: "What InnerGeo Does",
+          title:
+            "Online Self-Discovery & Digital Assessment Platform",
           description:
-            "InnerGeo draws on established personality, career-interest, and reflective identity methodologies used across organizational, academic, recruitment, consulting, and talent-development settings.",
-          organizations: "1,000+",
-          organizationsLabel:
-            "Organizations using related assessment frameworks",
-          participants: "100,000+",
-          participantsLabel:
-            "Participants reached through professional and research applications",
-          assessments: "3",
-          assessmentsLabel:
-            "Core self-discovery systems",
+            "InnerGeo provides structured assessments for personality, career interests and kids interests, alongside a separate Zodiac Interests experience. Users complete assessments online, receive results, and can purchase in-depth digital reports for self-understanding, interest discovery and direction exploration.",
+          flow:
+            "Online assessment → Results → Optional paid digital report",
+          services: [
+            {
+              number: "01",
+              title: "Online Assessments",
+              description:
+                "Complete structured questionnaires or guided exploration experiences and receive personal results with introductory explanations.",
+            },
+            {
+              number: "02",
+              title: "Digital Reports",
+              description:
+                "Optional paid digital reports provide deeper interpretation, personal insights and direction-oriented guidance.",
+            },
+            {
+              number: "03",
+              title: "Self-Discovery",
+              description:
+                "Designed for personal exploration and reflection. InnerGeo does not provide medical or psychological diagnosis.",
+            },
+          ],
         };
 
   return (
-    <section className="brand-trust-strip">
-      <div className="brand-trust-intro">
-        <p className="brand-trust-eyebrow">
+    <section
+      className="brand-purpose-strip"
+      aria-labelledby="brand-purpose-title"
+    >
+      <div className="brand-purpose-intro">
+        <p className="brand-purpose-eyebrow">
           {content.eyebrow}
         </p>
-        <p className="brand-trust-description">
+
+        <h2
+          id="brand-purpose-title"
+          className="brand-purpose-title"
+        >
+          {content.title}
+        </h2>
+
+        <p className="brand-purpose-description">
           {content.description}
+        </p>
+
+        <p className="brand-purpose-flow">
+          {content.flow}
         </p>
       </div>
 
-      <div className="brand-trust-metrics">
-        <TrustMetric
-          value={content.organizations}
-          label={content.organizationsLabel}
-        />
-        <TrustMetric
-          value={content.participants}
-          label={content.participantsLabel}
-        />
-        <TrustMetric
-          value={content.assessments}
-          label={content.assessmentsLabel}
-        />
+      <div className="brand-purpose-services">
+        {content.services.map((service) => (
+          <PurposeItem
+            key={service.number}
+            number={service.number}
+            title={service.title}
+            description={service.description}
+          />
+        ))}
       </div>
     </section>
   );
 }
 
-function TrustMetric({
-  value,
-  label,
+function PurposeItem({
+  number,
+  title,
+  description,
 }: {
-  value: string;
-  label: string;
+  number: string;
+  title: string;
+  description: string;
 }) {
   return (
-    <article className="brand-trust-metric">
-      <strong>{value}</strong>
-      <span>{label}</span>
+    <article className="brand-purpose-item">
+      <span className="brand-purpose-number">
+        {number}
+      </span>
+      <h3>{title}</h3>
+      <p>{description}</p>
     </article>
   );
 }
