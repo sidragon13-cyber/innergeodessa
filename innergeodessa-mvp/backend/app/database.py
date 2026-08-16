@@ -50,6 +50,8 @@ def initialize(
         expected_count=40,
     )
 
+    _repair_stale_sessions_kids_constraint(db_path)
+
     with connect(db_path) as conn:
         conn.execute("BEGIN IMMEDIATE")
         try:
@@ -101,6 +103,16 @@ def initialize(
                 ),
             )
 
+            _apply_migration(
+                conn,
+                migration_id="20260816_006_kids_session_constraint",
+                description=(
+                    "Normalize legacy sessions module/form constraints "
+                    "for Kids assessments."
+                ),
+                operation=lambda: None,
+            )
+
             _register_question_banks(conn)
 
             _apply_migration(
@@ -128,6 +140,192 @@ def initialize(
             raise
         else:
             conn.commit()
+
+
+def _repair_stale_sessions_kids_constraint(
+    db_path: Path,
+) -> None:
+    if not db_path.exists():
+        return
+
+    with sqlite3.connect(db_path) as conn:
+        row = conn.execute(
+            """SELECT sql
+               FROM sqlite_master
+               WHERE type='table'
+                 AND name='sessions'"""
+        ).fetchone()
+
+        if row is None or not row[0]:
+            return
+
+        current_sql = "".join(row[0].lower().split())
+
+        stale_constraint = (
+            "modulein('personality','riasec')" in current_sql
+            and "modulein('personality','riasec','kids')"
+            not in current_sql
+        )
+
+        if not stale_constraint:
+            return
+
+        current_columns = [
+            column[1]
+            for column in conn.execute(
+                "PRAGMA table_info(sessions)"
+            ).fetchall()
+        ]
+
+        required_columns = [
+            "session_id",
+            "consent",
+            "language",
+            "module",
+            "started_at",
+            "completed_at",
+            "status",
+            "owner_user_id",
+            "claim_secret_hash",
+            "claimed_at",
+            "question_bank_version",
+            "form",
+        ]
+
+        if set(current_columns) != set(required_columns):
+            raise ValueError(
+                "Legacy sessions schema cannot be safely normalized: "
+                "unexpected column contract."
+            )
+
+        invalid_rows = conn.execute(
+            """SELECT COUNT(*)
+               FROM sessions
+               WHERE module NOT IN ('personality', 'riasec')
+                  OR form IS NOT NULL"""
+        ).fetchone()[0]
+
+        if invalid_rows:
+            raise ValueError(
+                "Legacy sessions schema contains rows that do not "
+                "satisfy the target module/form contract."
+            )
+
+        target_statement = None
+
+        for statement in SCHEMA_PATH.read_text(
+            encoding="utf-8"
+        ).split(";"):
+            stripped = statement.strip()
+            if stripped.startswith(
+                "CREATE TABLE IF NOT EXISTS sessions ("
+            ):
+                target_statement = stripped
+                break
+
+        if target_statement is None:
+            raise ValueError(
+                "Target sessions schema could not be located."
+            )
+
+        temporary_table = "sessions_kids_constraint_v2"
+
+        target_statement = target_statement.replace(
+            "CREATE TABLE IF NOT EXISTS sessions",
+            f"CREATE TABLE {temporary_table}",
+            1,
+        )
+
+        # question_bank_version is a legitimate historical migration
+        # column and is intentionally not part of the base schema.sql
+        # sessions declaration. Preserve it while rebuilding the table.
+        if "question_bank_version" in current_columns:
+            form_definition = (
+                "form TEXT CHECK (form IN ('k68','k912')),"
+            )
+            if form_definition not in target_statement:
+                raise ValueError(
+                    "Target sessions form definition could not be located."
+                )
+
+            target_statement = target_statement.replace(
+                form_definition,
+                form_definition + "\n  question_bank_version TEXT,",
+                1,
+            )
+
+        schema_objects = [
+            (object_type, name, sql)
+            for object_type, name, sql in conn.execute(
+                """SELECT type, name, sql
+                   FROM sqlite_master
+                   WHERE tbl_name='sessions'
+                     AND type IN ('index', 'trigger')
+                     AND sql IS NOT NULL"""
+            ).fetchall()
+        ]
+
+        conn.execute("PRAGMA foreign_keys = OFF")
+        conn.execute("BEGIN IMMEDIATE")
+
+        try:
+            conn.execute(
+                f"DROP TABLE IF EXISTS {temporary_table}"
+            )
+            conn.execute(target_statement)
+
+            target_columns = [
+                column[1]
+                for column in conn.execute(
+                    f"PRAGMA table_info({temporary_table})"
+                ).fetchall()
+            ]
+
+            if set(target_columns) != set(current_columns):
+                raise ValueError(
+                    "Target sessions schema column contract "
+                    "does not match the existing database."
+                )
+
+            quoted_columns = ", ".join(
+                f'"{column}"'
+                for column in target_columns
+            )
+
+            conn.execute(
+                f"""INSERT INTO {temporary_table}(
+                      {quoted_columns}
+                    )
+                    SELECT {quoted_columns}
+                    FROM sessions"""
+            )
+
+            conn.execute("DROP TABLE sessions")
+            conn.execute(
+                f"ALTER TABLE {temporary_table} "
+                "RENAME TO sessions"
+            )
+
+            for _, _, sql in schema_objects:
+                conn.execute(sql)
+
+            foreign_key_errors = conn.execute(
+                "PRAGMA foreign_key_check"
+            ).fetchall()
+
+            if foreign_key_errors:
+                raise ValueError(
+                    "Foreign key validation failed while "
+                    "normalizing the sessions schema."
+                )
+
+        except Exception:
+            conn.rollback()
+            raise
+        else:
+            conn.commit()
+        finally:
+            conn.execute("PRAGMA foreign_keys = ON")
 
 
 def _apply_schema(conn: sqlite3.Connection) -> None:

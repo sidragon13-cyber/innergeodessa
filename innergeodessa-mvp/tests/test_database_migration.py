@@ -81,7 +81,7 @@ def test_non_destructive_versioned_migration_is_idempotent(tmp_path):
             "sessions": 2,
             "responses": 2,
             "results": 1,
-            "question_banks": 3,
+            "question_banks": 5,
             "question_bank_items": LEGACY_ITEM_COUNT + 72,
             "session_question_items": 2 * LEGACY_ITEM_COUNT,
             "session_responses": 2,
@@ -226,6 +226,160 @@ def test_legacy_migration_adds_riasec_persistence_idempotently(
             """SELECT COUNT(*) FROM sessions
                WHERE module='personality'""",
         ) == 2
+        assert connection.execute(
+            "PRAGMA foreign_key_check"
+        ).fetchall() == []
+
+
+def test_existing_sessions_module_check_is_upgraded_for_kids(tmp_path):
+    database_path = tmp_path / "kids-production-migration.db"
+
+    create_legacy_database(
+        database_path,
+        SCHEMA_PATH,
+        ITEMS_PATH,
+    )
+
+    # First bring the fixture up to the same general migration level as
+    # production, including recorded Kids migrations.
+    initialize(
+        db_path=database_path,
+        items_path=ITEMS_PATH,
+    )
+
+    # Reproduce the production-specific drift:
+    # - form column exists
+    # - Kids migrations are recorded
+    # - sessions still has the old personality/riasec CHECK constraint
+    with sqlite3.connect(database_path) as connection:
+        connection.execute("PRAGMA foreign_keys = OFF")
+
+        connection.execute(
+            """CREATE TABLE sessions_production_legacy (
+                 session_id TEXT PRIMARY KEY,
+                 consent INTEGER NOT NULL CHECK (consent IN (0,1)),
+                 language TEXT NOT NULL DEFAULT 'en',
+                 module TEXT NOT NULL DEFAULT 'personality'
+                   CHECK (module IN ('personality','riasec')),
+                 started_at TEXT NOT NULL,
+                 completed_at TEXT,
+                 status TEXT NOT NULL DEFAULT 'active',
+                 owner_user_id TEXT,
+                 claim_secret_hash TEXT,
+                 claimed_at TEXT,
+                 question_bank_version TEXT,
+                 form TEXT,
+                 FOREIGN KEY (owner_user_id)
+                   REFERENCES users(user_id)
+                   ON DELETE SET NULL
+               )"""
+        )
+
+        connection.execute(
+            """INSERT INTO sessions_production_legacy(
+                 session_id,
+                 consent,
+                 language,
+                 module,
+                 started_at,
+                 completed_at,
+                 status,
+                 owner_user_id,
+                 claim_secret_hash,
+                 claimed_at,
+                 question_bank_version,
+                 form
+               )
+               SELECT
+                 session_id,
+                 consent,
+                 language,
+                 module,
+                 started_at,
+                 completed_at,
+                 status,
+                 owner_user_id,
+                 claim_secret_hash,
+                 claimed_at,
+                 question_bank_version,
+                 form
+               FROM sessions"""
+        )
+
+        connection.execute("DROP TABLE sessions")
+        connection.execute(
+            "ALTER TABLE sessions_production_legacy RENAME TO sessions"
+        )
+
+        migration_count = connection.execute(
+            """SELECT COUNT(*)
+               FROM schema_migrations
+               WHERE migration_id IN (
+                 '20260810_004_kids_persistence_foundation',
+                 '20260811_005_kids_results'
+               )"""
+        ).fetchone()[0]
+
+        assert migration_count == 2
+
+        sessions_sql = connection.execute(
+            """SELECT sql
+               FROM sqlite_master
+               WHERE type='table'
+                 AND name='sessions'"""
+        ).fetchone()[0]
+
+        assert "'personality','riasec'" in sessions_sql.replace(" ", "")
+        assert "'personality','riasec','kids'" not in sessions_sql.replace(
+            " ", ""
+        )
+
+    # This second initialize() is what production startup effectively does.
+    # Correct behavior must upgrade the stale sessions CHECK constraint even
+    # though the original Kids migrations are already recorded.
+    initialize(
+        db_path=database_path,
+        items_path=ITEMS_PATH,
+    )
+
+    with sqlite3.connect(database_path) as connection:
+        connection.execute("PRAGMA foreign_keys = ON")
+
+        connection.execute(
+            """INSERT INTO sessions(
+                 session_id,
+                 consent,
+                 language,
+                 module,
+                 started_at,
+                 status,
+                 question_bank_version,
+                 form
+               )
+               VALUES (
+                 'kids-production-regression',
+                 1,
+                 'en',
+                 'kids',
+                 '2026-08-16T00:00:00+00:00',
+                 'active',
+                 'KIDS-K68-RF-V1',
+                 'k68'
+               )"""
+        )
+
+        row = connection.execute(
+            """SELECT module, form, question_bank_version
+               FROM sessions
+               WHERE session_id='kids-production-regression'"""
+        ).fetchone()
+
+        assert row == (
+            "kids",
+            "k68",
+            "KIDS-K68-RF-V1",
+        )
+
         assert connection.execute(
             "PRAGMA foreign_key_check"
         ).fetchall() == []
