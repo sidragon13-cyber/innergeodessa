@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 
+import styles from "./career-landing-v1.module.css";
+
 import {
   CompassMark,
   SiteFooter,
@@ -32,33 +34,50 @@ function CareerAction({
   );
 }
 
-function CareerMap() {
+function CareerInterestMap() {
   const { locale } = useLocale();
   const dictionary =
     getCareerLandingDictionary(locale);
 
-  return (
-    <div className="career-map" aria-hidden="true">
-      <svg viewBox="0 0 620 620" fill="none">
-        <circle cx="310" cy="310" r="224" />
-        <circle cx="310" cy="310" r="162" />
-        <circle cx="310" cy="310" r="96" />
-        <path d="M310 36v548M36 310h548M116 116l388 388M504 116 116 504" />
-      </svg>
+  const nodePositions = [
+    styles.mapNodeTopLeft,
+    styles.mapNodeTopRight,
+    styles.mapNodeMiddleLeft,
+    styles.mapNodeMiddleRight,
+    styles.mapNodeBottomLeft,
+    styles.mapNodeBottomRight,
+  ];
 
-      <div className="career-map-center">
-        <CompassMark />
-        <span>{dictionary.mapLabel}</span>
+  return (
+    <div
+      className={styles.careerInterestMap}
+      aria-hidden="true"
+    >
+      <div className={styles.mapGrid} />
+
+      <div className={styles.mapCenter}>
+        <span>
+          {locale === "zh"
+            ? "六个兴趣方向"
+            : "SIX INTEREST DIRECTIONS"}
+        </span>
+
+        <strong>
+          {locale === "zh"
+            ? "你的兴趣结构"
+            : "YOUR INTEREST PATTERN"}
+        </strong>
       </div>
 
       {dictionary.dimensions.items.map(
         (dimension, index) => (
-          <span
-            className={`career-map-code career-map-code-${index + 1}`}
+          <div
+            className={`${styles.mapNode} ${nodePositions[index]}`}
             key={dimension.code}
           >
-            {dimension.code}
-          </span>
+            <b>{dimension.code}</b>
+            <span>{dimension.title}</span>
+          </div>
         ),
       )}
     </div>
@@ -78,45 +97,55 @@ export function CareerLanding() {
 
       <Container
         as="section"
-        size="full"
-        className="career-hero max-w-[1400px] px-0 sm:px-0 lg:px-0"
+        size="wide"
+        className={styles.hero}
       >
-        <div className="career-hero-copy">
-          <p className="eyebrow">
-            {dictionary.hero.eyebrow}
-          </p>
+        <div className={styles.heroGrid}>
+          <div className={styles.heroCopy}>
+            <p className="eyebrow">
+              {dictionary.hero.eyebrow}
+            </p>
 
-          <h1>{dictionary.hero.title}</h1>
-
-          <p className="career-intro">
-            {dictionary.hero.description}
-          </p>
-
-          <ul
-            className="assessment-meta"
-            aria-label={dictionary.hero.detailsLabel}
-          >
-            {dictionary.hero.details.map((detail) => (
-              <li key={detail}>{detail}</li>
-            ))}
-          </ul>
-
-          <div className="career-actions">
-            <CareerAction>
-              {dictionary.hero.primaryAction}
-            </CareerAction>
-
-            <a
-              className="secondary-link"
-              href="#riasec"
+            <h1
+              className={`${styles.heroTitle} ${
+                locale === "en" ? styles.heroTitleEn : ""
+              }`}
             >
-              {dictionary.hero.secondaryAction}{" "}
-              <span aria-hidden="true">↓</span>
-            </a>
+              {dictionary.hero.title}
+            </h1>
+
+            <p className={styles.heroIntro}>
+              {dictionary.hero.description}
+            </p>
+
+            <ul
+              className={styles.heroMeta}
+              aria-label={dictionary.hero.detailsLabel}
+            >
+              {dictionary.hero.details.map((detail) => (
+                <li key={detail}>{detail}</li>
+              ))}
+            </ul>
+
+            <div className={styles.heroActions}>
+              <CareerAction>
+                {dictionary.hero.primaryAction}
+              </CareerAction>
+
+              <a
+                className={styles.secondaryAction}
+                href="#riasec"
+              >
+                {dictionary.hero.secondaryAction}{" "}
+                <span aria-hidden="true">↓</span>
+              </a>
+            </div>
+          </div>
+
+          <div className={styles.heroVisual}>
+            <CareerInterestMap />
           </div>
         </div>
-
-        <CareerMap />
       </Container>
 
       <Container

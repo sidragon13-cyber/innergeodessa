@@ -1,0 +1,486 @@
+.hero {
+  padding-top: clamp(42px, 5vw, 72px);
+  padding-bottom: clamp(76px, 8vw, 112px);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 0.92fr)
+    minmax(0, 1.08fr);
+  min-height: 560px;
+  overflow: hidden;
+  border: 1.5px solid
+    var(--brand-border, #ddd8cf);
+  border-radius: 24px;
+  background:
+    var(--brand-ivory, #f3f0ea);
+}
+
+.heroCopy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  padding:
+    clamp(52px, 5vw, 74px)
+    clamp(46px, 5vw, 72px);
+  background:
+    rgba(255, 255, 255, 0.72);
+}
+
+.heroTitle {
+  max-width: 650px;
+  margin: 16px 0 0;
+  color:
+    var(--brand-indigo, #4a5878);
+  font-family:
+    var(
+      --font-display,
+      "Source Serif 4",
+      Georgia,
+      serif
+    );
+  font-size:
+    clamp(44px, 4.1vw, 62px);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.heroTitleEn {
+  max-width: 620px;
+  font-size: clamp(40px, 3.35vw, 52px);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+}
+
+.heroIntro {
+  max-width: 610px;
+  margin: 26px 0 0;
+  color:
+    var(--brand-text-secondary, #6f706f);
+  font-size: 16px;
+  line-height: 1.74;
+}
+
+.heroMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 22px;
+  margin: 26px 0 0;
+  padding: 0;
+  color:
+    var(--brand-text-secondary, #6f706f);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.55;
+  list-style: none;
+}
+
+.heroMeta li {
+  position: relative;
+}
+
+.heroMeta li:not(:last-child)::after {
+  position: absolute;
+  top: 50%;
+  right: -13px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background:
+    var(--brand-gold, #c5a36a);
+  content: "";
+  transform: translateY(-50%);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  margin-top: 34px;
+}
+
+.secondaryAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color:
+    var(--brand-indigo, #4a5878);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.secondaryAction:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.heroVisual {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  padding:
+    clamp(38px, 4vw, 58px);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(74, 88, 120, 0.08),
+      rgba(243, 240, 234, 0.78)
+    );
+}
+
+.careerInterestMap {
+  position: relative;
+  width: min(100%, 570px);
+  aspect-ratio: 1 / 0.9;
+  overflow: hidden;
+  border: 1px solid
+    rgba(74, 88, 120, 0.2);
+  border-radius: 24px;
+  background:
+    rgba(255, 255, 255, 0.56);
+  box-shadow:
+    0 26px 70px
+    rgba(61, 58, 56, 0.08);
+}
+
+.mapGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(74, 88, 120, 0.08) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(74, 88, 120, 0.08) 1px,
+      transparent 1px
+    );
+  background-size:
+    25% 100%,
+    100% 25%;
+}
+
+.mapGrid::before,
+.mapGrid::after {
+  position: absolute;
+  background:
+    rgba(197, 163, 106, 0.4);
+  content: "";
+}
+
+.mapGrid::before {
+  top: 50%;
+  left: 11%;
+  width: 78%;
+  height: 1px;
+}
+
+.mapGrid::after {
+  top: 11%;
+  left: 50%;
+  width: 1px;
+  height: 78%;
+}
+
+.mapCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  width: min(52%, 250px);
+  min-height: 118px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: 1.5px solid
+    rgba(74, 88, 120, 0.26);
+  border-radius: 20px;
+  background:
+    rgba(255, 255, 255, 0.94);
+  box-shadow:
+    0 14px 38px
+    rgba(61, 58, 56, 0.1);
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.mapCenter span {
+  color:
+    var(--brand-gold, #c5a36a);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+}
+
+.mapCenter strong {
+  max-width: 180px;
+  margin-top: 8px;
+  color:
+    var(--brand-indigo, #4a5878);
+  font-family:
+    var(
+      --font-display,
+      "Source Serif 4",
+      Georgia,
+      serif
+    );
+  font-size: clamp(19px, 2vw, 25px);
+  font-weight: 500;
+  line-height: 1.12;
+}
+
+.mapNode {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  min-width: 126px;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 13px;
+  border: 1px solid
+    rgba(74, 88, 120, 0.2);
+  border-radius: 14px;
+  background:
+    rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 10px 28px
+    rgba(61, 58, 56, 0.07);
+}
+
+.mapNode b {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  place-items: center;
+  border-radius: 9px;
+  background:
+    rgba(197, 163, 106, 0.14);
+  color:
+    var(--brand-indigo, #4a5878);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.mapNode span {
+  color:
+    var(--brand-text, #3d3a38);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.mapNodeTopLeft {
+  top: 10%;
+  left: 8%;
+}
+
+.mapNodeTopRight {
+  top: 10%;
+  right: 8%;
+}
+
+.mapNodeMiddleLeft {
+  top: 50%;
+  left: 5%;
+  transform: translateY(-50%);
+}
+
+.mapNodeMiddleRight {
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+}
+
+.mapNodeBottomLeft {
+  bottom: 10%;
+  left: 8%;
+}
+
+.mapNodeBottomRight {
+  right: 8%;
+  bottom: 10%;
+}
+
+@media (max-width: 1050px) {
+  .heroGrid {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 0.96fr);
+  }
+
+  .heroCopy {
+    padding:
+      52px 42px;
+  }
+
+  .heroVisual {
+    padding:
+      36px 28px;
+  }
+
+  .mapNode {
+    min-width: 110px;
+    padding: 9px 10px;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding-top: 30px;
+    padding-bottom: 72px;
+  }
+
+  .heroGrid {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .heroCopy {
+    padding:
+      48px 38px;
+  }
+
+  .heroTitle {
+    font-size:
+      clamp(40px, 7vw, 52px);
+  }
+
+  .heroVisual {
+    min-height: 500px;
+    border-top: 1px solid
+      rgba(74, 88, 120, 0.14);
+  }
+
+  .careerInterestMap {
+    width: min(100%, 560px);
+  }
+}
+
+@media (max-width: 620px) {
+  .hero {
+    padding-top: 20px;
+    padding-bottom: 58px;
+  }
+
+  .heroGrid {
+    border-radius: 20px;
+  }
+
+  .heroCopy {
+    padding:
+      38px 24px 42px;
+  }
+
+  .heroTitle {
+    margin-top: 13px;
+    font-size:
+      clamp(36px, 10vw, 46px);
+    line-height: 1.06;
+    text-wrap: pretty;
+  }
+
+  .heroIntro {
+    margin-top: 22px;
+    font-size: 15px;
+  }
+
+  .heroMeta {
+    display: grid;
+    gap: 7px;
+    margin-top: 22px;
+    font-size: 12px;
+  }
+
+  .heroMeta li:not(:last-child)::after {
+    display: none;
+  }
+
+  .heroActions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 28px;
+  }
+
+  .heroVisual {
+    min-height: 430px;
+    padding:
+      24px 16px;
+  }
+
+  .careerInterestMap {
+    aspect-ratio: 0.9 / 1;
+    border-radius: 18px;
+  }
+
+  .mapCenter {
+    width: 56%;
+    min-height: 104px;
+    padding: 16px;
+  }
+
+  .mapCenter strong {
+    font-size: 19px;
+  }
+
+  .mapNode {
+    min-width: 98px;
+    gap: 7px;
+    padding: 8px;
+    border-radius: 12px;
+  }
+
+  .mapNode b {
+    width: 27px;
+    height: 27px;
+    flex-basis: 27px;
+    font-size: 12px;
+  }
+
+  .mapNode span {
+    max-width: 62px;
+    font-size: 10px;
+  }
+
+  .mapNodeTopLeft {
+    top: 7%;
+    left: 5%;
+  }
+
+  .mapNodeTopRight {
+    top: 7%;
+    right: 5%;
+  }
+
+  .mapNodeMiddleLeft {
+    left: 3%;
+  }
+
+  .mapNodeMiddleRight {
+    right: 3%;
+  }
+
+  .mapNodeBottomLeft {
+    bottom: 7%;
+    left: 5%;
+  }
+
+  .mapNodeBottomRight {
+    right: 5%;
+    bottom: 7%;
+  }
+}
