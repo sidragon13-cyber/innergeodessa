@@ -44,13 +44,21 @@ export type PersonalityLandingDictionary = {
   guidance: {
     eyebrow: string;
     title: string;
-    items: readonly string[];
+    description: string;
+    items: readonly {
+      title: string;
+      description: string;
+    }[];
   };
 
   limitations: {
     eyebrow: string;
     title: string;
-    items: readonly string[];
+    groups: readonly {
+      label: string;
+      description: string;
+    }[];
+    action: string;
   };
 
   finalCta: {
@@ -151,28 +159,58 @@ export const personalityLandingDictionaries: Record<
     guidance: {
       eyebrow: "Before you begin",
       title: "Answer as you usually are",
+      description:
+        "There is no better answer to choose, and you do not need to guess which response belongs to a particular personality type.",
       items: [
-        "Choose the response that reflects your typical behaviour.",
-        "Do not answer according to who you think you should be.",
-        "Avoid overthinking individual questions.",
-        "There are no right or wrong personality types.",
+        {
+          title: "Answer from your usual state",
+          description:
+            "Choose the response that most closely reflects how you typically behave.",
+        },
+        {
+          title: "Do not answer who you should be",
+          description:
+            "Respond from your actual tendencies rather than an ideal version of yourself.",
+        },
+        {
+          title: "Avoid overthinking one question",
+          description:
+            "Use your usual experience instead of searching for a correct answer.",
+        },
+        {
+          title: "There are no better personality types",
+          description:
+            "Each dimension describes preference, not value, ability, or maturity.",
+        },
       ],
     },
 
     limitations: {
-      eyebrow: "Use with perspective",
-      title: "A tool for reflection, not diagnosis.",
-      items: [
-        "This is an original self-exploration assessment inspired by public personality-dimension theory.",
-        "It is not an official MBTI assessment. MBTI is a trademark of The Myers-Briggs Company.",
-        "Results are not medical, psychological, or employment diagnoses.",
-        "Treat your result as one perspective rather than a fixed identity.",
+      eyebrow: "Responsible use",
+      title: "How to use this assessment",
+      groups: [
+        {
+          label: "Use it for",
+          description:
+            "Understanding preferences, noticing recurring patterns, and forming questions worth exploring further.",
+        },
+        {
+          label: "Do not use it for",
+          description:
+            "Medical or psychological diagnosis, intelligence testing, ability ranking, hiring, or admission decisions.",
+        },
+        {
+          label: "Important reminder",
+          description:
+            "Your result reflects the preference structure shown by your current self-report answers. It is not a fixed identity.",
+        },
       ],
+      action: "Explore the full methodology and use boundaries",
     },
 
     finalCta: {
       eyebrow: "Personality Assessment",
-      title: "Ready to understand your preference patterns?",
+      title: "Start here to understand yourself more clearly.",
       action: "Start Personality Assessment",
       note:
         "72 questions · approximately 8–12 minutes · no account required to begin",
@@ -264,29 +302,59 @@ export const personalityLandingDictionaries: Record<
 
     guidance: {
       eyebrow: "开始之前",
-      title: "按照你通常的真实状态作答",
+      title: "按照你通常的状态作答",
+      description:
+        "不需要选择“更好”的答案，也不需要猜测哪一种答案对应某个人格类型。",
       items: [
-        "选择最符合你日常行为的答案。",
-        "不要按照你认为自己应该成为的样子作答。",
-        "避免对单个问题进行过度思考。",
-        "人格类型没有正确或错误之分。",
+        {
+          title: "按通常状态回答",
+          description:
+            "选择最接近日常行为的答案。",
+        },
+        {
+          title: "不要回答“我应该是什么样”",
+          description:
+            "回答实际倾向，而不是理想形象。",
+        },
+        {
+          title: "避免过度分析单道题",
+          description:
+            "依据通常经验作答，而不是寻找“正确答案”。",
+        },
+        {
+          title: "没有好坏人格类型",
+          description:
+            "每个维度描述偏好，而不是价值、能力或成熟度。",
+        },
       ],
     },
 
     limitations: {
-      eyebrow: "保持合理视角",
-      title: "用于反思，而不是医学诊断。",
-      items: [
-        "这是一项原创自我探索测评，参考了公开的人格维度理论。",
-        "它不是官方 MBTI 测评。MBTI 是 The Myers-Briggs Company 的注册商标。",
-        "测评结果不能作为医学、心理或就业诊断。",
-        "请把结果视为理解自己的一个角度，而不是固定身份。",
+      eyebrow: "合理使用",
+      title: "如何使用这项测评",
+      groups: [
+        {
+          label: "用于",
+          description:
+            "理解偏好、观察重复模式、形成进一步探索的问题。",
+        },
+        {
+          label: "不用于",
+          description:
+            "医学或心理诊断、智力测试、能力评级、招聘或录取决定。",
+        },
+        {
+          label: "重要提醒",
+          description:
+            "人格结果反映的是当前回答所呈现的偏好结构，不代表固定不变的身份。",
+        },
       ],
+      action: "了解完整方法与使用边界",
     },
 
     finalCta: {
       eyebrow: "人格探索",
-      title: "准备好开始了解自己的偏好模式了吗？",
+      title: "从这里开始，更清楚地理解自己。",
       action: "开始人格探索",
       note: "72 道题 · 约 8–12 分钟 · 无需注册即可开始",
     },

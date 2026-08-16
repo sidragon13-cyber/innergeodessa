@@ -77,8 +77,8 @@
   margin: 26px 0 0;
   color:
     var(--brand-muted, #6f706f);
-  font-size: 15.5px;
-  line-height: 1.72;
+  font-size: 16px;
+  line-height: 1.74;
 }
 
 .meta {
@@ -95,9 +95,9 @@
   padding-left: 14px;
   color:
     var(--brand-muted, #6f706f);
-  font-size: 11px;
+  font-size: 12.5px;
   font-weight: 600;
-  line-height: 1.5;
+  line-height: 1.55;
   letter-spacing: 0.025em;
 }
 
@@ -380,7 +380,7 @@
   margin: 0 0 3px;
   color:
     var(--brand-muted, #6f706f);
-  font-size: 13.5px;
+  font-size: 15px;
   line-height: 1.72;
 }
 
@@ -454,8 +454,8 @@
   margin: 19px 0 30px;
   color:
     var(--brand-muted, #6f706f);
-  font-size: 13px;
-  line-height: 1.68;
+  font-size: 14.5px;
+  line-height: 1.7;
 }
 
 .dimensionCardAxis {
@@ -586,8 +586,8 @@
   max-width: 450px;
   margin: 27px 0 0;
   color:
-    rgba(248, 245, 237, 0.78);
-  font-size: 14px;
+    rgba(248, 245, 237, 0.82);
+  font-size: 15px;
   line-height: 1.75;
 }
 
@@ -640,9 +640,9 @@
     "Source Serif 4",
     Georgia,
     serif;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 400;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .resultNote {
@@ -650,8 +650,225 @@
   margin: 22px 0 0;
   color:
     var(--brand-muted, #6f706f);
-  font-size: 10.5px;
+  font-size: 12px;
   line-height: 1.65;
+}
+
+/* =========================================================
+   Answering Guidance
+   ========================================================= */
+
+.guidanceSection {
+  padding-top: 0;
+  padding-bottom: 104px;
+}
+
+.guidanceHeading {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(300px, 410px);
+  align-items: end;
+  gap: 72px;
+  margin-bottom: 42px;
+}
+
+.guidanceHeading h2 {
+  max-width: 760px;
+  margin: 0;
+  color:
+    var(--brand-text, #3d3a38);
+  font-family:
+    var(--font-display),
+    "Source Serif 4",
+    Georgia,
+    serif;
+  font-size:
+    clamp(42px, 3.8vw, 56px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.guidanceIntro {
+  max-width: 410px;
+  margin: 0 0 3px;
+  color:
+    var(--brand-muted, #6f706f);
+  font-size: 15px;
+  line-height: 1.72;
+}
+
+.guidanceGrid {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.guidanceCard {
+  min-width: 0;
+  min-height: 245px;
+  display: flex;
+  flex-direction: column;
+  padding: 25px 24px 24px;
+  border: 1.5px solid
+    rgba(74, 88, 120, 0.16);
+  border-radius: 20px;
+  background:
+    rgba(255, 253, 250, 0.74);
+}
+
+.guidanceNumber {
+  color:
+    var(--brand-gold-dark, #a98750);
+  font-size: 8px;
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: 0.15em;
+}
+
+.guidanceCard h3 {
+  margin: 52px 0 0;
+  color:
+    var(--brand-text, #3d3a38);
+  font-family:
+    var(--font-display),
+    "Source Serif 4",
+    Georgia,
+    serif;
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+}
+
+.guidanceCard > p {
+  margin: auto 0 0;
+  padding-top: 20px;
+  color:
+    var(--brand-muted, #6f706f);
+  font-size: 14px;
+  line-height: 1.68;
+}
+
+/* =========================================================
+   Assessment Use Boundaries
+   ========================================================= */
+
+.boundarySection {
+  padding-top: 0;
+  padding-bottom: 104px;
+}
+
+.boundaryCard {
+  display: grid;
+  grid-template-columns:
+    minmax(280px, 34%)
+    minmax(0, 66%);
+  overflow: hidden;
+  border: 1.5px solid
+    rgba(74, 88, 120, 0.16);
+  border-radius: 24px;
+  background:
+    rgba(255, 253, 250, 0.82);
+}
+
+.boundaryHeading {
+  min-width: 0;
+  padding: 40px 38px;
+  border-right: 1.5px solid
+    rgba(74, 88, 120, 0.14);
+  background:
+    rgba(243, 240, 234, 0.72);
+}
+
+.boundaryHeading h2 {
+  max-width: 340px;
+  margin: 0;
+  color:
+    var(--brand-text, #3d3a38);
+  font-family:
+    var(--font-display),
+    "Source Serif 4",
+    Georgia,
+    serif;
+  font-size:
+    clamp(32px, 2.8vw, 42px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.boundaryContent {
+  min-width: 0;
+  padding: 28px 34px 27px;
+}
+
+.boundaryGroups {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  border-top: 1.5px solid
+    rgba(74, 88, 120, 0.14);
+  border-bottom: 1.5px solid
+    rgba(74, 88, 120, 0.14);
+}
+
+.boundaryGroup {
+  min-width: 0;
+  min-height: 150px;
+  padding: 22px 22px 20px;
+}
+
+.boundaryGroup + .boundaryGroup {
+  border-left: 1.5px solid
+    rgba(74, 88, 120, 0.14);
+}
+
+.boundaryGroup h3 {
+  margin: 0 0 18px;
+  color:
+    var(--brand-primary, #4a5878);
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.boundaryGroup p {
+  margin: 0;
+  color:
+    var(--brand-muted, #6f706f);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+.boundaryAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  color:
+    var(--brand-primary, #4a5878);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.55;
+  letter-spacing: 0.035em;
+  text-decoration: none;
+}
+
+.boundaryAction span {
+  color:
+    var(--brand-gold-dark, #a98750);
+}
+
+.boundaryAction:focus-visible {
+  outline: 2px solid
+    var(--brand-primary, #4a5878);
+  outline-offset: 5px;
 }
 
 @media (max-width: 1050px) {
@@ -678,6 +895,35 @@
 }
 
 @media (max-width: 900px) {
+  .guidanceHeading {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 20px;
+  }
+
+  .guidanceIntro {
+    max-width: 680px;
+  }
+
+  .guidanceGrid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .boundaryCard {
+    grid-template-columns: 1fr;
+  }
+
+  .boundaryHeading {
+    border-right: 0;
+    border-bottom: 1.5px solid
+      rgba(74, 88, 120, 0.14);
+  }
+
+  .boundaryHeading h2 {
+    max-width: 620px;
+  }
+
   .resultCard {
     grid-template-columns: 1fr;
   }
@@ -734,6 +980,73 @@
 }
 
 @media (max-width: 700px) {
+  .guidanceSection,
+  .boundarySection {
+    padding-right: 20px;
+    padding-bottom: 82px;
+    padding-left: 20px;
+  }
+
+  .guidanceHeading {
+    margin-bottom: 30px;
+  }
+
+  .guidanceHeading h2 {
+    font-size:
+      clamp(36px, 10vw, 46px);
+    line-height: 1.08;
+  }
+
+  .guidanceIntro {
+    font-size: 14px;
+  }
+
+  .guidanceGrid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .guidanceCard {
+    min-height: 215px;
+    padding: 24px 23px;
+  }
+
+  .guidanceCard h3 {
+    margin-top: 42px;
+  }
+
+  .boundaryCard {
+    border-radius: 20px;
+  }
+
+  .boundaryHeading {
+    padding: 32px 25px 30px;
+  }
+
+  .boundaryHeading h2 {
+    font-size:
+      clamp(32px, 9vw, 40px);
+  }
+
+  .boundaryContent {
+    padding: 22px 23px 24px;
+  }
+
+  .boundaryGroups {
+    grid-template-columns: 1fr;
+  }
+
+  .boundaryGroup {
+    min-height: 0;
+    padding: 20px 0;
+  }
+
+  .boundaryGroup + .boundaryGroup {
+    border-top: 1.5px solid
+      rgba(74, 88, 120, 0.14);
+    border-left: 0;
+  }
+
   .resultSection {
     padding-right: 20px;
     padding-bottom: 82px;
@@ -798,7 +1111,7 @@
   }
 
   .dimensionsBoundary {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .dimensionGrid {

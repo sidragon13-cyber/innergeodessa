@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import {
   CompassMark,
   PrimaryButton,
@@ -251,36 +253,53 @@ export function PersonalityLanding() {
 
       <Container
         as="section"
-        className="guidance-section"
+        size="wide"
+        className={styles.guidanceSection}
       >
-        <div className="guidance-heading">
-          <p className="eyebrow">
-            {dictionary.guidance.eyebrow}
-          </p>
+        <div className={styles.guidanceHeading}>
+          <div>
+            <p className={styles.eyebrow}>
+              {dictionary.guidance.eyebrow}
+            </p>
 
-          <h2>
-            {dictionary.guidance.title}
-          </h2>
+            <h2>
+              {dictionary.guidance.title}
+            </h2>
+          </div>
+
+          <p className={styles.guidanceIntro}>
+            {dictionary.guidance.description}
+          </p>
         </div>
 
-        <div className="guidance-grid">
+        <div className={styles.guidanceGrid}>
           {dictionary.guidance.items.map(
             (item, index) => (
-              <article key={item}>
-                <span>
+              <article
+                className={styles.guidanceCard}
+                key={item.title}
+              >
+                <span className={styles.guidanceNumber}>
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <p>{item}</p>
+
+                <h3>{item.title}</h3>
+
+                <p>{item.description}</p>
               </article>
             ),
           )}
         </div>
       </Container>
 
-      <section className="limitation-section">
-        <Container className="limitation-inner">
-          <div>
-            <p className="eyebrow">
+      <Container
+        as="section"
+        size="wide"
+        className={styles.boundarySection}
+      >
+        <div className={styles.boundaryCard}>
+          <div className={styles.boundaryHeading}>
+            <p className={styles.eyebrow}>
               {dictionary.limitations.eyebrow}
             </p>
 
@@ -289,17 +308,31 @@ export function PersonalityLanding() {
             </h2>
           </div>
 
-          <ul>
-            {dictionary.limitations.items.map(
-              (limitation) => (
-                <li key={limitation}>
-                  {limitation}
-                </li>
-              ),
-            )}
-          </ul>
-        </Container>
-      </section>
+          <div className={styles.boundaryContent}>
+            <div className={styles.boundaryGroups}>
+              {dictionary.limitations.groups.map(
+                (group) => (
+                  <article
+                    className={styles.boundaryGroup}
+                    key={group.label}
+                  >
+                    <h3>{group.label}</h3>
+                    <p>{group.description}</p>
+                  </article>
+                ),
+              )}
+            </div>
+
+            <Link
+              className={styles.boundaryAction}
+              href="/methodology"
+            >
+              {dictionary.limitations.action}
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+        </div>
+      </Container>
 
       <section
         className="personality-final-cta"
