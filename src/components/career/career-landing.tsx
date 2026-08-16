@@ -5,7 +5,6 @@ import Link from "next/link";
 import styles from "./career-landing-v1.module.css";
 
 import {
-  CompassMark,
   SiteFooter,
   SiteHeader,
 } from "@/components/home";
@@ -355,51 +354,43 @@ export function CareerLanding() {
         </div>
       </Container>
 
-      <section className="career-disclaimer">
-        <Container className="career-disclaimer-inner">
-          <div>
+      <Container
+        as="section"
+        size="wide"
+        className={styles.boundarySection}
+      >
+        <div className={styles.boundaryCard}>
+          <div className={styles.boundaryHeading}>
             <p className="eyebrow">
               {dictionary.disclaimer.eyebrow}
             </p>
+
             <h2>{dictionary.disclaimer.title}</h2>
           </div>
 
-          <div>
-            {dictionary.disclaimer.paragraphs.map(
-              (paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ),
-            )}
+          <div className={styles.boundaryContent}>
+            <div className={styles.boundaryGroups}>
+              {dictionary.disclaimer.groups.map(
+                (group) => (
+                  <div
+                    className={styles.boundaryGroup}
+                    key={group.label}
+                  >
+                    <h3>{group.label}</h3>
+                    <p>{group.description}</p>
+                  </div>
+                ),
+              )}
+            </div>
 
-            <p className="disclaimer-source">
-              {dictionary.disclaimer.source}
-            </p>
+            <Link
+              className={styles.boundaryAction}
+              href="/methodology"
+            >
+              {dictionary.disclaimer.action}
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
-        </Container>
-      </section>
-
-      <Container
-        as="section"
-        className="future-profile"
-      >
-        <div className="future-profile-copy">
-          <p className="eyebrow">
-            {dictionary.futureProfile.eyebrow}
-          </p>
-          <h2>{dictionary.futureProfile.title}</h2>
-          <p>{dictionary.futureProfile.description}</p>
-        </div>
-
-        <div
-          className="future-profile-map"
-          aria-hidden="true"
-        >
-          {dictionary.futureProfile.labels.map(
-            (item) => (
-              <span key={item}>{item}</span>
-            ),
-          )}
-          <CompassMark />
         </div>
       </Container>
 

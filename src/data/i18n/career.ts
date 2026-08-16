@@ -67,15 +67,11 @@ export type CareerLandingDictionary = {
   disclaimer: {
     eyebrow: string;
     title: string;
-    paragraphs: readonly string[];
-    source: string;
-  };
-
-  futureProfile: {
-    eyebrow: string;
-    title: string;
-    description: string;
-    labels: readonly string[];
+    groups: readonly {
+      label: string;
+      description: string;
+    }[];
+    action: string;
   };
 
   finalCta: {
@@ -261,29 +257,26 @@ export const careerLandingDictionaries: Record<
     },
 
     disclaimer: {
-      eyebrow: "Professional context",
-      title: "Exploration, not a career decision",
-      paragraphs: [
-        "This assessment is designed for education, self-reflection, and career exploration. It does not provide a professional psychological, educational, recruitment, or employment decision.",
-        "Career choices should also consider abilities, values, qualifications, personal circumstances, labour-market conditions, and professional guidance where appropriate.",
+      eyebrow: "Responsible use",
+      title: "How to use this assessment",
+      groups: [
+        {
+          label: "Use it for",
+          description:
+            "Understanding your interest structure, comparing work environments, and identifying career fields worth exploring.",
+        },
+        {
+          label: "Do not use it for",
+          description:
+            "Psychological diagnosis, ability ranking, recruitment, admission, or a final employment decision.",
+        },
+        {
+          label: "Important reminder",
+          description:
+            "Career choices should also consider abilities, values, qualifications, opportunities, personal circumstances, labour-market conditions, and real-world experience.",
+        },
       ],
-      source:
-        "Inspired by widely used RIASEC career-interest concepts. No endorsement by an external organisation is implied.",
-    },
-
-    futureProfile: {
-      eyebrow: "Future InnerGeo connection",
-      title: "More perspectives, brought together",
-      description:
-        "A future integrated profile may connect career interests with personality preferences, strengths, values, learning style, and personal goals. These connections are not yet available.",
-      labels: [
-        "Career",
-        "Personality",
-        "Strengths",
-        "Values",
-        "Learning",
-        "Goals",
-      ],
+      action: "Explore the full methodology and use boundaries",
     },
 
     finalCta: {
@@ -466,29 +459,26 @@ export const careerLandingDictionaries: Record<
     },
 
     disclaimer: {
-      eyebrow: "专业边界",
-      title: "用于探索，而不是代替职业决定",
-      paragraphs: [
-        "这项测评用于教育、自我反思和职业探索，不能代替专业的心理、教育、招聘或就业决策。",
-        "职业选择还应综合考虑能力、价值观、学历资格、个人情况、劳动力市场条件，并在需要时寻求专业指导。",
+      eyebrow: "合理使用",
+      title: "如何使用这项测评",
+      groups: [
+        {
+          label: "用于",
+          description:
+            "理解兴趣结构、比较不同工作环境，并发现值得继续探索的职业领域。",
+        },
+        {
+          label: "不用于",
+          description:
+            "心理诊断、能力评级、招聘、录取或最终就业决定。",
+        },
+        {
+          label: "重要提醒",
+          description:
+            "职业选择还需要结合能力、价值观、学历资格、机会、个人情况、劳动力市场条件与现实经验。",
+        },
       ],
-      source:
-        "本测评参考了广泛使用的 RIASEC 职业兴趣理论，但不代表任何外部机构的认可或背书。",
-    },
-
-    futureProfile: {
-      eyebrow: "未来的 InnerGeo 综合连接",
-      title: "将更多自我认知维度连接起来",
-      description:
-        "未来的综合档案可以把职业兴趣与人格偏好、优势、价值观、学习方式和个人目标连接起来。目前这些综合功能尚未开放。",
-      labels: [
-        "职业",
-        "人格",
-        "优势",
-        "价值观",
-        "学习",
-        "目标",
-      ],
+      action: "了解完整方法与使用边界",
     },
 
     finalCta: {

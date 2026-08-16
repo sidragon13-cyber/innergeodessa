@@ -895,6 +895,116 @@
   line-height: 1.68;
 }
 
+.boundarySection {
+  padding-top: 0;
+  padding-bottom: clamp(58px, 6vw, 82px);
+}
+
+.boundaryCard {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 0.32fr)
+    minmax(0, 0.68fr);
+  overflow: hidden;
+  border: 1.5px solid
+    var(--brand-border, #ddd8cf);
+  border-radius: 22px;
+  background:
+    rgba(255, 255, 255, 0.56);
+}
+
+.boundaryHeading {
+  padding:
+    38px
+    clamp(34px, 4vw, 48px);
+  border-right: 1px solid
+    rgba(74, 88, 120, 0.14);
+}
+
+.boundaryHeading h2 {
+  max-width: 360px;
+  margin: 13px 0 0;
+  color:
+    var(--brand-text, #3d3a38);
+  font-family:
+    var(
+      --font-display,
+      "Source Serif 4",
+      Georgia,
+      serif
+    );
+  font-size:
+    clamp(31px, 2.8vw, 40px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+
+.boundaryContent {
+  min-width: 0;
+  padding:
+    26px
+    clamp(28px, 3.5vw, 42px)
+    22px;
+}
+
+.boundaryGroups {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  border-top: 1px solid
+    rgba(74, 88, 120, 0.14);
+  border-bottom: 1px solid
+    rgba(74, 88, 120, 0.14);
+}
+
+.boundaryGroup {
+  min-width: 0;
+  padding:
+    23px 20px 24px;
+}
+
+.boundaryGroup + .boundaryGroup {
+  border-left: 1px solid
+    rgba(74, 88, 120, 0.14);
+}
+
+.boundaryGroup h3 {
+  margin: 0;
+  color:
+    var(--brand-indigo, #4a5878);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+}
+
+.boundaryGroup p {
+  margin: 14px 0 0;
+  color:
+    var(--brand-text-secondary, #6f706f);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+.boundaryAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 19px;
+  color:
+    var(--brand-indigo, #4a5878);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.55;
+  text-decoration: none;
+}
+
+.boundaryAction:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 @media (max-width: 1050px) {
   .guidanceGrid {
     grid-template-columns:
@@ -943,6 +1053,22 @@
 }
 
 @media (max-width: 900px) {
+  .boundaryCard {
+    grid-template-columns: 1fr;
+  }
+
+  .boundaryHeading {
+    padding:
+      36px 38px 30px;
+    border-right: 0;
+    border-bottom: 1px solid
+      rgba(74, 88, 120, 0.14);
+  }
+
+  .boundaryHeading h2 {
+    max-width: 620px;
+  }
+
   .guidanceHeader {
     grid-template-columns: 1fr;
     gap: 26px;
@@ -1027,6 +1153,47 @@
 }
 
 @media (max-width: 620px) {
+  .boundarySection {
+    padding-bottom: 58px;
+  }
+
+  .boundaryCard {
+    border-radius: 18px;
+  }
+
+  .boundaryHeading {
+    padding:
+      30px 24px 26px;
+  }
+
+  .boundaryHeading h2 {
+    font-size: 33px;
+  }
+
+  .boundaryContent {
+    padding:
+      18px 24px 20px;
+  }
+
+  .boundaryGroups {
+    grid-template-columns: 1fr;
+  }
+
+  .boundaryGroup {
+    padding:
+      20px 0;
+  }
+
+  .boundaryGroup + .boundaryGroup {
+    border-top: 1px solid
+      rgba(74, 88, 120, 0.14);
+    border-left: 0;
+  }
+
+  .boundaryGroup p {
+    font-size: 13px;
+  }
+
   .guidanceSection {
     padding:
       66px 0 72px;
