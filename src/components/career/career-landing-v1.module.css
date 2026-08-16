@@ -379,7 +379,176 @@
   line-height: 1.72;
 }
 
+.riasecSection {
+  padding:
+    clamp(82px, 8vw, 112px)
+    0
+    clamp(92px, 9vw, 126px);
+  scroll-margin-top: 24px;
+  background:
+    rgba(255, 255, 255, 0.2);
+}
+
+.riasecHeader {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(320px, 0.42fr);
+  gap: clamp(48px, 7vw, 92px);
+  align-items: end;
+  margin-bottom: 48px;
+}
+
+.riasecHeader h2 {
+  max-width: 720px;
+  margin: 14px 0 0;
+  color:
+    var(--brand-text, #3d3a38);
+  font-family:
+    var(
+      --font-display,
+      "Source Serif 4",
+      Georgia,
+      serif
+    );
+  font-size:
+    clamp(42px, 4vw, 58px);
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+}
+
+.riasecBoundary {
+  max-width: 470px;
+  margin: 0 0 5px;
+  color:
+    var(--brand-text-secondary, #6f706f);
+  font-size: 15px;
+  line-height: 1.74;
+}
+
+.riasecGrid {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.riasecCard {
+  display: flex;
+  min-height: 318px;
+  flex-direction: column;
+  padding: 28px 28px 30px;
+  border: 1.5px solid
+    var(--brand-border, #ddd8cf);
+  border-radius: 22px;
+  background:
+    rgba(255, 255, 255, 0.68);
+}
+
+.riasecCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.riasecCardTop span {
+  color:
+    var(--brand-gold, #c5a36a);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.riasecCardTop strong {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid
+    rgba(197, 163, 106, 0.7);
+  border-radius: 13px;
+  background:
+    rgba(197, 163, 106, 0.08);
+  color:
+    var(--brand-indigo, #4a5878);
+  font-family:
+    var(
+      --font-display,
+      "Source Serif 4",
+      Georgia,
+      serif
+    );
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.riasecCardBody {
+  margin-top: 34px;
+}
+
+.riasecCardBody h3 {
+  margin: 0;
+  color:
+    var(--brand-text, #3d3a38);
+  font-family:
+    var(
+      --font-display,
+      "Source Serif 4",
+      Georgia,
+      serif
+    );
+  font-size: 31px;
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+
+.riasecCardBody p {
+  max-width: 330px;
+  margin: 15px 0 0;
+  color:
+    var(--brand-text-secondary, #6f706f);
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+.riasecKeywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: auto 0 0;
+  padding: 24px 0 0;
+  border-top: 1px solid
+    rgba(74, 88, 120, 0.12);
+  list-style: none;
+}
+
+.riasecKeywords li {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background:
+    rgba(74, 88, 120, 0.07);
+  color:
+    var(--brand-indigo, #4a5878);
+  font-size: 11.5px;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
 @media (max-width: 1050px) {
+  .riasecGrid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .riasecHeader {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(280px, 0.48fr);
+    gap: 42px;
+  }
+
   .heroGrid {
     grid-template-columns:
       minmax(0, 1fr)
@@ -403,6 +572,15 @@
 }
 
 @media (max-width: 900px) {
+  .riasecHeader {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .riasecBoundary {
+    max-width: 680px;
+  }
+
   .contextGrid {
     grid-template-columns: 1fr;
     gap: 30px;
@@ -445,6 +623,50 @@
 }
 
 @media (max-width: 620px) {
+  .riasecSection {
+    padding:
+      66px 0 74px;
+  }
+
+  .riasecHeader {
+    margin-bottom: 32px;
+  }
+
+  .riasecHeader h2 {
+    font-size: 38px;
+  }
+
+  .riasecBoundary {
+    font-size: 14px;
+  }
+
+  .riasecGrid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .riasecCard {
+    min-height: 280px;
+    padding: 24px;
+    border-radius: 20px;
+  }
+
+  .riasecCardBody {
+    margin-top: 28px;
+  }
+
+  .riasecCardBody h3 {
+    font-size: 29px;
+  }
+
+  .riasecCardBody p {
+    font-size: 14px;
+  }
+
+  .riasecKeywords li {
+    font-size: 11px;
+  }
+
   .contextSection {
     padding-bottom: 60px;
   }

@@ -120,7 +120,7 @@ export const careerLandingDictionaries: Record<
       eyebrow: "The RIASEC framework",
       title: "Six dimensions of interest",
       description:
-        "Most people combine several dimensions. None is more valuable than another, and no single dimension defines your future.",
+        "RIASEC dimensions describe interest directions, not ability rankings. Most people combine several dimensions, and no single dimension defines your future.",
       items: [
         {
           code: "R",
@@ -130,7 +130,6 @@ export const careerLandingDictionaries: Record<
           examples: [
             "Practical activity",
             "Tools and equipment",
-            "Nature and the physical world",
             "Hands-on problem-solving",
           ],
         },
@@ -143,7 +142,6 @@ export const careerLandingDictionaries: Record<
             "Science and data",
             "Research",
             "Systems thinking",
-            "Independent problem-solving",
           ],
         },
         {
@@ -154,7 +152,6 @@ export const careerLandingDictionaries: Record<
           examples: [
             "Design and writing",
             "Visual communication",
-            "Performance",
             "Creative experimentation",
           ],
         },
@@ -166,7 +163,6 @@ export const careerLandingDictionaries: Record<
           examples: [
             "Education",
             "Counselling",
-            "Communication",
             "Collaborative development",
           ],
         },
@@ -179,7 +175,6 @@ export const careerLandingDictionaries: Record<
             "Business and leadership",
             "Negotiation",
             "Entrepreneurship",
-            "Influence and decisions",
           ],
         },
         {
@@ -190,7 +185,6 @@ export const careerLandingDictionaries: Record<
           examples: [
             "Planning",
             "Administration and finance",
-            "Quality control",
             "Information organisation",
           ],
         },
@@ -320,7 +314,7 @@ export const careerLandingDictionaries: Record<
       eyebrow: "RIASEC 职业兴趣框架",
       title: "六个职业兴趣维度",
       description:
-        "大多数人会同时具备多个兴趣维度。没有哪个维度更加优秀，也没有单一维度能够决定你的未来。",
+        "RIASEC 描述的是兴趣方向，而不是能力排名。大多数人会同时具备多个兴趣维度，也没有单一维度能够决定你的未来。",
       items: [
         {
           code: "R",
@@ -330,7 +324,6 @@ export const careerLandingDictionaries: Record<
           examples: [
             "实际操作",
             "工具与设备",
-            "自然与物理世界",
             "动手解决问题",
           ],
         },
@@ -343,7 +336,6 @@ export const careerLandingDictionaries: Record<
             "科学与数据",
             "研究分析",
             "系统思维",
-            "独立解决问题",
           ],
         },
         {
@@ -354,7 +346,6 @@ export const careerLandingDictionaries: Record<
           examples: [
             "设计与写作",
             "视觉传播",
-            "表演",
             "创意实验",
           ],
         },
@@ -366,7 +357,6 @@ export const careerLandingDictionaries: Record<
           examples: [
             "教育",
             "咨询与辅导",
-            "沟通",
             "协作与发展",
           ],
         },
@@ -379,7 +369,6 @@ export const careerLandingDictionaries: Record<
             "商业与领导",
             "谈判",
             "创业",
-            "影响与决策",
           ],
         },
         {
@@ -390,7 +379,6 @@ export const careerLandingDictionaries: Record<
           examples: [
             "规划",
             "行政与财务",
-            "质量控制",
             "信息整理",
           ],
         },

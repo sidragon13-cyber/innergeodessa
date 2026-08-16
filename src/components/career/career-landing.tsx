@@ -173,38 +173,44 @@ export function CareerLanding() {
       </Container>
 
       <section
-        className="riasec-section"
+        className={styles.riasecSection}
         id="riasec"
       >
-        <Container>
-          <div className="career-section-heading">
+        <Container size="wide">
+          <div className={styles.riasecHeader}>
             <div>
               <p className="eyebrow">
                 {dictionary.dimensions.eyebrow}
               </p>
+
               <h2>{dictionary.dimensions.title}</h2>
             </div>
 
-            <p>{dictionary.dimensions.description}</p>
+            <p className={styles.riasecBoundary}>
+              {dictionary.dimensions.description}
+            </p>
           </div>
 
-          <div className="riasec-grid">
+          <div className={styles.riasecGrid}>
             {dimensions.map((dimension, index) => (
               <article
-                className="riasec-card"
+                className={styles.riasecCard}
                 key={dimension.code}
               >
-                <div className="riasec-card-top">
+                <div className={styles.riasecCardTop}>
                   <span>0{index + 1}</span>
+
                   <strong aria-hidden="true">
                     {dimension.code}
                   </strong>
                 </div>
 
-                <h3>{dimension.title}</h3>
-                <p>{dimension.theme}</p>
+                <div className={styles.riasecCardBody}>
+                  <h3>{dimension.title}</h3>
+                  <p>{dimension.theme}</p>
+                </div>
 
-                <ul>
+                <ul className={styles.riasecKeywords}>
                   {dimension.examples.map((example) => (
                     <li key={example}>{example}</li>
                   ))}
