@@ -94,18 +94,17 @@ export const careerLandingDictionaries: Record<
     hero: {
       eyebrow: "Career Interest Assessment",
       title:
-        "Discover the work that feels meaningful to you.",
+        "Discover what genuinely holds your interest, then explore possible career directions.",
       description:
-        "Explore the environments, activities, and challenges that naturally hold your attention. Your interests can help reveal career directions worth investigating—not a single job you must choose.",
+        "Explore your interest across different activities, problem types and work environments through a 36-question RIASEC assessment.",
       detailsLabel: "Assessment details",
       details: [
-        "Six interest dimensions",
-        "Approximately 8–12 minutes",
-        "Designed for career exploration",
-        "No right or wrong answers",
+        "36 questions",
+        "approximately 5–8 minutes",
+        "no account required to begin",
       ],
-      primaryAction: "Start Assessment",
-      secondaryAction: "Explore the Six Dimensions",
+      primaryAction: "Start Career Interest Assessment",
+      secondaryAction: "Explore the Six Interest Dimensions",
     },
 
     context: {
@@ -293,18 +292,18 @@ export const careerLandingDictionaries: Record<
     mapLabel: "兴趣",
 
     hero: {
-      eyebrow: "职业兴趣测评",
-      title: "发现真正能够吸引你的工作方向。",
+      eyebrow: "职业兴趣探索",
+      title:
+        "发现什么真正吸引你，再去探索适合的职业方向。",
       description:
-        "探索那些能够自然吸引你注意力的环境、活动和挑战。职业兴趣可以帮助你发现值得进一步研究的方向，而不是规定你必须选择某一份工作。",
+        "通过 36 道职业兴趣题目，观察你对不同活动、问题类型与工作环境的兴趣倾向，形成六个 RIASEC 维度的个人兴趣结构。",
       detailsLabel: "测评信息",
       details: [
-        "六个职业兴趣维度",
-        "约8–12分钟",
-        "用于职业探索",
-        "答案没有对错之分",
+        "36 道题",
+        "约 5–8 分钟",
+        "无需注册即可开始",
       ],
-      primaryAction: "开始职业兴趣测评",
+      primaryAction: "开始职业兴趣探索",
       secondaryAction: "了解六个兴趣维度",
     },
 
