@@ -1005,6 +1005,76 @@
   text-underline-offset: 4px;
 }
 
+.finalCtaSection {
+  padding-top: 0;
+  padding-bottom: clamp(58px, 6vw, 82px);
+}
+
+.finalCtaCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding:
+    clamp(52px, 6vw, 72px)
+    clamp(32px, 5vw, 60px);
+  border-radius: 24px;
+  background:
+    var(--brand-indigo, #4a5878);
+  color: #fff;
+  text-align: center;
+}
+
+.finalCtaCard :global(.eyebrow) {
+  color:
+    rgba(231, 209, 171, 0.96);
+}
+
+.finalCtaCard h2 {
+  max-width: 780px;
+  margin: 16px auto 30px;
+  color: #fff;
+  font-family:
+    var(
+      --font-display,
+      "Source Serif 4",
+      Georgia,
+      serif
+    );
+  font-size:
+    clamp(42px, 4.1vw, 58px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.finalCtaMeta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 20px;
+  margin: 22px 0 0;
+  padding: 0;
+  color:
+    rgba(255, 255, 255, 0.72);
+  list-style: none;
+}
+
+.finalCtaMeta li {
+  position: relative;
+  font-size: 12px;
+  font-weight: 550;
+  line-height: 1.55;
+}
+
+.finalCtaMeta li + li::before {
+  content: "·";
+  position: absolute;
+  left: -12px;
+  color:
+    var(--brand-gold, #c5a36a);
+}
+
 @media (max-width: 1050px) {
   .guidanceGrid {
     grid-template-columns:
@@ -1153,6 +1223,35 @@
 }
 
 @media (max-width: 620px) {
+  .finalCtaSection {
+    padding-bottom: 58px;
+  }
+
+  .finalCtaCard {
+    padding:
+      42px 24px;
+    border-radius: 20px;
+  }
+
+  .finalCtaCard h2 {
+    margin-bottom: 26px;
+    font-size: 36px;
+  }
+
+  .finalCtaMeta {
+    display: grid;
+    gap: 5px;
+    margin-top: 20px;
+  }
+
+  .finalCtaMeta li {
+    font-size: 11.5px;
+  }
+
+  .finalCtaMeta li + li::before {
+    display: none;
+  }
+
   .boundarySection {
     padding-bottom: 58px;
   }

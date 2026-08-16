@@ -394,33 +394,32 @@ export function CareerLanding() {
         </div>
       </Container>
 
-      <section className="career-final-cta">
-        <Container>
+      <Container
+        as="section"
+        size="wide"
+        className={styles.finalCtaSection}
+      >
+        <div className={styles.finalCtaCard}>
           <p className="eyebrow">
             {dictionary.finalCta.eyebrow}
           </p>
 
           <h2>{dictionary.finalCta.title}</h2>
 
-          <p className="career-final-copy">
-            {dictionary.finalCta.description}
-          </p>
+          <CareerAction>
+            {dictionary.finalCta.primaryAction}
+          </CareerAction>
 
-          <div className="career-final-actions">
-            <CareerAction>
-              {dictionary.finalCta.primaryAction}
-            </CareerAction>
-
-            <a
-              className="secondary-link light-secondary"
-              href="/personality"
-            >
-              {dictionary.finalCta.secondaryAction}{" "}
-              <span aria-hidden="true">↗</span>
-            </a>
-          </div>
-        </Container>
-      </section>
+          <ul
+            className={styles.finalCtaMeta}
+            aria-label={dictionary.hero.detailsLabel}
+          >
+            {dictionary.hero.details.map((detail) => (
+              <li key={detail}>{detail}</li>
+            ))}
+          </ul>
+        </div>
+      </Container>
 
       <SiteFooter homePath="/" />
     </main>

@@ -77,9 +77,7 @@ export type CareerLandingDictionary = {
   finalCta: {
     eyebrow: string;
     title: string;
-    description: string;
     primaryAction: string;
-    secondaryAction: string;
   };
 };
 
@@ -280,13 +278,10 @@ export const careerLandingDictionaries: Record<
     },
 
     finalCta: {
-      eyebrow: "Your next direction",
+      eyebrow: "Start your exploration",
       title:
-        "Your direction becomes clearer when you understand what draws you forward.",
-      description:
-        "Begin with curiosity. Explore your interests, compare possibilities, and build a direction through evidence and experience.",
-      primaryAction: "Start Career Assessment",
-      secondaryAction: "Explore Personality",
+        "Start with your interests. Explore your career direction.",
+      primaryAction: "Start Career Interest Assessment",
     },
   },
 
@@ -482,13 +477,10 @@ export const careerLandingDictionaries: Record<
     },
 
     finalCta: {
-      eyebrow: "你的下一步方向",
+      eyebrow: "开始探索",
       title:
-        "当你理解是什么在吸引自己前进时，方向就会逐渐变得清晰。",
-      description:
-        "从好奇心开始，探索自己的兴趣，比较不同可能性，并通过事实和经验逐步建立发展方向。",
-      primaryAction: "开始职业兴趣测评",
-      secondaryAction: "探索人格类型",
+        "从兴趣开始，探索你的职业方向。",
+      primaryAction: "开始职业兴趣探索",
     },
   },
 };
