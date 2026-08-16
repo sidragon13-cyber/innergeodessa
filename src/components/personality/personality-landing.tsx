@@ -207,10 +207,14 @@ export function PersonalityLanding() {
         </div>
       </Container>
 
-      <section className="result-section">
-        <Container className="result-inner">
-          <div className="result-heading">
-            <p className="eyebrow">
+      <Container
+        as="section"
+        size="wide"
+        className={styles.resultSection}
+      >
+        <div className={styles.resultCard}>
+          <div className={styles.resultSummary}>
+            <p className={styles.resultEyebrow}>
               {dictionary.result.eyebrow}
             </p>
 
@@ -218,29 +222,32 @@ export function PersonalityLanding() {
               {dictionary.result.title}
             </h2>
 
-            <p>
+            <p className={styles.resultDescription}>
               {dictionary.result.description}
             </p>
           </div>
 
-          <ol className="result-list">
-            {dictionary.result.items.map(
-              (detail, index) => (
-                <li key={detail}>
-                  <span>
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  {detail}
-                </li>
-              ),
-            )}
-          </ol>
+          <div className={styles.resultDetails}>
+            <ol className={styles.resultList}>
+              {dictionary.result.items.map(
+                (detail, index) => (
+                  <li key={detail}>
+                    <span>
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
 
-          <p className="result-note">
-            {dictionary.result.note}
-          </p>
-        </Container>
-      </section>
+                    <p>{detail}</p>
+                  </li>
+                ),
+              )}
+            </ol>
+
+            <p className={styles.resultNote}>
+              {dictionary.result.note}
+            </p>
+          </div>
+        </div>
+      </Container>
 
       <Container
         as="section"
