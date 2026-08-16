@@ -75,26 +75,26 @@ export const personalityLandingDictionaries: Record<
     contourLabel: "Your pattern",
 
     hero: {
-      eyebrow: "Personality",
+      eyebrow: "Personality Assessment",
       title:
-        "Understand the patterns behind how you think, decide, and engage with the world.",
+        "Understand your preference patterns—not just a four-letter type.",
       description:
-        "This reflective assessment explores four broad personality dimensions and combines them into one of sixteen descriptive profiles.",
+        "Explore preferences across energy, information processing, decision-making and approach to daily life through a 72-question reflective assessment.",
       detailsLabel: "Assessment details",
       details: [
         "72 questions",
-        "8–12 minutes",
-        "No account required",
+        "Approximately 8–12 minutes",
+        "No account required to begin",
       ],
-      primaryAction: "Begin the Assessment",
-      secondaryAction: "How the assessment works",
+      primaryAction: "Start Personality Assessment",
+      secondaryAction: "Explore the Four Dimensions",
     },
 
     dimensions: {
       eyebrow: "The framework",
-      title: "Four dimensions. One profile.",
+      title: "Four dimensions. One preference pattern.",
       description:
-        "Each dimension describes a continuum of preferences. Neither side is better, healthier, or more capable than the other.",
+        "Each dimension describes a direction of preference rather than a level of ability. How a preference appears can remain flexible across context, experience, and life stage.",
       items: [
         {
           number: "01",
@@ -135,17 +135,17 @@ export const personalityLandingDictionaries: Record<
       eyebrow: "Your result",
       title: "What you will receive",
       description:
-        "A clear starting point for reflection, with practical language you can carry into work, learning, and everyday life.",
+        "More than a personality type, your result gives you a set of preference signals you can continue to understand and compare with real experience.",
       items: [
-        "A four-letter personality profile",
-        "A plain-language explanation of your tendencies",
-        "Strengths and possible blind spots",
-        "Preferred working and learning environments",
-        "Career areas worth exploring",
-        "A complete personality report you can review and print",
+        "A four-letter preference result",
+        "Your tendencies across all four dimensions",
+        "Preference clarity and boundary interpretation",
+        "Strengths and possible blind spots to reflect on",
+        "Work, learning, and development areas worth exploring",
+        "A complete digital report available for deeper review",
       ],
       note:
-        "Your result is generated immediately after completion. No account or sign-in is required.",
+        "Your result is generated immediately after completion. You can begin without creating an account.",
     },
 
     guidance: {
@@ -171,10 +171,11 @@ export const personalityLandingDictionaries: Record<
     },
 
     finalCta: {
-      eyebrow: "Personality assessment",
-      title: "Ready to explore your personality?",
-      action: "Begin the Assessment",
-      note: "72 questions · approximately 8–12 minutes",
+      eyebrow: "Personality Assessment",
+      title: "Ready to understand your preference patterns?",
+      action: "Start Personality Assessment",
+      note:
+        "72 questions · approximately 8–12 minutes · no account required to begin",
     },
   },
 
@@ -188,26 +189,26 @@ export const personalityLandingDictionaries: Record<
     contourLabel: "你的模式",
 
     hero: {
-      eyebrow: "人格类型",
+      eyebrow: "人格探索",
       title:
-        "理解你在思考、决策以及与世界互动时所表现出的内在模式。",
+        "理解你的偏好模式，而不只是得到四个字母。",
       description:
-        "这项反思型测评探索四个主要人格维度，并将结果组合为十六种描述性人格类型之一。",
+        "通过 72 道题观察你在能量获取、信息处理、决策和生活方式上的偏好，形成四个维度的个人偏好结构，并获得进一步解释。",
       detailsLabel: "测评信息",
       details: [
-        "72道题",
-        "约8–12分钟",
-        "无需注册账户",
+        "72 道题",
+        "约 8–12 分钟",
+        "无需注册即可开始",
       ],
-      primaryAction: "开始人格测评",
-      secondaryAction: "了解测评方式",
+      primaryAction: "开始人格探索",
+      secondaryAction: "了解四个维度",
     },
 
     dimensions: {
       eyebrow: "测评框架",
-      title: "四个维度，一份人格档案。",
+      title: "四个维度，构成你的偏好结构",
       description:
-        "每个维度都代表一组连续的人格偏好。两端没有优劣、健康程度或能力高低之分。",
+        "四个维度描述的是偏好方向，而不是能力高低；结果可能因情境、经历与人生阶段呈现不同程度的灵活性。",
       items: [
         {
           number: "01",
@@ -246,19 +247,19 @@ export const personalityLandingDictionaries: Record<
 
     result: {
       eyebrow: "你的结果",
-      title: "你将获得什么",
+      title: "完成测评后，你会得到什么",
       description:
-        "一份清晰的自我反思起点，并以实用语言帮助你理解工作、学习和日常生活中的个人倾向。",
+        "不只是一个人格类型，而是一组可以继续理解、并与真实经验进行比较和验证的偏好信息。",
       items: [
-        "四字母人格类型",
-        "对个人倾向的清晰解释",
-        "主要优势与可能的盲点",
-        "更适合的工作与学习环境",
-        "值得进一步探索的职业方向",
-        "可查看和打印的完整人格报告",
+        "四字母偏好结果",
+        "四个维度的具体倾向",
+        "清晰度与边界解释",
+        "优势与可能的盲点",
+        "工作、学习与发展探索",
+        "可进一步查看的完整数字报告",
       ],
       note:
-        "完成测评后会立即生成结果，无需注册或登录账户。",
+        "完成测评后会立即生成结果，无需注册账户即可开始。",
     },
 
     guidance: {
@@ -284,10 +285,10 @@ export const personalityLandingDictionaries: Record<
     },
 
     finalCta: {
-      eyebrow: "人格类型测评",
-      title: "准备好探索自己的人格模式了吗？",
-      action: "开始人格测评",
-      note: "72道题 · 约8–12分钟",
+      eyebrow: "人格探索",
+      title: "准备好开始了解自己的偏好模式了吗？",
+      action: "开始人格探索",
+      note: "72 道题 · 约 8–12 分钟 · 无需注册即可开始",
     },
   },
 };
