@@ -16,42 +16,55 @@ import {
   getPersonalityLandingDictionary,
 } from "@/data/i18n";
 
-function PersonalityContour() {
-  const { locale } = useLocale();
-  const dictionary =
-    getPersonalityLandingDictionary(locale);
+import styles from "./personality-landing-v1.module.css";
 
+function PersonalityPreferenceMap({
+  kicker,
+  label,
+  dimensions,
+}: {
+  kicker: string;
+  label: string;
+  dimensions: readonly {
+    number: string;
+    name: string;
+    spectrum: string;
+    description: string;
+    initials: readonly [string, string];
+  }[];
+}) {
   return (
     <div
-      className="personality-contour"
+      className={styles.preferenceMap}
       aria-hidden="true"
     >
-      <svg viewBox="0 0 620 560" fill="none">
-        <path d="M-12 446c104-23 138-102 210-144 76-44 148-27 205-94 48-57 72-128 71-220" />
-        <path d="M-2 493c117-23 162-105 234-150 74-46 139-39 197-98 62-64 89-144 86-245" />
-        <path d="M23 540c122-31 179-108 247-152 72-47 129-48 187-100 73-66 105-160 102-288" />
-        <path d="M118 560c85-44 127-100 188-138 66-41 117-48 171-96 80-71 119-179 116-326" />
-        <circle cx="321" cy="275" r="126" />
-        <circle cx="321" cy="275" r="76" />
-      </svg>
+      <div className={styles.preferenceMapField}>
+        <div className={styles.preferenceAxes}>
+          {dimensions.map((dimension) => (
+            <div
+              className={styles.preferenceAxis}
+              key={dimension.number}
+            >
+              <span className={styles.axisInitial}>
+                {dimension.initials[0]}
+              </span>
 
-      <div className="personality-compass">
-        <CompassMark />
-        <span>{dictionary.contourLabel}</span>
+              <div className={styles.axisTrack}>
+                <i />
+              </div>
+
+              <span className={styles.axisInitial}>
+                {dimension.initials[1]}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div className={styles.preferenceCenter}>
+          <span>{kicker}</span>
+          <strong>{label}</strong>
+        </div>
       </div>
-
-      <span className="contour-code contour-code-one">
-        E / I
-      </span>
-      <span className="contour-code contour-code-two">
-        S / N
-      </span>
-      <span className="contour-code contour-code-three">
-        T / F
-      </span>
-      <span className="contour-code contour-code-four">
-        J / P
-      </span>
     </div>
   );
 }
@@ -61,17 +74,24 @@ export function PersonalityLanding() {
   const dictionary =
     getPersonalityLandingDictionary(locale);
 
+  const isZh =
+    String(locale).toLowerCase().startsWith("zh");
+
   return (
     <main id="top">
       <SiteHeader homePath="/" />
 
       <Container
         as="section"
-        size="full"
-        className="personality-hero max-w-[1400px] px-0 sm:px-0 lg:px-0"
+        size="wide"
+        className={`${styles.hero} px-0 sm:px-0 lg:px-0`}
       >
-        <div className="personality-hero-copy">
-          <p className="eyebrow">
+        <div
+          className={`${styles.heroCopy} ${
+            isZh ? styles.heroCopyZh : ""
+          }`}
+        >
+          <p className={styles.eyebrow}>
             {dictionary.hero.eyebrow}
           </p>
 
@@ -79,12 +99,12 @@ export function PersonalityLanding() {
             {dictionary.hero.title}
           </h1>
 
-          <p className="personality-intro">
+          <p className={styles.intro}>
             {dictionary.hero.description}
           </p>
 
           <ul
-            className="assessment-meta"
+            className={styles.meta}
             aria-label={dictionary.hero.detailsLabel}
           >
             {dictionary.hero.details.map((detail) => (
@@ -94,13 +114,13 @@ export function PersonalityLanding() {
             ))}
           </ul>
 
-          <div className="personality-actions">
+          <div className={styles.actions}>
             <PrimaryButton href="/personality/test">
               {dictionary.hero.primaryAction}
             </PrimaryButton>
 
             <a
-              className="secondary-link"
+              className={styles.secondaryLink}
               href="#dimensions"
             >
               {dictionary.hero.secondaryAction}{" "}
@@ -109,7 +129,19 @@ export function PersonalityLanding() {
           </div>
         </div>
 
-        <PersonalityContour />
+        <PersonalityPreferenceMap
+          kicker={
+            isZh
+              ? "四个偏好维度"
+              : "Four preference dimensions"
+          }
+          label={
+            isZh
+              ? "你的偏好结构"
+              : "YOUR PREFERENCE PATTERN"
+          }
+          dimensions={dictionary.dimensions.items}
+        />
       </Container>
 
       <Container

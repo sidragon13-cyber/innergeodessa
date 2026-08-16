@@ -1,0 +1,485 @@
+/* InnerGeo Personality Landing Visual V1
+   Task 2 — Hero + Preference Map
+   Scoped to /personality presentation only.
+*/
+
+.hero {
+  width: 100%;
+  min-height: 560px;
+  display: grid;
+  grid-template-columns:
+    minmax(0, 48%)
+    minmax(0, 52%);
+  margin-top: 28px;
+  margin-bottom: 0;
+  overflow: hidden;
+  border: 1.5px solid
+    rgba(74, 88, 120, 0.16);
+  border-radius: 24px;
+  background:
+    var(--brand-surface, #ffffff);
+}
+
+.heroCopy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding:
+    58px
+    clamp(44px, 4.4vw, 66px);
+  background:
+    rgba(255, 253, 250, 0.82);
+}
+
+.eyebrow {
+  margin: 0 0 18px;
+  color:
+    var(--brand-primary, #4a5878);
+  font-size: 8.5px;
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 560px;
+  margin: 0;
+  color:
+    var(--brand-text, #3d3a38);
+  font-family:
+    var(--font-display),
+    "Source Serif 4",
+    Georgia,
+    serif;
+  font-size:
+    clamp(44px, 3.8vw, 56px);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.heroCopyZh h1 {
+  max-width: 590px;
+  font-size:
+    clamp(42px, 3.25vw, 50px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+
+.intro {
+  max-width: 560px;
+  margin: 26px 0 0;
+  color:
+    var(--brand-muted, #6f706f);
+  font-size: 15.5px;
+  line-height: 1.72;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin: 27px 0 31px;
+  padding: 0;
+  list-style: none;
+}
+
+.meta li {
+  position: relative;
+  padding-left: 14px;
+  color:
+    var(--brand-muted, #6f706f);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.025em;
+}
+
+.meta li::before {
+  content: "";
+  position: absolute;
+  top: 0.58em;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background:
+    var(--brand-gold, #c5a36a);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px;
+}
+
+.actions :global(.primary-button) {
+  min-width: 226px;
+}
+
+.secondaryLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color:
+    var(--brand-primary, #4a5878);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.045em;
+  text-decoration: none;
+}
+
+.secondaryLink span {
+  color:
+    var(--brand-gold-dark, #a98750);
+  transition:
+    transform 160ms ease-out;
+}
+
+.secondaryLink:hover span {
+  transform: translateY(2px);
+}
+
+.secondaryLink:focus-visible {
+  outline: 2px solid
+    var(--brand-primary, #4a5878);
+  outline-offset: 5px;
+}
+
+.preferenceMap {
+  position: relative;
+  min-width: 0;
+  min-height: 560px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-left: 1.5px solid
+    rgba(74, 88, 120, 0.14);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(243, 240, 234, 0.72),
+      rgba(255, 255, 255, 0.94)
+    );
+}
+
+.preferenceMap::before,
+.preferenceMap::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.preferenceMap::before {
+  inset: 0;
+  background-image:
+    linear-gradient(
+      rgba(74, 88, 120, 0.045) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(74, 88, 120, 0.045) 1px,
+      transparent 1px
+    );
+  background-size: 42px 42px;
+}
+
+.preferenceMap::after {
+  width: 390px;
+  height: 390px;
+  border: 1px solid
+    rgba(197, 163, 106, 0.18);
+  border-radius: 50%;
+}
+
+.preferenceMapField {
+  position: relative;
+  z-index: 1;
+  width: min(82%, 520px);
+  min-height: 410px;
+  display: grid;
+  align-items: center;
+}
+
+.preferenceAxes {
+  display: grid;
+  gap: 66px;
+}
+
+.preferenceAxis {
+  display: grid;
+  grid-template-columns:
+    48px
+    minmax(0, 1fr)
+    48px;
+  align-items: center;
+  gap: 17px;
+}
+
+.axisInitial {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid
+    rgba(74, 88, 120, 0.25);
+  border-radius: 50%;
+  background:
+    var(--brand-surface, #ffffff);
+  color:
+    var(--brand-primary, #4a5878);
+  font-family:
+    var(--font-display),
+    "Source Serif 4",
+    Georgia,
+    serif;
+  font-size: 20px;
+  font-weight: 500;
+  box-shadow:
+    0 8px 24px
+    rgba(74, 88, 120, 0.05);
+}
+
+.axisTrack {
+  position: relative;
+  height: 1.5px;
+  background:
+    rgba(74, 88, 120, 0.24);
+}
+
+.axisTrack::before,
+.axisTrack::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.axisTrack::before {
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border: 2px solid
+    var(--brand-gold, #c5a36a);
+  background:
+    var(--brand-surface, #ffffff);
+}
+
+.axisTrack::after {
+  left: calc(50% - 14px);
+  width: 28px;
+  height: 28px;
+  border: 1px solid
+    rgba(197, 163, 106, 0.18);
+}
+
+.preferenceCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 196px;
+  min-height: 112px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding: 19px 22px;
+  border: 1.5px solid
+    rgba(74, 88, 120, 0.2);
+  border-radius: 18px;
+  background:
+    rgba(255, 253, 250, 0.97);
+  text-align: center;
+  transform:
+    translate(-50%, -50%);
+  box-shadow:
+    0 16px 38px
+    rgba(74, 88, 120, 0.08);
+}
+
+.preferenceCenter span {
+  color:
+    var(--brand-gold-dark, #a98750);
+  font-size: 7.5px;
+  font-weight: 800;
+  line-height: 1.45;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.preferenceCenter strong {
+  color:
+    var(--brand-primary, #4a5878);
+  font-family:
+    var(--font-display),
+    "Source Serif 4",
+    Georgia,
+    serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+@media (max-width: 1050px) {
+  .hero {
+    grid-template-columns:
+      minmax(0, 46%)
+      minmax(0, 54%);
+  }
+
+  .heroCopy {
+    padding:
+      52px
+      40px;
+  }
+
+  .hero h1 {
+    font-size:
+      clamp(40px, 4.8vw, 50px);
+  }
+
+  .preferenceMapField {
+    width: 84%;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .heroCopy {
+    min-height: auto;
+  }
+
+  .preferenceMap {
+    min-height: 500px;
+    border-top: 1.5px solid
+      rgba(74, 88, 120, 0.14);
+    border-left: 0;
+  }
+
+  .preferenceMapField {
+    width: min(78%, 520px);
+  }
+}
+
+@media (max-width: 700px) {
+  .hero {
+    width: calc(100% - 40px);
+    min-height: 0;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+  }
+
+  .heroCopy {
+    padding:
+      42px
+      24px
+      38px;
+  }
+
+  .eyebrow {
+    margin-bottom: 15px;
+  }
+
+  .hero h1 {
+    font-size:
+      clamp(38px, 11vw, 48px);
+    line-height: 1.08;
+  }
+
+  .heroCopyZh h1 {
+    font-size:
+      clamp(36px, 10.2vw, 44px);
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .intro {
+    margin-top: 23px;
+    font-size: 15px;
+  }
+
+  .meta {
+    display: grid;
+    gap: 10px;
+    margin:
+      24px
+      0
+      28px;
+  }
+
+  .actions {
+    width: 100%;
+    display: grid;
+    gap: 14px;
+  }
+
+  .actions :global(.primary-button) {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .secondaryLink {
+    justify-self: start;
+  }
+
+  .preferenceMap {
+    min-height: 430px;
+  }
+
+  .preferenceMap::after {
+    width: 300px;
+    height: 300px;
+  }
+
+  .preferenceMapField {
+    width: calc(100% - 38px);
+    min-height: 340px;
+  }
+
+  .preferenceAxes {
+    gap: 47px;
+  }
+
+  .preferenceAxis {
+    grid-template-columns:
+      40px
+      minmax(0, 1fr)
+      40px;
+    gap: 12px;
+  }
+
+  .axisInitial {
+    width: 40px;
+    height: 40px;
+    font-size: 17px;
+  }
+
+  .preferenceCenter {
+    width: 154px;
+    min-height: 96px;
+    padding: 15px 14px;
+    border-radius: 16px;
+  }
+
+  .preferenceCenter strong {
+    font-size: 15px;
+  }
+}
