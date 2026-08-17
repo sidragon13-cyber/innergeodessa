@@ -68,7 +68,7 @@ function ZodiacWheel({
             }}
           >
             <span className={styles.wheelGlyph}>
-              {sign.symbol}
+              {`${sign.symbol}\uFE0E`}
             </span>
             <span className={styles.wheelCode}>
               {sign.code}
@@ -217,7 +217,7 @@ export function ZodiacLanding() {
                   className={styles.signSymbol}
                   aria-hidden="true"
                 >
-                  {sign.symbol}
+                  {`${sign.symbol}\uFE0E`}
                 </div>
 
                 <div className={styles.signIdentity}>
