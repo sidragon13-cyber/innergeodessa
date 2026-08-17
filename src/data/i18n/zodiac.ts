@@ -92,8 +92,6 @@ export type ZodiacLandingDictionary = {
     title: string;
     description: string;
     primaryAction: string;
-    careerAction: string;
-    personalityAction: string;
   };
 };
 
@@ -350,13 +348,11 @@ export const zodiacLandingDictionaries: Record<
     },
 
     finalCta: {
-      eyebrow: "Begin your chart",
-      title: "Begin with your birth chart. Explore another perspective on yourself.",
+      eyebrow: "Begin with your birth chart",
+      title: "Explore another perspective on yourself.",
       description:
-        "Enter your birth information to calculate your chart and begin exploring its symbolic patterns.",
+        "Enter your birth information to create your chart and begin exploring its key placements.",
       primaryAction: "Create Your Birth Chart",
-      careerAction: "Explore Career Interests",
-      personalityAction: "Explore Personality",
     },
   },
 
@@ -609,13 +605,11 @@ export const zodiacLandingDictionaries: Record<
     },
 
     finalCta: {
-      eyebrow: "开始你的星盘",
-      title: "从你的出生星盘开始，探索理解自己的另一种视角。",
+      eyebrow: "从你的出生星盘开始",
+      title: "探索理解自己的另一种视角。",
       description:
-        "输入出生信息，计算你的星盘，并从这些象征性结构开始继续探索。",
+        "输入出生信息，创建你的星盘，并从关键星盘位置开始探索。",
       primaryAction: "创建你的出生星盘",
-      careerAction: "探索职业兴趣",
-      personalityAction: "探索人格",
     },
   },
 };

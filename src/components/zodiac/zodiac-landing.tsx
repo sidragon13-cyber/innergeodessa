@@ -401,31 +401,19 @@ export function ZodiacLanding() {
           <p className="eyebrow">
             {dictionary.finalCta.eyebrow}
           </p>
+
           <h2>{dictionary.finalCta.title}</h2>
+
           <p className="zodiac-final-copy">
             {dictionary.finalCta.description}
           </p>
-          <div className="zodiac-final-actions">
-            <a
-              className="primary-button light-primary"
-              href="/zodiac/test"
-            >
-              {dictionary.finalCta.primaryAction}
-            </a>
-            <a
-              className="secondary-link light-secondary"
-              href="/career"
-            >
-              {dictionary.finalCta.careerAction} {" "}
-              <span aria-hidden="true">↗</span>
-            </a>
-            <a
-              className="quiet-route-link"
-              href="/personality"
-            >
-              {dictionary.finalCta.personalityAction}
-            </a>
-          </div>
+
+          <a
+            className="primary-button light-primary"
+            href="/zodiac/test"
+          >
+            {dictionary.finalCta.primaryAction}
+          </a>
         </Container>
       </section>
 
