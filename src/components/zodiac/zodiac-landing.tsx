@@ -156,23 +156,27 @@ export function ZodiacLanding() {
 
       <Container
         as="section"
-        className="zodiac-meaning"
+        size="wide"
+        className={styles.approachSection}
       >
-        <div>
-          <p className="eyebrow">
-            {dictionary.approach.eyebrow}
-          </p>
-          <h2>{dictionary.approach.title}</h2>
-        </div>
+        <div className={styles.approachCard}>
+          <div className={styles.approachHeading}>
+            <p className={styles.eyebrow}>
+              {dictionary.approach.eyebrow}
+            </p>
 
-        <div className="zodiac-meaning-copy">
-          {dictionary.approach.paragraphs.map(
-            (paragraph, index) => (
-              <p key={`approach-${index}`}>
-                {paragraph}
-              </p>
-            ),
-          )}
+            <h2>{dictionary.approach.title}</h2>
+          </div>
+
+          <div className={styles.approachCopy}>
+            {dictionary.approach.paragraphs.map(
+              (paragraph, index) => (
+                <p key={`approach-${index}`}>
+                  {paragraph}
+                </p>
+              ),
+            )}
+          </div>
         </div>
       </Container>
 
@@ -249,26 +253,56 @@ export function ZodiacLanding() {
 
       <Container
         as="section"
-        className="more-than-sign"
+        size="wide"
+        className={styles.complexitySection}
       >
-        <div>
-          <p className="eyebrow">
-            {dictionary.complexity.eyebrow}
-          </p>
-          <h2>{dictionary.complexity.title}</h2>
+        <div className={styles.complexityHeader}>
+          <div>
+            <p className={styles.eyebrow}>
+              {dictionary.complexity.eyebrow}
+            </p>
+
+            <h2>{dictionary.complexity.title}</h2>
+          </div>
+
+          <div className={styles.complexityIntro}>
+            <p className={styles.complexityDescription}>
+              {dictionary.complexity.description}
+            </p>
+
+            {dictionary.complexity.paragraphs.map(
+              (paragraph, index) => (
+                <p key={`complexity-${index}`}>
+                  {paragraph}
+                </p>
+              ),
+            )}
+          </div>
         </div>
 
-        <div className="more-than-sign-copy">
-          {dictionary.complexity.paragraphs.map(
-            (paragraph, index) => (
-              <p key={`complexity-${index}`}>
-                {paragraph}
-              </p>
-            ),
-          )}
-          <p className="tradition-note">
-            {dictionary.complexity.traditionNote}
-          </p>
+        <div className={styles.anchorGrid}>
+          {dictionary.complexity.anchors.map((anchor) => (
+            <article
+              className={styles.anchorCard}
+              key={anchor.label}
+            >
+              <div
+                className={styles.anchorSymbol}
+                aria-hidden="true"
+              >
+                {anchor.symbol}
+              </div>
+
+              <h3>{anchor.label}</h3>
+
+              <p>{anchor.description}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className={styles.traditionNote}>
+          <span aria-hidden="true">✦</span>
+          <p>{dictionary.complexity.traditionNote}</p>
         </div>
       </Container>
 
