@@ -1287,7 +1287,7 @@
    ========================================================= */
 
 .insightSection {
-  padding: 0 0 104px;
+  padding: 0 0 72px;
   background: var(--zodiac-ivory);
 }
 
@@ -1430,6 +1430,183 @@ div.insightDescription p {
   .insightNote {
     padding: 17px 28px;
     text-align: left;
+  }
+}
+
+
+/* =========================================================
+   Final CTA — bounded conversion frame
+   ========================================================= */
+
+.finalCtaSection {
+  padding: 0 0 72px;
+  background: var(--zodiac-ivory);
+}
+
+.finalCtaFrame {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 2.12fr)
+    minmax(280px, 1fr);
+  overflow: hidden;
+  padding: 0;
+  border:
+    1px solid rgba(70, 83, 99, 0.16);
+  border-radius: 26px;
+  background:
+    rgba(255, 255, 255, 0.76);
+}
+
+.finalCtaContent {
+  min-height: 270px;
+  padding: 50px 58px 52px;
+}
+
+.finalCtaEyebrow {
+  margin: 0 0 26px;
+  color: var(--zodiac-gold-strong);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.finalCtaContent h2 {
+  max-width: 720px;
+  margin: 0;
+  color: var(--zodiac-deep-strong);
+  font-family:
+    var(--font-innergeo-serif),
+    "Source Serif 4",
+    Georgia,
+    serif;
+  font-size: clamp(34px, 3.15vw, 48px);
+  font-weight: 400;
+  line-height: 1.14;
+  letter-spacing: -0.035em;
+}
+
+.finalCtaDescription {
+  max-width: 650px;
+  margin: 28px 0 0;
+  color: var(--zodiac-deep-soft);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.finalCtaAction {
+  display: flex;
+  min-height: 270px;
+  border-left:
+    1px solid rgba(70, 83, 99, 0.14);
+}
+
+.finalCtaAction a {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 48px 42px;
+  color: var(--zodiac-deep-strong);
+  text-decoration: none;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.finalCtaAction a:hover {
+  background:
+    rgba(198, 161, 104, 0.08);
+}
+
+.finalCtaAction a > span:first-child {
+  max-width: 180px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.finalCtaArrow {
+  display: inline-flex;
+  width: 50px;
+  height: 50px;
+  flex: 0 0 50px;
+  align-items: center;
+  justify-content: center;
+  border:
+    1px solid rgba(70, 83, 99, 0.52);
+  border-radius: 999px;
+  color: var(--zodiac-deep-strong);
+  font-size: 17px;
+  line-height: 1;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.finalCtaAction a:hover .finalCtaArrow {
+  border-color: var(--zodiac-gold-strong);
+  transform: translate(2px, -2px);
+}
+
+@media (max-width: 900px) {
+  .finalCtaFrame {
+    grid-template-columns: 1fr;
+  }
+
+  .finalCtaContent {
+    min-height: auto;
+  }
+
+  .finalCtaAction {
+    min-height: auto;
+    border-top:
+      1px solid rgba(70, 83, 99, 0.14);
+    border-left: 0;
+  }
+
+  .finalCtaAction a {
+    padding: 30px 42px;
+  }
+
+  .finalCtaAction a > span:first-child {
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .finalCtaSection {
+    padding-bottom: 76px;
+  }
+
+  .finalCtaFrame {
+    border-radius: 22px;
+  }
+
+  .finalCtaContent {
+    padding: 38px 28px 40px;
+  }
+
+  .finalCtaEyebrow {
+    margin-bottom: 22px;
+  }
+
+  .finalCtaContent h2 {
+    font-size: 32px;
+  }
+
+  .finalCtaDescription {
+    margin-top: 24px;
+  }
+
+  .finalCtaAction a {
+    padding: 24px 28px;
+  }
+
+  .finalCtaArrow {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
   }
 }
 

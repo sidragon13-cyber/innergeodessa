@@ -396,24 +396,35 @@ export function ZodiacLanding() {
         </Container>
       </section>
 
-      <section className="zodiac-final-cta">
-        <Container>
-          <p className="eyebrow">
-            {dictionary.finalCta.eyebrow}
-          </p>
+      <section className={styles.finalCtaSection}>
+        <Container
+          size="wide"
+          className={styles.finalCtaFrame}
+        >
+          <div className={styles.finalCtaContent}>
+            <p className={styles.finalCtaEyebrow}>
+              {dictionary.finalCta.eyebrow}
+            </p>
 
-          <h2>{dictionary.finalCta.title}</h2>
+            <h2>{dictionary.finalCta.title}</h2>
 
-          <p className="zodiac-final-copy">
-            {dictionary.finalCta.description}
-          </p>
+            <p className={styles.finalCtaDescription}>
+              {dictionary.finalCta.description}
+            </p>
+          </div>
 
-          <a
-            className="primary-button light-primary"
-            href="/zodiac/test"
-          >
-            {dictionary.finalCta.primaryAction}
-          </a>
+          <div className={styles.finalCtaAction}>
+            <a href="/zodiac/test">
+              <span>{dictionary.finalCta.primaryAction}</span>
+
+              <span
+                className={styles.finalCtaArrow}
+                aria-hidden="true"
+              >
+                ↗
+              </span>
+            </a>
+          </div>
         </Container>
       </section>
 
