@@ -281,14 +281,14 @@ export const zodiacLandingDictionaries: Record<
       eyebrow: "Your birth chart",
       title: "What your birth chart includes",
       description:
-        "A calculated overview of key placements and a structured symbolic report for reflection.",
+        "See your key chart placements and complete interpretation, calculated from your birth date, time, and location.",
       items: [
         "Sun sign",
         "Moon sign",
         "Rising sign",
-        "Planetary placements",
-        "Birth-time and location context",
-        "Complete symbolic report",
+        "Planetary positions",
+        "Birth time & location",
+        "Complete chart report",
       ],
     },
 
@@ -539,14 +539,14 @@ export const zodiacLandingDictionaries: Record<
       eyebrow: "你的出生星盘",
       title: "你的出生星盘包含什么",
       description:
-        "查看关键位置的计算结果，并通过结构化的象征报告继续探索。",
+        "根据你的出生日期、时间与地点，查看关键星盘位置及完整解读。",
       items: [
         "太阳星座",
         "月亮星座",
         "上升星座",
         "行星位置",
-        "出生时间与地点信息",
-        "完整象征报告",
+        "出生时间与地点",
+        "完整星盘报告",
       ],
     },
 

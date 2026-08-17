@@ -306,23 +306,34 @@ export function ZodiacLanding() {
         </div>
       </Container>
 
-      <section className="zodiac-profile-preview">
-        <Container>
-          <div className="zodiac-profile-heading">
-            <p className="eyebrow">
+      <section className={styles.profileSection}>
+        <Container
+          size="wide"
+          className={styles.profileInner}
+        >
+          <div className={styles.profileHeading}>
+            <p className={styles.profileEyebrow}>
               {dictionary.profile.eyebrow}
             </p>
+
             <h2>{dictionary.profile.title}</h2>
-            <p>{dictionary.profile.description}</p>
+
+            <p className={styles.profileDescription}>
+              {dictionary.profile.description}
+            </p>
           </div>
 
-          <ol>
+          <ol className={styles.profileGrid}>
             {dictionary.profile.items.map((item, index) => (
-              <li key={`profile-item-${index}`}>
-                <span>
+              <li
+                className={styles.profileItem}
+                key={`profile-item-${index}`}
+              >
+                <span className={styles.profileNumber}>
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                {item}
+
+                <strong>{item}</strong>
               </li>
             ))}
           </ol>
