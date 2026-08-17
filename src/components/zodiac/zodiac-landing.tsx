@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  CompassMark,
   SiteFooter,
   SiteHeader,
 } from "@/components/home";
@@ -18,7 +17,9 @@ import type {
   ZodiacSignLandingItem,
 } from "@/data/i18n/zodiac";
 
-function ZodiacOrbit({
+import styles from "./zodiac-landing-v1.module.css";
+
+function ZodiacWheel({
   label,
   signs,
 }: {
@@ -27,29 +28,54 @@ function ZodiacOrbit({
 }) {
   return (
     <div
-      className="zodiac-orbit"
+      className={styles.zodiacWheel}
       aria-hidden="true"
     >
-      <svg viewBox="0 0 640 640" fill="none">
-        <circle cx="320" cy="320" r="248" />
-        <circle cx="320" cy="320" r="184" />
-        <circle cx="320" cy="320" r="106" />
-        <path d="M320 22v596M22 320h596M109 109l422 422M531 109 109 531" />
-      </svg>
+      <div className={styles.wheelOrbitOuter} />
+      <div className={styles.wheelOrbitMiddle} />
+      <div className={styles.wheelOrbitInner} />
 
-      <div className="zodiac-orbit-center">
-        <CompassMark />
-        <span>{label}</span>
+      <div className={styles.wheelAxisVertical} />
+      <div className={styles.wheelAxisHorizontal} />
+
+      <div className={styles.wheelCenter}>
+        <span className={styles.wheelCenterKicker}>
+          INNERGEO
+        </span>
+        <strong>{label}</strong>
+        <span className={styles.wheelCenterNote}>
+          GOLDEN ZODIAC ATLAS
+        </span>
       </div>
 
-      {signs.map((sign, index) => (
-        <span
-          className={`orbit-sign orbit-sign-${index + 1}`}
-          key={sign.code}
-        >
-          {sign.code}
-        </span>
-      ))}
+      {signs.map((sign, index) => {
+        const angle =
+          (index / signs.length) * Math.PI * 2 -
+          Math.PI / 2;
+        const radius = 43;
+        const left =
+          50 + Math.cos(angle) * radius;
+        const top =
+          50 + Math.sin(angle) * radius;
+
+        return (
+          <span
+            className={styles.wheelSign}
+            key={sign.code}
+            style={{
+              left: `${left}%`,
+              top: `${top}%`,
+            }}
+          >
+            <span className={styles.wheelGlyph}>
+              {sign.symbol}
+            </span>
+            <span className={styles.wheelCode}>
+              {sign.code}
+            </span>
+          </span>
+        );
+      })}
     </div>
   );
 }
@@ -65,53 +91,67 @@ export function ZodiacLanding() {
 
       <Container
         as="section"
-        size="full"
-        className="zodiac-hero max-w-[1400px] px-0 sm:px-0 lg:px-0"
+        size="wide"
+        className={styles.heroSection}
       >
-        <div className="zodiac-hero-copy">
-          <p className="eyebrow">
-            {dictionary.hero.eyebrow}
-          </p>
-
-          <h1>{dictionary.hero.title}</h1>
-
-          <p className="zodiac-intro">
-            {dictionary.hero.description}
-          </p>
-
-          <ul
-            className="assessment-meta"
-            aria-label={dictionary.hero.detailsLabel}
+        <div className={styles.heroCard}>
+          <div
+            className={`${styles.heroCopy} ${
+              locale === "zh" ? styles.heroCopyZh : ""
+            }`}
           >
-            {dictionary.hero.details.map((detail, index) => (
-              <li key={`hero-detail-${index}`}>
-                {detail}
-              </li>
-            ))}
-          </ul>
+            <p className={styles.eyebrow}>
+              {dictionary.hero.eyebrow}
+            </p>
 
-          <div className="zodiac-actions">
-            <a
-              className="primary-button"
-              href="/zodiac/test"
-            >
-              {dictionary.hero.primaryAction}
-            </a>
+            <h1>{dictionary.hero.title}</h1>
 
-            <a
-              className="secondary-link"
-              href="#signs"
+            <p className={styles.heroIntro}>
+              {dictionary.hero.description}
+            </p>
+
+            <ul
+              className={styles.heroMeta}
+              aria-label={dictionary.hero.detailsLabel}
             >
-              {dictionary.hero.secondaryAction} {" "}
-              <span aria-hidden="true">↓</span>
-            </a>
+              {dictionary.hero.details.map((detail, index) => (
+                <li key={`hero-detail-${index}`}>
+                  <span aria-hidden="true" />
+                  {detail}
+                </li>
+              ))}
+            </ul>
+
+            <div className={styles.heroActions}>
+              <a
+                className={styles.primaryAction}
+                href="/zodiac/test"
+              >
+                {dictionary.hero.primaryAction}
+              </a>
+
+              <a
+                className={styles.secondaryAction}
+                href="#signs"
+              >
+                {dictionary.hero.secondaryAction}
+                <span aria-hidden="true">↓</span>
+              </a>
+            </div>
+          </div>
+
+          <div className={styles.heroVisual}>
+            <div
+              className={styles.visualHalo}
+              aria-hidden="true"
+            />
+
+            <ZodiacWheel
+              label={dictionary.orbitLabel}
+              signs={dictionary.signs.items}
+            />
           </div>
         </div>
-
-        <ZodiacOrbit
-          label={dictionary.orbitLabel}
-          signs={dictionary.signs.items}
-        />
       </Container>
 
       <Container
