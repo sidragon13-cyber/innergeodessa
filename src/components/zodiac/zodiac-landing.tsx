@@ -176,45 +176,70 @@ export function ZodiacLanding() {
         </div>
       </Container>
 
-      <section className="signs-section" id="signs">
-        <Container>
-          <div className="zodiac-section-heading">
+      <section
+        className={styles.signsSection}
+        id="signs"
+      >
+        <Container size="wide">
+          <div className={styles.signsHeading}>
             <div>
-              <p className="eyebrow">
+              <p className={styles.eyebrow}>
                 {dictionary.signs.eyebrow}
               </p>
+
               <h2>{dictionary.signs.title}</h2>
             </div>
 
             <p>{dictionary.signs.description}</p>
           </div>
 
-          <div className="sign-grid">
+          <div className={styles.signGrid}>
             {dictionary.signs.items.map((sign, index) => (
-              <article className="sign-card" key={sign.code}>
-                <div className="sign-card-top">
-                  <span>
+              <article
+                className={styles.signCard}
+                key={sign.code}
+              >
+                <div className={styles.signCardTop}>
+                  <span className={styles.signIndex}>
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <strong aria-hidden="true">
+
+                  <span className={styles.signCode}>
                     {sign.code}
-                  </strong>
+                  </span>
                 </div>
 
-                <p className="sign-dates">{sign.dates}</p>
-                <h3>
-                  {sign.name}
-                  <br />
-                  <small>{sign.secondaryName}</small>
-                </h3>
-                <p className="sign-theme">{sign.theme}</p>
+                <div
+                  className={styles.signSymbol}
+                  aria-hidden="true"
+                >
+                  {sign.symbol}
+                </div>
 
-                <ul>
-                  {sign.qualities.map((quality, qualityIndex) => (
-                    <li key={`${sign.code}-quality-${qualityIndex}`}>
-                      {quality}
-                    </li>
-                  ))}
+                <div className={styles.signIdentity}>
+                  <h3>{sign.name}</h3>
+                  <p className={styles.signSecondaryName}>
+                    {sign.secondaryName}
+                  </p>
+                  <p className={styles.signDates}>
+                    {sign.dates}
+                  </p>
+                </div>
+
+                <p className={styles.signTheme}>
+                  {sign.theme}
+                </p>
+
+                <ul className={styles.signQualities}>
+                  {sign.qualities.slice(0, 3).map(
+                    (quality, qualityIndex) => (
+                      <li
+                        key={`${sign.code}-quality-${qualityIndex}`}
+                      >
+                        {quality}
+                      </li>
+                    ),
+                  )}
                 </ul>
               </article>
             ))}
