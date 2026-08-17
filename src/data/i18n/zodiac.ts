@@ -4,11 +4,23 @@ import type {
 
 export type ZodiacSignLandingItem = {
   code: string;
+  symbol: string;
   name: string;
   secondaryName: string;
   dates: string;
   theme: string;
   qualities: readonly string[];
+};
+
+export type ZodiacLandingAnchor = {
+  symbol: string;
+  label: string;
+  description: string;
+};
+
+export type ZodiacResponsibleUseGroup = {
+  title: string;
+  items: readonly string[];
 };
 
 export type ZodiacLandingDictionary = {
@@ -40,7 +52,9 @@ export type ZodiacLandingDictionary = {
   complexity: {
     eyebrow: string;
     title: string;
+    description: string;
     paragraphs: readonly string[];
+    anchors: readonly ZodiacLandingAnchor[];
     traditionNote: string;
   };
 
@@ -83,6 +97,8 @@ export type ZodiacLandingDictionary = {
     eyebrow: string;
     title: string;
     description: string;
+    groups: readonly ZodiacResponsibleUseGroup[];
+    methodologyAction: string;
   };
 
   finalCta: {
@@ -100,41 +116,42 @@ export const zodiacLandingDictionaries: Record<
   ZodiacLandingDictionary
 > = {
   en: {
-    orbitLabel: "Reflection",
+    orbitLabel: "Sun · Moon · Rising",
 
     hero: {
-      eyebrow: "Zodiac Identity",
-      title: "Explore the stories you see in yourself.",
+      eyebrow: "Zodiac Interest Exploration",
+      title: "Explore your birth chart from more than one sign.",
       description:
-        "Zodiac traditions have connected people with symbols, seasons, stories, and shared identities for centuries. InnerGeo approaches them as a reflective language—not a fixed definition of who you are.",
+        "Begin with your birth information to explore your Sun, Moon, Rising sign, and other calculated placements as symbolic perspectives for reflection.",
       detailsLabel: "Experience details",
       details: [
-        "Twelve zodiac identities",
-        "Symbolic and story-based",
-        "Reflection and entertainment",
-        "No right or wrong identity",
+        "Calculated from birth information",
+        "Sun · Moon · Rising",
+        "Twelve zodiac signs",
+        "Symbolic exploration, not prediction",
       ],
       primaryAction: "Create Your Birth Chart",
-      secondaryAction: "Meet the Twelve Signs",
+      secondaryAction: "Explore the 12 Signs",
     },
 
     approach: {
       eyebrow: "Our approach",
-      title: "What zodiac identity means here",
+      title: "A symbolic perspective, not a fixed definition.",
       paragraphs: [
-        "Zodiac signs can act as cultural and symbolic reference points for thinking about traits, patterns, hopes, contradictions, and relationships. A sign does not fully describe a person.",
-        "You may identify with some themes and reject others. The value lies in reflection and conversation rather than certainty—playful, thoughtful, and never a scientifically proven personality classification.",
+        "Zodiac can offer a cultural and symbolic language for reflecting on patterns, stories, relationships, and identity themes.",
+        "InnerGeo treats these ideas as prompts for exploration—not as a scientific personality assessment or a complete definition of who you are.",
       ],
     },
 
     signs: {
-      eyebrow: "Symbolic identities",
-      title: "Meet the twelve signs",
+      eyebrow: "The twelve signs",
+      title: "Meet the 12 signs",
       description:
-        "Each sign is often associated with a family of themes. Use them as invitations to reflect, not rules about how anyone must be.",
+        "Twelve signs offer twelve symbolic starting points. Explore their themes as invitations to reflect, not rules about who you must be.",
       items: [
         {
           code: "AR",
+          symbol: "♈",
           name: "Aries",
           secondaryName: "白羊座",
           dates: "21 March – 19 April",
@@ -143,6 +160,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "TA",
+          symbol: "♉",
           name: "Taurus",
           secondaryName: "金牛座",
           dates: "20 April – 20 May",
@@ -151,6 +169,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "GE",
+          symbol: "♊",
           name: "Gemini",
           secondaryName: "双子座",
           dates: "21 May – 20 June",
@@ -159,6 +178,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "CA",
+          symbol: "♋",
           name: "Cancer",
           secondaryName: "巨蟹座",
           dates: "21 June – 22 July",
@@ -167,6 +187,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "LE",
+          symbol: "♌",
           name: "Leo",
           secondaryName: "狮子座",
           dates: "23 July – 22 August",
@@ -175,6 +196,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "VI",
+          symbol: "♍",
           name: "Virgo",
           secondaryName: "处女座",
           dates: "23 August – 22 September",
@@ -183,6 +205,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "LI",
+          symbol: "♎",
           name: "Libra",
           secondaryName: "天秤座",
           dates: "23 September – 22 October",
@@ -191,6 +214,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "SC",
+          symbol: "♏",
           name: "Scorpio",
           secondaryName: "天蝎座",
           dates: "23 October – 21 November",
@@ -199,6 +223,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "SA",
+          symbol: "♐",
           name: "Sagittarius",
           secondaryName: "射手座",
           dates: "22 November – 21 December",
@@ -207,6 +232,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "CP",
+          symbol: "♑",
           name: "Capricorn",
           secondaryName: "摩羯座",
           dates: "22 December – 19 January",
@@ -215,6 +241,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "AQ",
+          symbol: "♒",
           name: "Aquarius",
           secondaryName: "水瓶座",
           dates: "20 January – 18 February",
@@ -223,6 +250,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "PI",
+          symbol: "♓",
           name: "Pisces",
           secondaryName: "双鱼座",
           dates: "19 February – 20 March",
@@ -233,57 +261,70 @@ export const zodiacLandingDictionaries: Record<
     },
 
     complexity: {
-      eyebrow: "Leave room for complexity",
-      title: "More than one label",
+      eyebrow: "Beyond the sun sign",
+      title: "Your zodiac profile is more than one sign.",
+      description:
+        "A birth chart brings several calculated symbolic perspectives together.",
       paragraphs: [
-        "Personality develops through biology, upbringing, culture, education, relationships, choices, and experience. Zodiac symbolism is only one possible reflective lens.",
-        "It is normal to connect with several signs or themes—and equally normal to disagree with a description. You should never reshape yourself to fit a label.",
+        "Your Sun sign is only one part of the picture. The Moon and Rising sign add different symbolic perspectives on inner responses and how you meet the world.",
+      ],
+      anchors: [
+        {
+          symbol: "☉",
+          label: "Sun",
+          description:
+            "Core identity themes and the qualities you most consciously recognize.",
+        },
+        {
+          symbol: "☽",
+          label: "Moon",
+          description:
+            "Emotional patterns, instinctive responses, and the inner world.",
+        },
+        {
+          symbol: "↑",
+          label: "Rising",
+          description:
+            "How you approach life, present yourself, and first meet the world.",
+        },
       ],
       traditionNote:
-        "Broader traditions may discuss moon signs, rising signs, and birth charts. InnerGeo presents these as additional symbolic perspectives, not fixed definitions of a person.",
+        "InnerGeo calculates these positions from your birth date, local birth time, and birth location, then presents them as symbolic perspectives for reflection.",
     },
 
     profile: {
-      eyebrow: "Zodiac profile preview",
-      title: "What a zodiac profile can include",
+      eyebrow: "Your birth chart",
+      title: "What your birth chart includes",
       description:
-        "Reflective material for exploring stories and themes—not a promise of prediction accuracy.",
+        "A calculated overview of key placements and a structured symbolic report for reflection.",
       items: [
-        "Sign symbolism",
-        "Identity themes",
-        "Strengths to reflect on",
-        "Possible blind spots",
-        "Communication themes",
-        "Relationship reflections",
-        "Growth prompts",
-        "Seasonal symbolism",
-        "Cultural stories",
-        "Journaling questions",
-        "Connections with personality and interests",
-        "A future InnerGeo guardian concept",
+        "Sun sign",
+        "Moon sign",
+        "Rising sign",
+        "Planetary placements",
+        "Birth-time and location context",
+        "Complete symbolic report",
       ],
     },
 
     reflection: {
-      eyebrow: "Reflection, not prediction",
-      title: "Questions over fortune-telling",
+      eyebrow: "Reflection prompts",
+      title: "Use the chart as a starting point for questions.",
       description:
-        "InnerGeo does not use zodiac identity to make definitive claims about future events, health, money, employment, marriage, legal outcomes, safety, or major life decisions.",
+        "Notice what resonates, what feels different, and what you want to explore further.",
       questions: [
         "Which themes feel familiar?",
-        "Which themes do I resist?",
-        "How have I changed?",
-        "What qualities am I developing?",
-        "Which stories help me understand myself?",
+        "What feels different from how I see myself?",
+        "What would I like to explore further?",
       ],
     },
 
     culture: {
-      eyebrow: "Culture and shared stories",
-      title: "Traditions shaped across time and place",
+      eyebrow: "Symbol · Story · Culture",
+      title: "A tradition shaped across time and place",
       paragraphs: [
-        "Zodiac systems developed through long historical and cultural processes, changing across places and periods. Modern zodiac content often combines history, popular culture, storytelling, identity, and entertainment.",
-        "InnerGeo aims to approach these traditions respectfully, without claiming that one simplified description represents every historical practice or cultural perspective.",
+        "Zodiac traditions have evolved across long histories, regions, and cultural contexts.",
+        "InnerGeo approaches them as symbolic and cultural material for reflection, storytelling, and personal curiosity.",
       ],
     },
 
@@ -315,16 +356,43 @@ export const zodiacLandingDictionaries: Record<
 
     responsibleUse: {
       eyebrow: "Responsible use",
-      title: "A reflective experience, not evidence or advice",
+      title: "Use zodiac as reflection, not evidence or advice.",
       description:
-        "InnerGeo zodiac content is intended for reflection, culture, storytelling, and entertainment. It is not a scientific personality assessment, psychological evaluation, medical service, financial guide, or method of predicting future events. Important personal decisions should be based on reliable evidence, individual circumstances, and qualified professional advice where appropriate.",
+        "InnerGeo zodiac content supports symbolic exploration and personal curiosity. It does not replace evidence, professional advice, or real-world judgment.",
+      groups: [
+        {
+          title: "Use it for",
+          items: [
+            "Reflection",
+            "Culture and storytelling",
+            "Symbolic exploration",
+            "Personal curiosity",
+          ],
+        },
+        {
+          title: "Do not use it for",
+          items: [
+            "Psychological or medical diagnosis",
+            "Financial or legal decisions",
+            "Employment decisions",
+            "Deterministic predictions",
+          ],
+        },
+        {
+          title: "Remember",
+          items: [
+            "Important decisions should consider reliable evidence, individual circumstances, and qualified professional advice where appropriate.",
+          ],
+        },
+      ],
+      methodologyAction: "Explore Methodology & Use Boundaries",
     },
 
     finalCta: {
-      eyebrow: "Another reflective lens",
-      title: "A symbol does not define you. It can give you another way to reflect.",
+      eyebrow: "Begin your chart",
+      title: "Begin with your birth chart. Explore another perspective on yourself.",
       description:
-        "Explore the themes, stories, and questions connected with your sign while leaving room for everything that makes you uniquely yourself.",
+        "Enter your birth information to calculate your chart and begin exploring its symbolic patterns.",
       primaryAction: "Create Your Birth Chart",
       careerAction: "Explore Career Interests",
       personalityAction: "Explore Personality",
@@ -332,19 +400,19 @@ export const zodiacLandingDictionaries: Record<
   },
 
   zh: {
-    orbitLabel: "自我映照",
+    orbitLabel: "太阳 · 月亮 · 上升",
 
     hero: {
-      eyebrow: "星座身份探索",
-      title: "探索你在这些故事中看见的自己。",
+      eyebrow: "星座兴趣探索",
+      title: "从出生星盘开始，看见不止一个星座。",
       description:
-        "几个世纪以来，星座传统把人们与象征、季节、故事和共同身份连接起来。InnerGeo 将它们视为一种用于自我反思的语言，而不是对你是谁作出固定定义。",
+        "从你的出生信息出发，探索太阳、月亮、上升点及其他计算位置，把它们作为理解自己的象征性视角。",
       detailsLabel: "体验信息",
       details: [
-        "十二种星座身份",
-        "以象征和故事为基础",
-        "用于反思与娱乐",
-        "没有正确或错误的身份",
+        "根据出生信息计算",
+        "太阳 · 月亮 · 上升",
+        "十二星座",
+        "用于象征探索，而非预测",
       ],
       primaryAction: "创建你的出生星盘",
       secondaryAction: "认识十二星座",
@@ -352,21 +420,22 @@ export const zodiacLandingDictionaries: Record<
 
     approach: {
       eyebrow: "我们的方式",
-      title: "InnerGeo 如何理解星座身份",
+      title: "一种象征视角，而不是对你的固定定义。",
       paragraphs: [
-        "星座可以作为文化和象征性的参照点，帮助人们思考特质、行为模式、希望、矛盾和关系。但一个星座无法完整描述一个人。",
-        "你可能认同其中一些主题，也可能拒绝另一些主题。它的价值在于反思和交流，而不是确定性；它可以轻松、有趣、富有思考，但不是经过科学证明的人格分类。",
+        "星座可以提供一种文化与象征性的语言，帮助我们思考行为模式、故事、关系和身份主题。",
+        "InnerGeo 把这些内容作为探索自己的提示，而不是科学人格测评，也不会用一个星座完整定义你是谁。",
       ],
     },
 
     signs: {
-      eyebrow: "象征性的身份语言",
+      eyebrow: "十二星座",
       title: "认识十二星座",
       description:
-        "每个星座通常都与一组主题相连。请把它们视为反思的邀请，而不是规定任何人必须如何生活的规则。",
+        "十二个星座提供十二个象征性的探索起点。把这些主题视为反思的邀请，而不是规定你必须成为怎样的人。",
       items: [
         {
           code: "AR",
+          symbol: "♈",
           name: "白羊座",
           secondaryName: "Aries",
           dates: "3月21日 – 4月19日",
@@ -375,6 +444,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "TA",
+          symbol: "♉",
           name: "金牛座",
           secondaryName: "Taurus",
           dates: "4月20日 – 5月20日",
@@ -383,6 +453,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "GE",
+          symbol: "♊",
           name: "双子座",
           secondaryName: "Gemini",
           dates: "5月21日 – 6月20日",
@@ -391,6 +462,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "CA",
+          symbol: "♋",
           name: "巨蟹座",
           secondaryName: "Cancer",
           dates: "6月21日 – 7月22日",
@@ -399,6 +471,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "LE",
+          symbol: "♌",
           name: "狮子座",
           secondaryName: "Leo",
           dates: "7月23日 – 8月22日",
@@ -407,6 +480,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "VI",
+          symbol: "♍",
           name: "处女座",
           secondaryName: "Virgo",
           dates: "8月23日 – 9月22日",
@@ -415,6 +489,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "LI",
+          symbol: "♎",
           name: "天秤座",
           secondaryName: "Libra",
           dates: "9月23日 – 10月22日",
@@ -423,6 +498,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "SC",
+          symbol: "♏",
           name: "天蝎座",
           secondaryName: "Scorpio",
           dates: "10月23日 – 11月21日",
@@ -431,6 +507,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "SA",
+          symbol: "♐",
           name: "射手座",
           secondaryName: "Sagittarius",
           dates: "11月22日 – 12月21日",
@@ -439,6 +516,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "CP",
+          symbol: "♑",
           name: "摩羯座",
           secondaryName: "Capricorn",
           dates: "12月22日 – 1月19日",
@@ -447,6 +525,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "AQ",
+          symbol: "♒",
           name: "水瓶座",
           secondaryName: "Aquarius",
           dates: "1月20日 – 2月18日",
@@ -455,6 +534,7 @@ export const zodiacLandingDictionaries: Record<
         },
         {
           code: "PI",
+          symbol: "♓",
           name: "双鱼座",
           secondaryName: "Pisces",
           dates: "2月19日 – 3月20日",
@@ -465,57 +545,70 @@ export const zodiacLandingDictionaries: Record<
     },
 
     complexity: {
-      eyebrow: "为复杂性留出空间",
-      title: "你不止是一个标签",
+      eyebrow: "不止太阳星座",
+      title: "你的星座结构，不只是太阳星座。",
+      description:
+        "出生星盘把多个经过计算的象征视角组合在一起。",
       paragraphs: [
-        "人格受到生理基础、成长环境、文化、教育、关系、选择和经历的共同影响。星座象征只是众多自我反思视角中的一种。",
-        "你同时对多个星座或主题产生共鸣很正常；不认同某些描述也同样正常。你不需要为了符合一个标签而改变自己。",
+        "太阳星座只是其中一部分。月亮与上升点会从内在反应、情绪模式以及你面对世界的方式提供另外的象征视角。",
+      ],
+      anchors: [
+        {
+          symbol: "☉",
+          label: "太阳",
+          description:
+            "核心身份主题，以及你较容易主动认同和表达的特质。",
+        },
+        {
+          symbol: "☽",
+          label: "月亮",
+          description:
+            "情绪模式、本能反应，以及更私密的内在世界。",
+        },
+        {
+          symbol: "↑",
+          label: "上升",
+          description:
+            "你面对生活、呈现自己以及最初接触世界的方式。",
+        },
       ],
       traditionNote:
-        "更广泛的星座传统还会谈到月亮星座、上升星座和出生星盘。InnerGeo 将它们作为额外的象征视角，而不是对一个人的固定定义。",
+        "InnerGeo 根据出生日期、当地出生时间和出生地点计算这些位置，并把它们作为用于自我反思的象征视角呈现。",
     },
 
     profile: {
-      eyebrow: "星座档案预览",
-      title: "一份星座档案可以包含什么",
+      eyebrow: "你的出生星盘",
+      title: "你的出生星盘包含什么",
       description:
-        "这些内容用于探索故事与主题，帮助自我反思，而不是承诺预测的准确性。",
+        "查看关键位置的计算结果，并通过结构化的象征报告继续探索。",
       items: [
-        "星座象征",
-        "身份主题",
-        "值得关注的优势",
-        "可能的盲点",
-        "沟通主题",
-        "关系反思",
-        "成长提示",
-        "季节象征",
-        "文化故事",
-        "书写与反思问题",
-        "与人格和兴趣的连接",
-        "未来的 InnerGeo 守护者概念",
+        "太阳星座",
+        "月亮星座",
+        "上升星座",
+        "行星位置",
+        "出生时间与地点信息",
+        "完整象征报告",
       ],
     },
 
     reflection: {
-      eyebrow: "重在反思，而非预测",
-      title: "用问题代替算命",
+      eyebrow: "反思提示",
+      title: "把星盘作为提出问题的起点。",
       description:
-        "InnerGeo 不会用星座身份对未来事件、健康、金钱、工作、婚姻、法律结果、安全或重大人生决定作出确定性判断。",
+        "留意哪些内容让你产生共鸣，哪些与你对自己的理解不同，以及你还想继续探索什么。",
       questions: [
         "哪些主题让我感到熟悉？",
-        "哪些主题会引起我的抗拒？",
-        "我经历了怎样的变化？",
-        "我正在培养哪些品质？",
-        "哪些故事能帮助我理解自己？",
+        "哪些内容与我对自己的理解不同？",
+        "我还想进一步探索什么？",
       ],
     },
 
     culture: {
-      eyebrow: "文化与共同故事",
-      title: "在不同时间与地域中形成的传统",
+      eyebrow: "象征 · 故事 · 文化",
+      title: "在时间与地域中不断演变的传统",
       paragraphs: [
-        "星座体系经历了漫长的历史与文化演变，并随着地域和时代不断变化。今天的星座内容往往融合历史、大众文化、叙事、身份认同与娱乐。",
-        "InnerGeo 希望以尊重的方式接近这些传统，不会宣称某一种简化描述能够代表所有历史实践或文化视角。",
+        "星座传统经历了漫长的历史演变，并在不同地域与文化语境中形成了不同表达。",
+        "InnerGeo 将它们作为文化、象征和叙事材料，用于反思、探索与个人兴趣。",
       ],
     },
 
@@ -547,16 +640,43 @@ export const zodiacLandingDictionaries: Record<
 
     responsibleUse: {
       eyebrow: "负责任地使用",
-      title: "用于反思，而非证据或建议",
+      title: "把星座用于反思，而不是作为证据或建议。",
       description:
-        "InnerGeo 的星座内容用于反思、文化、叙事和娱乐，不属于科学人格测评、心理评估、医疗服务、财务指南，也不能用于预测未来事件。重要的个人决定应以可靠证据、个人实际情况为基础，并在适当时寻求合格专业人士的建议。",
+        "InnerGeo 的星座内容用于象征探索与个人兴趣，不替代可靠证据、专业建议或现实判断。",
+      groups: [
+        {
+          title: "适合用于",
+          items: [
+            "自我反思",
+            "文化与故事",
+            "象征性探索",
+            "个人兴趣",
+          ],
+        },
+        {
+          title: "不应作为",
+          items: [
+            "心理或医疗诊断",
+            "财务或法律决策",
+            "就业决定",
+            "确定性的未来预测",
+          ],
+        },
+        {
+          title: "请记住",
+          items: [
+            "重要决定应结合可靠证据、个人实际情况，并在适当时寻求合格专业人士的建议。",
+          ],
+        },
+      ],
+      methodologyAction: "了解方法与使用边界",
     },
 
     finalCta: {
-      eyebrow: "另一种自我反思视角",
-      title: "一个象征无法定义你，但可以提供另一种理解自己的方式。",
+      eyebrow: "开始你的星盘",
+      title: "从你的出生星盘开始，探索理解自己的另一种视角。",
       description:
-        "探索与你的星座相关的主题、故事和问题，同时为那些让你成为独特自己的部分保留充分空间。",
+        "输入出生信息，计算你的星盘，并从这些象征性结构开始继续探索。",
       primaryAction: "创建你的出生星盘",
       careerAction: "探索职业兴趣",
       personalityAction: "探索人格",
