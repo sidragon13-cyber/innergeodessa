@@ -78,21 +78,6 @@ export type ZodiacLandingDictionary = {
     paragraphs: readonly string[];
   };
 
-  geodessa: {
-    eyebrow: string;
-    title: string;
-    description: string;
-    status: string;
-    conceptsLabel: string;
-    concepts: readonly string[];
-  };
-
-  community: {
-    eyebrow: string;
-    title: string;
-    description: string;
-  };
-
   responsibleUse: {
     eyebrow: string;
     title: string;
@@ -326,32 +311,6 @@ export const zodiacLandingDictionaries: Record<
         "Zodiac traditions have evolved across long histories, regions, and cultural contexts.",
         "InnerGeo approaches them as symbolic and cultural material for reflection, storytelling, and personal curiosity.",
       ],
-    },
-
-    geodessa: {
-      eyebrow: "Future Geodessa connection",
-      title: "A symbolic story world, still to come",
-      description:
-        "Future creative concepts may connect zodiac themes with guardian stories, symbolic colours, natural elements, illustrated identities, and reflective prompts. Guardian stones would be cultural, aesthetic, and storytelling objects only—not healing or medical tools.",
-      status: "All concepts shown here are future possibilities and are not yet available.",
-      conceptsLabel: "Future concepts",
-      concepts: [
-        "Guardian stories",
-        "Symbolic colours",
-        "Natural elements",
-        "Guardian stones",
-        "Reflective prompts",
-        "Illustrated identities",
-        "Personal collections",
-        "Shared-interest spaces",
-      ],
-    },
-
-    community: {
-      eyebrow: "Future community concept",
-      title: "Shared signs, different stories",
-      description:
-        "Future users may compare interpretations, share stories, discuss identity themes, notice similarities and differences, and connect zodiac themes with personality and career interests. Community accounts, profiles, and discussion spaces are not yet available.",
     },
 
     responsibleUse: {
@@ -610,32 +569,6 @@ export const zodiacLandingDictionaries: Record<
         "星座传统经历了漫长的历史演变，并在不同地域与文化语境中形成了不同表达。",
         "InnerGeo 将它们作为文化、象征和叙事材料，用于反思、探索与个人兴趣。",
       ],
-    },
-
-    geodessa: {
-      eyebrow: "未来的 Geodessa 连接",
-      title: "仍在孕育中的象征故事世界",
-      description:
-        "未来的创意概念可能会把星座主题与守护者故事、象征色彩、自然元素、插画身份和反思提示连接起来。守护石只会作为文化、美学和叙事对象，不具备疗愈或医疗用途。",
-      status: "这里展示的内容都是未来设想，目前尚未开放。",
-      conceptsLabel: "未来概念",
-      concepts: [
-        "守护者故事",
-        "象征色彩",
-        "自然元素",
-        "守护石",
-        "反思提示",
-        "插画身份",
-        "个人收藏",
-        "共同兴趣空间",
-      ],
-    },
-
-    community: {
-      eyebrow: "未来社区概念",
-      title: "相同星座，不同故事",
-      description:
-        "未来的用户或许可以比较不同解读、分享个人故事、讨论身份主题、观察彼此的相似与差异，并把星座主题与人格和职业兴趣连接起来。社区账号、个人档案和讨论空间目前尚未开放。",
     },
 
     responsibleUse: {

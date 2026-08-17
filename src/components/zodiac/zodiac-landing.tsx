@@ -378,48 +378,6 @@ export function ZodiacLanding() {
 
       <Container
         as="section"
-        className="guardian-section"
-      >
-        <div className="guardian-copy">
-          <p className="eyebrow">
-            {dictionary.geodessa.eyebrow}
-          </p>
-          <h2>{dictionary.geodessa.title}</h2>
-          <p>{dictionary.geodessa.description}</p>
-          <p className="future-status">
-            {dictionary.geodessa.status}
-          </p>
-        </div>
-
-        <div
-          className="guardian-concepts"
-          aria-label={dictionary.geodessa.conceptsLabel}
-        >
-          {dictionary.geodessa.concepts.map((concept, index) => (
-            <span key={`geodessa-concept-${index}`}>
-              <i>
-                {String(index + 1).padStart(2, "0")}
-              </i>
-              {concept}
-            </span>
-          ))}
-        </div>
-      </Container>
-
-      <section className="zodiac-community">
-        <Container className="zodiac-community-inner">
-          <div>
-            <p className="eyebrow">
-              {dictionary.community.eyebrow}
-            </p>
-            <h2>{dictionary.community.title}</h2>
-          </div>
-          <p>{dictionary.community.description}</p>
-        </Container>
-      </section>
-
-      <Container
-        as="section"
         className="zodiac-disclaimer"
       >
         <div>
