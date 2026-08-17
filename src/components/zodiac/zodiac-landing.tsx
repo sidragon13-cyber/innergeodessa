@@ -86,7 +86,7 @@ export function ZodiacLanding() {
     getZodiacLandingDictionary(locale);
 
   return (
-    <main id="top">
+    <main id="top" className={styles.page}>
       <SiteHeader homePath="/" />
 
       <Container

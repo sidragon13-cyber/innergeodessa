@@ -1,3 +1,16 @@
+.page {
+  --zodiac-deep: #465363;
+  --zodiac-deep-strong: #37414e;
+  --zodiac-deep-soft: #5a6775;
+  --zodiac-gold: #c6a168;
+  --zodiac-gold-strong: #b58d50;
+  --zodiac-ivory: #f6f1ea;
+  --zodiac-light-text: #ffffff;
+  --zodiac-light-muted: rgba(255, 255, 255, 0.78);
+  --zodiac-light-soft: rgba(255, 255, 255, 0.62);
+  --zodiac-light-line: rgba(255, 255, 255, 0.16);
+}
+
 .heroSection {
   padding-top: 34px;
   padding-bottom: 76px;
@@ -132,7 +145,7 @@
   height: 5px;
   flex: 0 0 auto;
   border-radius: 999px;
-  background: #c5a36a;
+  background: var(--zodiac-gold);
   box-shadow: 0 0 0 3px rgba(197, 163, 106, 0.12);
 }
 
@@ -150,9 +163,9 @@
   align-items: center;
   justify-content: center;
   padding: 0 25px;
-  border: 1px solid #4a5878;
+  border: 1px solid var(--zodiac-deep);
   border-radius: 999px;
-  background: #4a5878;
+  background: var(--zodiac-deep);
   color: #fff;
   font-size: 14px;
   font-weight: 650;
@@ -166,14 +179,14 @@
 }
 
 .primaryAction:hover {
-  background: #3f4d6c;
+  background: var(--zodiac-deep-strong);
   box-shadow: 0 11px 27px rgba(74, 88, 120, 0.23);
   transform: translateY(-1px);
 }
 
 .primaryAction:focus-visible,
 .secondaryAction:focus-visible {
-  outline: 2px solid #c5a36a;
+  outline: 2px solid var(--zodiac-gold);
   outline-offset: 4px;
 }
 
@@ -182,7 +195,7 @@
   align-items: center;
   gap: 9px;
   padding: 10px 2px;
-  color: #4a5878;
+  color: var(--zodiac-deep);
   font-size: 14px;
   font-weight: 650;
   text-decoration: none;
@@ -332,7 +345,7 @@
 
 .wheelCenter strong {
   max-width: 120px;
-  color: #4a5878;
+  color: var(--zodiac-deep);
   font-family: var(--font-source-serif), "Source Serif 4", Georgia, serif;
   font-size: clamp(15px, 1.45vw, 20px);
   font-weight: 600;
@@ -645,7 +658,7 @@
 }
 
 .complexityDescription {
-  color: #4a5878 !important;
+  color: var(--zodiac-deep) !important;
   font-size: 15px !important;
   font-weight: 600;
 }
@@ -681,7 +694,7 @@
   width: 48px;
   height: 2px;
   content: "";
-  background: #c5a36a;
+  background: var(--zodiac-gold);
 }
 
 .anchorSymbol {
@@ -1068,5 +1081,72 @@
     margin-top: 18px;
     padding: 16px 18px;
   }
+}
+
+/* Zodiac-only color overrides for legacy sections still awaiting V1 rebuild. */
+
+.page :global(.zodiac-profile-preview) {
+  background: var(--zodiac-deep);
+  color: var(--zodiac-light-text);
+}
+
+.page :global(.zodiac-profile-heading .eyebrow) {
+  color: var(--zodiac-gold);
+}
+
+.page :global(.zodiac-profile-heading > p:last-child) {
+  color: var(--zodiac-light-muted);
+}
+
+.page :global(.zodiac-profile-preview ol) {
+  border-top-color: var(--zodiac-light-line);
+}
+
+.page :global(.zodiac-profile-preview li) {
+  border-bottom-color: var(--zodiac-light-line);
+  color: var(--zodiac-light-text);
+}
+
+.page :global(.zodiac-profile-preview li:nth-child(even)) {
+  border-left-color: var(--zodiac-light-line);
+}
+
+.page :global(.zodiac-profile-preview li span) {
+  color: var(--zodiac-gold);
+}
+
+.page :global(.culture-section) {
+  background: var(--zodiac-ivory);
+}
+
+.page :global(.zodiac-community) {
+  background: var(--zodiac-deep);
+  color: var(--zodiac-light-text);
+}
+
+.page :global(.zodiac-community .eyebrow) {
+  color: var(--zodiac-gold);
+}
+
+.page :global(.zodiac-community-inner > p) {
+  color: var(--zodiac-light-muted);
+}
+
+.page :global(.zodiac-final-cta) {
+  background: var(--zodiac-deep-strong);
+  color: var(--zodiac-light-text);
+}
+
+.page :global(.zodiac-final-cta .eyebrow) {
+  color: var(--zodiac-gold);
+}
+
+.page :global(.zodiac-final-copy) {
+  color: var(--zodiac-light-muted);
+}
+
+.page :global(.zodiac-final-cta .secondary-link),
+.page :global(.zodiac-final-cta .quiet-route-link) {
+  color: var(--zodiac-light-muted);
 }
 
