@@ -82,6 +82,7 @@ export type ZodiacLandingDictionary = {
     eyebrow: string;
     title: string;
     description: string;
+    note: string;
     groups: readonly ZodiacResponsibleUseGroup[];
     methodologyAction: string;
   };
@@ -296,7 +297,7 @@ export const zodiacLandingDictionaries: Record<
       eyebrow: "Reflection prompts",
       title: "Use the chart as a starting point for questions.",
       description:
-        "Notice what resonates, what feels different, and what you want to explore further.",
+        "Notice what feels familiar, what feels different, and what may be worth understanding further.",
       questions: [
         "Which themes feel familiar?",
         "What feels different from how I see myself?",
@@ -306,18 +307,19 @@ export const zodiacLandingDictionaries: Record<
 
     culture: {
       eyebrow: "Symbol · Story · Culture",
-      title: "A tradition shaped across time and place",
+      title: "Explore zodiac through symbols, stories, and culture.",
       paragraphs: [
-        "Zodiac traditions have evolved across long histories, regions, and cultural contexts.",
-        "InnerGeo approaches them as symbolic and cultural material for reflection, storytelling, and personal curiosity.",
+        "Zodiac traditions have evolved across regions and time. InnerGeo presents them as a cultural perspective for self-exploration.",
       ],
     },
 
     responsibleUse: {
       eyebrow: "Responsible use",
-      title: "Use zodiac as reflection, not evidence or advice.",
+      title: "Use it for exploration, not as a substitute for judgment.",
       description:
-        "InnerGeo zodiac content supports symbolic exploration and personal curiosity. It does not replace evidence, professional advice, or real-world judgment.",
+        "Useful for curiosity, reflection, and cultural understanding—not diagnosis, hiring decisions, major decisions, or deterministic prediction.",
+      note:
+        "For important decisions, rely on real-world evidence, individual circumstances, and qualified professional advice.",
       groups: [
         {
           title: "Use it for",
@@ -554,7 +556,7 @@ export const zodiacLandingDictionaries: Record<
       eyebrow: "反思提示",
       title: "把星盘作为提出问题的起点。",
       description:
-        "留意哪些内容让你产生共鸣，哪些与你对自己的理解不同，以及你还想继续探索什么。",
+        "看看哪些内容让你感到熟悉，哪些与你的自我理解不同，以及哪些值得进一步了解。",
       questions: [
         "哪些主题让我感到熟悉？",
         "哪些内容与我对自己的理解不同？",
@@ -564,18 +566,19 @@ export const zodiacLandingDictionaries: Record<
 
     culture: {
       eyebrow: "象征 · 故事 · 文化",
-      title: "在时间与地域中不断演变的传统",
+      title: "从符号、故事与文化理解星座",
       paragraphs: [
-        "星座传统经历了漫长的历史演变，并在不同地域与文化语境中形成了不同表达。",
-        "InnerGeo 将它们作为文化、象征和叙事材料，用于反思、探索与个人兴趣。",
+        "星座传统在不同地域与时代不断演变。InnerGeo 将其作为一种文化与自我探索的视角。",
       ],
     },
 
     responsibleUse: {
       eyebrow: "负责任地使用",
-      title: "把星座用于反思，而不是作为证据或建议。",
+      title: "用于探索，不替代现实判断。",
       description:
-        "InnerGeo 的星座内容用于象征探索与个人兴趣，不替代可靠证据、专业建议或现实判断。",
+        "可用于兴趣探索、自我反思与文化理解；不用于医学或心理诊断、招聘判断、重大决策或确定性预测。",
+      note:
+        "重要决定请结合现实证据、个人情况与专业意见。",
       groups: [
         {
           title: "适合用于",

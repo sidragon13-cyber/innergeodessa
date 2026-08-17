@@ -1282,6 +1282,158 @@
 }
 
 
+/* =========================================================
+   Reflection · Culture · Responsible Use
+   ========================================================= */
+
+.insightSection {
+  padding: 0 0 104px;
+  background: var(--zodiac-ivory);
+}
+
+.insightFrame {
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgba(70, 83, 99, 0.16);
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.insightGrid {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+}
+
+.insightItem {
+  min-height: 310px;
+  display: flex;
+  flex-direction: column;
+  padding: 36px 38px 38px;
+}
+
+.insightItem + .insightItem {
+  border-left:
+    1px solid rgba(70, 83, 99, 0.14);
+}
+
+.insightMeta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 42px;
+}
+
+.insightMeta span {
+  color: var(--zodiac-gold-strong);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.insightMeta p {
+  margin: 0;
+  color: var(--zodiac-gold-strong);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.insightItem h2 {
+  max-width: 330px;
+  margin: 0;
+  color: var(--zodiac-deep-strong);
+  font-family:
+    var(--font-innergeo-serif),
+    "Source Serif 4",
+    Georgia,
+    serif;
+  font-size: clamp(25px, 2.1vw, 32px);
+  font-weight: 400;
+  line-height: 1.22;
+  letter-spacing: -0.025em;
+}
+
+.insightDescription {
+  max-width: 340px;
+  margin: auto 0 0;
+  color: var(--zodiac-deep-soft);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+div.insightDescription {
+  display: block;
+}
+
+div.insightDescription p {
+  margin: 0;
+}
+
+.insightNote {
+  margin: 0;
+  padding: 18px 38px;
+  border-top:
+    1px solid rgba(70, 83, 99, 0.14);
+  color: var(--zodiac-deep-soft);
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .insightGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .insightItem {
+    min-height: 220px;
+  }
+
+  .insightItem + .insightItem {
+    border-top:
+      1px solid rgba(70, 83, 99, 0.14);
+    border-left: 0;
+  }
+
+  .insightMeta {
+    margin-bottom: 30px;
+  }
+
+  .insightDescription {
+    margin-top: 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .insightSection {
+    padding-bottom: 72px;
+  }
+
+  .insightFrame {
+    border-radius: 22px;
+  }
+
+  .insightItem {
+    min-height: 200px;
+    padding: 30px 28px;
+  }
+
+  .insightItem h2 {
+    font-size: 26px;
+  }
+
+  .insightDescription {
+    margin-top: 30px;
+  }
+
+  .insightNote {
+    padding: 17px 28px;
+    text-align: left;
+  }
+}
+
+
 /* Zodiac-only color overrides for legacy sections still awaiting V1 rebuild. */
 
 .page :global(.zodiac-profile-preview) {

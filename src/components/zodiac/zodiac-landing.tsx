@@ -340,65 +340,61 @@ export function ZodiacLanding() {
         </Container>
       </section>
 
-      <Container
-        as="section"
-        className="reflection-section"
-      >
-        <div className="reflection-heading">
-          <p className="eyebrow">
-            {dictionary.reflection.eyebrow}
-          </p>
-          <h2>{dictionary.reflection.title}</h2>
-          <p>{dictionary.reflection.description}</p>
-        </div>
+      <section className={styles.insightSection}>
+        <Container
+          size="wide"
+          className={styles.insightFrame}
+        >
+          <div className={styles.insightGrid}>
+            <article className={styles.insightItem}>
+              <div className={styles.insightMeta}>
+                <span>01</span>
+                <p>{dictionary.reflection.eyebrow}</p>
+              </div>
 
-        <div className="reflection-questions">
-          {dictionary.reflection.questions.map(
-            (question, index) => (
-              <p key={`reflection-question-${index}`}>
-                <span>
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                {question}
+              <h2>{dictionary.reflection.title}</h2>
+
+              <p className={styles.insightDescription}>
+                {dictionary.reflection.description}
               </p>
-            ),
-          )}
-        </div>
-      </Container>
+            </article>
 
-      <section className="culture-section">
-        <Container className="culture-inner">
-          <div>
-            <p className="eyebrow">
-              {dictionary.culture.eyebrow}
-            </p>
-            <h2>{dictionary.culture.title}</h2>
+            <article className={styles.insightItem}>
+              <div className={styles.insightMeta}>
+                <span>02</span>
+                <p>{dictionary.culture.eyebrow}</p>
+              </div>
+
+              <h2>{dictionary.culture.title}</h2>
+
+              <div className={styles.insightDescription}>
+                {dictionary.culture.paragraphs.map(
+                  (paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ),
+                )}
+              </div>
+            </article>
+
+            <article className={styles.insightItem}>
+              <div className={styles.insightMeta}>
+                <span>03</span>
+                <p>{dictionary.responsibleUse.eyebrow}</p>
+              </div>
+
+              <h2>{dictionary.responsibleUse.title}</h2>
+
+              <p className={styles.insightDescription}>
+                {dictionary.responsibleUse.description}
+              </p>
+            </article>
           </div>
 
-          <div>
-            {dictionary.culture.paragraphs.map(
-              (paragraph, index) => (
-                <p key={`culture-${index}`}>
-                  {paragraph}
-                </p>
-              ),
-            )}
-          </div>
+          <p className={styles.insightNote}>
+            {dictionary.responsibleUse.note}
+          </p>
         </Container>
       </section>
-
-      <Container
-        as="section"
-        className="zodiac-disclaimer"
-      >
-        <div>
-          <p className="eyebrow">
-            {dictionary.responsibleUse.eyebrow}
-          </p>
-          <h2>{dictionary.responsibleUse.title}</h2>
-        </div>
-        <p>{dictionary.responsibleUse.description}</p>
-      </Container>
 
       <section className="zodiac-final-cta">
         <Container>
