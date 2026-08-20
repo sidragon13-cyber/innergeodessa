@@ -19,7 +19,7 @@ export interface KidsResultContract {
   ageForm: "K68" | "K912";
   questionBankVersion: string;
   releaseFormVersion: string;
-  scoringVersion: "KIDS-SCORING-V1" | string;
+  scoringVersion: string;
 
   patternType: string;
 
@@ -74,9 +74,48 @@ export async function fetchKidsResult(
     );
   }
 
+  let expectedScoringVersion: string;
+  let expectedDomainCount: number;
+
+  if (
+    payload.ageForm === "K68" &&
+    payload.questionBankVersion === "KIDS-K68-RF-V2" &&
+    payload.releaseFormVersion === "KIDS-K68-RF-V2"
+  ) {
+    expectedScoringVersion = "KIDS-SCORING-V2";
+    expectedDomainCount = 6;
+  } else if (
+    payload.ageForm === "K68" &&
+    payload.questionBankVersion === "KIDS-K68-RF-V1" &&
+    payload.releaseFormVersion === "KIDS-K68-RF-V1"
+  ) {
+    // Historical K68 V1 results remain readable.
+    expectedScoringVersion = "KIDS-SCORING-V1";
+    expectedDomainCount = 8;
+  } else if (
+    payload.ageForm === "K912" &&
+    payload.questionBankVersion === "KIDS-K912-RF-V2" &&
+    payload.releaseFormVersion === "KIDS-K912-RF-V2"
+  ) {
+    expectedScoringVersion = "KIDS-SCORING-V2";
+    expectedDomainCount = 6;
+  } else if (
+    payload.ageForm === "K912" &&
+    payload.questionBankVersion === "KIDS-K912-RF-V1" &&
+    payload.releaseFormVersion === "KIDS-K912-RF-V1"
+  ) {
+    // Historical K912 V1 results remain readable.
+    expectedScoringVersion = "KIDS-SCORING-V1";
+    expectedDomainCount = 8;
+  } else {
+    throw new Error(
+      "The Kids result does not match a supported release contract.",
+    );
+  }
+
   const domainResultsValid =
     Array.isArray(payload.domainResults) &&
-    payload.domainResults.length === 8 &&
+    payload.domainResults.length === expectedDomainCount &&
     payload.domainResults.every(
       (domain) =>
         domain !== null &&
@@ -87,7 +126,7 @@ export async function fetchKidsResult(
     );
 
   if (
-    payload.scoringVersion !== "KIDS-SCORING-V1" ||
+    payload.scoringVersion !== expectedScoringVersion ||
     !domainResultsValid
   ) {
     throw new Error(

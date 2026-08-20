@@ -60,28 +60,72 @@ export async function POST(request: Request) {
     if (
       module !== "personality" &&
       module !== "career" &&
-      module !== "zodiac"
+      module !== "zodiac" &&
+      module !== "kids"
     ) {
       throw new InvalidFulfillmentEventError("Unsupported payment module");
     }
 
-    const expectedPriceId =
-      module === "personality"
-        ? process.env.NEXT_PUBLIC_PADDLE_PERSONALITY_PRICE_ID
-        : module === "career"
-          ? process.env.NEXT_PUBLIC_PADDLE_CAREER_PRICE_ID
-          : process.env.NEXT_PUBLIC_PADDLE_ZODIAC_PRICE_ID;
-
-    if (!expectedPriceId) {
-      throw new InvalidFulfillmentEventError(
-        `Missing Paddle price configuration for ${module}`,
-      );
-    }
-
     const priceIds = transaction.items.map((item) => item.price?.id);
 
-    if (priceIds.length !== 1 || priceIds[0] !== expectedPriceId) {
+    if (priceIds.length !== 1) {
       throw new InvalidFulfillmentEventError("Unexpected Paddle price");
+    }
+
+    const providerPriceId = requiredString(
+      priceIds[0],
+      "transaction.items[0].price.id",
+    );
+
+    let productCode: string;
+
+    if (module === "kids") {
+      const k68PriceId =
+        process.env.NEXT_PUBLIC_PADDLE_K68_PRICE_ID;
+      const k912PriceId =
+        process.env.NEXT_PUBLIC_PADDLE_K912_PRICE_ID;
+
+      if (!k68PriceId || !k912PriceId) {
+        throw new InvalidFulfillmentEventError(
+          "Missing Paddle price configuration for kids",
+        );
+      }
+
+      if (providerPriceId === k68PriceId) {
+        productCode = "kids-k68-premium-report-v1";
+      } else if (providerPriceId === k912PriceId) {
+        productCode = "kids-k912-premium-report-v1";
+      } else {
+        throw new InvalidFulfillmentEventError(
+          "Unexpected Paddle price",
+        );
+      }
+    } else {
+      const expectedPriceId =
+        module === "personality"
+          ? process.env.NEXT_PUBLIC_PADDLE_PERSONALITY_PRICE_ID
+          : module === "career"
+            ? process.env.NEXT_PUBLIC_PADDLE_CAREER_PRICE_ID
+            : process.env.NEXT_PUBLIC_PADDLE_ZODIAC_PRICE_ID;
+
+      if (!expectedPriceId) {
+        throw new InvalidFulfillmentEventError(
+          `Missing Paddle price configuration for ${module}`,
+        );
+      }
+
+      if (providerPriceId !== expectedPriceId) {
+        throw new InvalidFulfillmentEventError(
+          "Unexpected Paddle price",
+        );
+      }
+
+      productCode =
+        module === "personality"
+          ? "personality-premium-report-v1"
+          : module === "career"
+            ? "career-premium-report-v1"
+            : "zodiac-premium-report-v1";
     }
 
     const totals = transaction.details?.totals;
@@ -110,13 +154,8 @@ export async function POST(request: Request) {
           providerTransactionId: transaction.id,
           module,
           resourceId,
-          productCode:
-            module === "personality"
-              ? "personality-premium-report-v1"
-              : module === "career"
-                ? "career-premium-report-v1"
-                : "zodiac-premium-report-v1",
-          providerPriceId: priceIds[0],
+          productCode,
+          providerPriceId,
           currency: transaction.currencyCode,
           amount,
           taxAmount,

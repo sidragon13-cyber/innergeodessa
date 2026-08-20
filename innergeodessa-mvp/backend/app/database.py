@@ -15,9 +15,14 @@ KIDS_K912_ITEMS_PATH = ROOT / "data" / "kids-k912-items.json"
 LEGACY_BANK_VERSION = "personality-legacy-v1"
 CURRENT_BANK_VERSION = "personality-v2.0.0"
 RIASEC_BANK_VERSION = "riasec-v0.1.0"
-KIDS_K68_BANK_VERSION = "KIDS-K68-RF-V1"
-KIDS_K912_BANK_VERSION = "KIDS-K912-RF-V1"
-KIDS_SCORING_VERSION = "KIDS-SCORING-V1"
+KIDS_K68_BANK_VERSION = "KIDS-K68-RF-V2"
+KIDS_K912_BANK_VERSION = "KIDS-K912-RF-V2"
+
+KIDS_K68_SCORING_VERSION = "KIDS-SCORING-V2"
+KIDS_K912_SCORING_VERSION = "KIDS-SCORING-V2"
+
+# Backward-compatible alias for legacy callers.
+KIDS_SCORING_VERSION = KIDS_K912_SCORING_VERSION
 
 
 def connect(db_path: Path = DB_PATH) -> sqlite3.Connection:
@@ -41,13 +46,15 @@ def initialize(
         kids_k68_items_path,
         expected_form="k68",
         expected_bank_version=KIDS_K68_BANK_VERSION,
-        expected_count=32,
+        expected_scoring_version=KIDS_K68_SCORING_VERSION,
+        expected_count=30,
     )
     kids_k912_items = _load_kids_items(
         kids_k912_items_path,
         expected_form="k912",
         expected_bank_version=KIDS_K912_BANK_VERSION,
-        expected_count=40,
+        expected_scoring_version=KIDS_K912_SCORING_VERSION,
+        expected_count=42,
     )
 
     _repair_stale_sessions_kids_constraint(db_path)
@@ -661,6 +668,7 @@ def _load_kids_items(
     *,
     expected_form: str,
     expected_bank_version: str,
+    expected_scoring_version: str,
     expected_count: int,
 ) -> list[dict]:
     parsed = json.loads(
@@ -691,16 +699,28 @@ def _load_kids_items(
         "master_order",
     }
 
-    allowed_domains = {
-        "create",
-        "discover",
-        "build",
-        "think",
-        "connect",
-        "lead",
-        "move",
-        "express",
-    }
+    if expected_form == "k68":
+        allowed_domains = {
+            "think",
+            "discover",
+            "build",
+            "create",
+            "connect",
+            "move",
+        }
+    elif expected_form == "k912":
+        allowed_domains = {
+            "think",
+            "discover",
+            "build",
+            "create",
+            "connect",
+            "move",
+        }
+    else:
+        raise ValueError(
+            f"Unsupported Kids form: {expected_form}"
+        )
 
     allowed_visual_support = {
         "none",
@@ -733,7 +753,7 @@ def _load_kids_items(
                 f"Kids item {index} has an unexpected form"
             )
 
-        if item["scoring_version"] != KIDS_SCORING_VERSION:
+        if item["scoring_version"] != expected_scoring_version:
             raise ValueError(
                 f"Kids item {index} has an unexpected scoring version"
             )
@@ -826,19 +846,12 @@ def _load_kids_items(
             f"{expected_form} Kids item order is incomplete"
         )
 
-    expected_per_domain = (
-        4
-        if expected_form == "k68"
-        else 5
-    )
+    expected_per_domain = 5 if expected_form == "k68" else 7
+    expected_domain_counts = {
+        domain: expected_per_domain for domain in allowed_domains
+    }
 
-    if (
-        len(domain_counts) != 8
-        or any(
-            count != expected_per_domain
-            for count in domain_counts.values()
-        )
-    ):
+    if domain_counts != expected_domain_counts:
         raise ValueError(
             f"{expected_form} Kids domain distribution is invalid"
         )
@@ -1028,11 +1041,12 @@ def _verify_migration(conn: sqlite3.Connection) -> None:
         """SELECT COUNT(*) FROM sessions
            WHERE module='kids'
              AND (
-               (form='k68' AND question_bank_version<>?)
+               (form='k68' AND question_bank_version NOT IN (?, ?))
                OR
                (form='k912' AND question_bank_version<>?)
              )""",
         (
+            "KIDS-K68-RF-V1",
             KIDS_K68_BANK_VERSION,
             KIDS_K912_BANK_VERSION,
         ),
@@ -1050,9 +1064,9 @@ def _verify_migration(conn: sqlite3.Connection) -> None:
         (KIDS_K68_BANK_VERSION,),
     ).fetchone()[0]
 
-    if kids_k68_count != 32:
+    if kids_k68_count != 30:
         raise ValueError(
-            "K68 question bank must contain exactly 32 items"
+            "K68 question bank must contain exactly 30 items"
         )
 
     kids_k912_count = conn.execute(
@@ -1063,9 +1077,9 @@ def _verify_migration(conn: sqlite3.Connection) -> None:
         (KIDS_K912_BANK_VERSION,),
     ).fetchone()[0]
 
-    if kids_k912_count != 40:
+    if kids_k912_count != 42:
         raise ValueError(
-            "K912 question bank must contain exactly 40 items"
+            "K912 question bank must contain exactly 42 items"
         )
 
     orphaned_responses = conn.execute(

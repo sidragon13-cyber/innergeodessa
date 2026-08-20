@@ -5,26 +5,37 @@ from statistics import fmean
 from typing import Iterable, Mapping
 
 
-KIDS_SCORING_VERSION = "KIDS-SCORING-V1"
+K68_SCORING_VERSION = "KIDS-SCORING-V2"
+K912_SCORING_VERSION = "KIDS-SCORING-V2"
 
-K68_BANK_VERSION = "KIDS-K68-RF-V1"
-K912_BANK_VERSION = "KIDS-K912-RF-V1"
+# Backward-compatible alias for legacy callers.
+# New Kids code must use the form-specific scoring version.
+KIDS_SCORING_VERSION = K912_SCORING_VERSION
 
-KIDS_DOMAINS = (
-    "create",
+K68_BANK_VERSION = "KIDS-K68-RF-V2"
+K912_BANK_VERSION = "KIDS-K912-RF-V2"
+
+K68_DOMAINS = (
+    "think",
     "discover",
     "build",
-    "think",
+    "create",
     "connect",
-    "lead",
     "move",
-    "express",
 )
 
-_DOMAIN_ORDER = {
-    domain: index
-    for index, domain in enumerate(KIDS_DOMAINS)
-}
+K912_DOMAINS = (
+    "think",
+    "discover",
+    "build",
+    "create",
+    "connect",
+    "move",
+)
+
+# Backward-compatible alias for the current K912 V1 contract.
+# K68 no longer uses this global domain set.
+KIDS_DOMAINS = K912_DOMAINS
 
 PATTERN_EMERGING = "Emerging Explorer"
 PATTERN_BROAD = "Broad Explorer"
@@ -44,22 +55,26 @@ def _form_config(form: str) -> dict:
         return {
             "age_form": "K68",
             "age_band": "6-8",
-            "items_per_domain": 4,
+            "domains": K68_DOMAINS,
+            "items_per_domain": 5,
             "allowed_values": {1, 3, 5},
-            "minimum_raw": 4,
-            "maximum_raw": 20,
+            "minimum_raw": 5,
+            "maximum_raw": 25,
             "bank_version": K68_BANK_VERSION,
+            "scoring_version": K68_SCORING_VERSION,
         }
 
     if form == "k912":
         return {
             "age_form": "K912",
             "age_band": "9-12",
-            "items_per_domain": 5,
+            "domains": K912_DOMAINS,
+            "items_per_domain": 7,
             "allowed_values": {1, 2, 3, 4, 5},
-            "minimum_raw": 5,
-            "maximum_raw": 25,
+            "minimum_raw": 7,
+            "maximum_raw": 35,
             "bank_version": K912_BANK_VERSION,
+            "scoring_version": K912_SCORING_VERSION,
         }
 
     raise ValueError(
@@ -69,12 +84,18 @@ def _form_config(form: str) -> dict:
 
 def _stable_rank(
     scores: Mapping[str, float],
+    domains: tuple[str, ...],
 ) -> list[str]:
+    domain_order = {
+        domain: index
+        for index, domain in enumerate(domains)
+    }
+
     return sorted(
-        KIDS_DOMAINS,
+        domains,
         key=lambda domain: (
             -scores[domain],
-            _DOMAIN_ORDER[domain],
+            domain_order[domain],
         ),
     )
 
@@ -100,15 +121,16 @@ def _exact_tie_groups(
 
 def classify_kids_scores(
     scores: Mapping[str, float],
+    domains: tuple[str, ...] = K912_DOMAINS,
 ) -> dict:
-    if set(scores) != set(KIDS_DOMAINS):
+    if set(scores) != set(domains):
         raise ValueError(
-            "Kids score map must contain exactly the eight domains."
+            "Kids score map must contain exactly the configured domains."
         )
 
     numeric_scores = {
         domain: float(scores[domain])
-        for domain in KIDS_DOMAINS
+        for domain in domains
     }
 
     for domain, value in numeric_scores.items():
@@ -118,7 +140,8 @@ def classify_kids_scores(
             )
 
     ranking = _stable_rank(
-        numeric_scores
+        numeric_scores,
+        domains,
     )
 
     ordered = [
@@ -269,10 +292,11 @@ def score_kids(
         )
 
     item_list = list(items)
+    domains = config["domains"]
 
     expected_total = (
         config["items_per_domain"]
-        * len(KIDS_DOMAINS)
+        * len(domains)
     )
 
     if len(item_list) != expected_total:
@@ -292,7 +316,7 @@ def score_kids(
 
     grouped: dict[str, list[int]] = {
         domain: []
-        for domain in KIDS_DOMAINS
+        for domain in domains
     }
 
     for item in item_list:
@@ -322,7 +346,7 @@ def score_kids(
             item.raw_value
         )
 
-    for domain in KIDS_DOMAINS:
+    for domain in domains:
         if (
             len(grouped[domain])
             != config["items_per_domain"]
@@ -334,7 +358,7 @@ def score_kids(
 
     raw_scores = {
         domain: sum(grouped[domain])
-        for domain in KIDS_DOMAINS
+        for domain in domains
     }
 
     minimum_raw = config["minimum_raw"]
@@ -354,11 +378,12 @@ def score_kids(
             / denominator
         )
         * 100
-        for domain in KIDS_DOMAINS
+        for domain in domains
     }
 
     facts = classify_kids_scores(
-        normalised_scores
+        normalised_scores,
+        domains,
     )
 
     tied_domains = {
@@ -392,7 +417,7 @@ def score_kids(
                 domain in highlighted_set
             ),
         }
-        for domain in KIDS_DOMAINS
+        for domain in domains
     ]
 
     return {
@@ -410,7 +435,7 @@ def score_kids(
             question_bank_version
         ),
         "scoringVersion": (
-            KIDS_SCORING_VERSION
+            config["scoring_version"]
         ),
 
         "domainRawScores": raw_scores,

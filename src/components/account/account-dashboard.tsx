@@ -24,6 +24,13 @@ type CareerHistoryItem = {
   status: "saved";
 };
 
+type KidsHistoryItem = {
+  resourceId: string;
+  form: string;
+  createdAt: string;
+  status: "saved";
+};
+
 type ZodiacHistoryItem = {
   resourceId: string;
   createdAt: string;
@@ -35,6 +42,7 @@ type ZodiacHistoryItem = {
 type DashboardResources = {
   personality: PersonalityHistoryItem[];
   career: CareerHistoryItem[];
+  kids: KidsHistoryItem[];
   zodiac: ZodiacHistoryItem[];
 };
 
@@ -43,6 +51,7 @@ type HistoryStatus = "idle" | "loading" | "ready" | "error";
 const emptyResources: DashboardResources = {
   personality: [],
   career: [],
+  kids: [],
   zodiac: [],
 };
 
@@ -176,6 +185,7 @@ export function AccountDashboard() {
   const totalRecords =
     resources.personality.length +
     resources.career.length +
+    resources.kids.length +
     resources.zodiac.length;
 
   return (
@@ -311,6 +321,25 @@ export function AccountDashboard() {
                     dictionary.dateLocale,
                   )}
                   href={`/career/result/${item.resourceId}`}
+                  actionLabel={dictionary.dashboard.history.openResult}
+                />
+              ))}
+            </HistoryGroup>
+
+            <HistoryGroup
+              title={dictionary.dashboard.history.kids}
+              emptyLabel={dictionary.dashboard.history.empty}
+            >
+              {resources.kids.map((item) => (
+                <HistoryCard
+                  key={item.resourceId}
+                  title={item.form.toUpperCase()}
+                  savedLabel={dictionary.dashboard.history.saved}
+                  dateLabel={formatAccountDate(
+                    item.createdAt,
+                    dictionary.dateLocale,
+                  )}
+                  href={`/kids/result/${item.resourceId}`}
                   actionLabel={dictionary.dashboard.history.openResult}
                 />
               ))}

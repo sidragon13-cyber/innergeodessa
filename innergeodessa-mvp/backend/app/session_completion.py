@@ -46,12 +46,12 @@ def _validate_kids_completion_preconditions(
     form = session["form"]
 
     if form == "k68":
-        expected_count = 32
-        expected_bank_version = "KIDS-K68-RF-V1"
+        expected_count = 30
+        expected_bank_version = "KIDS-K68-RF-V2"
         allowed_values = {1, 3, 5}
     elif form == "k912":
-        expected_count = 40
-        expected_bank_version = "KIDS-K912-RF-V1"
+        expected_count = 42
+        expected_bank_version = "KIDS-K912-RF-V2"
         allowed_values = {1, 2, 3, 4, 5}
     else:
         raise HTTPException(

@@ -56,18 +56,31 @@ export function KidsLanding() {
               : "Discover where a child’s curiosity naturally goes."}
           </h1>
 
-          <p className="mt-7 max-w-3xl text-base leading-8 text-[#625968] md:text-lg">
+          <p className="mt-6 text-sm font-bold tracking-[0.04em] text-[#6f4c80]">
+            {isZh
+              ? "发现兴趣，而不是判断孩子。"
+              : "Discover interests, not labels."}
+          </p>
+
+          <p className="mt-5 max-w-3xl text-base leading-8 text-[#625968] md:text-lg">
             {isZh
               ? "InnerGeo Kids 不是职业预测，也不是能力诊断。它通过适龄问题建立一张兴趣地图，帮助家长和孩子从发现开始，再逐步探索与培养。"
               : "InnerGeo Kids is not a career prediction or ability diagnosis. It creates an age-appropriate interest map that supports a simple path: Discover, Explore, Cultivate."}
           </p>
 
           <div className="mt-14">
-            <p className="mb-5 text-sm font-semibold text-[#4c4251]">
-              {isZh
-                ? "请选择孩子的年龄段。开始后，本次测试的年龄组将保持锁定。"
-                : "Choose the child’s age group. Once the assessment begins, the form stays locked for that session."}
-            </p>
+            <div className="mb-6">
+              <p className="text-sm font-semibold text-[#4c4251]">
+                {isZh
+                  ? "请选择孩子的年龄段。开始后，本次测试的年龄组将保持锁定。"
+                  : "Choose the child’s age group. Once the assessment begins, the form stays locked for that session."}
+              </p>
+              <p className="mt-2 max-w-4xl text-sm leading-6 text-[#756d79]">
+                {isZh
+                  ? "如有需要，家长或老师可以陪同阅读和解释题意，请尽量让孩子根据自己的真实感受作出选择。"
+                  : "If needed, parents or teachers may help read and explain the questions. Please let the child choose the answer that best reflects their own feelings."}
+              </p>
+            </div>
 
             <div className="grid gap-5 md:grid-cols-2">
               {(["k68", "k912"] as const).map(
@@ -88,9 +101,17 @@ export function KidsLanding() {
                           {form === "k68" ? "6–8" : "9–12"}
                         </span>
 
-                        <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#9985a2]">
+                        <span className="text-right text-xs font-bold uppercase tracking-[0.12em] text-[#9985a2]">
                           {count}{" "}
                           {isZh ? "道题" : "questions"}
+                          <span className="mx-1.5">·</span>
+                          {form === "k68"
+                            ? isZh
+                              ? "约 8–10 分钟"
+                              : "about 8–10 min"
+                            : isZh
+                              ? "约 12–15 分钟"
+                              : "about 12–15 min"}
                         </span>
                       </div>
 
@@ -126,7 +147,20 @@ export function KidsLanding() {
             </div>
           </div>
 
-          <div className="mt-14 grid gap-4 border-t border-[#ded7df] pt-8 text-sm leading-7 text-[#756d79] md:grid-cols-3">
+          <div className="mt-8 border-l-2 border-[#c8b4d1] pl-5">
+            <p className="max-w-4xl text-sm leading-7 text-[#6b626f]">
+              <strong className="font-semibold text-[#4c4251]">
+                {isZh
+                  ? "孩子不需要被定义，但值得被认真发现。"
+                  : "A child does not need to be defined, but deserves to be understood."}
+              </strong>{" "}
+              {isZh
+                ? "InnerGeo Kids 不判断天赋、能力或未来职业，而是帮助家长观察孩子当前愿意主动靠近、重复参与和继续探索的兴趣方向。"
+                : "InnerGeo Kids does not judge talent, ability, or future careers. It helps families notice the activities a child currently chooses, repeats, and wants to explore further."}
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-4 border-t border-[#ded7df] pt-8 text-sm leading-7 text-[#756d79] md:grid-cols-3">
             <p>
               <strong className="block text-[#403746]">
                 Discover

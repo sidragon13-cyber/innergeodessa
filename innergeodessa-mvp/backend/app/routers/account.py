@@ -14,6 +14,7 @@ from ..database import connect
 from ..schemas.account import (
     AccountDashboardResponse,
     CareerDashboardItem,
+    KidsDashboardItem,
     ClaimedAssessmentResponse,
     ClaimSessionRequest,
     PersonalityDashboardItem,
@@ -39,6 +40,8 @@ def _public_module(module: str) -> str:
         return "personality"
     if module == "riasec":
         return "career"
+    if module == "kids":
+        return "kids"
 
     raise HTTPException(
         status_code=status.HTTP_400_BAD_REQUEST,
@@ -322,6 +325,25 @@ def get_account_dashboard(
             (user_id,),
         ).fetchall()
 
+        kids_rows = conn.execute(
+            """SELECT session.session_id,
+                      session.form,
+                      COALESCE(
+                        session.claimed_at,
+                        session.completed_at,
+                        session.started_at
+                      ) AS created_at
+               FROM sessions session
+               JOIN kids_results result
+                 ON result.session_id=session.session_id
+               WHERE session.owner_user_id=?
+                 AND session.module='kids'
+                 AND session.status='completed'
+               ORDER BY created_at DESC,
+                        session.session_id DESC""",
+            (user_id,),
+        ).fetchall()
+
         zodiac_rows = conn.execute(
             """SELECT chart_id,
                       schema_version,
@@ -356,6 +378,15 @@ def get_account_dashboard(
                 status="saved",
             )
             for row in career_rows
+        ],
+        kids=[
+            KidsDashboardItem(
+                resourceId=row["session_id"],
+                form=row["form"],
+                createdAt=row["created_at"],
+                status="saved",
+            )
+            for row in kids_rows
         ],
         zodiac=[
             ZodiacDashboardItem(
@@ -467,6 +498,7 @@ def get_report_access(
         "personality",
         "career",
         "zodiac",
+        "kids",
     }:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -496,6 +528,8 @@ def get_report_access(
                 "personality"
                 if module == "personality"
                 else "riasec"
+                if module == "career"
+                else "kids"
             )
 
             resource = conn.execute(

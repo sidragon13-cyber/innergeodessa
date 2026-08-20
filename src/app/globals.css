@@ -4724,3 +4724,533 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================================
+   InnerGeo Kids K912 Professional Report — Print Contract V1
+   Screen layout remains unchanged.
+   ============================================================ */
+@media print {
+  .personality-report [data-k912-layout],
+  .personality-report [data-k912-layout] * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /*
+   * K912 print follows the mature report document flow:
+   * sections continue naturally instead of starting on
+   * separate pages. Only heading groups and compact cards
+   * receive fragmentation protection.
+   */
+  .personality-report-sections > .personality-report-section {
+    break-before: auto !important;
+    page-break-before: auto !important;
+    break-after: auto !important;
+    page-break-after: auto !important;
+  }
+
+  /* ==========================================================
+     K912 Professional Report — Compact Print Density V1
+     Print/PDF only. Screen presentation remains unchanged.
+     ========================================================== */
+
+  .k912-professional-report .personality-report-header {
+    padding-bottom: 3mm !important;
+  }
+
+  .k912-professional-report .personality-report-header > .mt-7 {
+    margin-top: 3mm !important;
+    gap: 4mm !important;
+    grid-template-columns: minmax(0, 1fr) 56mm !important;
+    align-items: end !important;
+  }
+
+  .k912-professional-report .personality-report-header .ig-heading-1 {
+    margin-top: 1.5mm !important;
+    font-size: 23pt !important;
+    line-height: 1.08 !important;
+  }
+
+  .k912-professional-report .personality-report-header .ig-body-large {
+    margin-top: 2mm !important;
+    font-size: 10pt !important;
+    line-height: 1.45 !important;
+  }
+
+  .k912-professional-report
+    .personality-report-header
+    .report-print-compact-block {
+    font-size: 8.5pt !important;
+    line-height: 1.35 !important;
+  }
+
+  .k912-professional-report
+    .personality-report-header
+    .report-print-compact-block dl {
+    column-gap: 3mm !important;
+    row-gap: 0.5mm !important;
+  }
+
+  /* First-page six-domain snapshot: compact 3 × 2 matrix. */
+  [data-k912-layout="report-snapshot"] {
+    margin-top: 4mm !important;
+    padding: 3mm 4mm !important;
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+
+  [data-k912-layout="report-snapshot"] > .ig-heading-2,
+  [data-k912-layout="report-snapshot"] > h2 {
+    margin-top: 1.5mm !important;
+    font-size: 15pt !important;
+    line-height: 1.15 !important;
+  }
+
+  [data-k912-layout="report-snapshot"] > .mt-7 {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    margin-top: 3mm !important;
+    gap: 0 !important;
+  }
+
+  [data-k912-layout="report-snapshot"] > .mt-7 > article {
+    padding: 2.5mm 3mm !important;
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+
+  [data-k912-layout="report-snapshot"] article h3 {
+    margin-top: 1mm !important;
+    font-size: 10.5pt !important;
+    line-height: 1.2 !important;
+  }
+
+  [data-k912-layout="report-snapshot"] article .mt-4 {
+    margin-top: 1.5mm !important;
+  }
+
+  [data-k912-layout="report-snapshot"] article .mt-2 {
+    margin-top: 0.7mm !important;
+  }
+
+  [data-k912-layout="report-snapshot"] article .text-3xl {
+    font-size: 20pt !important;
+    line-height: 1 !important;
+  }
+
+  /* Compact table of contents. */
+  .k912-professional-report .report-table-of-contents {
+    margin-top: 4mm !important;
+    padding: 3mm !important;
+  }
+
+  .k912-professional-report .report-table-of-contents ol {
+    margin-top: 2mm !important;
+  }
+
+  .k912-professional-report .report-table-of-contents a {
+    padding: 1.2mm 0 !important;
+  }
+
+  /* Compact continuous section rhythm. */
+  .k912-professional-report .personality-report-sections {
+    margin-top: 4mm !important;
+  }
+
+  .k912-professional-report
+    .personality-report-sections
+    > .personality-report-section {
+    margin-top: 2.5mm !important;
+  }
+
+  .k912-professional-report .personality-report-section-header {
+    padding: 3mm 3.5mm !important;
+  }
+
+  .k912-professional-report
+    .personality-report-section-header
+    .ig-heading-2 {
+    margin-top: 1.5mm !important;
+    font-size: 16pt !important;
+    line-height: 1.15 !important;
+  }
+
+  .k912-professional-report .report-print-flow-block {
+    padding: 2.5mm 3.5mm !important;
+  }
+
+  .k912-professional-report
+    .report-print-content-heading-group
+    + .ig-body {
+    margin-top: 2.5mm !important;
+  }
+
+  .k912-professional-report
+    .personality-report-content-block
+    > .ig-body
+    > .space-y-6
+    > * + * {
+    margin-top: 3mm !important;
+  }
+
+  .k912-professional-report [data-k912-layout] > * + * {
+    margin-top: 2.5mm;
+  }
+
+  /* ----------------------------------------------------------
+     02 — Parent & Child Executive Summary
+     Preserve paired result cards in A4 print.
+     ---------------------------------------------------------- */
+  [data-k912-layout="executive-summary"] > .grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 3mm !important;
+  }
+
+  [data-k912-layout="executive-summary"] > .grid > article {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+    padding: 3.5mm 4mm !important;
+  }
+
+  /* ----------------------------------------------------------
+     03 — Six-Domain Interest Map
+     Preserve the analytical horizontal row in A4 print.
+     ---------------------------------------------------------- */
+  [data-k912-layout="interest-map"] [data-k912-interest-role] {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+    padding: 3mm 4mm !important;
+  }
+
+  [data-k912-layout="interest-map"] [data-k912-interest-role] > div {
+    display: grid !important;
+    grid-template-columns: 10mm 25mm minmax(0, 1fr) 13mm !important;
+    align-items: center !important;
+    gap: 3mm !important;
+  }
+
+  [data-k912-layout="interest-map"] > header,
+  [data-k912-layout="interest-map"] > footer {
+    padding: 3.5mm 4mm !important;
+  }
+
+  /*
+   * Do not depend on Chrome's "Background graphics" option
+   * for the score bars. The score fill becomes a printable
+   * border whose inline width still represents the real score.
+   */
+  [data-k912-layout="interest-map"] [data-k912-interest-role] .h-3,
+  [data-k912-layout="interest-structure"] [data-k912-structure-role] .h-2 {
+    background: transparent !important;
+    border-bottom: 0.35mm solid #d2ccc0 !important;
+    overflow: visible !important;
+  }
+
+  [data-k912-layout="interest-map"] [data-k912-interest-role] .h-full,
+  [data-k912-layout="interest-structure"] [data-k912-structure-role] .h-full {
+    height: 0 !important;
+    background: transparent !important;
+    border-top: 1.8mm solid #b9b1a4 !important;
+  }
+
+  [data-k912-layout="interest-map"]
+    [data-k912-interest-role="primary"]
+    .h-full,
+  [data-k912-layout="interest-structure"]
+    [data-k912-structure-role="primary"]
+    .h-full {
+    border-top-color: #9a8463 !important;
+  }
+
+  [data-k912-layout="interest-map"]
+    [data-k912-interest-role="secondary"]
+    .h-full,
+  [data-k912-layout="interest-structure"]
+    [data-k912-structure-role="secondary"]
+    .h-full {
+    border-top-color: #8b8378 !important;
+  }
+
+  /* ----------------------------------------------------------
+     04 — Current Interest Structure
+     Both analytical card rows remain three columns.
+     ---------------------------------------------------------- */
+  [data-k912-layout="interest-structure"] > .grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 3mm !important;
+  }
+
+  [data-k912-layout="interest-structure"] > .grid > article {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+    padding: 3.5mm !important;
+  }
+
+  [data-k912-layout="interest-structure"] > article {
+    padding: 3.5mm 4mm !important;
+  }
+
+  /* ----------------------------------------------------------
+     05 / 06 — analytical paired layouts
+     ---------------------------------------------------------- */
+  [data-k912-layout="comparison"],
+  [data-k912-layout="evidence-matrix"] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 3mm !important;
+  }
+
+  [data-k912-layout="comparison"] > *,
+  [data-k912-layout="evidence-matrix"] > * {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+
+  /* ----------------------------------------------------------
+     10 — Three-stage Action Path
+     ---------------------------------------------------------- */
+  [data-k912-layout="action-path"] {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 3mm !important;
+  }
+
+  [data-k912-layout="action-path"] > * {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+    padding: 3.5mm !important;
+  }
+
+  /* ==========================================================
+     K912 Section 10 — Compact Print Action Path
+     Print/PDF only. Keep the three-stage structure while
+     reducing vertical height so normal document flow can use
+     the remaining space from the preceding section.
+     ========================================================== */
+  [data-k912-layout="action-path"] {
+    gap: 2mm !important;
+  }
+
+  [data-k912-layout="action-path"] > article {
+    padding: 2.5mm 3mm !important;
+  }
+
+  [data-k912-layout="action-path"] .mt-6 {
+    margin-top: 2mm !important;
+  }
+
+  [data-k912-layout="action-path"] .mt-5 {
+    margin-top: 1.8mm !important;
+  }
+
+  [data-k912-layout="action-path"] .mt-2 {
+    margin-top: 1mm !important;
+  }
+
+  [data-k912-layout="action-path"] .space-y-3 > * + * {
+    margin-top: 1.5mm !important;
+  }
+
+  [data-k912-layout="action-path"] .leading-7 {
+    line-height: 1.35 !important;
+  }
+
+  [data-k912-layout="action-path"] .text-3xl {
+    font-size: 18pt !important;
+    line-height: 1 !important;
+  }
+
+  [data-k912-layout="action-path"] h3 {
+    font-size: 10.5pt !important;
+    line-height: 1.25 !important;
+  }
+
+  [data-k912-layout="action-path"] p,
+  [data-k912-layout="action-path"] li {
+    font-size: 9.5pt !important;
+  }
+
+  /* ----------------------------------------------------------
+     11 — Parent / Child paired observation layers
+     ---------------------------------------------------------- */
+  [data-k912-layout="observation-plan"] > .grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 3mm !important;
+  }
+
+  [data-k912-observation-layer] {
+  }
+
+  [data-k912-observation-layer] > .grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  [data-k912-observation-layer] article {
+    padding: 3.5mm 4mm !important;
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+
+  /* ==========================================================
+     K912 Section 11 — Compact Print Observation Plan
+     Print/PDF only. Preserve paired child/parent reading while
+     reducing unnecessary vertical height.
+     ========================================================== */
+
+  [data-k912-layout="observation-plan"] {
+    gap: 2mm !important;
+  }
+
+  [data-k912-layout="observation-plan"] > * + * {
+    margin-top: 2mm !important;
+  }
+
+  /* Intro pair */
+  [data-k912-layout="observation-plan"] > .grid {
+    gap: 2mm !important;
+  }
+
+  [data-k912-layout="observation-plan"] > .grid > section {
+    padding: 2.5mm 3mm !important;
+  }
+
+  [data-k912-layout="observation-plan"] > .grid h3 {
+    margin-top: 1mm !important;
+    font-size: 10.5pt !important;
+    line-height: 1.25 !important;
+  }
+
+  [data-k912-layout="observation-plan"] > .grid p {
+    margin-top: 1mm !important;
+    font-size: 9pt !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Layer heading */
+  [data-k912-observation-layer] > header {
+    padding: 2mm 3mm !important;
+  }
+
+  [data-k912-observation-layer] > header .text-2xl {
+    font-size: 16pt !important;
+    line-height: 1 !important;
+  }
+
+  [data-k912-observation-layer] > header h3 {
+    font-size: 10.5pt !important;
+    line-height: 1.2 !important;
+  }
+
+  [data-k912-observation-layer] > header .gap-4 {
+    gap: 2mm !important;
+  }
+
+  /* Child / parent role cards */
+  [data-k912-observation-role] {
+    padding: 2.5mm 3mm !important;
+  }
+
+  [data-k912-observation-role] h4 {
+    margin-top: 1mm !important;
+    font-size: 10pt !important;
+    line-height: 1.25 !important;
+  }
+
+  [data-k912-observation-role] .mt-3 {
+    margin-top: 1.2mm !important;
+  }
+
+  [data-k912-observation-role] .mt-4 {
+    margin-top: 1.5mm !important;
+  }
+
+  [data-k912-observation-role] .space-y-2 > * + * {
+    margin-top: 1mm !important;
+  }
+
+  [data-k912-observation-role] .space-y-3 > * + * {
+    margin-top: 1.2mm !important;
+  }
+
+  [data-k912-observation-role] .leading-6 {
+    line-height: 1.35 !important;
+  }
+
+  [data-k912-observation-role] p,
+  [data-k912-observation-role] li {
+    font-size: 9pt !important;
+  }
+
+  [data-k912-observation-role] li {
+    grid-template-columns: 5.5mm minmax(0, 1fr) !important;
+    gap: 1.5mm !important;
+  }
+
+  [data-k912-observation-role] li > span:first-child {
+    width: 5.5mm !important;
+    height: 5.5mm !important;
+    font-size: 7.5pt !important;
+    line-height: 1 !important;
+  }
+
+  [data-k912-observation-role] li > span:last-child {
+    padding-top: 0 !important;
+  }
+
+  /* ----------------------------------------------------------
+     12 — Method & Interpretation Boundaries
+     Keep method opening together and preserve 2 + 1 structure.
+     ---------------------------------------------------------- */
+  #methodology-interpretation-boundaries {
+    break-before: auto;
+    page-break-before: auto;
+  }
+
+  [data-k912-layout="method-framework"] > section:first-child {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+
+  [data-k912-layout="method-framework"] > section {
+    margin-bottom: 3mm !important;
+  }
+
+  [data-k912-method-role="boundary"] > .grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 3mm !important;
+  }
+
+  [data-k912-method-role="boundary"] > .grid > article {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+    padding: 3.5mm 4mm !important;
+  }
+
+  [data-k912-method-role="boundary"] > .grid > article:last-child {
+    grid-column: 1 / -1 !important;
+  }
+
+  /* ----------------------------------------------------------
+     Common K912 print protection / compact spacing
+     ---------------------------------------------------------- */
+  [data-k912-layout="executive-summary"] article,
+  [data-k912-layout="interest-structure"] article,
+  [data-k912-layout="comparison"] > *,
+  [data-k912-layout="evidence-matrix"] > *,
+  [data-k912-layout="action-path"] > * {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+
+  [data-k912-layout] h2,
+  [data-k912-layout] h3,
+  [data-k912-layout] h4 {
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
+}

@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { initializePaddle, type Paddle } from "@paddle/paddle-js";
+import {
+  CheckoutEventNames,
+  initializePaddle,
+  type Paddle,
+} from "@paddle/paddle-js";
 
 let paddlePromise: Promise<Paddle | undefined> | null = null;
 
@@ -26,13 +30,17 @@ function getPaddle() {
 export function PaddleCheckoutButton({
   resourceId,
   module = "personality",
+  kidsForm,
   className = "legal-purchase-button",
   label = "Buy Premium Report — $7.99",
+  onCompleted,
 }: {
   resourceId: string;
-  module?: "personality" | "career" | "zodiac";
+  module?: "personality" | "career" | "zodiac" | "kids";
+  kidsForm?: "K68" | "K912";
   className?: string;
   label?: string;
+  onCompleted?: () => void;
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -42,7 +50,13 @@ export function PaddleCheckoutButton({
         ? process.env.NEXT_PUBLIC_PADDLE_PERSONALITY_PRICE_ID
         : module === "career"
           ? process.env.NEXT_PUBLIC_PADDLE_CAREER_PRICE_ID
-          : process.env.NEXT_PUBLIC_PADDLE_ZODIAC_PRICE_ID;
+          : module === "zodiac"
+            ? process.env.NEXT_PUBLIC_PADDLE_ZODIAC_PRICE_ID
+            : module === "kids" && kidsForm === "K68"
+              ? process.env.NEXT_PUBLIC_PADDLE_K68_PRICE_ID
+              : module === "kids" && kidsForm === "K912"
+                ? process.env.NEXT_PUBLIC_PADDLE_K912_PRICE_ID
+                : undefined;
 
     if (!priceId) {
       console.error(`Missing Paddle price ID for ${module}`);
@@ -57,6 +71,17 @@ export function PaddleCheckoutButton({
       if (!paddle) {
         throw new Error("Paddle failed to initialize");
       }
+
+      paddle.Update({
+        eventCallback: (event) => {
+          if (
+            event.name ===
+            CheckoutEventNames.CHECKOUT_COMPLETED
+          ) {
+            onCompleted?.();
+          }
+        },
+      });
 
       paddle.Checkout.open({
         items: [

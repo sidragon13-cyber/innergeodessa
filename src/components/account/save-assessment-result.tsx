@@ -9,7 +9,7 @@ import { getAccountDictionary } from "@/data/i18n";
 
 import { useAuth } from "./auth-provider";
 
-type AssessmentModule = "personality" | "career";
+type AssessmentModule = "personality" | "career" | "kids";
 
 type SaveState = "idle" | "saving" | "saved" | "error";
 
@@ -25,6 +25,7 @@ export interface SaveAssessmentResultProps {
   module: AssessmentModule;
   sessionId: string;
   className?: string;
+  onSaved?: () => void;
 }
 
 function getClaimStorageKey(
@@ -56,6 +57,7 @@ export function SaveAssessmentResult({
   module,
   sessionId,
   className = "",
+  onSaved,
 }: SaveAssessmentResultProps) {
   const { status: authStatus, user } = useAuth();
   const { locale } = useLocale();
@@ -69,7 +71,9 @@ export function SaveAssessmentResult({
     () =>
       module === "personality"
         ? `/personality/result/${sessionId}`
-        : `/career/result/${sessionId}`,
+        : module === "career"
+          ? `/career/result/${sessionId}`
+          : `/kids/result/${sessionId}`,
     [module, sessionId],
   );
 
@@ -166,6 +170,7 @@ export function SaveAssessmentResult({
 
       setClaimSecret(null);
       setSaveState("saved");
+      onSaved?.();
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : dictionary.error,

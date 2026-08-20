@@ -159,6 +159,7 @@ export type AccountDictionary = {
       personality: string;
       career: string;
       zodiac: string;
+      kids: string;
       zodiacUnavailable: string;
       completedAt: string;
       schemaVersion: string;
@@ -351,6 +352,7 @@ export const accountDictionaries: Record<
         personality: "Personality",
         career: "Career",
         zodiac: "Zodiac",
+        kids: "Kids",
         zodiacUnavailable:
           "This chart is saved, but cross-device chart retrieval will be connected in the next step.",
         completedAt: "Saved",
@@ -546,6 +548,7 @@ export const accountDictionaries: Record<
         personality: "人格测试",
         career: "职业兴趣",
         zodiac: "星座星盘",
+        kids: "儿童兴趣",
         zodiacUnavailable:
           "这份星盘已经保存，但跨设备读取星盘详情将在下一步接入。",
         completedAt: "保存时间",

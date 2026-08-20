@@ -33,15 +33,15 @@ KIDS_ASSESSMENT_FORMS = {
     "k68": AssessmentModuleConfig(
         module="kids",
         form="k68",
-        question_bank_version="KIDS-K68-RF-V1",
-        expected_item_count=32,
+        question_bank_version="KIDS-K68-RF-V2",
+        expected_item_count=30,
         scoring_strategy="kids",
     ),
     "k912": AssessmentModuleConfig(
         module="kids",
         form="k912",
-        question_bank_version="KIDS-K912-RF-V1",
-        expected_item_count=40,
+        question_bank_version="KIDS-K912-RF-V2",
+        expected_item_count=42,
         scoring_strategy="kids",
     ),
 }

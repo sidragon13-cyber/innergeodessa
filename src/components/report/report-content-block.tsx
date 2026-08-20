@@ -5,6 +5,7 @@ export interface ReportContentBlockProps {
   title?: ReactNode;
   children: ReactNode;
   className?: string;
+  contentWidthClassName?: string;
 }
 
 export function ReportContentBlock({
@@ -12,6 +13,7 @@ export function ReportContentBlock({
   title,
   children,
   className = "",
+  contentWidthClassName,
 }: ReportContentBlockProps) {
   return (
     <article
@@ -28,7 +30,14 @@ export function ReportContentBlock({
         {title ? <h3 className="ig-heading-3 mt-3">{title}</h3> : null}
       </div>
 
-      <div className="ig-body ig-reading-width mt-4 whitespace-pre-line text-[var(--color-text-secondary)]">
+      <div
+        className={[
+          "ig-body mt-4 whitespace-pre-line text-[var(--color-text-secondary)]",
+          contentWidthClassName ?? "ig-reading-width",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
         {children}
       </div>
     </article>

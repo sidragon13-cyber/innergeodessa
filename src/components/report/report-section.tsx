@@ -7,6 +7,7 @@ export interface ReportSectionBlock {
   label: ReactNode;
   title?: ReactNode;
   content: ReactNode;
+  contentWidthClassName?: string;
 }
 
 export interface ReportSectionProps {
@@ -63,6 +64,7 @@ export function ReportSection({
             key={block.id}
             label={block.label}
             title={block.title}
+            contentWidthClassName={block.contentWidthClassName}
           >
             {block.content}
           </ReportContentBlock>

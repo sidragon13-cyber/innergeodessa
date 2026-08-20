@@ -121,14 +121,14 @@ const FORM_INFO = {
   k68: {
     titleEn: "Ages 6–8",
     titleZh: "6–8岁",
-    expectedCount: 32,
-    bank: "KIDS-K68-RF-V1",
+    expectedCount: 30,
+    bank: "KIDS-K68-RF-V2",
   },
   k912: {
     titleEn: "Ages 9–12",
     titleZh: "9–12岁",
-    expectedCount: 40,
-    bank: "KIDS-K912-RF-V1",
+    expectedCount: 42,
+    bank: "KIDS-K912-RF-V2",
   },
 } as const;
 
@@ -195,7 +195,7 @@ export function KidsTest({
           expected.expectedCount
         ) {
           throw new Error(
-            "The local Kids question bank is incomplete.",
+            `The local Kids question bank is incomplete. form=${form}; local=${localQuestions.length}; expected=${expected.expectedCount}`,
           );
         }
 

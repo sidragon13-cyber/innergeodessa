@@ -12,7 +12,7 @@ class ClaimSessionRequest(BaseModel):
 
 class ClaimedAssessmentResponse(BaseModel):
     resourceId: str
-    module: Literal["personality", "career"]
+    module: Literal["personality", "career", "kids"]
     status: Literal["saved"]
     claimedAt: str
 
@@ -43,6 +43,13 @@ class CareerDashboardItem(BaseModel):
     status: Literal["saved"]
 
 
+class KidsDashboardItem(BaseModel):
+    resourceId: str
+    form: str
+    createdAt: str
+    status: Literal["saved"]
+
+
 class ZodiacDashboardItem(BaseModel):
     resourceId: str
     createdAt: str
@@ -54,6 +61,7 @@ class ZodiacDashboardItem(BaseModel):
 class AccountDashboardResponse(BaseModel):
     personality: list[PersonalityDashboardItem]
     career: list[CareerDashboardItem]
+    kids: list[KidsDashboardItem]
     zodiac: list[ZodiacDashboardItem]
 
 
@@ -69,6 +77,7 @@ class ReportAccessResponse(BaseModel):
         "personality",
         "career",
         "zodiac",
+        "kids",
     ]
     resourceId: str
     authenticated: Literal[True]

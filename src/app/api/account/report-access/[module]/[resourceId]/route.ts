@@ -6,6 +6,7 @@ const SUPPORTED_MODULES = new Set([
   "personality",
   "career",
   "zodiac",
+  "kids",
 ]);
 
 export async function GET(

@@ -79,6 +79,8 @@ def fulfill_paddle_payment(
             if payload.module == "personality"
             else "riasec"
             if payload.module == "career"
+            else "kids"
+            if payload.module == "kids"
             else None
         )
 
@@ -88,7 +90,7 @@ def fulfill_paddle_payment(
             )
 
         resource = conn.execute(
-            """SELECT session_id, module, status, owner_user_id
+            """SELECT session_id, module, form, status, owner_user_id
                FROM sessions
                WHERE session_id=?""",
             (payload.resourceId,),
@@ -104,6 +106,26 @@ def fulfill_paddle_payment(
             raise InvalidResourceError("The assessment session is not completed.")
         if not resource["owner_user_id"]:
             raise InvalidResourceError("The assessment session has no owner.")
+
+        if payload.module == "kids":
+            expected_product_code = (
+                "kids-k68-premium-report-v1"
+                if resource["form"] == "k68"
+                else "kids-k912-premium-report-v1"
+                if resource["form"] == "k912"
+                else None
+            )
+
+            if expected_product_code is None:
+                raise InvalidResourceError(
+                    "The Kids assessment form is not supported."
+                )
+
+            if payload.productCode != expected_product_code:
+                raise InvalidResourceError(
+                    "The Kids report product does not match "
+                    "the assessment form."
+                )
 
         user_id = resource["owner_user_id"]
     existing = conn.execute(

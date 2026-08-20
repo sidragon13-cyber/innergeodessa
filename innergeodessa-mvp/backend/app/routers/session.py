@@ -276,13 +276,45 @@ def get_session_result(session_id: str):
                 "Completed Kids session result is invalid.",
             )
 
+        if session["form"] == "k68":
+            if (
+                session["question_bank_version"]
+                == "KIDS-K68-RF-V2"
+            ):
+                expected_scoring_version = "KIDS-SCORING-V2"
+            elif (
+                session["question_bank_version"]
+                == "KIDS-K68-RF-V1"
+            ):
+                expected_scoring_version = "KIDS-SCORING-V1"
+            else:
+                raise HTTPException(
+                    500,
+                    "Completed Kids session release is invalid.",
+                )
+        elif session["form"] == "k912":
+            if (
+                session["question_bank_version"]
+                != "KIDS-K912-RF-V2"
+            ):
+                raise HTTPException(
+                    500,
+                    "Completed Kids session release is invalid.",
+                )
+            expected_scoring_version = "KIDS-SCORING-V2"
+        else:
+            raise HTTPException(
+                500,
+                "Completed Kids session form is invalid.",
+            )
+
         if (
             result["scoring_version"]
-            != "KIDS-SCORING-V1"
+            != expected_scoring_version
             or persisted.get(
                 "scoringVersion"
             )
-            != "KIDS-SCORING-V1"
+            != expected_scoring_version
         ):
             raise HTTPException(
                 500,
@@ -329,6 +361,8 @@ def get_session_result(session_id: str):
                 "Completed Kids session age form is invalid.",
             )
 
+        expected_domain_result_count = 6
+
         domain_results = persisted.get(
             "domainResults"
         )
@@ -338,14 +372,15 @@ def get_session_result(session_id: str):
                 domain_results,
                 list,
             )
-            or len(domain_results) != 8
+            or len(domain_results)
+            != expected_domain_result_count
         ):
             raise HTTPException(
                 500,
                 "Completed Kids session domain result is invalid.",
             )
 
-        return {
+        payload = {
             "resultId": session_id,
             **persisted,
             "sessionId": session_id,
@@ -358,6 +393,46 @@ def get_session_result(session_id: str):
                 result["calculated_at"]
             ),
         }
+
+        if session["form"] in {"k68", "k912"}:
+            with connect() as response_conn:
+                response_rows = response_conn.execute(
+                    """SELECT item.source_item_id AS item_id,
+                              item.domain,
+                              snapshot.display_order,
+                              response.raw_value
+                       FROM kids_session_question_items snapshot
+                       JOIN kids_question_items item
+                         ON item.item_record_id=snapshot.item_record_id
+                       JOIN kids_session_responses response
+                         ON response.session_id=snapshot.session_id
+                        AND response.item_record_id=snapshot.item_record_id
+                       WHERE snapshot.session_id=?
+                       ORDER BY snapshot.display_order""",
+                    (session_id,),
+                ).fetchall()
+
+            expected_response_count = (
+                30 if session["form"] == "k68" else 42
+            )
+
+            if len(response_rows) != expected_response_count:
+                raise HTTPException(
+                    500,
+                    "Completed Kids V2 session evidence is invalid.",
+                )
+
+            payload["itemResponses"] = [
+                {
+                    "itemId": row["item_id"],
+                    "domain": row["domain"],
+                    "displayOrder": row["display_order"],
+                    "rawValue": row["raw_value"],
+                }
+                for row in response_rows
+            ]
+
+        return payload
 
     if session["module"] == "riasec":
         try:

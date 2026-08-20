@@ -37,8 +37,8 @@ export const KIDS_DOMAIN_LABELS = {
 } as const satisfies Readonly<Record<KidsDomain, string>>;
 
 export const KIDS_RELEASE_IDS = [
-  "KIDS-K68-RF-V1",
-  "KIDS-K912-RF-V1",
+  "KIDS-K68-RF-V2",
+  "KIDS-K912-RF-V2",
 ] as const;
 
 export type KidsReleaseId =
@@ -56,23 +56,28 @@ export interface KidsReleaseFormConfig {
 export const KIDS_RELEASE_FORMS = {
   k68: {
     form: "k68",
-    releaseId: "KIDS-K68-RF-V1",
+    releaseId: "KIDS-K68-RF-V2",
     ageMin: 6,
     ageMax: 8,
-    scoredItemCount: 32,
-    scoredItemsPerDomain: 4,
+    scoredItemCount: 30,
+    scoredItemsPerDomain: 5,
   },
   k912: {
     form: "k912",
-    releaseId: "KIDS-K912-RF-V1",
+    releaseId: "KIDS-K912-RF-V2",
     ageMin: 9,
     ageMax: 12,
-    scoredItemCount: 40,
-    scoredItemsPerDomain: 5,
+    scoredItemCount: 42,
+    scoredItemsPerDomain: 7,
   },
 } as const satisfies Readonly<Record<KidsForm, KidsReleaseFormConfig>>;
 
-export const KIDS_SCORING_VERSION = "KIDS-SCORING-V1" as const;
+export const K68_SCORING_VERSION = "KIDS-SCORING-V2" as const;
+
+export const K912_SCORING_VERSION = "KIDS-SCORING-V2" as const;
+
+/** Current scoring version shared by both active Kids V2 forms. */
+export const KIDS_SCORING_VERSION = "KIDS-SCORING-V2" as const;
 
 export const KIDS_RESPONSE_CONTRACT_VERSION =
   "KIDS-RESPONSE-V1" as const;

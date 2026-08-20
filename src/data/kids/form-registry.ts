@@ -237,9 +237,16 @@ export function validateKidsQuestionFormRegistry():
       }
     }
 
-    if (domainCounts.size !== 8) {
+    const expectedDomainCount =
+      releaseConfig.scoredItemCount /
+      releaseConfig.scoredItemsPerDomain;
+
+    if (
+      domainCounts.size !==
+      expectedDomainCount
+    ) {
       issues.push(
-        `${form}: expected exactly 8 domains.`,
+        `${form}: expected exactly ${expectedDomainCount} domains.`,
       );
     }
 
