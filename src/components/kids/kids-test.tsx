@@ -347,6 +347,26 @@ export function KidsTest({
     }
   }, [currentIndex, status]);
 
+  const nextVisual =
+    localQuestions[currentIndex + 1]?.visual;
+
+  const nextVisualPath =
+    form === "k912" &&
+    nextVisual &&
+    nextVisual.support !== "none"
+      ? nextVisual.displayPath
+      : undefined;
+
+  useEffect(() => {
+    if (!nextVisualPath) {
+      return;
+    }
+
+    const preload = new window.Image();
+    preload.decoding = "async";
+    preload.src = nextVisualPath;
+  }, [nextVisualPath]);
+
   if (status === "loading") {
     return (
       <main className="grid min-h-screen place-items-center bg-[#fbf8f3] px-6 text-[#34283b]">
@@ -650,6 +670,7 @@ export function KidsTest({
                   ]
                 }
                 fill
+                unoptimized={form === "k912"}
                 priority
                 sizes="(max-width: 768px) 100vw, 960px"
                 className="object-contain p-4"
