@@ -1043,11 +1043,12 @@ def _verify_migration(conn: sqlite3.Connection) -> None:
              AND (
                (form='k68' AND question_bank_version NOT IN (?, ?))
                OR
-               (form='k912' AND question_bank_version<>?)
+               (form='k912' AND question_bank_version NOT IN (?, ?))
              )""",
         (
             "KIDS-K68-RF-V1",
             KIDS_K68_BANK_VERSION,
+            "KIDS-K912-RF-V1",
             KIDS_K912_BANK_VERSION,
         ),
     ).fetchone()[0]
