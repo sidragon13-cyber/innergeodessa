@@ -942,16 +942,8 @@ export default function KidsResultPage() {
                   className="mt-8 inline-flex min-h-12 items-center rounded-full border border-[#dfd1e4] px-10 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-white hover:text-[#5f456f] disabled:cursor-wait disabled:opacity-70"
                 />
               ) : (
-                <button
-                  type="button"
-                  onClick={() => {
-                    document
-                      .getElementById("kids-save-result")
-                      ?.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center",
-                      });
-                  }}
+                <a
+                  href="#kids-save-result"
                   className="mt-8 inline-flex min-h-12 items-center rounded-full border border-[#dfd1e4] px-6 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-white hover:text-[#5f456f]"
                 >
                   {premiumAccess === "loading"
@@ -965,7 +957,7 @@ export default function KidsResultPage() {
                       : result.ageForm === "K68"
                         ? "Save Result to Unlock — $7.99"
                         : "Save Result to Unlock — $8.99"}
-                </button>
+                </a>
               )}
 
               <div id="kids-save-result">

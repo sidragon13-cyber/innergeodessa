@@ -12,66 +12,45 @@ RESULT_PAGE = (
 )
 
 
-def _read_unsaved_premium_button() -> str:
+def _read_unsaved_premium_cta() -> str:
     source = RESULT_PAGE.read_text(encoding="utf-8")
 
-    action_anchor = source.index(
-        '.getElementById("kids-save-result")'
+    end = source.index(
+        '<div id="kids-save-result">'
     )
 
     start = source.rfind(
-        "<button",
+        ') : (',
         0,
-        action_anchor,
+        end,
     )
 
     if start == -1:
         raise AssertionError(
-            "Unable to locate unsaved Kids premium CTA button."
+            "Unable to locate unsaved Kids premium CTA."
         )
-
-    end = source.index(
-        "</button>",
-        action_anchor,
-    )
 
     return source[start:end]
 
 
-def test_unsaved_kids_premium_cta_is_actionable():
-    button = _read_unsaved_premium_button()
+def test_unsaved_kids_premium_cta_is_real_link():
+    cta = _read_unsaved_premium_cta()
 
-    assert "disabled" not in button, (
-        "Unsaved Kids premium CTA must not be hard-disabled."
+    assert "<a" in cta, (
+        "Unsaved Kids premium CTA must be a real link."
     )
 
-    assert "onClick=" in button, (
-        "Unsaved Kids premium CTA must have a click action."
+    assert 'href="#kids-save-result"' in cta, (
+        "Unsaved Kids premium CTA must link to the save section."
     )
 
-
-def test_unsaved_kids_premium_cta_shows_k68_price():
-    button = _read_unsaved_premium_button()
-
-    assert "$7.99" in button, (
-        "K68 price must be visible before the result is saved."
+    assert "<button" not in cta, (
+        "Unsaved Kids premium CTA must not remain a JS-only button."
     )
 
 
-def test_unsaved_kids_premium_cta_shows_k912_price():
-    button = _read_unsaved_premium_button()
+def test_unsaved_kids_premium_cta_shows_prices():
+    cta = _read_unsaved_premium_cta()
 
-    assert "$8.99" in button, (
-        "K912 price must be visible before the result is saved."
-    )
-
-
-def test_unsaved_kids_premium_cta_targets_save_section():
-    button = _read_unsaved_premium_button()
-
-    assert (
-        '.getElementById("kids-save-result")'
-        in button
-    )
-
-    assert "scrollIntoView" in button
+    assert "$7.99" in cta
+    assert "$8.99" in cta
