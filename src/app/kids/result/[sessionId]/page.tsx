@@ -932,10 +932,14 @@ export default function KidsResultPage() {
                   }}
                   label={
                     isZh
-                      ? "解锁完整专业报告"
-                      : "Unlock Professional Report"
+                      ? result.ageForm === "K68"
+                        ? "解锁完整专业报告 — $7.99"
+                        : "解锁完整专业报告 — $8.99"
+                      : result.ageForm === "K68"
+                        ? "Unlock Professional Report — $7.99"
+                        : "Unlock Professional Report — $8.99"
                   }
-                  className="mt-8 inline-flex min-h-12 items-center rounded-full border border-[#dfd1e4] px-6 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-white hover:text-[#5f456f] disabled:cursor-wait disabled:opacity-70"
+                  className="mt-8 inline-flex min-h-12 items-center rounded-full border border-[#dfd1e4] px-10 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-white hover:text-[#5f456f] disabled:cursor-wait disabled:opacity-70"
                 />
               ) : (
                 <button
