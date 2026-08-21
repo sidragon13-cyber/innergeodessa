@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from "react";
 
 import { Button, ButtonLink } from "@/components/ui";
 
@@ -28,6 +34,10 @@ export interface SaveAssessmentResultProps {
   onSaved?: () => void;
 }
 
+export interface SaveAssessmentResultHandle {
+  save: () => void;
+}
+
 function getClaimStorageKey(
   module: AssessmentModule,
   sessionId: string,
@@ -53,12 +63,18 @@ function readErrorMessage(
   return fallback;
 }
 
-export function SaveAssessmentResult({
-  module,
-  sessionId,
-  className = "",
-  onSaved,
-}: SaveAssessmentResultProps) {
+export const SaveAssessmentResult = forwardRef<
+  SaveAssessmentResultHandle,
+  SaveAssessmentResultProps
+>(function SaveAssessmentResult(
+  {
+    module,
+    sessionId,
+    className = "",
+    onSaved,
+  }: SaveAssessmentResultProps,
+  ref,
+) {
   const { status: authStatus, user } = useAuth();
   const { locale } = useLocale();
   const dictionary = getAccountDictionary(locale).ownership;
@@ -179,6 +195,12 @@ export function SaveAssessmentResult({
     }
   }
 
+  useImperativeHandle(ref, () => ({
+    save: () => {
+      void saveResult();
+    },
+  }));
+
   return (
     <aside
       className={`rounded-2xl border border-[#d8d2c6] bg-[#fbfaf7] p-5 text-[#26372d] ${className}`}
@@ -257,4 +279,4 @@ export function SaveAssessmentResult({
       ) : null}
     </aside>
   );
-}
+});

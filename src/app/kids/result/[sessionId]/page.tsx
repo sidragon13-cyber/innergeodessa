@@ -23,6 +23,7 @@ import { buildK912BasicReport } from "@/data/kids/report/k912/basic-report";
 import {
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -32,6 +33,7 @@ import {
 } from "@/components/home";
 import { useLocale } from "@/components/locale";
 import { SaveAssessmentResult } from "@/components/account";
+import type { SaveAssessmentResultHandle } from "@/components/account/save-assessment-result";
 import { PaddleCheckoutButton } from "@/components/payment/paddle-checkout-button";
 import {
   fetchKidsResult,
@@ -219,6 +221,9 @@ const POST_PAYMENT_ACCESS_RETRY_DELAYS_MS = [
 ] as const;
 
 export default function KidsResultPage() {
+  const saveResultRef =
+    useRef<SaveAssessmentResultHandle>(null);
+
   const params =
     useParams<{
       sessionId: string;
@@ -942,8 +947,9 @@ export default function KidsResultPage() {
                   className="mt-8 inline-flex min-h-12 items-center rounded-full border border-[#dfd1e4] px-10 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-white hover:text-[#5f456f] disabled:cursor-wait disabled:opacity-70"
                 />
               ) : (
-                <a
-                  href="#kids-save-result"
+                <button
+                  type="button"
+                  onClick={() => saveResultRef.current?.save()}
                   className="mt-8 inline-flex min-h-12 items-center rounded-full border border-[#dfd1e4] px-6 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-white hover:text-[#5f456f]"
                 >
                   {premiumAccess === "loading"
@@ -957,11 +963,12 @@ export default function KidsResultPage() {
                       : result.ageForm === "K68"
                         ? "Save Result to Unlock — $7.99"
                         : "Save Result to Unlock — $8.99"}
-                </a>
+                </button>
               )}
 
               <div id="kids-save-result">
                 <SaveAssessmentResult
+                  ref={saveResultRef}
                   module="kids"
                   sessionId={sessionId}
                   className="mt-8"
