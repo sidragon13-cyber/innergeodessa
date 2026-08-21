@@ -944,30 +944,43 @@ export default function KidsResultPage() {
               ) : (
                 <button
                   type="button"
-                  disabled
-                  className="mt-8 inline-flex min-h-12 cursor-not-allowed items-center rounded-full border border-[#dfd1e4] px-6 text-xs font-bold uppercase tracking-[0.14em] opacity-70"
+                  onClick={() => {
+                    document
+                      .getElementById("kids-save-result")
+                      ?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center",
+                      });
+                  }}
+                  className="mt-8 inline-flex min-h-12 items-center rounded-full border border-[#dfd1e4] px-6 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-white hover:text-[#5f456f]"
                 >
                   {premiumAccess === "loading"
                     ? isZh
                       ? "正在确认报告权限"
                       : "Checking Report Access"
                     : isZh
-                      ? "请先保存测试结果"
-                      : "Save Result to Continue"}
+                      ? result.ageForm === "K68"
+                        ? "保存结果以解锁完整专业报告 — $7.99"
+                        : "保存结果以解锁完整专业报告 — $8.99"
+                      : result.ageForm === "K68"
+                        ? "Save Result to Unlock — $7.99"
+                        : "Save Result to Unlock — $8.99"}
                 </button>
               )}
 
-              <SaveAssessmentResult
-                module="kids"
-                sessionId={sessionId}
-                className="mt-8"
-                onSaved={() => {
-                  setPremiumAccess("loading");
-                  setPremiumAccessRevision(
-                    (revision) => revision + 1,
-                  );
-                }}
-              />
+              <div id="kids-save-result">
+                <SaveAssessmentResult
+                  module="kids"
+                  sessionId={sessionId}
+                  className="mt-8"
+                  onSaved={() => {
+                    setPremiumAccess("loading");
+                    setPremiumAccessRevision(
+                      (revision) => revision + 1,
+                    );
+                  }}
+                />
+              </div>
             </div>
 
             <div className="grid gap-px bg-[#80678b] sm:grid-cols-2">
