@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS report_entitlements (
   entitlement_id TEXT PRIMARY KEY,
   user_id TEXT NOT NULL,
   module TEXT NOT NULL
-    CHECK (module IN ('personality','career','zodiac')),
+    CHECK (module IN ('personality','career','zodiac','kids')),
   resource_id TEXT NOT NULL,
   status TEXT NOT NULL DEFAULT 'pending'
     CHECK (status IN ('pending','unlocked','revoked','refunded')),
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS payments (
   user_id TEXT NOT NULL,
 
   module TEXT NOT NULL
-    CHECK (module IN ('personality','career','zodiac')),
+    CHECK (module IN ('personality','career','zodiac','kids')),
 
   resource_id TEXT NOT NULL,
 

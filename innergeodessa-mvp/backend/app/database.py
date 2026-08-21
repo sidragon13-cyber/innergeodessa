@@ -58,6 +58,7 @@ def initialize(
     )
 
     _repair_stale_sessions_kids_constraint(db_path)
+    _repair_stale_payment_module_constraints(db_path)
 
     with connect(db_path) as conn:
         conn.execute("BEGIN IMMEDIATE")
@@ -116,6 +117,15 @@ def initialize(
                 description=(
                     "Normalize legacy sessions module/form constraints "
                     "for Kids assessments."
+                ),
+                operation=lambda: None,
+            )
+
+            _apply_migration(
+                conn,
+                migration_id="20260821_007_kids_payment_module_constraint",
+                description=(
+                    "Allow Kids report payments and entitlements."
                 ),
                 operation=lambda: None,
             )
@@ -334,6 +344,161 @@ def _repair_stale_sessions_kids_constraint(
         finally:
             conn.execute("PRAGMA foreign_keys = ON")
 
+
+
+def _repair_stale_payment_module_constraints(
+    db_path: Path,
+) -> None:
+    if not db_path.exists():
+        return
+
+    table_names = (
+        "payments",
+        "report_entitlements",
+    )
+
+    schema_statements = {}
+    for statement in SCHEMA_PATH.read_text(
+        encoding="utf-8"
+    ).split(";"):
+        candidate = statement.strip()
+        for table_name in table_names:
+            prefix = f"CREATE TABLE IF NOT EXISTS {table_name}"
+            if candidate.startswith(prefix):
+                schema_statements[table_name] = candidate
+
+    missing_statements = set(table_names) - set(schema_statements)
+    if missing_statements:
+        raise ValueError(
+            "Missing payment table schema definitions: "
+            + ", ".join(sorted(missing_statements))
+        )
+
+    with sqlite3.connect(db_path) as conn:
+        stale_tables = []
+
+        for table_name in table_names:
+            row = conn.execute(
+                """SELECT sql
+                   FROM sqlite_master
+                   WHERE type='table'
+                     AND name=?""",
+                (table_name,),
+            ).fetchone()
+
+            if row is None or not row[0]:
+                continue
+
+            current_sql = "".join(row[0].lower().split())
+
+            stale_constraint = (
+                "modulein('personality','career','zodiac')"
+                in current_sql
+                and
+                "modulein('personality','career','zodiac','kids')"
+                not in current_sql
+            )
+
+            if stale_constraint:
+                stale_tables.append(table_name)
+
+        if not stale_tables:
+            return
+
+        conn.execute("PRAGMA foreign_keys = OFF")
+        conn.execute("BEGIN IMMEDIATE")
+
+        try:
+            for table_name in stale_tables:
+                temporary_table = (
+                    f"{table_name}_kids_module_constraint_v2"
+                )
+
+                current_columns = [
+                    row[1]
+                    for row in conn.execute(
+                        f'PRAGMA table_info("{table_name}")'
+                    ).fetchall()
+                ]
+
+                target_statement = schema_statements[table_name]
+                target_statement = target_statement.replace(
+                    f"CREATE TABLE IF NOT EXISTS {table_name}",
+                    f"CREATE TABLE {temporary_table}",
+                    1,
+                )
+
+                schema_objects = [
+                    (object_type, name, sql)
+                    for object_type, name, sql in conn.execute(
+                        """SELECT type, name, sql
+                           FROM sqlite_master
+                           WHERE tbl_name=?
+                             AND type IN ('index', 'trigger')
+                             AND sql IS NOT NULL""",
+                        (table_name,),
+                    ).fetchall()
+                ]
+
+                conn.execute(
+                    f'DROP TABLE IF EXISTS "{temporary_table}"'
+                )
+                conn.execute(target_statement)
+
+                target_columns = [
+                    row[1]
+                    for row in conn.execute(
+                        f'PRAGMA table_info("{temporary_table}")'
+                    ).fetchall()
+                ]
+
+                if current_columns != target_columns:
+                    raise ValueError(
+                        f"{table_name} columns changed unexpectedly "
+                        "during Kids payment constraint migration."
+                    )
+
+                quoted_columns = ", ".join(
+                    f'"{column}"'
+                    for column in current_columns
+                )
+
+                conn.execute(
+                    f"""INSERT INTO "{temporary_table}" (
+                          {quoted_columns}
+                        )
+                        SELECT {quoted_columns}
+                        FROM "{table_name}" """
+                )
+
+                conn.execute(
+                    f'DROP TABLE "{table_name}"'
+                )
+                conn.execute(
+                    f'ALTER TABLE "{temporary_table}" '
+                    f'RENAME TO "{table_name}"'
+                )
+
+                for _, _, sql in schema_objects:
+                    conn.execute(sql)
+
+            foreign_key_errors = conn.execute(
+                "PRAGMA foreign_key_check"
+            ).fetchall()
+
+            if foreign_key_errors:
+                raise ValueError(
+                    "Foreign key validation failed while "
+                    "normalizing Kids payment module constraints."
+                )
+
+        except Exception:
+            conn.rollback()
+            raise
+        else:
+            conn.commit()
+        finally:
+            conn.execute("PRAGMA foreign_keys = ON")
 
 def _apply_schema(conn: sqlite3.Connection) -> None:
     statements = SCHEMA_PATH.read_text(encoding="utf-8").split(";")
