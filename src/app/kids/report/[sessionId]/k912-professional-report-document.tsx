@@ -3,6 +3,7 @@
 import {
   ReportHeader,
   ReportMetadata,
+  ReportNavigation,
   ReportPrintButton,
   ReportSection,
   ReportShell,
@@ -2133,6 +2134,21 @@ export function K912ProfessionalReportDocument({
           {report.facts.sessionId}
         </p>
       </footer>
+
+      <ReportNavigation
+        primary={{
+          href: `/kids/result/${report.facts.sessionId}`,
+          label: isZh
+            ? "返回免费结果"
+            : "Back to free result",
+        }}
+        secondary={{
+          href: "/kids",
+          label: isZh
+            ? "儿童测评首页"
+            : "Kids overview",
+        }}
+      />
     </ReportShell>
   );
 }
