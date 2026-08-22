@@ -40,7 +40,6 @@ type LoadStatus =
 type AccessState =
   | "loading"
   | "unlocked"
-  | "locked"
   | "unauthenticated"
   | "error";
 
@@ -198,7 +197,7 @@ export default function ZodiacReportPage() {
         setAccessState(
           access.canViewFullReport
             ? "unlocked"
-            : "locked",
+            : "error",
         );
       } catch {
         if (!cancelled) {
@@ -336,37 +335,6 @@ export default function ZodiacReportPage() {
               locale === "zh"
                 ? "返回星座结果"
                 : "Back to zodiac result",
-          },
-        ]}
-      />
-    );
-  }
-
-  if (accessState === "locked") {
-    return (
-      <ReportState
-        eyebrow={
-          locale === "zh"
-            ? "高级星座报告"
-            : "Premium zodiac report"
-        }
-        title={
-          locale === "zh"
-            ? "完整星座报告尚未解锁"
-            : "Your full zodiac report is not unlocked yet"
-        }
-        message={
-          locale === "zh"
-            ? "你仍然可以查看免费星座结果。购买完整星座报告后，此页面将开放完整内容、打印和 PDF 权限。"
-            : "You can continue viewing your free zodiac result. After purchasing the full report, this page will unlock the complete content, printing, and PDF access."
-        }
-        actions={[
-          {
-            href: `/zodiac/result/${chartId}`,
-            label:
-              locale === "zh"
-                ? "返回结果并购买完整报告"
-                : "Back to result and purchase report",
           },
         ]}
       />

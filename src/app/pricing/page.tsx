@@ -52,7 +52,7 @@ export default function PricingPage() {
                   saved-report features.
                 </p>
                 <p>
-                  Personality Premium Report: USD $7.99. Career Premium Report: USD $9.99. Zodiac Premium Report: USD $9.99. Each report is a one-time purchase.
+                  Personality Premium Report: USD $7.99. Career Premium Report: USD $9.99. The Zodiac full report is free for signed-in, email-verified users who own the chart. Paid reports are one-time purchases.
                 </p>
                 <p>
                   Free assessments may be retaken anytime. Each new Premium Report is purchased separately, while previously purchased reports remain available permanently.
@@ -119,7 +119,7 @@ export default function PricingPage() {
                   更完整的报告保存功能。
                 </p>
                 <p>
-                  人格完整报告：USD $7.99；职业兴趣完整报告：USD $9.99；星座完整报告：USD $9.99。每份报告均为一次性购买。
+                  人格完整报告：USD $7.99；职业兴趣完整报告：USD $9.99。星座完整报告向已登录、完成邮箱验证并拥有该星盘的用户免费开放。付费报告均为一次性购买。
                 </p>
                 <p>
                   基础测试可随时免费重测。每次新的完整报告需单独购买，已经购买的报告将永久保留。

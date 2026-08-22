@@ -552,6 +552,19 @@ def get_report_access(
                 detail="The saved assessment resource was not found.",
             )
 
+        if module == "zodiac":
+            return ReportAccessResponse(
+                module=module,
+                resourceId=resource_id,
+                authenticated=True,
+                emailVerified=True,
+                ownsResource=True,
+                entitlementStatus=None,
+                canViewFullReport=True,
+                canPrint=True,
+                canDownloadPdf=True,
+            )
+
         entitlement = conn.execute(
             """SELECT status
                FROM report_entitlements
