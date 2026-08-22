@@ -57,12 +57,32 @@ export default function ContactPage() {
             ),
           },
           {
+            title: "Business operator",
+            content: (
+              <p>
+                InnerGeo is operated by Kylin International Trading (Pty) Ltd,
+                a company registered in South Africa.
+              </p>
+            ),
+          },
+          {
             title: "Support email",
             content: (
               <p>
                 Email:{" "}
                 <a href="mailto:support@innergeo.app">
                   support@innergeo.app
+                </a>
+              </p>
+            ),
+          },
+          {
+            title: "Phone & WhatsApp",
+            content: (
+              <p>
+                Phone / WhatsApp:{" "}
+                <a href="tel:+27740499999">
+                  +27 74 049 9999
                 </a>
               </p>
             ),
@@ -106,12 +126,32 @@ export default function ContactPage() {
             ),
           },
           {
+            title: "运营主体",
+            content: (
+              <p>
+                InnerGeo 由在南非注册的 Kylin International Trading (Pty) Ltd
+                运营。
+              </p>
+            ),
+          },
+          {
             title: "客服邮箱",
             content: (
               <p>
                 Email:{" "}
                 <a href="mailto:support@innergeo.app">
                   support@innergeo.app
+                </a>
+              </p>
+            ),
+          },
+          {
+            title: "电话与 WhatsApp",
+            content: (
+              <p>
+                Phone / WhatsApp:{" "}
+                <a href="tel:+27740499999">
+                  +27 74 049 9999
                 </a>
               </p>
             ),

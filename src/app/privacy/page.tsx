@@ -20,8 +20,8 @@ export default function PrivacyPage() {
         zh: "隐私政策",
       }}
       intro={{
-        en: "InnerGeo is designed around data minimization, user choice, and responsible self-discovery. This policy explains what information may be processed when you use our assessments, account features, and future paid services.",
-        zh: "InnerGeo 以数据最小化、用户选择权和负责任的自我探索为基本原则。本政策说明您使用测评、账户功能以及未来付费服务时，我们可能处理哪些信息。",
+        en: "InnerGeo is designed around data minimization, user choice, and responsible self-discovery. This policy explains what information may be processed when you use our assessments, account features, and paid digital services.",
+        zh: "InnerGeo 以数据最小化、用户选择权和负责任的自我探索为基本原则。本政策说明您使用测评、账户功能以及付费数字服务时，我们可能处理哪些信息。",
       }}
       sections={{
         en: [

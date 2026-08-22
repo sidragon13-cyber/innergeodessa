@@ -6,7 +6,7 @@ import { LegalPage } from "@/components/legal-page";
 export const metadata: Metadata = {
   title: "Pricing | InnerGeo",
   description:
-    "Explore InnerGeo free assessments and upcoming premium digital reports.",
+    "Explore InnerGeo free assessments and clearly priced premium digital reports.",
 };
 
 export default function PricingPage() {
@@ -21,8 +21,8 @@ export default function PricingPage() {
         zh: "价格与服务",
       }}
       intro={{
-        en: "InnerGeo currently offers core self-discovery assessments with free access. Premium reports and additional paid services will be introduced with clear pricing before purchase.",
-        zh: "InnerGeo 当前提供核心自我探索测评的免费访问。高级报告及其他付费服务将在正式推出前明确展示价格和购买内容。",
+        en: "InnerGeo offers free access to core self-discovery assessments. Personality and Career premium reports are available as clearly priced one-time purchases, while the Zodiac full report is free for eligible verified account owners.",
+        zh: "InnerGeo 当前提供核心自我探索测评的免费访问。人格与职业兴趣完整报告按页面所示价格一次性购买；符合条件并完成验证的账户可免费查看星座完整报告。",
       }}
       sections={{
         en: [

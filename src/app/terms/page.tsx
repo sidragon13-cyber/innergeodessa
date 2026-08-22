@@ -28,12 +28,18 @@ export default function TermsPage() {
           {
             title: "1. About InnerGeo",
             content: (
-              <p>
-                InnerGeo provides digital self-discovery experiences including
-                personality assessments, career-interest assessments, zodiac
-                and chart-related experiences, generated reports, and related
-                reflection tools.
-              </p>
+              <>
+                <p>
+                  InnerGeo provides digital self-discovery experiences including
+                  personality assessments, career-interest assessments, zodiac
+                  and chart-related experiences, generated reports, and related
+                  reflection tools.
+                </p>
+                <p>
+                  InnerGeo is operated by Kylin International Trading (Pty) Ltd,
+                  a company registered in South Africa.
+                </p>
+              </>
             ),
           },
           {
@@ -96,8 +102,8 @@ export default function TermsPage() {
               <>
                 <p>
                   Eligible InnerGeo assessments may be started without an
-                  account. Certain features, including saved results or future
-                  paid services, may require an account or verified email
+                  account. Certain features, including saved results or paid
+                  digital reports, may require an account or verified email
                   address.
                 </p>
                 <p>
@@ -124,14 +130,18 @@ export default function TermsPage() {
             content: (
               <>
                 <p>
-                  InnerGeo may offer paid digital reports, enhanced
-                  interpretations, subscriptions, or other digital services.
-                  Prices and the scope of a purchase will be displayed before
-                  payment.
+                  InnerGeo offers paid digital reports and enhanced
+                  interpretations. Optional subscriptions or other digital
+                  services may be introduced in the future. Prices and the scope
+                  of each purchase are displayed before payment.
                 </p>
                 <p>
-                  Payments may be processed by authorized third-party payment
-                  providers and may also be subject to their applicable terms.
+                  For transactions processed through Paddle.com, Paddle is
+                  the Merchant of Record and seller of record for the transaction.
+                  Paddle handles payment processing, applicable transaction taxes,
+                  invoicing, and transaction-related refund support. InnerGeo
+                  remains responsible for delivering and supporting the digital
+                  product or service purchased.
                 </p>
               </>
             ),
@@ -212,10 +222,16 @@ export default function TermsPage() {
           {
             title: "1. 关于 InnerGeo",
             content: (
-              <p>
-                InnerGeo 提供数字化自我探索体验，包括人格测评、职业兴趣测评、
-                星座及星盘相关体验、生成式报告和相关反思工具。
-              </p>
+              <>
+                <p>
+                  InnerGeo 提供数字化自我探索体验，包括人格测评、职业兴趣测评、
+                  星座及星盘相关体验、生成式报告和相关反思工具。
+                </p>
+                <p>
+                  InnerGeo 由在南非注册的 Kylin International Trading (Pty) Ltd
+                  运营。
+                </p>
+              </>
             ),
           },
           {
@@ -291,12 +307,14 @@ export default function TermsPage() {
             content: (
               <>
                 <p>
-                  InnerGeo 未来可能提供付费数字报告、增强解读、订阅或其他数字服务。
-                  价格及购买内容将在付款前向用户展示。
+                  InnerGeo 当前提供付费数字报告和扩展解读，并可能在未来推出可选
+                  订阅或其他数字服务。价格及购买内容将在付款前向用户展示。
                 </p>
                 <p>
-                  支付可能由获得授权的第三方支付服务商处理，并同时受到相关支付服务商
-                  适用条款的约束。
+                  对于通过 Paddle.com 处理的交易，Paddle 是该交易的 Merchant of
+                  Record（登记商户/交易销售方），负责付款处理、适用交易税费、发票及
+                  与交易相关的退款支持。InnerGeo 负责所购买数字产品或服务的交付与
+                  产品支持。
                 </p>
               </>
             ),
