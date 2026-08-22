@@ -182,7 +182,7 @@ export const accountDictionaries: Record<
       anonymousNote:
         "InnerGeo accounts use an email address and an anonymous nickname. A real name is never required.",
       disclaimer:
-        "Saving completed assessments is available for verified accounts. Community and paid-report capabilities remain separate future features.",
+        "Saving completed assessments and eligible full-report access are available for verified accounts. Community features remain planned for a future phase.",
     },
     header: {
       login: "Log in",
@@ -387,7 +387,7 @@ export const accountDictionaries: Record<
       anonymousNote:
         "InnerGeo 账户只使用邮箱和匿名昵称，任何时候都不要求提供真实姓名。",
       disclaimer:
-        "已验证账户现在可以保存完成的测评结果；社区和付费报告仍属于后续独立功能。",
+        "已验证账户现在可以保存完成的测评结果，并使用符合条件的完整报告访问功能；社区功能仍计划在后续阶段开放。",
     },
     header: {
       login: "登录",
