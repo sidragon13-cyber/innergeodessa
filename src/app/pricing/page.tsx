@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-
 import { LegalPage } from "@/components/legal-page";
 
 export const metadata: Metadata = {
@@ -52,14 +50,14 @@ export default function PricingPage() {
                   saved-report features.
                 </p>
                 <p>
-                  Personality Premium Report: USD $7.99. Career Premium Report: USD $9.99. The Zodiac full report is free for signed-in, email-verified users who own the chart. Paid reports are one-time purchases.
+                  Personality Premium Report: USD $7.99. Career Premium Report:
+                  USD $9.99. The Zodiac Full Report is free for signed-in,
+                  email-verified users who own the chart. Premium Reports are
+                  one-time purchases with no recurring charges.
                 </p>
                 <p>
                   Free assessments may be retaken anytime. Each new Premium Report is purchased separately, while previously purchased reports remain available permanently.
                 </p>
-                <Link href="/personality" className="legal-purchase-button">
-                  Take the Personality assessment
-                </Link>
               </>
             ),
           },
@@ -78,9 +76,9 @@ export default function PricingPage() {
             title: "No hidden charges",
             content: (
               <p>
-                InnerGeo intends to present the applicable price and the scope
-                of each paid product before checkout. Users will not be charged
-                for a paid service without an explicit purchase action.
+                InnerGeo displays the applicable price and the scope of each
+                paid product before checkout. Users will not be charged for a
+                paid service without an explicit purchase action.
               </p>
             ),
           },
@@ -119,14 +117,13 @@ export default function PricingPage() {
                   更完整的报告保存功能。
                 </p>
                 <p>
-                  人格完整报告：USD $7.99；职业兴趣完整报告：USD $9.99。星座完整报告向已登录、完成邮箱验证并拥有该星盘的用户免费开放。付费报告均为一次性购买。
+                  人格完整报告：USD $7.99；职业兴趣完整报告：USD $9.99。
+                  星座完整报告向已登录、完成邮箱验证并拥有该星盘的用户免费开放。
+                  高级报告均为一次性购买，不涉及周期性收费。
                 </p>
                 <p>
                   基础测试可随时免费重测。每次新的完整报告需单独购买，已经购买的报告将永久保留。
                 </p>
-                <Link href="/personality" className="legal-purchase-button">
-                  开始人格测评
-                </Link>
               </>
             ),
           },
@@ -143,7 +140,7 @@ export default function PricingPage() {
             title: "无隐藏收费",
             content: (
               <p>
-                InnerGeo 将在结账前明确展示适用价格及所购买服务的具体内容。
+                InnerGeo 在结账前明确展示适用价格及所购买服务的具体内容。
                 未经用户明确购买操作，不会收取付费服务费用。
               </p>
             ),
