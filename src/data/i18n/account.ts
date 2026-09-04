@@ -187,7 +187,7 @@ export const accountDictionaries: Record<
     header: {
       login: "Log in",
       loadingLabel: "Loading account",
-      accountLabel: "Open account",
+      accountLabel: "Account",
     },
     fields: {
       email: "Email",
@@ -392,7 +392,7 @@ export const accountDictionaries: Record<
     header: {
       login: "登录",
       loadingLabel: "正在加载账户",
-      accountLabel: "打开账户中心",
+      accountLabel: "账户",
     },
     fields: {
       email: "邮箱",

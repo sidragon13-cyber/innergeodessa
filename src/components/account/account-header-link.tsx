@@ -31,7 +31,7 @@ export function AccountHeaderLink() {
       {status === "loading"
         ? "···"
         : status === "authenticated" && user
-          ? user.nickname
+          ? dictionary.header.accountLabel
           : dictionary.header.login}
     </Link>
   );
