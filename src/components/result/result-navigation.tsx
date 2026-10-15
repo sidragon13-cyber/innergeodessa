@@ -39,6 +39,10 @@ export function ResultNavigation({
       <ButtonLink href="/" variant="quiet">
         {locale === "zh" ? "首页" : "Home"}
       </ButtonLink>
+
+      <ButtonLink href="/account" variant="quiet">
+        {locale === "zh" ? "我的帐号" : "My Account"}
+      </ButtonLink>
     </div>
   );
 }
