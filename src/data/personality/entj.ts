@@ -522,8 +522,8 @@ export const entjProfile: PersonalityProfile = {
     ],
 
     callToAction: {
-      en: "VIEW COMPLETE ENTJ REPORT",
-      zh: "查看完整 ENTJ 报告",
+      en: "VIEW COMPLETE ENTJ REPORT — R149",
+      zh: "查看完整 ENTJ 报告 — R149",
     },
   },
 

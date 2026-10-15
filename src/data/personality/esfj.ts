@@ -459,8 +459,8 @@ export const esfjProfile: PersonalityProfile = {
       },
     ],
     callToAction: {
-      en: "Explore the complete ESFJ report",
-      zh: "查看完整 ESFJ 报告",
+      en: "Explore the complete ESFJ report — R149",
+      zh: "查看完整 ESFJ 报告 — R149",
     },
   },
 

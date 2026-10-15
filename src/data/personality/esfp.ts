@@ -454,8 +454,8 @@ export const esfpProfile: PersonalityProfile = {
       },
     ],
     callToAction: {
-      en: "Explore the complete ESFP report",
-      zh: "查看完整 ESFP 报告",
+      en: "Explore the complete ESFP report — R149",
+      zh: "查看完整 ESFP 报告 — R149",
     },
   },
 

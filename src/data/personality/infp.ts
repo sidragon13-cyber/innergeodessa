@@ -454,8 +454,8 @@ export const infpProfile: PersonalityProfile = {
       },
     ],
     callToAction: {
-      en: "Explore the complete INFP report",
-      zh: "查看完整 INFP 报告",
+      en: "Explore the complete INFP report — R149",
+      zh: "查看完整 INFP 报告 — R149",
     },
   },
 

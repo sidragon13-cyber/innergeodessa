@@ -466,8 +466,8 @@ export const intjProfile: PersonalityProfile = {
     ],
 
     callToAction: {
-      en: "Premium report coming soon",
-      zh: "查看完整 INTJ 报告",
+      en: "VIEW COMPLETE INTJ REPORT — R149",
+      zh: "查看完整 INTJ 报告 — R149",
     },
   },
 

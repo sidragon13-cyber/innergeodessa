@@ -459,8 +459,8 @@ export const entpProfile: PersonalityProfile = {
       },
     ],
     callToAction: {
-      en: "Explore the complete ENTP report",
-      zh: "查看完整 ENTP 报告",
+      en: "Explore the complete ENTP report — R149",
+      zh: "查看完整 ENTP 报告 — R149",
     },
   },
 

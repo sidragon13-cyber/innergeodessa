@@ -459,8 +459,8 @@ export const estpProfile: PersonalityProfile = {
       },
     ],
     callToAction: {
-      en: "Explore the complete ESTP report",
-      zh: "查看完整 ESTP 报告",
+      en: "Explore the complete ESTP report — R149",
+      zh: "查看完整 ESTP 报告 — R149",
     },
   },
 

@@ -464,8 +464,8 @@ export const enfjProfile: PersonalityProfile = {
       },
     ],
     callToAction: {
-      en: "Explore the complete ENFJ report",
-      zh: "查看完整 ENFJ 报告",
+      en: "Explore the complete ENFJ report — R149",
+      zh: "查看完整 ENFJ 报告 — R149",
     },
   },
 

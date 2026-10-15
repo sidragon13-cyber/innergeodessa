@@ -486,8 +486,8 @@ export const isfpProfile: PersonalityProfile = {
       },
     ],
     callToAction: {
-      en: "Explore the complete ISFP report",
-      zh: "查看完整 ISFP 报告",
+      en: "Explore the complete ISFP report — R149",
+      zh: "查看完整 ISFP 报告 — R149",
     },
   },
 

@@ -454,8 +454,8 @@ export const istjProfile: PersonalityProfile = {
       },
     ],
     callToAction: {
-      en: "Explore the complete ISTJ report",
-      zh: "查看完整 ISTJ 报告",
+      en: "Explore the complete ISTJ report — R149",
+      zh: "查看完整 ISTJ 报告 — R149",
     },
   },
 
