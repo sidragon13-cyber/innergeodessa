@@ -13,6 +13,7 @@ services:
       INNERGEO_EMAIL_SENDER: ${INNERGEO_EMAIL_SENDER:?required}
       INNERGEO_PUBLIC_APP_URL: ${INNERGEO_PUBLIC_APP_URL:?required}
       INNERGEODESSA_INTERNAL_API_SECRET: ${INNERGEODESSA_INTERNAL_API_SECRET:?required}
+      PAYSTACK_SECRET_KEY: ${PAYSTACK_SECRET_KEY:?required}
 
     volumes:
       - type: bind
@@ -42,14 +43,6 @@ services:
     build:
       context: ..
       dockerfile: deploy/frontend.Dockerfile
-      args:
-        NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: ${NEXT_PUBLIC_PADDLE_CLIENT_TOKEN:?required}
-        NEXT_PUBLIC_PADDLE_ENV: ${NEXT_PUBLIC_PADDLE_ENV:?required}
-        NEXT_PUBLIC_PADDLE_PERSONALITY_PRICE_ID: ${NEXT_PUBLIC_PADDLE_PERSONALITY_PRICE_ID:?required}
-        NEXT_PUBLIC_PADDLE_CAREER_PRICE_ID: ${NEXT_PUBLIC_PADDLE_CAREER_PRICE_ID:?required}
-        NEXT_PUBLIC_PADDLE_ZODIAC_PRICE_ID: ${NEXT_PUBLIC_PADDLE_ZODIAC_PRICE_ID:?required}
-        NEXT_PUBLIC_PADDLE_K68_PRICE_ID: ${NEXT_PUBLIC_PADDLE_K68_PRICE_ID:?required}
-        NEXT_PUBLIC_PADDLE_K912_PRICE_ID: ${NEXT_PUBLIC_PADDLE_K912_PRICE_ID:?required}
     container_name: innergeo-frontend
     restart: unless-stopped
 
@@ -57,6 +50,7 @@ services:
       NODE_ENV: production
       INNERGEODESSA_API_URL: http://backend:8000
       INNERGEODESSA_INTERNAL_API_SECRET: ${INNERGEODESSA_INTERNAL_API_SECRET:?required}
+      PAYSTACK_SECRET_KEY: ${PAYSTACK_SECRET_KEY:?required}
       PADDLE_WEBHOOK_SECRET: ${PADDLE_WEBHOOK_SECRET:?required}
 
     depends_on:
