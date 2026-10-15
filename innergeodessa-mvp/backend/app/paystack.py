@@ -64,6 +64,11 @@ def initialize_transaction(
         headers={
             "Authorization": f"Bearer {secret_key}",
             "Content-Type": "application/json",
+            "User-Agent": (
+                "Mozilla/5.0 (X11; Linux x86_64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/51.0.2704.103 Safari/537.36"
+            ),
         },
     )
 
