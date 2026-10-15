@@ -217,3 +217,59 @@ def test_internal_secret_is_required(client_and_database):
     assert response.status_code == 401
     with connect_database(database_path) as conn:
         assert conn.execute("SELECT COUNT(*) FROM payments").fetchone()[0] == 0
+
+def test_paystack_fulfillment_persists_payment_and_unlocks_entitlement(
+    client_and_database,
+):
+    client, database_path = client_and_database
+    user_id = seed_user(database_path)
+    resource_id = seed_session(database_path, owner_user_id=user_id)
+
+    with connect_database(database_path) as conn:
+        conn.execute(
+            """INSERT INTO report_entitlements(
+                 entitlement_id, user_id, module, resource_id, status,
+                 created_at, updated_at
+               ) VALUES (?, ?, 'personality', ?, 'pending', ?, ?)""",
+            (
+                str(uuid.uuid4()),
+                user_id,
+                resource_id,
+                "2026-10-15T00:00:00+00:00",
+                "2026-10-15T00:00:00+00:00",
+            ),
+        )
+
+    payload = fulfillment_payload(
+        resource_id,
+        event_id="paystack-event-1",
+        transaction_id="paystack-reference-1",
+    )
+
+    response = client.post(
+        "/api/internal/payments/paystack/fulfill",
+        json=payload,
+        headers={"X-InnerGeo-Internal-Secret": "test-secret"},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "fulfilled"
+    assert response.json()["entitlementStatus"] == "unlocked"
+
+    with connect_database(database_path) as conn:
+        payment = conn.execute(
+            "SELECT * FROM payments"
+        ).fetchone()
+
+        entitlement = conn.execute(
+            "SELECT * FROM report_entitlements"
+        ).fetchone()
+
+    assert payment["provider"] == "paystack"
+    assert payment["provider_event_id"] == "paystack-event-1"
+    assert payment["provider_transaction_id"] == "paystack-reference-1"
+    assert payment["status"] == "completed"
+
+    assert entitlement["status"] == "unlocked"
+    assert entitlement["payment_provider"] == "paystack"
+    assert entitlement["payment_reference"] == "paystack-reference-1"

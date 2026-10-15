@@ -52,11 +52,14 @@ def _matches_existing_payment(
         and payment["status"] == "completed"
     )
 
-
-def fulfill_paddle_payment(
+def fulfill_payment(
+    provider: str,
     conn: sqlite3.Connection,
     payload: PaddleFulfillmentRequest,
 ) -> FulfillmentResult:
+    if provider not in {"paddle", "paystack"}:
+        raise ValueError("Unsupported payment provider.")
+
     conn.execute("BEGIN IMMEDIATE")
 
     if payload.module == "zodiac":
@@ -128,18 +131,32 @@ def fulfill_paddle_payment(
                 )
 
         user_id = resource["owner_user_id"]
+
     existing = conn.execute(
         """SELECT * FROM payments
-           WHERE provider='paddle'
+           WHERE provider=?
              AND (provider_event_id=? OR provider_transaction_id=?)""",
-        (payload.providerEventId, payload.providerTransactionId),
+        (
+            provider,
+            payload.providerEventId,
+            payload.providerTransactionId,
+        ),
     ).fetchall()
 
     if existing:
-        if len(existing) != 1 or not _matches_existing_payment(existing[0], payload, user_id):
-            raise FulfillmentConflictError(
-                "The Paddle event or transaction conflicts with an existing payment."
+        if (
+            len(existing) != 1
+            or not _matches_existing_payment(
+                existing[0],
+                payload,
+                user_id,
             )
+        ):
+            raise FulfillmentConflictError(
+                "The payment event or transaction conflicts "
+                "with an existing payment."
+            )
+
         return FulfillmentResult(
             status="already_fulfilled",
             payment_id=existing[0]["payment_id"],
@@ -156,11 +173,12 @@ def fulfill_paddle_payment(
              product_code, provider_price_id, currency, amount,
              tax_amount, status, created_at, completed_at
            ) VALUES (
-             ?, 'paddle', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
              'completed', ?, ?
            )""",
         (
             payment_id,
+            provider,
             payload.providerEventId,
             payload.providerTransactionId,
             user_id,
@@ -182,11 +200,11 @@ def fulfill_paddle_payment(
              payment_provider, payment_reference, created_at,
              updated_at, unlocked_at, revoked_at
            ) VALUES (
-             ?, ?, ?, ?, 'unlocked', 'paddle', ?, ?, ?, ?, NULL
+             ?, ?, ?, ?, 'unlocked', ?, ?, ?, ?, ?, NULL
            )
            ON CONFLICT(user_id, module, resource_id) DO UPDATE SET
              status='unlocked',
-             payment_provider='paddle',
+             payment_provider=excluded.payment_provider,
              payment_reference=excluded.payment_reference,
              updated_at=excluded.updated_at,
              unlocked_at=excluded.unlocked_at,
@@ -196,6 +214,7 @@ def fulfill_paddle_payment(
             user_id,
             payload.module,
             payload.resourceId,
+            provider,
             payload.providerTransactionId,
             now,
             now,
@@ -203,4 +222,21 @@ def fulfill_paddle_payment(
         ),
     )
 
-    return FulfillmentResult(status="fulfilled", payment_id=payment_id)
+    return FulfillmentResult(
+        status="fulfilled",
+        payment_id=payment_id,
+    )
+
+
+def fulfill_paddle_payment(
+    conn: sqlite3.Connection,
+    payload: PaddleFulfillmentRequest,
+) -> FulfillmentResult:
+    return fulfill_payment("paddle", conn, payload)
+
+
+def fulfill_paystack_payment(
+    conn: sqlite3.Connection,
+    payload: PaddleFulfillmentRequest,
+) -> FulfillmentResult:
+    return fulfill_payment("paystack", conn, payload)

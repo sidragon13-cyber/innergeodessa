@@ -12,6 +12,7 @@ from ..payment_fulfillment import (
     ResourceNotFoundError,
     UnsupportedResourceModuleError,
     fulfill_paddle_payment,
+    fulfill_paystack_payment,
 )
 from ..schemas.payment import (
     PaddleFulfillmentRequest,
@@ -57,6 +58,49 @@ def fulfill_paddle_transaction(
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error)) from error
     except FulfillmentConflictError as error:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error)) from error
+
+    return PaddleFulfillmentResponse(
+        status=result.status,
+        paymentId=result.payment_id,
+        entitlementStatus="unlocked",
+    )
+
+@router.post(
+    "/paystack/fulfill",
+    response_model=PaddleFulfillmentResponse,
+)
+def fulfill_paystack_transaction(
+    payload: PaddleFulfillmentRequest,
+    internal_secret: str = Header(
+        default="",
+        alias="X-InnerGeo-Internal-Secret",
+    ),
+) -> PaddleFulfillmentResponse:
+    _require_internal_secret(internal_secret)
+
+    try:
+        with connect() as conn:
+            result = fulfill_paystack_payment(conn, payload)
+    except ResourceNotFoundError as error:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(error),
+        ) from error
+    except UnsupportedResourceModuleError as error:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(error),
+        ) from error
+    except InvalidResourceError as error:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(error),
+        ) from error
+    except FulfillmentConflictError as error:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(error),
+        ) from error
 
     return PaddleFulfillmentResponse(
         status=result.status,
