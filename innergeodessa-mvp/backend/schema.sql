@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS payments (
   payment_id TEXT PRIMARY KEY,
 
   provider TEXT NOT NULL
-    CHECK (provider IN ('paddle')),
+    CHECK (provider IN ('paddle','paystack')),
 
   provider_event_id TEXT NOT NULL,
   provider_transaction_id TEXT NOT NULL,

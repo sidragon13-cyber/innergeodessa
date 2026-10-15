@@ -130,6 +130,15 @@ def initialize(
                 operation=lambda: None,
             )
 
+            _apply_migration(
+                conn,
+                migration_id="20261015_008_paystack_provider_constraint",
+                description=(
+                    "Allow Paystack payment provider while preserving Paddle."
+                ),
+                operation=lambda: None,
+            )
+
             _register_question_banks(conn)
 
             _apply_migration(
@@ -391,7 +400,7 @@ def _repair_stale_payment_module_constraints(
 
             current_sql = "".join(row[0].lower().split())
 
-            stale_constraint = (
+            stale_module_constraint = (
                 "modulein('personality','career','zodiac')"
                 in current_sql
                 and
@@ -399,7 +408,13 @@ def _repair_stale_payment_module_constraints(
                 not in current_sql
             )
 
-            if stale_constraint:
+            stale_provider_constraint = (
+                table_name == "payments"
+                and "providerin('paddle')" in current_sql
+                and "providerin('paddle','paystack')" not in current_sql
+            )
+
+            if stale_module_constraint or stale_provider_constraint:
                 stale_tables.append(table_name)
 
         if not stale_tables:
@@ -455,7 +470,7 @@ def _repair_stale_payment_module_constraints(
                 if current_columns != target_columns:
                     raise ValueError(
                         f"{table_name} columns changed unexpectedly "
-                        "during Kids payment constraint migration."
+                        "during payment constraint migration."
                     )
 
                 quoted_columns = ", ".join(
@@ -489,7 +504,7 @@ def _repair_stale_payment_module_constraints(
             if foreign_key_errors:
                 raise ValueError(
                     "Foreign key validation failed while "
-                    "normalizing Kids payment module constraints."
+                    "normalizing payment constraints."
                 )
 
         except Exception:

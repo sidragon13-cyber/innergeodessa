@@ -250,3 +250,204 @@ def test_user_deletion_cascades_private_records_and_detaches_resources(
             "SELECT owner_user_id FROM zodiac_charts WHERE chart_id='chart-owned'"
         ).fetchone()[0] is None
         assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
+
+def test_payments_provider_accepts_paystack(tmp_path):
+    database_path = tmp_path / "paystack-provider.db"
+    initialize(db_path=database_path, items_path=ITEMS_PATH)
+
+    with connect(database_path) as connection:
+        insert_user(connection)
+
+        connection.execute(
+            """
+            INSERT INTO payments(
+                payment_id,
+                provider,
+                provider_event_id,
+                provider_transaction_id,
+                user_id,
+                module,
+                resource_id,
+                product_code,
+                provider_price_id,
+                currency,
+                amount,
+                tax_amount,
+                status,
+                created_at,
+                completed_at
+            ) VALUES (
+                'payment-paystack-1',
+                'paystack',
+                'event-paystack-1',
+                'transaction-paystack-1',
+                'user-1',
+                'personality',
+                'session-paystack-1',
+                'personality-premium-report-v1',
+                'paystack-product',
+                'ZAR',
+                10000,
+                0,
+                'completed',
+                '2026-10-15T00:00:00Z',
+                '2026-10-15T00:00:00Z'
+            )
+            """
+        )
+
+def test_initialize_migrates_legacy_paddle_provider_constraint_without_losing_payments(
+    tmp_path,
+):
+    database_path = tmp_path / "legacy-paddle-provider.db"
+    initialize(db_path=database_path, items_path=ITEMS_PATH)
+
+    with connect(database_path) as connection:
+        insert_user(connection)
+
+        connection.execute(
+            """
+            INSERT INTO payments(
+                payment_id,
+                provider,
+                provider_event_id,
+                provider_transaction_id,
+                user_id,
+                module,
+                resource_id,
+                product_code,
+                provider_price_id,
+                currency,
+                amount,
+                tax_amount,
+                status,
+                created_at,
+                completed_at
+            ) VALUES (
+                'legacy-paddle-payment',
+                'paddle',
+                'legacy-paddle-event',
+                'legacy-paddle-transaction',
+                'user-1',
+                'personality',
+                'legacy-session',
+                'personality-premium-report-v1',
+                'pri_legacy',
+                'USD',
+                699,
+                0,
+                'completed',
+                '2026-08-08T10:00:00Z',
+                '2026-08-08T10:05:00Z'
+            )
+            """
+        )
+
+    # Keep this fixture genuinely legacy after the target schema gains Paystack.
+    with sqlite3.connect(database_path) as connection:
+        row = connection.execute(
+            """
+            SELECT sql
+            FROM sqlite_master
+            WHERE type='table' AND name='payments'
+            """
+        ).fetchone()
+
+        assert row is not None
+        payments_sql = row[0]
+
+        if "paystack" in payments_sql.lower():
+            legacy_sql = payments_sql.replace(
+                "provider IN ('paddle','paystack')",
+                "provider IN ('paddle')",
+            ).replace(
+                "provider IN ('paddle', 'paystack')",
+                "provider IN ('paddle')",
+            )
+
+            assert legacy_sql != payments_sql
+
+            columns = [
+                row[1]
+                for row in connection.execute(
+                    "PRAGMA table_info(payments)"
+                ).fetchall()
+            ]
+            quoted_columns = ", ".join(
+                f'"{column}"' for column in columns
+            )
+
+            connection.execute("PRAGMA foreign_keys = OFF")
+            connection.execute(
+                "ALTER TABLE payments RENAME TO payments_target_provider"
+            )
+            connection.execute(legacy_sql)
+            connection.execute(
+                f"""
+                INSERT INTO payments ({quoted_columns})
+                SELECT {quoted_columns}
+                FROM payments_target_provider
+                """
+            )
+            connection.execute("DROP TABLE payments_target_provider")
+            connection.commit()
+            connection.execute("PRAGMA foreign_keys = ON")
+
+    initialize(db_path=database_path, items_path=ITEMS_PATH)
+
+    with connect(database_path) as connection:
+        preserved = connection.execute(
+            """
+            SELECT provider, provider_transaction_id, amount, status
+            FROM payments
+            WHERE payment_id='legacy-paddle-payment'
+            """
+        ).fetchone()
+
+        assert preserved is not None
+        assert preserved["provider"] == "paddle"
+        assert preserved["provider_transaction_id"] == "legacy-paddle-transaction"
+        assert preserved["amount"] == 699
+        assert preserved["status"] == "completed"
+
+        connection.execute(
+            """
+            INSERT INTO payments(
+                payment_id,
+                provider,
+                provider_event_id,
+                provider_transaction_id,
+                user_id,
+                module,
+                resource_id,
+                product_code,
+                provider_price_id,
+                currency,
+                amount,
+                tax_amount,
+                status,
+                created_at,
+                completed_at
+            ) VALUES (
+                'new-paystack-payment',
+                'paystack',
+                'new-paystack-event',
+                'new-paystack-transaction',
+                'user-1',
+                'personality',
+                'new-session',
+                'personality-premium-report-v1',
+                'paystack-product',
+                'ZAR',
+                10000,
+                0,
+                'completed',
+                '2026-10-15T00:00:00Z',
+                '2026-10-15T00:00:00Z'
+            )
+            """
+        )
+
+        assert connection.execute(
+            "PRAGMA foreign_key_check"
+        ).fetchall() == []
