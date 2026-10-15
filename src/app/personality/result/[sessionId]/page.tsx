@@ -424,7 +424,7 @@ export default function PersonalityResultPage() {
         <section className="mt-8 border border-[#c8c2b5] bg-[#f7f4ec] p-5 md:flex md:items-center md:justify-between md:gap-10 md:p-6">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6d746b]">
-              Report Profile｜报告解释路径
+              {resultLocale === "zh" ? "报告解释路径" : "Report Profile"}
             </p>
 
             <p className="mt-2 text-xl font-semibold text-[#26372d]">
@@ -432,17 +432,21 @@ export default function PersonalityResultPage() {
             </p>
 
             <p className="mt-1 text-sm leading-6 text-[#596158]">
-              {reportProfilePresentation.name}
+              {resultLocale === "zh"
+                ? reportProfilePresentation.name.split("｜")[1]
+                : reportProfilePresentation.name.split("｜")[0]}
             </p>
           </div>
 
           <div className="mt-5 border-t border-[#d4cec1] pt-5 md:mt-0 md:min-w-[300px] md:border-l md:border-t-0 md:pl-8 md:pt-0">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#6d746b]">
-              Development Theme｜发展主题
+              {resultLocale === "zh" ? "发展主题" : "Development Theme"}
             </p>
 
             <p className="mt-2 font-semibold text-[#26372d]">
-              {reportProfilePresentation.developmentTheme}
+              {resultLocale === "zh"
+                ? reportProfilePresentation.developmentTheme.split("｜")[1]
+                : reportProfilePresentation.developmentTheme.split("｜")[0]}
             </p>
 
             <p className="mt-2 text-xs leading-5 text-[#6d746b]">
