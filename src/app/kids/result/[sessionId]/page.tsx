@@ -932,8 +932,12 @@ export default function KidsResultPage() {
                 >
                   {premiumAccess === "loading"
                     ? isZh
-                      ? "正在确认报告权限"
-                      : "Checking Report Access"
+                      ? result.ageForm === "K68"
+                        ? "正在确认报告权限 — R149"
+                        : "正在确认报告权限 — R169"
+                      : result.ageForm === "K68"
+                        ? "Checking Report Access — R149"
+                        : "Checking Report Access — R169"
                     : isZh
                       ? result.ageForm === "K68"
                         ? "保存结果以解锁完整专业报告 — R149"

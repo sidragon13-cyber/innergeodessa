@@ -544,8 +544,8 @@ export default function CareerResultPage() {
             className="mt-8 inline-flex min-h-12 cursor-not-allowed items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] opacity-70"
           >
             {locale === "zh"
-              ? "正在确认报告权限"
-              : "Checking report access"}
+              ? "正在确认报告权限 — R179"
+              : "Checking report access — R179"}
           </button>
         )}
 
