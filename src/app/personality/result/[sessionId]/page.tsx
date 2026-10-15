@@ -29,7 +29,7 @@ import {
 import {
   SaveAssessmentResult,
 } from "@/components/account";
-import { PaddleCheckoutButton } from "@/components/payment/paddle-checkout-button";
+import { PaystackCheckoutButton } from "@/components/payment/paystack-checkout-button";
 import {
   useLocale,
 } from "@/components/locale";
@@ -726,7 +726,7 @@ export default function PersonalityResultPage() {
 
                   {premiumAccess === "owned-locked" ? (
                     <>
-                      <PaddleCheckoutButton
+                      <PaystackCheckoutButton
                         resourceId={sessionId}
                         label={dictionary.premium.viewCompleteReport(
                           displayResult.type,

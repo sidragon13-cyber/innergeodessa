@@ -11,9 +11,7 @@ import {
 import {
   SaveAssessmentResult,
 } from "@/components/account";
-import {
-  PaddleCheckoutButton,
-} from "@/components/payment/paddle-checkout-button";
+import { PaystackCheckoutButton } from "@/components/payment/paystack-checkout-button";
 import {
   ResultHeader,
   ResultNavigation,
@@ -514,7 +512,7 @@ export default function CareerResultPage() {
 
         {premiumAccess === "owned-locked" ? (
           <>
-            <PaddleCheckoutButton
+            <PaystackCheckoutButton
               module="career"
               resourceId={sessionId}
               label={

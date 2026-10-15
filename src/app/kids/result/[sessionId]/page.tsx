@@ -34,7 +34,7 @@ import {
 import { useLocale } from "@/components/locale";
 import { SaveAssessmentResult } from "@/components/account";
 import type { SaveAssessmentResultHandle } from "@/components/account/save-assessment-result";
-import { PaddleCheckoutButton } from "@/components/payment/paddle-checkout-button";
+import { PaystackCheckoutButton } from "@/components/payment/paystack-checkout-button";
 import {
   fetchKidsResult,
   type KidsResultContract,
@@ -212,13 +212,6 @@ function resolveDomainName(
     domain
   ][locale];
 }
-
-const POST_PAYMENT_ACCESS_RETRY_DELAYS_MS = [
-  0,
-  1000,
-  2500,
-  5000,
-] as const;
 
 export default function KidsResultPage() {
   const saveResultRef =
@@ -917,24 +910,9 @@ export default function KidsResultPage() {
                     : "View Professional Report"}
                 </Link>
               ) : premiumAccess === "owned-locked" ? (
-                <PaddleCheckoutButton
+                <PaystackCheckoutButton
                   module="kids"
                   resourceId={sessionId}
-                  kidsForm={result.ageForm}
-                  onCompleted={() => {
-                    setPremiumAccess("loading");
-
-                    for (
-                      const delay of
-                      POST_PAYMENT_ACCESS_RETRY_DELAYS_MS
-                    ) {
-                      window.setTimeout(() => {
-                        setPremiumAccessRevision(
-                          (revision) => revision + 1,
-                        );
-                      }, delay);
-                    }
-                  }}
                   label={
                     isZh
                       ? result.ageForm === "K68"
