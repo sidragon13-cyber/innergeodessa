@@ -61,14 +61,14 @@ def test_zodiac_result_has_no_paddle_checkout():
     assert "PaddleCheckoutButton" not in source
     assert "Buy Full Zodiac Report" not in source
     assert "购买完整星座报告" not in source
-    assert "$9.99" not in source
+    assert "R179" not in source
 
 
 def test_pricing_marks_zodiac_as_free():
     source = PRICING.read_text()
 
-    assert "Zodiac Premium Report: USD $9.99" not in source
-    assert "星座完整报告：USD $9.99" not in source
+    assert "Zodiac Premium Report: ZAR R179" not in source
+    assert "星座完整报告：ZAR R179" not in source
 
     assert (
         "Zodiac" in source

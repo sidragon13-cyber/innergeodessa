@@ -59,5 +59,5 @@ def test_kids_result_uses_real_save_handle():
 def test_prices_remain_visible_before_save():
     source = RESULT_PAGE.read_text(encoding="utf-8")
 
-    assert "$7.99" in source
-    assert "$8.99" in source
+    assert "R149" in source
+    assert "R169" in source

@@ -48,7 +48,8 @@ def test_live_paid_products_are_not_described_as_upcoming():
 def test_current_pricing_and_free_zodiac_are_explicit():
     pricing = PRICING.read_text()
 
-    assert "Personality Premium Report: USD $7.99" in pricing
-    assert "Career Premium Report: USD $9.99" in pricing
+    assert "Personality Premium Report: ZAR R149" in pricing
+    assert "Career Premium Report:" in pricing
+    assert "ZAR R179" in pricing
     assert "Zodiac full report is free" in pricing
-    assert "Zodiac Premium Report: USD $9.99" not in pricing
+    assert "Zodiac Premium Report: ZAR R179" not in pricing

@@ -938,11 +938,11 @@ export default function KidsResultPage() {
                   label={
                     isZh
                       ? result.ageForm === "K68"
-                        ? "解锁完整专业报告 — $7.99"
-                        : "解锁完整专业报告 — $8.99"
+                        ? "解锁完整专业报告 — R149"
+                        : "解锁完整专业报告 — R169"
                       : result.ageForm === "K68"
-                        ? "Unlock Professional Report — $7.99"
-                        : "Unlock Professional Report — $8.99"
+                        ? "Unlock Professional Report — R149"
+                        : "Unlock Professional Report — R169"
                   }
                   className="mt-8 inline-flex min-h-12 items-center rounded-full border border-[#dfd1e4] px-10 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-white hover:text-[#5f456f] disabled:cursor-wait disabled:opacity-70"
                 />
@@ -958,11 +958,11 @@ export default function KidsResultPage() {
                       : "Checking Report Access"
                     : isZh
                       ? result.ageForm === "K68"
-                        ? "保存结果以解锁完整专业报告 — $7.99"
-                        : "保存结果以解锁完整专业报告 — $8.99"
+                        ? "保存结果以解锁完整专业报告 — R149"
+                        : "保存结果以解锁完整专业报告 — R169"
                       : result.ageForm === "K68"
-                        ? "Save Result to Unlock — $7.99"
-                        : "Save Result to Unlock — $8.99"}
+                        ? "Save Result to Unlock — R149"
+                        : "Save Result to Unlock — R169"}
                 </button>
               )}
 

@@ -519,8 +519,8 @@ export default function CareerResultPage() {
               resourceId={sessionId}
               label={
                 locale === "zh"
-                  ? "购买完整职业报告 — $9.99"
-                  : "Buy Full Career Report — $9.99"
+                  ? "购买完整职业报告 — R179"
+                  : "Buy Full Career Report — R179"
               }
               className="mt-8 inline-flex min-h-12 items-center border border-[#aeb8af] px-6 text-xs font-bold uppercase tracking-[0.14em] text-[#f1eee5] transition-colors hover:bg-[#f1eee5] hover:text-[#34483a] disabled:cursor-wait disabled:opacity-70"
             />

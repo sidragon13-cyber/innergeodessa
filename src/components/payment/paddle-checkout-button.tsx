@@ -32,7 +32,7 @@ export function PaddleCheckoutButton({
   module = "personality",
   kidsForm,
   className = "legal-purchase-button",
-  label = "Buy Premium Report — $7.99",
+  label = "Buy Premium Report — R149",
   onCompleted,
 }: {
   resourceId: string;

@@ -50,8 +50,8 @@ export default function PricingPage() {
                   saved-report features.
                 </p>
                 <p>
-                  Personality Premium Report: USD $7.99. Career Premium Report:
-                  USD $9.99. The Zodiac Full Report is free for signed-in,
+                  Personality Premium Report: ZAR R149. Career Premium Report:
+                  ZAR R179. The Zodiac Full Report is free for signed-in,
                   email-verified users who own the chart. Premium Reports are
                   one-time purchases with no recurring charges.
                 </p>
@@ -117,7 +117,7 @@ export default function PricingPage() {
                   更完整的报告保存功能。
                 </p>
                 <p>
-                  人格完整报告：USD $7.99；职业兴趣完整报告：USD $9.99。
+                  人格完整报告：ZAR R149；职业兴趣完整报告：ZAR R179。
                   星座完整报告向已登录、完成邮箱验证并拥有该星盘的用户免费开放。
                   高级报告均为一次性购买，不涉及周期性收费。
                 </p>
