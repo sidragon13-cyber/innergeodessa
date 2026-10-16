@@ -170,35 +170,35 @@ export const careerResultDictionaries: Record<
     dimensions: {
       R: {
         name: "Realistic",
-        secondaryName: "现实型",
+        secondaryName: "Realistic",
         shortLabel: "Practical and hands-on",
         description:
           "You are drawn to practical activities, tools, machines, physical systems, and visible real-world outcomes.",
       },
       I: {
         name: "Investigative",
-        secondaryName: "研究型",
+        secondaryName: "Investigative",
         shortLabel: "Analytical and curious",
         description:
           "You are drawn to analysis, research, complex questions, evidence, data, and understanding how systems work.",
       },
       A: {
         name: "Artistic",
-        secondaryName: "艺术型",
+        secondaryName: "Artistic",
         shortLabel: "Creative and expressive",
         description:
           "You are drawn to imagination, original ideas, design, storytelling, expression, and flexible ways of working.",
       },
       S: {
         name: "Social",
-        secondaryName: "社会型",
+        secondaryName: "Social",
         shortLabel: "Supportive and people-focused",
         description:
           "You are drawn to helping, teaching, guiding, supporting, and improving the development or wellbeing of others.",
       },
       E: {
         name: "Enterprising",
-        secondaryName: "企业型",
+        secondaryName: "Enterprising",
         shortLabel:
           "Persuasive and initiative-driven",
         description:
@@ -206,7 +206,7 @@ export const careerResultDictionaries: Record<
       },
       C: {
         name: "Conventional",
-        secondaryName: "常规型",
+        secondaryName: "Conventional",
         shortLabel:
           "Structured and detail-focused",
         description:

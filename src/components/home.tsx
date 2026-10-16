@@ -31,6 +31,7 @@ export type Product = {
   title: string;
   description: string;
   metadata: string;
+  freeJourney?: string;
   cta: string;
   symbol: string;
   href: string;
@@ -179,7 +180,12 @@ export function ProductCard({ product }: { product: Product }) {
         <p>{product.description}</p>
       </div>
       <div className="card-footer">
-        <p>{product.metadata}</p>
+        <div>
+          {product.metadata ? <p>{product.metadata}</p> : null}
+          {product.freeJourney ? (
+            <p>A FREE JOURNEY OF DISCOVERY</p>
+          ) : null}
+        </div>
         <Link
           className="card-link"
           href={product.href}
@@ -264,7 +270,8 @@ export function HomeExploreSection() {
       id: "zodiac",
       title: explore.products.zodiac.title,
       description: explore.products.zodiac.description,
-      metadata: explore.products.zodiac.metadata,
+      metadata: "",
+      freeJourney: "A FREE JOURNEY OF DISCOVERY",
       cta: explore.products.zodiac.cta,
       symbol: "Z",
       href: "/zodiac",
