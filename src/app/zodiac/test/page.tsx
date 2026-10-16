@@ -14,7 +14,6 @@ import {
 import type { SupportedLocale } from "@/data/shared";
 import {
   searchLocations,
-  STATIC_LOCATION_RECORDS,
   type LocationRecord,
 } from "@/shared/location";
 
@@ -53,12 +52,10 @@ export default function ZodiacTestPage() {
     "exact",
   );
 
-  const [locationQuery, setLocationQuery] = useState(
-    STATIC_LOCATION_RECORDS[0]?.displayName ?? "",
-  );
+  const [locationQuery, setLocationQuery] = useState("");
 
   const [selectedLocation, setSelectedLocation] =
-    useState<LocationRecord | null>(STATIC_LOCATION_RECORDS[0] ?? null);
+    useState<LocationRecord | null>(null);
 
   const [locationResults, setLocationResults] = useState<
     readonly LocationRecord[]

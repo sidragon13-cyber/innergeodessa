@@ -61,7 +61,11 @@ export function rankLocationRecords(
       );
       const scores = [
         Number.isFinite(nameScore) ? nameScore : null,
-        Number.isFinite(aliasScore) ? aliasScore + 10 : null,
+        Number.isFinite(aliasScore)
+          ? aliasScore === 0
+            ? 0
+            : aliasScore + 10
+          : null,
         Number.isFinite(countryScore) ? countryScore + 20 : null,
       ].filter((score): score is number => score !== null);
 
