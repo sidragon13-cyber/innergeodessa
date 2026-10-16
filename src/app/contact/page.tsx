@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal-page";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/contact",
+  },
   title: "Contact | InnerGeo",
   description:
     "Contact InnerGeo for account, privacy, payment, refund, technical, or general support.",

@@ -104,9 +104,9 @@ export const zodiacLandingDictionaries: Record<
 
     hero: {
       eyebrow: "Zodiac Interest Exploration",
-      title: "Explore your birth chart from more than one sign.",
+      title: "Create Your Free Birth Chart",
       description:
-        "Begin with your birth information to explore your Sun, Moon, Rising sign, and other calculated placements as symbolic perspectives for reflection.",
+        "Enter your birth information to calculate your Sun, Moon, Rising sign and other chart placements, then explore them as symbolic perspectives for reflection.",
       detailsLabel: "Experience details",
       details: [
         "Calculated from birth information",
@@ -114,7 +114,7 @@ export const zodiacLandingDictionaries: Record<
         "Twelve zodiac signs",
         "Symbolic exploration, not prediction",
       ],
-      primaryAction: "Create Your Birth Chart",
+      primaryAction: "Create Free Birth Chart",
       secondaryAction: "Explore the 12 Signs",
     },
 

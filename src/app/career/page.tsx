@@ -7,6 +7,13 @@ import {
 } from "@/components/career";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/career",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   title:
     "Career Interest Assessment｜职业兴趣测评｜InnerGeo",
   description:

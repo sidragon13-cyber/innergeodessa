@@ -7,10 +7,17 @@ import {
 } from "@/components/personality";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/personality",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   title:
-    "Personality Test｜人格类型测评｜InnerGeo",
+    "Free 16 Personality Test | MBTI-Style Assessment | InnerGeo",
   description:
-    "Explore four personality dimensions through a reflective 72-question assessment. 通过72道人格探索题目了解四个主要人格维度。",
+    "Take a free 72-question MBTI-style personality test exploring Extraversion–Introversion, Sensing–Intuition, Thinking–Feeling, and Judging–Perceiving.",
 };
 
 export default function PersonalityPage() {

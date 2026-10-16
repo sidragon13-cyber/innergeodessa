@@ -75,19 +75,19 @@ export const personalityLandingDictionaries: Record<
 > = {
   en: {
     metadata: {
-      title: "Personality Test — InnerGeo",
+      title: "Free 16 Personality Test | InnerGeo",
       description:
-        "Explore four broad personality dimensions through a reflective 72-question self-discovery assessment.",
+        "Take a free 72-question MBTI-style personality assessment and explore your four-letter preference type across four personality dimensions.",
     },
 
     contourLabel: "Your pattern",
 
     hero: {
-      eyebrow: "Personality Assessment",
+      eyebrow: "Free 16 Personality Test",
       title:
-        "Understand your preference patterns—not just a four-letter type.",
+        "Take a Free 16 Personality Test",
       description:
-        "Explore preferences across energy, information processing, decision-making and approach to daily life through a 72-question reflective assessment.",
+        "Explore an MBTI-style personality assessment across four preference dimensions and discover your four-letter preference type through 72 reflective questions.",
       detailsLabel: "Assessment details",
       details: [
         "72 questions",

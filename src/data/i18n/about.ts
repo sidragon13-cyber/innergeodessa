@@ -418,7 +418,7 @@ export const aboutDictionaries: Record<
       eyebrow: "Current platform status",
       title: "Being built in clear stages",
       description:
-        "InnerGeo is being built in stages. The current site already provides the three core exploration experiences while accounts, saved profiles, and community systems remain in later phases.",
+        "InnerGeo is being built in stages. The current site already provides the core exploration experiences, user accounts, saved assessment results, and access to previously purchased reports, while community systems and integrated identity profiles remain in later phases.",
       availableTitle: "Available now",
       availableItems: [
         "Bilingual homepage",
@@ -426,10 +426,12 @@ export const aboutDictionaries: Record<
         "Career Interest assessment and result",
         "Zodiac chart and report",
         "Printable detailed reports",
+        "User accounts",
+        "Saved assessment results",
+        "Previously purchased reports remain available",
       ],
       unavailableTitle: "Not yet available",
       unavailableItems: [
-        "Accounts and saved profiles",
         "Community features",
         "Integrated identity profiles",
         "Commercial subscription features",
@@ -722,7 +724,7 @@ export const aboutDictionaries: Record<
       eyebrow: "当前平台状态",
       title: "按照清晰阶段持续建设",
       description:
-        "InnerGeo 正在分阶段建设。当前网站已经提供三项核心探索体验，而账户、档案保存与社区系统仍处于后续阶段。",
+        "InnerGeo 正在分阶段建设。当前网站已经提供核心探索体验、用户账户、测评结果保存以及已购报告的再次访问；社区系统与综合身份档案仍处于后续阶段。",
       availableTitle: "当前已开放",
       availableItems: [
         "中英文首页",
@@ -730,10 +732,12 @@ export const aboutDictionaries: Record<
         "职业兴趣测评与结果",
         "个人星盘与报告",
         "可打印的详细报告",
+        "用户账户",
+        "测评结果保存",
+        "已购报告可再次访问",
       ],
       unavailableTitle: "尚未开放",
       unavailableItems: [
-        "用户账户与档案保存",
         "社区功能",
         "综合身份档案",
         "商业订阅功能",

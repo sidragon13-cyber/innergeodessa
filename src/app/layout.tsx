@@ -24,6 +24,7 @@ const sourceSerif = Source_Serif_4({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://innergeo.app"),
   title: "InnerGeo — Self-Discovery, Thoughtfully Mapped",
   description:
     "Explore personality, career interests, kids interest discovery, and zodiac identity through four thoughtful self-discovery experiences.",

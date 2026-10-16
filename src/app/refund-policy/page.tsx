@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal-page";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/refund-policy",
+  },
   title: "Refund Policy | InnerGeo",
   description:
     "InnerGeo refund policy for digital reports and other paid digital self-discovery services.",

@@ -47,13 +47,13 @@ export function KidsLanding() {
       <main className="min-h-[calc(100vh-80px)] bg-[#fbf8f3] text-[#29222e]">
         <section className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-24">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#7a568f]">
-            InnerGeo Kids · Interest Discovery
+            {isZh ? "InnerGeo Kids · 兴趣发现" : "Free Kids Interest Test"}
           </p>
 
           <h1 className="mt-5 max-w-4xl font-serif text-4xl font-normal leading-[1.08] tracking-[-0.04em] md:text-6xl">
             {isZh
               ? "发现孩子自然产生兴趣的方向。"
-              : "Discover where a child’s curiosity naturally goes."}
+              : "Discover Your Child’s Interests"}
           </h1>
 
           <p className="mt-6 text-sm font-bold tracking-[0.04em] text-[#6f4c80]">
@@ -65,7 +65,7 @@ export function KidsLanding() {
           <p className="mt-5 max-w-3xl text-base leading-8 text-[#625968] md:text-lg">
             {isZh
               ? "InnerGeo Kids 不是职业预测，也不是能力诊断。它通过适龄问题建立一张兴趣地图，帮助家长和孩子从发现开始，再逐步探索与培养。"
-              : "InnerGeo Kids is not a career prediction or ability diagnosis. It creates an age-appropriate interest map that supports a simple path: Discover, Explore, Cultivate."}
+              : "This kids interest test helps children ages 6–12 discover the activities and interest directions they naturally want to explore. It is not a career prediction or ability diagnosis."}
           </p>
 
           <div className="mt-14">

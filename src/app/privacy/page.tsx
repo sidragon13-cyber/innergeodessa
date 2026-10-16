@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal-page";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/privacy",
+  },
   title: "Privacy Policy | InnerGeo",
   description:
     "Learn how InnerGeo handles account information, assessment data, zodiac inputs, payments, and anonymous use.",

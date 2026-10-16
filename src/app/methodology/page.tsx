@@ -4,6 +4,9 @@ import Link from "next/link";
 import { LegalPage } from "@/components/legal-page";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/methodology",
+  },
   title:
     "Methodology & Use Boundaries | InnerGeo",
   description:

@@ -1,5 +1,7 @@
 "use client";
 
+import { Suspense } from "react";
+
 import {
   AccountFrame,
   RegisterForm,
@@ -21,7 +23,9 @@ export default function RegisterPage() {
       title={dictionary.register.title}
       description={dictionary.register.description}
     >
-      <RegisterForm />
+      <Suspense fallback={null}>
+        <RegisterForm />
+      </Suspense>
     </AccountFrame>
   );
 }

@@ -7,10 +7,17 @@ import {
 } from "@/components/zodiac";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/zodiac",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   title:
-    "Zodiac Identity｜星座身份探索｜InnerGeo",
+    "Free Birth Chart Calculator | Sun, Moon & Rising Sign | InnerGeo",
   description:
-    "Explore zodiac symbolism and create a reflective birth chart. 探索星座象征并创建用于自我反思的出生星盘。",
+    "Create a free birth chart using your birth date, time and location. Calculate your Sun, Moon, Rising sign and key chart placements for a structured symbolic interpretation.",
 };
 
 export default function ZodiacPage() {

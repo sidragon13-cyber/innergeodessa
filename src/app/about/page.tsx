@@ -19,6 +19,9 @@ import {
 } from "@/components/about";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/about",
+  },
   title:
     "About InnerGeo｜关于 InnerGeo｜Self-Exploration and Growth",
   description:

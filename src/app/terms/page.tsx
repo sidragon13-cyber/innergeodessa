@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal-page";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/terms",
+  },
   title: "Terms of Service | InnerGeo",
   description:
     "Terms governing the use of InnerGeo personality, career-interest, zodiac, account, report, and related self-discovery services.",

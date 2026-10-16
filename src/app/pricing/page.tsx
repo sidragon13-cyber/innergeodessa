@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal-page";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/pricing",
+  },
   title: "Pricing | InnerGeo",
   description:
     "Explore InnerGeo free assessments and clearly priced premium digital reports.",
