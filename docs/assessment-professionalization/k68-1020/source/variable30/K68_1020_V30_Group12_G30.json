@@ -1,0 +1,143 @@
+{
+  "template_id": "K68-1019-FIXED70-12",
+  "pair": [
+    "build",
+    "move"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "Gap=top1实际分数-top2实际分数；G00=0 G10=10 G20=20 G30+=30以上",
+    "第三维、排名和并列关系必须从六维实际结果读取",
+    "不从兴趣分数推断能力、人格、行为顺序或长期稳定性"
+  ],
+  "facet_rules": {
+    "build": "仅凭真实题目级证据细化搭建、调整与制作兴趣",
+    "move": "仅凭真实题目级证据细化身体行动、路线与亲身体验兴趣",
+    "third": "第三维必须依据实际分数和并列动态判断，不把Discover固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-12-G30",
+  "gap_code": "G30",
+  "eligibility": "gap >= 30",
+  "label": "建构显著领先：跨材料验证并开放行动机会",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "build": 100,
+      "move": 60,
+      "discover": 50,
+      "think": 40,
+      "create": 30,
+      "connect": 20
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差40分。建构100分、行动60分，实际相差40分；探索50分列第三。本次建构偏好较集中，但不代表缺乏运动兴趣或天生擅长制作。需要在多种材料和时间里检验吸引力，同时让行动与探索拥有可拒绝、无评价的体验入口。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜建构100分、行动60分，实际相差40分；探索50分列第三。本次建构偏好较集中，但不代表缺乏运动兴趣或天生擅长制作。需要在多种材料和时间里检验吸引力，同时让行动与探索拥有可拒绝、无评价的体验入口。",
+      "reverse_top1": {
+        "leading_domain": "move",
+        "secondary_domain": "build",
+        "text_template": "行动得分明显高于建构，本次结果更偏向移动、节奏和身体体验。可在不同身体活动中观察孩子是否主动返回，同时提供可自由选择或拒绝的搭建与制作机会。分差不代表动手能力不足，也不能确定运动天赋。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "建构100分、行动60分，实际相差40分，探索50分第三。这里的分差只表示本次两类活动偏好的相对差异，不推断长期习惯、运动能力或操作天赋。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "在纸板、积木、模型等不同形式中让孩子自由选择制作；与此同时提供无需成品的身体游戏与发现新变化的机会。障碍路线可以尝试，但不强迫孩子按固定顺序进行。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "跨材料比较：观察对纸桥、积木、简易模型的制作热情是否重复出现",
+        "行动低门槛入口：步行探险、节奏游戏等无需完成作品",
+        "障碍路线允许自由搭、改、走或选择暂不参加",
+        "探索维度开放安全的观察变化活动，检查近期接触机会"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜自己搭障碍路线：尊重孩子对搭建和身体尝试的自主选择",
+        "活动B｜个人搭建：跨材料和不同时间观察建构是否持续吸引",
+        "额外提供不带制作任务的身体活动，以免相对低分导致机会缩减"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "增加制作材料形式的丰富度，不规定练习量或难度升级",
+        "为行动提供轻松、不评价表现的参与入口",
+        "记录是否自愿反复搭建，以及此前是否有充分身体体验机会",
+        "第三维探索不因相对较低分就被忽略"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "不同材料下是否仍主动搭建和改造？",
+        "身体活动没有作品要求时是否愿意尝试？",
+        "行动和探索的相对低分是否可能受接触机会影响？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

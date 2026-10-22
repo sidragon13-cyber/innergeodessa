@@ -1,0 +1,160 @@
+{
+  "template_id": "K68-1019-FIXED70-04",
+  "pair": [
+    "think",
+    "connect"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "以唯一已核验Result Object读取六维分数；不在JSON中储存某个儿童的样本分数",
+    "按六维实际得分降序选择前两项作为15选1的无序组合索引；相同分数仅以冻结域顺序决定索引，不代表真实兴趣优先级",
+    "Gap只等于所选最高两个实际分数之差；G00=0、G10=10、G20=20、G30>=30，G30正文显示真实差额",
+    "保留全六维并列名次：第二第三同分时说明并列第二；前三同分时三者均列第一；必要时显示更多并列，不凭索引降级",
+    "第三维及同分方向必须根据真实分数调用对应专业内容；固定Think+Connect+Discover中的Discover只是历史模板素材，不是儿童必然第三名",
+    "Top1可能反转，活动目的和第一第二表述以实际得分为准；G00不人为指定强弱",
+    "差距不决定活动次数、训练强度、心理类型或长期课程，优先尊重儿童自主选择和反复体验",
+    "固定70%保持不变，使用原9个装配槽位插入30%变量；不得叠加重复摘要或将变量插入表格错误位置",
+    "缺少真实30题逐题证据时REAL_EVIDENCE=BLOCKED，禁止正式儿童个人报告；QA提示不进入家长正文"
+  ],
+  "facet_rules": {
+    "think": "仅凭真实逐题证据细化规则和解题偏好",
+    "connect": "仅凭真实逐题证据细化交流、合作及共同参与偏好",
+    "third": "第三维须依据实际分数和并列动态判断，不把Discover固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-04-G20",
+  "gap_code": "G20",
+  "eligibility": "gap == 20",
+  "label": "思考重心更明显：验证合作的独立吸引力",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "think": 90,
+      "connect": 70,
+      "discover": 60,
+      "build": 50,
+      "create": 40,
+      "move": 30
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差20分。思考比连接高20分，本次回答的相对重心更偏向寻找规律与解决问题。但连接仍排第二，需要用不要求解谜的合作活动观察交流与共同参与是否能够独立吸引孩子。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜思考90分、创造70分、探索60分。思考比连接高20分，本次回答的相对重心更偏向寻找规律与解决问题。但连接仍排第二，需要用不要求解谜的合作活动观察交流与共同参与是否能够独立吸引孩子。",
+      "reverse_top1": {
+        "leading_domain": "connect",
+        "secondary_domain": "think",
+        "text_template": "连接得分高于思考20分，本次更突出共同参与的兴趣。可从合作游戏、轮流协商和共同任务开始，同时提供不以合作为要求的解谜机会，观察思考过程本身是否也有吸引力。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "思考90分、连接70分，实际差20分；探索60分。相对重心更清晰，但并不证明孩子更聪明、喜欢单独行动或缺乏合作能力。应把独立解题与非解题合作分开呈现，再观察是否愿意在一个任务中结合。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "共同解谜可能因题目本身而吸引孩子，不能因此确认对合作过程有兴趣。先设置独立的策略题，再设置没有答案竞争的合作搭建或共同创作，观察孩子在何种过程里更加自愿投入。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "对领先的思考兴趣提供多样化规则游戏，观察是否享受找办法而非赢",
+        "给连接独立舞台：合作布置、共同创作或双人搭建，不把它仅当解题辅助",
+        "用合作解谜作为桥接，看孩子能否同时享受问题与同伴交流",
+        "探索方向可独立观察变化，保留第三种兴趣入口"
+      ],
+      "third_domain_dynamic": true,
+      "reverse_top1": {
+        "leading_domain": "connect",
+        "secondary_domain": "think",
+        "approval": "K68-1020-TASK9",
+        "items": [
+          "对连接兴趣提供合作布置、共同创作或双人搭建，观察孩子是否享受交流、协商与共同完成，不只看共同成果",
+          "给思考独立舞台：提供无需合作的规则与策略游戏，观察是否享受找办法而非赢，不把思考仅当合作任务的辅助",
+          "用合作解谜作为桥接，看孩子能否同时享受问题与同伴交流",
+          "另外保留独立观察变化的探索体验，不预设探索在本次结果中的排名"
+        ]
+      }
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜合作解谜：观察吸引力来自谜题本身还是共同讨论、倾听与协商",
+        "活动B｜单人路线：独立验证寻找规律和比较方案的吸引力",
+        "独立合作对照：共同制作或分工任务无需正确答案，观察愿否主动参与"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "保持多种思考体验而非单纯增加题量",
+        "安排没有成绩比较的合作体验，重视交流和共同完成的快乐",
+        "将两项先独立观察，再邀请孩子自主结合",
+        "不以20分差给孩子贴独立或社交能力标签"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "是否主动返回不依赖伙伴的策略活动？",
+        "在无正确答案的合作活动中仍愿意交流分享吗？",
+        "合作解谜时孩子关注的是方案还是与人合作？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

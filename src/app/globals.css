@@ -5254,3 +5254,205 @@ a {
     page-break-after: avoid;
   }
 }
+
+/* K68-1020 PROFESSIONAL REPORT PRINT */
+@media print {
+  .k68-1020-professional-report {
+    background: #ffffff !important;
+    color: #242c40 !important;
+    font-size: 10pt;
+    line-height: 1.45;
+  }
+
+  .k68-1020-professional-report .personality-report-section {
+    border: 0 !important;
+    background: #ffffff !important;
+    margin-top: 6mm !important;
+  }
+
+  .k68-1020-professional-report .personality-report-section-header {
+    border-bottom: 1.5px solid #6d4acb !important;
+    padding: 2mm 0 3mm !important;
+  }
+
+  .k68-1020-professional-report .personality-report-section-header h2 {
+    color: #6045b3 !important;
+    font-size: 15pt !important;
+    line-height: 1.3 !important;
+  }
+
+  .k68-1020-professional-report .report-print-flow-block {
+    padding: 3mm 0 !important;
+  }
+
+  .k68-1020-professional-report .fixed-report-rich-content > h2,
+  .k68-1020-professional-report .fixed-report-rich-content > h3,
+  .k68-1020-professional-report .fixed-report-rich-content > h4 {
+    color: #6045b3 !important;
+  }
+
+  .k68-1020-professional-report .fixed-report-rich-content table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .k68-1020-professional-report .fixed-report-rich-content table th {
+    background: #202b49 !important;
+    color: #ffffff !important;
+    font-weight: 700;
+  }
+
+  .k68-1020-professional-report .fixed-report-rich-content table td {
+    border: 1px solid #cbd0da;
+  }
+
+  .k68-1020-professional-report .fixed-report-rich-content table tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .k68-1020-professional-report .fixed-report-rich-content > blockquote {
+    border-left: 3px solid #8062d0;
+    background: #f2effb !important;
+    padding: 2mm 3mm !important;
+  }
+
+  .k68-1020-professional-report .report-table-of-contents {
+    border: 1px solid #d9d4e5 !important;
+  }
+}
+
+
+/* K68-1020 FIRST PAGE COMPACT V1 */
+@media print {
+
+  /* 六维分数：三列两行 */
+  .k68-1020-professional-report > .personality-report-container > section:first-of-type
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 1px !important;
+    margin-top: 3mm !important;
+  }
+
+  .k68-1020-professional-report > .personality-report-container > section:first-of-type
+  article {
+    padding: 2mm 3mm !important;
+  }
+
+  .k68-1020-professional-report > .personality-report-container > section:first-of-type
+  article h3 {
+    margin-top: 0.5mm !important;
+    font-size: 9pt !important;
+  }
+
+  .k68-1020-professional-report > .personality-report-container > section:first-of-type
+  article p {
+    margin-top: 0.5mm !important;
+  }
+
+  /* 组合信息压缩 */
+  .k68-1020-professional-report > .personality-report-container > section:first-of-type
+  .border-t {
+    margin-top: 2mm !important;
+    padding-top: 2mm !important;
+  }
+
+  /* 目录：两列六行 */
+  .k68-1020-professional-report .report-table-of-contents {
+    margin-top: 3mm !important;
+    padding: 2mm 3mm !important;
+  }
+
+  .k68-1020-professional-report .report-table-of-contents ol {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    column-gap: 5mm !important;
+    row-gap: 0 !important;
+  }
+
+  .k68-1020-professional-report .report-table-of-contents li {
+    min-width: 0;
+  }
+
+  .k68-1020-professional-report .report-table-of-contents a {
+    padding: 1mm 0 !important;
+    font-size: 8.5pt !important;
+  }
+
+  /* 首页上方间距压缩 */
+  .k68-1020-professional-report .personality-report-header {
+    padding-bottom: 2mm !important;
+  }
+
+  /* 正文从第二页开始 */
+  .k68-1020-professional-report
+  .personality-report-container > div.mt-10.space-y-10 {
+    break-before: page !important;
+    page-break-before: always !important;
+  }
+}
+
+
+/* K68-1020 FIRST PAGE FIT V2 */
+@media print {
+
+  /* 整个目录不得跨页 */
+  .k68-1020-professional-report .report-table-of-contents {
+    break-inside: avoid-page !important;
+    page-break-inside: avoid !important;
+    padding: 1.5mm 2.5mm !important;
+    margin-top: 2mm !important;
+  }
+
+  .k68-1020-professional-report .report-table-of-contents ol {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    row-gap: 0 !important;
+    margin-top: 1mm !important;
+  }
+
+  .k68-1020-professional-report .report-table-of-contents li {
+    break-inside: avoid !important;
+    line-height: 1.1 !important;
+  }
+
+  .k68-1020-professional-report .report-table-of-contents a {
+    padding: 0.6mm 0 !important;
+    min-height: 0 !important;
+    font-size: 8pt !important;
+  }
+
+  /* 缩减首页分数区高度 */
+  .k68-1020-professional-report
+  .personality-report-container > section:first-of-type {
+    padding: 2mm 3mm !important;
+  }
+
+  .k68-1020-professional-report
+  .personality-report-container > section:first-of-type article {
+    padding: 1mm 2mm !important;
+  }
+
+  .k68-1020-professional-report
+  .personality-report-container > section:first-of-type article p {
+    margin: 0 !important;
+    line-height: 1.15 !important;
+  }
+
+  .k68-1020-professional-report
+  .personality-report-container > section:first-of-type article h3 {
+    margin: 0.5mm 0 !important;
+    line-height: 1.15 !important;
+  }
+
+  /* 控制开篇说明高度 */
+  .k68-1020-professional-report .personality-report-header {
+    padding-bottom: 1mm !important;
+  }
+
+  /* 正文仍从下一页开始 */
+  .k68-1020-professional-report
+  .personality-report-container > div.mt-10.space-y-10 {
+    break-before: page !important;
+    page-break-before: always !important;
+  }
+}

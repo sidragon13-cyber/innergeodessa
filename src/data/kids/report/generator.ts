@@ -1,3 +1,4 @@
+import { bindK68Content1020, k68BoundMarkdown, getK68ApprovedDomainAssets, type K68ContentBinding } from "./content-binding";
 import type {
   K68ReportFacts,
   K68ReportItemResponse,
@@ -53,8 +54,10 @@ export interface GeneratedK68ReportSection {
 }
 
 export interface GeneratedK68ProfessionalReport {
+  readonly contentVersion?: "K68-1020";
+  readonly contentBinding?: K68ContentBinding;
   readonly reportVersion:
-    typeof K68_PROFESSIONAL_REPORT_VERSION;
+    typeof K68_PROFESSIONAL_REPORT_VERSION | "K68-1020";
 
   readonly resultId: string;
   readonly sessionId: string;
@@ -158,7 +161,33 @@ function buildEvidenceMarkdown(
 
 export function generateK68ProfessionalReport(
   facts: K68ReportFacts,
+  options?: { readonly contentVersion: "K68-1020" },
 ): GeneratedK68ProfessionalReport {
+  if (options?.contentVersion === "K68-1020") {
+    const binding = bindK68Content1020(facts);
+    const sections = binding.sections.map(section => ({
+      id: section.id,
+      content: k68BoundMarkdown(section.blocks),
+    }));
+    const source = {
+      sourcePath: binding.source.path,
+      sha256: binding.source.sha256,
+      markdown: sections.map(section => section.content).join("\n\n"),
+    };
+    return {
+      reportVersion: "K68-1020",
+      contentVersion: "K68-1020", contentBinding: binding,
+      resultId: facts.resultId, sessionId: facts.sessionId,
+      questionBankVersion: facts.questionBankVersion,
+      scoringVersion: facts.scoringVersion,
+      rawScores: facts.rawScores, scores: facts.scores,
+      domainRanking: binding.selection.ranking,
+      primaryCombination: resolveK68PrimaryCombination({...facts, ranking: binding.selection.ranking}),
+      itemResponses: facts.itemResponses,
+      sources: {mother: source, domains: getK68ApprovedDomainAssets(), combination: source},
+      sections,
+    };
+  }
   const primaryCombination =
     resolveK68PrimaryCombination(
       facts,

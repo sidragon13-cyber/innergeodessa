@@ -1,0 +1,153 @@
+{
+  "template_id": "K68-1019-FIXED70-14",
+  "pair": [
+    "create",
+    "move"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "Gap=top1实际分数-top2实际分数；G00=0 G10=10 G20=20 G30+=30以上",
+    "第三维、排名和并列关系必须从六维实际结果读取",
+    "不从兴趣分数推断能力、人格、行为顺序或长期稳定性"
+  ],
+  "facet_rules": {
+    "create": "只有真实逐题数据才能细化想象、叙事及表达的具体偏好",
+    "move": "只有真实逐题数据才能细化移动、节奏和身体体验的具体偏好",
+    "third": "第三维必须依据实际分数和并列动态判断，不把Discover固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-14-G20",
+  "gap_code": "G20",
+  "eligibility": "gap == 20",
+  "label": "创造重心更突出：验证行动兴趣的独立吸引力",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "create": 90,
+      "move": 70,
+      "discover": 60,
+      "think": 50,
+      "build": 40,
+      "connect": 30
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差20分。创造90分、行动70分，实际相差20分；探索60分第三。本次更多选择落在想象、故事与表达过程，但行动仍然排第二。需要观察孩子在不需要创造故事的情况下，是否仍自愿参与运动和身体挑战，而非只把行动当成表演工具。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜创造90分、行动70分，实际相差20分；探索60分第三。本次更多选择落在想象、故事与表达过程，但行动仍然排第二。需要观察孩子在不需要创造故事的情况下，是否仍自愿参与运动和身体挑战，而非只把行动当成表演工具。",
+      "reverse_top1": {
+        "leading_domain": "move",
+        "secondary_domain": "create",
+        "text_template": "行动得分高于创造20分，本次更突出身体参与和动态挑战的兴趣。可从适龄运动或节奏活动开始，同时保留无需表演或身体参与的故事、绘画等体验，观察创造是否也有独立吸引力。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "创造90分比行动70分高20分，探索60分第三。分差提示本次问卷中的兴趣重心更清晰，不代表表达能力高于运动能力。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "个人创作检验对自由表达的独立兴趣；无角色、无剧本的身体游戏检验行动的独立吸引力；动作故事帮助比较两者如何结合。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "提供不同形式的自由创作，如故事角色和绘画构思",
+        "安排独立的节奏、户外移动或游戏挑战，不要求讲故事",
+        "比较动作故事与单独创作中哪些环节吸引孩子",
+        "探索第三维通过好奇观察活动继续开放"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜动作故事：允许自由选择表达或行动，不以表演质量评价",
+        "活动B｜个人创作：观察不需要动作时是否仍自主创作",
+        "提供无情节的身体活动，检验第二兴趣的独立吸引力"
+      ],
+      "exclude_fixed_activities": true,
+      "reverse_top1": {
+        "leading_domain": "move",
+        "secondary_domain": "create",
+        "approval": "K68-1020-TASK9",
+        "items": [
+          "活动A｜动作故事：允许自由选择表达或行动，不以表演质量评价",
+          "活动B｜个人创作：观察不需要动作时是否仍自主创作",
+          "提供无情节的身体活动，观察没有故事或表演要求时，移动、节奏和身体参与本身是否仍有吸引力"
+        ]
+      }
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "支持自主重复的创作活动，不机械加量",
+        "为行动提供不附属创作任务的独立入口",
+        "观察参与时的快乐、主动选择和再次返回",
+        "继续提供探索发现的机会"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "没有观众或动作任务时仍愿意创作吗？",
+        "没有角色、故事时仍想参与运动吗？",
+        "动作故事中最吸引的是表达还是行动？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

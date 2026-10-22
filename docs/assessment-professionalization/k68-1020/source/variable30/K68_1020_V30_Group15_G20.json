@@ -1,0 +1,154 @@
+{
+  "template_id": "K68-1019-FIXED70-15",
+  "pair": [
+    "connect",
+    "move"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "Gap=top1实际分数-top2实际分数；G00=0 G10=10 G20=20 G30+=30以上",
+    "第三维、排名和并列关系必须从六维实际结果读取",
+    "不从兴趣分数推断能力、人格、行为顺序或长期稳定性"
+  ],
+  "facet_rules": {
+    "connect": "只有真实逐题数据才能细化合作、交流和共同参与的具体偏好",
+    "move": "只有真实逐题数据才能细化移动、节奏和身体体验的具体偏好",
+    "third": "第三维必须依据实际分数和并列动态判断，不把Discover固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-15-G20",
+  "gap_code": "G20",
+  "eligibility": "gap == 20",
+  "label": "合作兴趣重心更明确：验证行动的独立吸引力",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "connect": 90,
+      "move": 70,
+      "discover": 60,
+      "think": 50,
+      "build": 40,
+      "create": 30
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差20分。连接90分、行动70分，相差20分；探索60分第三。共同参与在本轮问卷中形成较明确的兴趣重心，但行动仍排第二。应区别孩子是喜欢与人商量、轮流和共同完成，还是在没有团队要求时也愿意自主参加运动与路线挑战。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜连接90分、行动70分，相差20分；探索60分第三。共同参与在本轮问卷中形成较明确的兴趣重心，但行动仍排第二。应区别孩子是喜欢与人商量、轮流和共同完成，还是在没有团队要求时也愿意自主参加运动与路线挑战。",
+      "reverse_top1": {
+        "leading_domain": "move",
+        "secondary_domain": "connect",
+        "text_template": "行动得分高于连接20分，本次更突出身体参与和动态挑战的兴趣。可从孩子自主选择的运动或路线活动开始，同时提供不以运动为要求的合作体验，观察交流与共同完成是否也能独立吸引孩子。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "连接90分比行动70分高20分；探索60分列第三。重心是相对分数关系，不是社交能力、领导力或动作能力的等级。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "安静合作任务检验共同参与的独立兴趣；个人路线任务检验身体行动是否独立吸引；合作障碍路线提供两种兴趣可能相互联系的场景。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "用不同形式合作游戏检验是否真正享受交流和共同决策",
+        "开放不需要合作的个人路线与节奏活动，验证第二兴趣独立性",
+        "比较合作路线与单独运动中主动投入的差别",
+        "保持探索第三维的独立观察和发现机会"
+      ],
+      "third_domain_dynamic": true,
+      "reverse_top1": {
+        "leading_domain": "move",
+        "secondary_domain": "connect",
+        "approval": "K68-1020-TASK9",
+        "items": [
+          "用不同形式合作游戏检验是否真正享受交流和共同决策",
+          "开放不需要合作的个人路线与节奏活动，观察身体移动和节奏参与本身是否持续吸引孩子，而不只在共同游戏时参与",
+          "比较合作路线与单独运动中主动投入的差别",
+          "保留独立观察和发现的探索机会，不预设探索在本次结果中的排名"
+        ]
+      }
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜合作障碍路线：观察沟通协商与路线挑战哪个更有吸引力",
+        "活动B｜个人路线挑战：检验没有合作任务时的行动兴趣",
+        "安排无需运动的合作桌游，判断合作兴趣是否独立存在"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "支持孩子自主重复选择的合作过程，不增加强制协作",
+        "持续提供独立运动入口而不作为合作任务附属",
+        "比较不同情境下的快乐、参与和再次返回",
+        "探索兴趣继续用观察变化的活动开放"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "静态合作任务是否也愿意持续参加？",
+        "独立路线挑战能否带来相同的参与快乐？",
+        "共同完成时主要喜欢商量还是身体挑战？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

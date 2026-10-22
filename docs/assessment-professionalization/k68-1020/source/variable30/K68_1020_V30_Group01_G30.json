@@ -1,0 +1,155 @@
+{
+  "template_id": "K68-1018-FIXED70-01",
+  "pair": [
+    "think",
+    "discover"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "以唯一已核验Result Object读取六维分数；不在JSON中储存某个儿童的样本分数",
+    "按六维实际得分降序选择前两项作为15选1的无序组合索引；相同分数仅以冻结域顺序决定索引，不代表真实兴趣优先级",
+    "Gap只等于所选最高两个实际分数之差；G00=0、G10=10、G20=20、G30>=30，G30正文显示真实差额",
+    "保留全六维并列名次：第二第三同分时说明并列第二；前三同分时三者均列第一；必要时显示更多并列，不凭索引降级",
+    "第三维及同分方向必须根据真实分数调用对应专业内容；固定Think+Discover+Build中的Build只是历史模板素材，不是儿童必然第三名",
+    "Top1可能反转，活动目的和第一第二表述以实际得分为准；G00不人为指定强弱",
+    "差距不决定活动次数、训练强度、心理类型或长期课程，优先尊重儿童自主选择和反复体验",
+    "固定70%保持不变，使用原9个装配槽位插入30%变量；不得叠加重复摘要或将变量插入表格错误位置",
+    "缺少真实30题逐题证据时REAL_EVIDENCE=BLOCKED，禁止正式儿童个人报告；QA提示不进入家长正文"
+  ],
+  "facet_rules": {
+    "think": "仅从该维真实5题映射区分规律/比较方法/预测/具体解题等",
+    "discover": "仅从该维真实5题映射区分观察变化/尝试/追问/结果比较等",
+    "third": "只对实际第三维提取题目级特征；与第二并列时同等解释"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1018-V30-01-G30",
+  "gap_code": "G30",
+  "eligibility": "gap >= 30",
+  "label": "明显相对主次",
+  "not_final_child_report": true,
+  "reference_samples": [
+    "K68_1017_Gap0_80_80_Optimized_Final.docx",
+    "K68_1017_Gap10_80_70_Optimized_Final.docx",
+    "K68_1017_Gap20_90_70_Optimized_Final.docx",
+    "K68_1017_Gap30Plus_90_60_Optimized_Final.docx"
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际分差为{gap}分，属于30分及以上档：问卷呈现相对集中的偏好，不等于天赋或永久稳定兴趣。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "{top1_name}{top1_score}分、{top2_name}{top2_score}分，实际分差{gap}分。第一兴趣在本次问卷中明显领先；{third_priority_sentence} 这提示优先验证领先兴趣是否在多种形式中持续吸引孩子，同时检查其他方向是否因接触机会或活动方式不同而暂时不突出。"
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "本次{top1_name}{top1_score}分明显领先，显示孩子在题目所描述的活动里对规律、方案比较与问题解决的相对偏好更集中。{top2_name}{top2_score}分仍是第二方向，但绝不能从分差推出“不好奇”或缺少潜力。{third_priority_sentence} 还需区分高分是真正反复喜欢的过程，还是近期接触较多的活动形式。",
+      "reverse_top1": {
+        "leading_domain": "discover",
+        "secondary_domain": "think",
+        "text_template": "探索得分明显高于思考，本次结果更突出发现未知与观察变化的活动兴趣。可从不同对象和场景中的探索体验开始，观察孩子是否反复主动参与，同时保留低压力的解谜和规律游戏。分差不代表思考能力不足，也不能确定兴趣会长期保持不变。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。"
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "大分差时最应避免“既然得分高就持续强化这一项”。先用几种不同形式检验第一兴趣的吸引力是否稳定，再让第二与第三方向获得容易接触、没有表现压力的机会。若孩子在新材料下突然喜欢探索或制作，这也是值得记录的新证据，而不是与报告冲突。{tie_expansion_sentence}"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "丰富领先过程，而非简单加量：分别试规则推理、开放策略与生活问题解决，看孩子是否真正喜欢其中共同的思考过程",
+        "检验近期经验的影响：问问孩子以前是否接触过这些活动，换成陌生但适龄的形式，观察偏好能否迁移",
+        "低门槛重新打开第二兴趣：在不要求正确答案的自然观察中给予主动选择权，避免第一兴趣遮盖其他乐趣",
+        "给第三方向独立机会：提供{third_hobby_option}，不把低于第一项解释为能力弱或不值得培养"
+      ],
+      "third_domain_dynamic": true,
+      "reverse_top1": {
+        "leading_domain": "discover",
+        "secondary_domain": "think",
+        "approval": "K68-1020-TASK9",
+        "items": [
+          "丰富探索过程，而非简单加量：分别尝试自然观察、材料变化和科学小实验，看孩子是否反复享受观察、尝试和发现",
+          "检验近期经验的影响：问问孩子以前是否接触过这些活动，换成陌生但适龄的形式，观察偏好能否迁移",
+          "低门槛开放思考兴趣：提供容易上手的规律、路线或策略游戏，让孩子自主选择，不以答对或获胜作为参与要求",
+          "给其他兴趣独立机会，不把低于第一项解释为能力弱或不值得培养"
+        ]
+      }
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜同一种思考、三种玩法：可选策略棋、路线推理或生活小难题，让孩子自己挑最喜欢的一种，记录投入点和主动返回，而非持续增加难度",
+        "活动B｜没有目标的新奇探索：允许孩子自己选想看的植物、天气或实验现象，不要求写结论，观察是否出现原问卷未表现的乐趣",
+        "开放补充｜轻松的搭建或制作环节由孩子主导；特别留意对陌生活动的第一次拒绝是否只是材料或体验机会问题"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "起点：提供两三种不同形式的第一兴趣入口，确认偏好是否针对共同过程而非某个熟悉游戏",
+        "机会检查：有意识地开放第二和第三方向的轻松活动，了解孩子此前是否缺少接触",
+        "迁移检验：让孩子在陌生材料和不同地点自主决定是否延续领先兴趣，留意主动回访与快乐感",
+        "回顾：在确实持续自选时适度丰富材料；若兴趣变化则同步调整，不把当前高分当未来培养承诺"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "从熟悉解谜换成不熟悉的问题情境，孩子还愿意主动参与吗？",
+        "第二、第三兴趣得分相对较低，是因为不喜欢过程，还是此前少有体验机会？",
+        "没有奖励、成绩与催促时，孩子是否仍享受领先兴趣？"
+      ]
+    }
+  },
+  "optimization_note": "四档差异必须体现于结论、三维关系、兴趣发展目的、活动设计理由、家庭支持与后续观察；不依赖分数替换、形容词替换或末尾附注。仅真实题项数据可支持逐题行为判断。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

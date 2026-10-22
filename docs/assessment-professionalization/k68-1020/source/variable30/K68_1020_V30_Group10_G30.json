@@ -1,0 +1,153 @@
+{
+  "template_id": "K68-1019-FIXED70-10",
+  "pair": [
+    "build",
+    "create"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "Gap=top1实际分数-top2实际分数；G00=0 G10=10 G20=20 G30+=30以上",
+    "第三维、排名和并列关系必须从六维实际结果读取",
+    "不从兴趣分数推断能力、人格、行为顺序或长期稳定性"
+  ],
+  "facet_rules": {
+    "build": "仅凭真实题目级证据细化搭建、调整与制作兴趣",
+    "create": "仅凭真实题目级证据细化想象、表达与自由创作兴趣",
+    "third": "第三维必须依据实际分数和并列动态判断，不把Think固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-10-G30",
+  "gap_code": "G30",
+  "eligibility": "gap >= 30",
+  "label": "建构明显领先：验证跨形式持续性并重新开放创造机会",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "build": 100,
+      "create": 60,
+      "discover": 50,
+      "think": 40,
+      "connect": 30,
+      "move": 20
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差40分。建构100分、创造60分，实际差40分；探索50分列第三。本次制作、搭建与调整结构的相对偏好集中，但不能认为孩子不擅长创造。应观察建构兴趣是否跨材料持续出现，同时给想象和表达低压力、可自由拒绝的入口。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜建构100分、创造60分，实际差40分；探索50分列第三。本次制作、搭建与调整结构的相对偏好集中，但不能认为孩子不擅长创造。应观察建构兴趣是否跨材料持续出现，同时给想象和表达低压力、可自由拒绝的入口。",
+      "reverse_top1": {
+        "leading_domain": "create",
+        "secondary_domain": "build",
+        "text_template": "创造得分明显高于建构，本次结果更偏向表达自己的想法。可在故事、画面或角色等不同形式中观察孩子是否主动创作，同时保留可自主选择的搭建与制作体验。分差不代表动手能力不足，也不能确认艺术天赋。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "建构100分、创造60分，实际相差40分；探索50分。较集中偏好不能解释为能力天赋或永久兴趣。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "换不同材料和用途检验建构本身的吸引力；另让孩子不做任何成品就自由讲故事、设计角色，检查此前接触机会对创造分数的影响。小空间活动允许孩子自行选择做或说，不强制从想象到制作的顺序。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "用积木、纸板、可回收材料检验是否都乐于搭建改进",
+        "创造机会不设成品目标：绘画、口述故事、角色设定任选",
+        "设计小空间可由孩子自由尝试，不规定必须先想后做",
+        "探索独立开放观察不同材料与自然变化的机会"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜设计一个小空间：让孩子自由选择直接搭建、画出来或边做边改",
+        "活动B｜自由故事创作：无成品压力下是否享受表达新内容",
+        "补充不同建构材料，观察集中偏好是否跨形式持续"
+      ],
+      "exclude_fixed_activities": true,
+      "reverse_top1": {
+        "leading_domain": "create",
+        "secondary_domain": "build",
+        "approval": "K68-1020-TASK9",
+        "items": [
+          "活动A｜设计一个小空间：让孩子自由选择直接搭建、画出来或边做边改",
+          "活动B｜自由故事创作：无成品压力下是否享受表达新内容",
+          "补充不同故事、画面和角色表达形式，观察创造兴趣是否持续出现；也提供容易上手的建构材料，了解孩子是否愿意自主制作和调整，不以较低得分限制接触机会"
+        ]
+      }
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "检验建构兴趣是否跨时间和材料持续出现，而非简单强化训练",
+        "给创造轻松、无评价的独立入口，不凭分差撤除机会",
+        "允许孩子不完成成品，也不以作品质量决定资源投入",
+        "回顾近期材料与经验是否影响探索和创造机会"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "换成陌生材料还愿意反复试和调整吗？",
+        "只讲故事或画角色时是否也可能主动投入？",
+        "创造相对低分是否受材料熟悉度或体验机会影响？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

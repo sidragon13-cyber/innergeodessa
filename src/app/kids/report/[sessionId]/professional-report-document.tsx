@@ -164,7 +164,7 @@ export function K68ProfessionalReportDocument({
   const assembledSections =
     assembleK68ReportSections(
       report,
-      reportLocale,
+      report.contentVersion === "K68-1020" ? "zh" : reportLocale,
     );
 
   const primaryDomains =
@@ -186,9 +186,12 @@ export function K68ProfessionalReportDocument({
           index + 1,
 
         title:
-          SECTION_TITLES[
-            section.id
-          ][reportLocale],
+          (
+  report.contentVersion === "K68-1020"
+    ? report.contentBinding?.sections.find(item => item.id === section.id)?.titleZh
+      ?? SECTION_TITLES[section.id][reportLocale]
+    : SECTION_TITLES[section.id][reportLocale]
+),
       }),
     );
 
@@ -196,7 +199,11 @@ export function K68ProfessionalReportDocument({
     reportLocale === "zh";
 
   return (
-    <ReportShell>
+    <ReportShell
+      className={report.contentVersion === "K68-1020"
+        ? "k68-1020-professional-report"
+        : ""}
+    >
       <ReportHeader
         eyebrow="InnerGeo Kids"
         subtitle={
@@ -383,9 +390,11 @@ export function K68ProfessionalReportDocument({
             : "Table of Contents"
         }
         description={
-          isZh
-            ? "本报告共12个部分，从六维兴趣地图逐步进入行为信号、兴趣组合、探索建议与家长观察计划。"
-            : "This report contains 12 sections covering the six-domain interest map, behavioural evidence, interest combinations, exploration guidance, and a parent observation plan."
+          report.contentVersion === "K68-1020"
+            ? "本报告共8个部分，围绕兴趣结果、专业分析、探索活动与家长支持展开。"
+            : isZh
+              ? "本报告共12个部分，从六维兴趣地图逐步进入行为信号、兴趣组合、探索建议与家长观察计划。"
+              : "This report contains 12 sections covering the six-domain interest map, behavioural evidence, interest combinations, exploration guidance, and a parent observation plan."
         }
       />
 
@@ -421,9 +430,12 @@ export function K68ProfessionalReportDocument({
                     )}`
               }
               title={
-                SECTION_TITLES[
-                  section.id
-                ][reportLocale]
+                (
+  report.contentVersion === "K68-1020"
+    ? report.contentBinding?.sections.find(item => item.id === section.id)?.titleZh
+      ?? SECTION_TITLES[section.id][reportLocale]
+    : SECTION_TITLES[section.id][reportLocale]
+)
               }
               blocks={[
                 {

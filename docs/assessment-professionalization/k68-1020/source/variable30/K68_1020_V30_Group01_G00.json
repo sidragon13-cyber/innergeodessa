@@ -1,0 +1,138 @@
+{
+  "template_id": "K68-1018-FIXED70-01",
+  "pair": [
+    "think",
+    "discover"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "以唯一已核验Result Object读取六维分数；不在JSON中储存某个儿童的样本分数",
+    "按六维实际得分降序选择前两项作为15选1的无序组合索引；相同分数仅以冻结域顺序决定索引，不代表真实兴趣优先级",
+    "Gap只等于所选最高两个实际分数之差；G00=0、G10=10、G20=20、G30>=30，G30正文显示真实差额",
+    "保留全六维并列名次：第二第三同分时说明并列第二；前三同分时三者均列第一；必要时显示更多并列，不凭索引降级",
+    "第三维及同分方向必须根据真实分数调用对应专业内容；固定Think+Discover+Build中的Build只是历史模板素材，不是儿童必然第三名",
+    "Top1可能反转，活动目的和第一第二表述以实际得分为准；G00不人为指定强弱",
+    "差距不决定活动次数、训练强度、心理类型或长期课程，优先尊重儿童自主选择和反复体验",
+    "固定70%保持不变，使用原9个装配槽位插入30%变量；不得叠加重复摘要或将变量插入表格错误位置",
+    "缺少真实30题逐题证据时REAL_EVIDENCE=BLOCKED，禁止正式儿童个人报告；QA提示不进入家长正文"
+  ],
+  "facet_rules": {
+    "think": "仅从该维真实5题映射区分规律/比较方法/预测/具体解题等",
+    "discover": "仅从该维真实5题映射区分观察变化/尝试/追问/结果比较等",
+    "third": "只对实际第三维提取题目级特征；与第二并列时同等解释"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1018-V30-01-G00",
+  "gap_code": "G00",
+  "eligibility": "gap == 0",
+  "label": "双方向同分",
+  "not_final_child_report": true,
+  "reference_samples": [
+    "K68_1017_Gap0_80_80_Optimized_Final.docx",
+    "K68_1017_Gap10_80_70_Optimized_Final.docx",
+    "K68_1017_Gap20_90_70_Optimized_Final.docx",
+    "K68_1017_Gap30Plus_90_60_Optimized_Final.docx"
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次两项主兴趣同分，不能按测试分数判定主次。第三方向要以实际得分及是否并列来解释。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "{top1_name}{top1_score}分与{top2_name}{top2_score}分并列最高，说明两种活动偏好在本次问卷中处于相同的相对位置。{third_priority_sentence} 本次最值得探索的，不是选出唯一第一，而是分清孩子究竟享受“理解问题”“发现变化”，还是两种过程在同一活动中交替出现。"
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "本次两项主兴趣并列，说明问卷尚不能从两者中选出明确领先项。{top1_name}侧重寻找规律、比较方案；{top2_name}侧重接触未知、观察变化；{third_priority_sentence} 家长应分别辨别三种过程对孩子的吸引力，而不是把它们统称为“喜欢科学”。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。"
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "并列分数不等于两种兴趣在所有场景都同样强。一个孩子可能喜欢先解谜，也可能在看到意外结果时更兴奋；还能在搭建、测试中将两者自然连接。观察时把“主动开始”“活动中最投入的部分”“隔天自愿再选”分开记录，避免凭一次表现人为分出第一。{tie_expansion_sentence}"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "双入口并行：各给一项纯粹的{top1_name}体验和{top2_name}体验，不预设哪一个应优先",
+        "交汇入口：使用玩具车坡道等开放活动，让孩子自己决定是先推测、先试验还是改造材料；记录最吸引他的环节",
+        "第三方向独立入口：提供{third_hobby_option}，比较孩子是否愿意在不需要答题或寻找新奇的情况下自主动手",
+        "选择结论：根据跨情境的主动回访决定后续开放哪些入口，不按同分人为分配时间比例"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜双门选择：同时提供有不同解法的迷宫与自由观察桌，孩子自主先选，家长记录先选什么、最投入哪里，而非哪项完成更好",
+        "活动B｜先猜或先看：坡道与玩具车不指定玩法，观察孩子自然先提出假设、先动手测试，还是反复改变材料；不要求每一步都做",
+        "独立检验｜建构类自由制作：观察孩子是否在不需要预测答案时仍乐于亲手搭建和修改"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "起点：分别开放两种主要兴趣及第三方向的低压力入口，避免家长先给“第一兴趣”标签",
+        "第二次接触：观察孩子是否主动返回原先活动，尤其留意选择次序是否随场景而变",
+        "持续体验：若孩子自然融合两种过程，支持其自定小项目；若只愿意玩其中一种，也尊重事实",
+        "回顾：总结最有吸引力的具体活动过程，未来以真实选择更新兴趣认识，而不强行打破并列"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "两种活动都可选时，孩子先选哪一种？理由是内容、同伴还是玩法？",
+        "不同时段或场所，主动作出的选择是否变化？",
+        "活动中最快乐的是想出办法、发现未知，还是亲手测试？"
+      ]
+    }
+  },
+  "optimization_note": "四档差异必须体现于结论、三维关系、兴趣发展目的、活动设计理由、家庭支持与后续观察；不依赖分数替换、形容词替换或末尾附注。仅真实题项数据可支持逐题行为判断。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

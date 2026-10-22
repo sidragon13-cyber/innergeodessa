@@ -1,0 +1,143 @@
+{
+  "template_id": "K68-1019-FIXED70-11",
+  "pair": [
+    "build",
+    "connect"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "Gap=top1实际分数-top2实际分数；G00=0 G10=10 G20=20 G30+=30以上",
+    "第三维、排名和并列关系必须从六维实际结果读取",
+    "不从兴趣分数推断能力、人格、行为顺序或长期稳定性"
+  ],
+  "facet_rules": {
+    "build": "仅凭真实题目级证据细化搭建、调整与制作兴趣",
+    "connect": "仅凭真实题目级证据细化交流、合作与共同参与兴趣",
+    "third": "第三维必须依据实际分数和并列动态判断，不把Discover固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-11-G20",
+  "gap_code": "G20",
+  "eligibility": "gap == 20",
+  "label": "建构重心明显：检验合作参与是否独立吸引",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "build": 90,
+      "connect": 70,
+      "discover": 60,
+      "think": 50,
+      "create": 40,
+      "move": 30
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差20分。建构90分、连接70分，分差20分；探索60分排第三。问卷中亲手制作与修改结构更突出，但不能说明孩子不喜欢合作。需要区分独自搭建兴趣能否持续，以及没有制作任务的共同活动是否仍有吸引力。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜建构90分、连接70分，分差20分；探索60分排第三。问卷中亲手制作与修改结构更突出，但不能说明孩子不喜欢合作。需要区分独自搭建兴趣能否持续，以及没有制作任务的共同活动是否仍有吸引力。",
+      "reverse_top1": {
+        "leading_domain": "connect",
+        "secondary_domain": "build",
+        "text_template": "连接得分高于建构20分，本次更突出共同参与的兴趣。可从轮流协商、合作游戏和共同任务开始，同时保留孩子自主选择的制作体验，观察搭建和调整本身是否也有吸引力；制作可以独自进行，也可以与人合作。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "建构90分比连接70分高20分，探索60分列第三。更明确的问卷重心不代表操作能力更强、合作能力较弱或必须减少共同活动。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "保留个人搭建来验证结构试验的吸引力；另开放不涉及模型作品的合作任务来验证连接本身。双人纸桥是两者结合的观察机会，但不能用一个组合活动替代独立对照。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "建构方向提供不同材料和开放结构挑战，不机械升级难度",
+        "连接方向安排合作桌游或双人发现任务，不附加完成作品要求",
+        "双人纸桥用于观察结构调整与协商分工如何自然结合",
+        "探索第三维给纯观察、无作品要求的独立入口"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜双人纸桥：分开观察喜欢搭建改造还是讨论与共同完成",
+        "活动B｜个人搭建：重点观察自主改进是否跨不同材料持续",
+        "补充无制作目标的合作游戏，验证连接的独立吸引力"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "支持孩子自愿重复的制作过程，但不以分差安排训练量",
+        "连接兴趣应有独立机会，不只作为辅助制作的手段",
+        "观察制作遇到困难时是否愿意换办法，不以作品成绩替代兴趣证据",
+        "保留发现变化的第三维探索机会"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "独自面对新材料时仍主动搭建和修改吗？",
+        "离开制作任务，仍愿意与同伴共同游戏吗？",
+        "组合活动中孩子主动选择哪个参与过程？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

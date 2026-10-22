@@ -1,0 +1,143 @@
+{
+  "template_id": "K68-1019-FIXED70-11",
+  "pair": [
+    "build",
+    "connect"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "Gap=top1实际分数-top2实际分数；G00=0 G10=10 G20=20 G30+=30以上",
+    "第三维、排名和并列关系必须从六维实际结果读取",
+    "不从兴趣分数推断能力、人格、行为顺序或长期稳定性"
+  ],
+  "facet_rules": {
+    "build": "仅凭真实题目级证据细化搭建、调整与制作兴趣",
+    "connect": "仅凭真实题目级证据细化交流、合作与共同参与兴趣",
+    "third": "第三维必须依据实际分数和并列动态判断，不把Discover固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-11-G30",
+  "gap_code": "G30",
+  "eligibility": "gap >= 30",
+  "label": "建构显著领先：验证持续吸引并重新开放合作体验",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "build": 100,
+      "connect": 60,
+      "discover": 50,
+      "think": 40,
+      "create": 30,
+      "move": 20
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差40分。建构100分、连接60分，实际分差40分，探索50分列第三。当前问卷对独立制作和结构调整的偏好更集中，但不能推断孩子不擅长社交或不愿合作。应跨材料检验建构兴趣，并为合作提供无压力、可自主选择的入口。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜建构100分、连接60分，实际分差40分，探索50分列第三。当前问卷对独立制作和结构调整的偏好更集中，但不能推断孩子不擅长社交或不愿合作。应跨材料检验建构兴趣，并为合作提供无压力、可自主选择的入口。",
+      "reverse_top1": {
+        "leading_domain": "connect",
+        "secondary_domain": "build",
+        "text_template": "连接得分明显高于建构，本次结果更偏向与人交流、合作和共同完成。可在不同伙伴与活动中观察这种兴趣是否重复出现，同时保留低压力的制作和搭建机会。分差不代表动手能力不足，也不能推断孩子依赖他人或擅长社交。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "建构100分、连接60分，实际差40分；探索50分排第三。该分差只描述本轮活动偏好的相对结构，不代表长期性格和能力。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "让孩子在积木、纸板、模型等形式中自由搭建，观察是否仍愿意修改和测试。合作不要求共同完成产品，可以选择双人游戏、一起观察等活动。双人纸桥由孩子自行决定怎样参加，不预设社交意愿。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "建构跨材料体验：从积木、纸桥到纸板模型，观察共同的制作吸引力",
+        "连接低压力入口：共同观察或双人游戏，不用表现来评价社交能力",
+        "双人纸桥允许自己提出分工、一起制作或暂时旁观，不强迫参与顺序",
+        "探索方向开放新材料与自然变化观察，不因相对低分关闭机会"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜双人纸桥：尊重孩子对合作方式的选择，观察不同参与环节",
+        "活动B｜个人搭建：跨材料与不同日子检验建构兴趣持续性",
+        "补充不需实物作品的合作活动，检查连接偏好是否受接触机会影响"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "增加的是制作形式的丰富度，不是固定练习次数或难度",
+        "合作体验保持可拒绝、无评价，避免根据低分贴性格标签",
+        "记录不同材料下自愿返回制作的信号，以及合作机会是否充足",
+        "继续开放探索自然现象和变化的机会"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "换成新材料仍愿意独立搭建、试验和改进吗？",
+        "没有完成作品的压力时会不会愿意参与合作活动？",
+        "连接相对低分是否与活动熟悉度、近期机会有关？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

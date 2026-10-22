@@ -1,0 +1,144 @@
+{
+  "template_id": "K68-1018-FIXED70-01",
+  "pair": [
+    "think",
+    "discover"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "以唯一已核验Result Object读取六维分数；不在JSON中储存某个儿童的样本分数",
+    "按六维实际得分降序选择前两项作为15选1的无序组合索引；相同分数仅以冻结域顺序决定索引，不代表真实兴趣优先级",
+    "Gap只等于所选最高两个实际分数之差；G00=0、G10=10、G20=20、G30>=30，G30正文显示真实差额",
+    "保留全六维并列名次：第二第三同分时说明并列第二；前三同分时三者均列第一；必要时显示更多并列，不凭索引降级",
+    "第三维及同分方向必须根据真实分数调用对应专业内容；固定Think+Discover+Build中的Build只是历史模板素材，不是儿童必然第三名",
+    "Top1可能反转，活动目的和第一第二表述以实际得分为准；G00不人为指定强弱",
+    "差距不决定活动次数、训练强度、心理类型或长期课程，优先尊重儿童自主选择和反复体验",
+    "固定70%保持不变，使用原9个装配槽位插入30%变量；不得叠加重复摘要或将变量插入表格错误位置",
+    "缺少真实30题逐题证据时REAL_EVIDENCE=BLOCKED，禁止正式儿童个人报告；QA提示不进入家长正文"
+  ],
+  "facet_rules": {
+    "think": "仅从该维真实5题映射区分规律/比较方法/预测/具体解题等",
+    "discover": "仅从该维真实5题映射区分观察变化/尝试/追问/结果比较等",
+    "third": "只对实际第三维提取题目级特征；与第二并列时同等解释"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1018-V30-01-G10",
+  "gap_code": "G10",
+  "eligibility": "gap == 10",
+  "label": "轻微主次",
+  "not_final_child_report": true,
+  "reference_samples": [
+    "K68_1017_Gap0_80_80_Optimized_Final.docx",
+    "K68_1017_Gap10_80_70_Optimized_Final.docx",
+    "K68_1017_Gap20_90_70_Optimized_Final.docx",
+    "K68_1017_Gap30Plus_90_60_Optimized_Final.docx"
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次前两项兴趣相差10分：存在轻微的分数领先，但不足以证明长期固定的主次。须观察偏好是否跨活动重复。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "{top1_name}{top1_score}分、{top2_name}{top2_score}分，实际相差10分。第一兴趣在本次作答中略高，但两者仍较接近；{third_priority_sentence} 本次值得解释的是：这种轻微领先是否对应真实生活中可辨别的偏好，而不是立刻缩减第二兴趣的机会。"
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "本次{top1_name}{top1_score}分略高于{top2_name}{top2_score}分，提示孩子对“找规律、比较办法”的选择在本次问题中可能略多；“观察未知与变化”仍应有独立体验机会。{third_priority_sentence} 需要进一步区分：孩子是否喜欢解决问题本身，还是被同一活动的新变化吸引。",
+      "reverse_top1": {
+        "leading_domain": "discover",
+        "secondary_domain": "think",
+        "text_template": "探索得分略高于思考，两项得分接近。本次回答对观察未知、发现变化的活动表现出稍多偏好。可以分别提供自由观察和解谜体验，看孩子更愿意重复发现新事物，还是寻找规律、比较办法，不必据此规定活动顺序。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。"
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "十分的距离提示可能存在细微偏向，但两种兴趣仍可能随活动形式、材料和同伴而互换表现。重点是“轻微领先是否重复出现”：在不同日子用不同材料比较，若结果并不一致，就不宜固化为明确偏好。{tie_expansion_sentence}"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "先检验细微偏好：安排策略/解谜与自然观察两类同等容易进入的体验，比较自选时更常回到哪种过程",
+        "跨场景复核：将同一兴趣换成另一种形式，例如从棋盘路线转到生活问题，从植物观察转到光影变化，看看是否仍被吸引",
+        "桥接项目：让孩子先提出一个问题，再自行决定是否通过观察或测试回答；检验两项兴趣是相互促进还是各自独立",
+        "第三方向对照：加入{third_hobby_option}，避免把所有喜欢制作的表现错误归因于第一兴趣"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜两个不同答案的路线游戏：让孩子尝试或放弃不同解法，重点观察是否自发比较理由，不用完成速度判断兴趣",
+        "活动B｜同一对象两次新发现：让孩子隔天自行选择是否继续看植物、影子或天气，观察是否享受持续发现，而不仅是第一次的新鲜感",
+        "对照问题｜孩子对同一材料是更想“找对办法”，还是更想“看看会发生什么”？若答案随情境变化，不贴固定标签"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "起点：让主兴趣与第二兴趣以相近门槛出现，分差10分不转化成活动时长或训练频率",
+        "再次选择：隔几天换材料再提供相同两类过程，判断轻微偏好是否可重复",
+        "兴趣整合：邀请孩子设计一个既能推测又能发现的小游戏，看他更愿意掌控哪一个环节",
+        "回顾：只有在不同情境多次自主选择表现一致时，才提高相应材料的可获得性；仍开放第二兴趣"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "当两种体验难度接近时，孩子是否更频繁主动开始其中一种？",
+        "换材料或换场景后，轻微领先方向还会出现吗？",
+        "孩子是否愿意独立选择第二兴趣，还是只在包含第一兴趣时才愿意参与？"
+      ]
+    }
+  },
+  "optimization_note": "四档差异必须体现于结论、三维关系、兴趣发展目的、活动设计理由、家庭支持与后续观察；不依赖分数替换、形容词替换或末尾附注。仅真实题项数据可支持逐题行为判断。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

@@ -403,3 +403,46 @@ export function buildK68ReportFacts(
     itemResponses,
   };
 }
+
+/** Report-only projection. Does not rescore answers or mutate stored results. */
+export function resolveK68ReportSelection(
+  scores: Readonly<Record<K68ReportDomainId, number>>,
+) {
+  for (const domain of K68_REPORT_DOMAINS) {
+    const score = scores[domain];
+    if (!Number.isFinite(score) || score < 0 || score > 100 || score % 10 !== 0) {
+      throw new Error(`K68-1020 invalid score for ${domain}.`);
+    }
+  }
+  const ranking = [...K68_REPORT_DOMAINS].sort((a, b) =>
+    scores[b] - scores[a] || K68_REPORT_DOMAINS.indexOf(a) - K68_REPORT_DOMAINS.indexOf(b),
+  );
+  const [top1, top2, thirdDomain] = ranking;
+  const pair = [top1, top2].sort((a, b) =>
+    K68_REPORT_DOMAINS.indexOf(a) - K68_REPORT_DOMAINS.indexOf(b),
+  );
+  const pairs = K68_REPORT_DOMAINS.flatMap((a, index) =>
+    K68_REPORT_DOMAINS.slice(index + 1).map(b => `${a}-${b}`),
+  );
+  const combinationKey = `${pair[0]}-${pair[1]}`;
+  const gap = scores[top1] - scores[top2];
+  const gapCode = gap === 0 ? 'G00' : gap === 10 ? 'G10' : gap === 20 ? 'G20' : 'G30';
+  const rankGroups: {score: number; rank: number; domains: K68ReportDomainId[]}[] = [];
+  const ranks = {} as Record<K68ReportDomainId, number>;
+  ranking.forEach((domain, index) => {
+    let group = rankGroups[rankGroups.length - 1];
+    if (!group || group.score !== scores[domain]) {
+      group = {score: scores[domain], rank: index + 1, domains: []};
+      rankGroups.push(group);
+    }
+    group.domains.push(domain);
+    ranks[domain] = group.rank;
+  });
+  return {
+    ranking, ranks, rankGroups, top1, top2, gap, gapCode,
+    combinationKey, group: pairs.indexOf(combinationKey) + 1,
+    reversed: gap > 0 && top1 !== pair[0],
+    thirdDomain, thirdRank: ranks[thirdDomain],
+    thirdDomains: ranking.filter(domain => scores[domain] === scores[thirdDomain]),
+  } as const;
+}

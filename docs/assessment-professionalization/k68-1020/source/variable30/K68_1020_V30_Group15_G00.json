@@ -1,0 +1,137 @@
+{
+  "template_id": "K68-1019-FIXED70-15",
+  "pair": [
+    "connect",
+    "move"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "Gap=top1实际分数-top2实际分数；G00=0 G10=10 G20=20 G30+=30以上",
+    "第三维、排名和并列关系必须从六维实际结果读取",
+    "不从兴趣分数推断能力、人格、行为顺序或长期稳定性"
+  ],
+  "facet_rules": {
+    "connect": "只有真实逐题数据才能细化合作、交流和共同参与的具体偏好",
+    "move": "只有真实逐题数据才能细化移动、节奏和身体体验的具体偏好",
+    "third": "第三维必须依据实际分数和并列动态判断，不把Discover固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-15-G00",
+  "gap_code": "G00",
+  "eligibility": "gap == 0",
+  "label": "合作与行动并列：共同参与和身体体验的双入口",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "connect": 80,
+      "move": 80,
+      "discover": 70,
+      "think": 50,
+      "build": 40,
+      "create": 30
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差0分。连接80分与行动80分并列最高，探索70分列第三。问卷没有显示两个主兴趣的分数主次；喜欢与人交流、分工合作，与喜欢路线移动、身体挑战，是两个不同的参与过程。可以分别观察合作游戏、独立身体活动，再看合作障碍路线是否自然连接两种兴趣。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜连接80分与行动80分并列最高，探索70分列第三。问卷没有显示两个主兴趣的分数主次；喜欢与人交流、分工合作，与喜欢路线移动、身体挑战，是两个不同的参与过程。可以分别观察合作游戏、独立身体活动，再看合作障碍路线是否自然连接两种兴趣。"
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "连接80分和行动80分并列第一；探索70分第三。相同得分意味着本轮问卷无法判定主次，不代表合作能力、运动能力相当或都很强。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "合作任务观察孩子是否享受商量、轮流和共同完成；独立路线观察不依赖同伴时是否仍喜欢移动挑战；组合路线再看两者是否自然促进。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "提供无需运动的合作游戏，观察交流与共同决策是否独立吸引孩子",
+        "提供没有组队任务的自选路线或节奏游戏，观察身体体验本身",
+        "在合作障碍路线中让孩子自由选择分工、移动及调整方式",
+        "探索第三维继续提供独立观察变化的机会"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜合作障碍路线：观察协作交流与身体参与哪个环节最吸引孩子",
+        "活动B｜个人路线挑战：在不需要合作时观察行动兴趣",
+        "加入无需跑跳的合作活动，对照连接兴趣是否独立存在"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "平等开放合作与个人身体活动，不人为安排主次",
+        "允许孩子选择一起玩、自己行动或临时退出",
+        "记录主动选择、过程中最享受的环节与再次参与",
+        "保留观察发现的探索机会"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "不需要跑跳时是否仍喜欢与别人协作？",
+        "没有伙伴参与时是否仍愿意选择路线挑战？",
+        "合作障碍路线最吸引的是共同完成还是亲身移动？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

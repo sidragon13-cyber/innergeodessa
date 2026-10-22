@@ -1,0 +1,154 @@
+{
+  "template_id": "K68-1019-FIXED70-12",
+  "pair": [
+    "build",
+    "move"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "Gap=top1实际分数-top2实际分数；G00=0 G10=10 G20=20 G30+=30以上",
+    "第三维、排名和并列关系必须从六维实际结果读取",
+    "不从兴趣分数推断能力、人格、行为顺序或长期稳定性"
+  ],
+  "facet_rules": {
+    "build": "仅凭真实题目级证据细化搭建、调整与制作兴趣",
+    "move": "仅凭真实题目级证据细化身体行动、路线与亲身体验兴趣",
+    "third": "第三维必须依据实际分数和并列动态判断，不把Discover固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-12-G20",
+  "gap_code": "G20",
+  "eligibility": "gap == 20",
+  "label": "建构重心较明确：保留身体行动的独立价值",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "build": 90,
+      "move": 70,
+      "discover": 60,
+      "think": 50,
+      "create": 40,
+      "connect": 30
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差20分。建构90分、行动70分，实际相差20分，探索60分列第三。本次更偏向亲手制作与调整结构，但身体移动仍是第二兴趣；应验证不伴随建构任务时是否也享受移动和身体挑战。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜建构90分、行动70分，实际相差20分，探索60分列第三。本次更偏向亲手制作与调整结构，但身体移动仍是第二兴趣；应验证不伴随建构任务时是否也享受移动和身体挑战。",
+      "reverse_top1": {
+        "leading_domain": "move",
+        "secondary_domain": "build",
+        "text_template": "行动得分高于建构20分，本次更突出身体参与和动态挑战的兴趣。可从适龄运动或路线体验开始，同时保留无需随后进行身体挑战的制作活动，观察建构过程是否也有独立吸引力。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "建构90分高于行动70分20分，探索60分第三。较明显的相对重心只说明问卷中喜欢的活动过程不同，不证明动手能力或身体能力强弱。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "个人搭建用于检验对结构与改进的独立兴趣；不需设计障碍物的户外活动用于检验行动兴趣。组合路线观察两者如何相互补充，但不能只依靠这一任务代替对照。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "建构方向提供不同材料的自由结构项目，观察持续投入",
+        "行动方向安排不带制作目标的户外路线、节奏或身体游戏",
+        "组合障碍路线观察喜欢造路线还是实际尝试与调整",
+        "第三维探索在安全的自然观察和变化体验中独立出现"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜自己搭障碍路线：分辨孩子最喜欢制作路线还是身体通过",
+        "活动B｜个人搭建：观察没有运动奖励时是否主动修改结构",
+        "补充纯身体参与活动，辨认行动的独立吸引力"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "支持自愿重复的制作兴趣，不把20分变成训练次数",
+        "第二兴趣要有独立的身体活动机会，而非建构附属环节",
+        "记录真正喜欢的过程，而非作品成败、速度或动作表现",
+        "第三维探索保持可自由选择的观察体验"
+      ],
+      "avoid_repeating_base_plan": true,
+      "reverse_top1": {
+        "leading_domain": "move",
+        "secondary_domain": "build",
+        "approval": "K68-1020-TASK9",
+        "weeks": [
+          "支持孩子自愿重复选择的身体活动，不把分差变成训练次数，尊重体力与休息",
+          "为建构保留独立的制作与调整机会，不要求作品必须用于随后进行的身体活动",
+          "记录真正喜欢的过程，而非作品成败、速度或动作表现",
+          "另外保留可自由选择的观察体验，不预设探索在本次结果中的排名"
+        ]
+      }
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "没有运动任务时仍主动制作和改进吗？",
+        "没有制作任务时还会反复选择身体游戏吗？",
+        "障碍路线中对制作与移动的反应有什么差异？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

@@ -1,0 +1,149 @@
+{
+  "template_id": "K68-1019-FIXED70-06",
+  "pair": [
+    "discover",
+    "build"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "以唯一已核验Result Object读取六维分数；不在JSON中储存某个儿童的样本分数",
+    "按六维实际得分降序选择前两项作为15选1的无序组合索引；相同分数仅以冻结域顺序决定索引，不代表真实兴趣优先级",
+    "Gap只等于所选最高两个实际分数之差；G00=0、G10=10、G20=20、G30>=30，G30正文显示真实差额",
+    "保留全六维并列名次：第二第三同分时说明并列第二；前三同分时三者均列第一；必要时显示更多并列，不凭索引降级",
+    "第三维及同分方向必须根据真实分数调用对应专业内容；固定Discover+Build+Think中的Discover只是历史模板素材，不是儿童必然第三名",
+    "Top1可能反转，活动目的和第一第二表述以实际得分为准；G00不人为指定强弱",
+    "差距不决定活动次数、训练强度、心理类型或长期课程，优先尊重儿童自主选择和反复体验",
+    "固定70%保持不变，使用原9个装配槽位插入30%变量；不得叠加重复摘要或将变量插入表格错误位置",
+    "缺少真实30题逐题证据时REAL_EVIDENCE=BLOCKED，禁止正式儿童个人报告；QA提示不进入家长正文"
+  ],
+  "facet_rules": {
+    "discover": "仅凭真实逐题证据细化观察与发现偏好",
+    "build": "仅凭真实逐题证据细化制作和调整偏好",
+    "third": "第三维须依据实际分数和并列动态判断，不把Think固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-06-G20",
+  "gap_code": "G20",
+  "eligibility": "gap == 20",
+  "label": "探索重心更明确：验证制作兴趣能否独立成立",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "discover": 90,
+      "build": 70,
+      "think": 60,
+      "create": 50,
+      "connect": 40,
+      "move": 30
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差20分。探索90分、建构70分，相差20分，本次对观察未知与发现变化的相对偏好更突出。建构仍是第二兴趣，需用无需解答科学问题的独立制作活动验证其吸引力。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜探索90分、建构70分、思考60分。探索90分、建构70分，相差20分，本次对观察未知与发现变化的相对偏好更突出。建构仍是第二兴趣，需用无需解答科学问题的独立制作活动验证其吸引力。",
+      "reverse_top1": {
+        "leading_domain": "build",
+        "secondary_domain": "discover",
+        "text_template": "建构得分高于探索20分，本次更突出把东西做出来并进行调整的兴趣。可从不同材料的自主搭建开始，同时保留无需制作成果的观察与探索机会，了解发现过程是否也能独立吸引孩子。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "探索90分、建构70分，实际相差20分；思考60分。此处指活动偏好重心，不是观察能力或制作能力等级。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "孩子可能喜欢坡道变化的结果，也可能享受不断改造坡道。先分别体验没有制作目标的观察和没有实验要求的搭建，再比较结合活动的兴趣来源。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "丰富观察形式：自然记录、光影、动植物变化等多种入口",
+        "保留建构独立入口：积木结构、纸桥和开放手作",
+        "在坡道活动中区分“发现新变化”与“修改结构”的乐趣",
+        "思考作为第三方向，开放可选的规律问题"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜坡道与小车：重点辨别观察变化是否更吸引，允许自由制作",
+        "活动B｜自然观察：不借助搭建也能持续观察时，探索具有独立吸引力",
+        "另提供不要求得到实验结果的搭建活动，验证建构的独立性"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "支持探索的多形式体验，不把高分转化为训练次数",
+        "建构保持无成果压力、可自由改动的机会",
+        "分别观察后再让兴趣在坡道活动自然融合",
+        "不依据20分差判断儿童天赋或学习表现"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "孩子会在不同自然现象里主动发现问题吗？",
+        "不需要观察结果时还愿意制作吗？",
+        "坡道中观察与调整哪一步更吸引？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

@@ -1,0 +1,166 @@
+{
+  "template_id": "K68-1019-FIXED70-03",
+  "pair": [
+    "think",
+    "create"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "以唯一已核验Result Object读取六维分数；不在JSON中储存某个儿童的样本分数",
+    "按六维实际得分降序选择前两项作为15选1的无序组合索引；相同分数仅以冻结域顺序决定索引，不代表真实兴趣优先级",
+    "Gap只等于所选最高两个实际分数之差；G00=0、G10=10、G20=20、G30>=30，G30正文显示真实差额",
+    "保留全六维并列名次：第二第三同分时说明并列第二；前三同分时三者均列第一；必要时显示更多并列，不凭索引降级",
+    "第三维及同分方向必须根据真实分数调用对应专业内容；固定Think+Create+Discover中的Discover只是历史模板素材，不是儿童必然第三名",
+    "Top1可能反转，活动目的和第一第二表述以实际得分为准；G00不人为指定强弱",
+    "差距不决定活动次数、训练强度、心理类型或长期课程，优先尊重儿童自主选择和反复体验",
+    "固定70%保持不变，使用原9个装配槽位插入30%变量；不得叠加重复摘要或将变量插入表格错误位置",
+    "缺少真实30题逐题证据时REAL_EVIDENCE=BLOCKED，禁止正式儿童个人报告；QA提示不进入家长正文"
+  ],
+  "facet_rules": {
+    "think": "仅凭真实逐题证据细化规则和解题偏好",
+    "create": "仅凭真实逐题证据细化想象、表达和创作偏好",
+    "third": "第三维须依据实际分数和并列动态判断，不把Discover固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-03-G30",
+  "gap_code": "G30",
+  "eligibility": "gap >= 30",
+  "label": "集中偏好：验证思考跨形式吸引力，同时重新打开创造机会",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "think": 100,
+      "create": 60,
+      "discover": 50,
+      "build": 40,
+      "connect": 30,
+      "move": 20
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差40分。本次思考明显领先创造，实际分差40分。先看思考是否在多种适龄活动中都能持续吸引，同时用低压力的故事、绘画与角色游戏重新开放创造机会；低分不能被解释为缺乏想象力。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜思考100分、创造60分、探索50分。本次思考明显领先创造，实际分差40分。先看思考是否在多种适龄活动中都能持续吸引，同时用低压力的故事、绘画与角色游戏重新开放创造机会；低分不能被解释为缺乏想象力。",
+      "reverse_top1": {
+        "leading_domain": "create",
+        "secondary_domain": "think",
+        "text_template": "创造得分明显高于思考，本次结果更偏向加入自己的想法并进行表达。可观察孩子是否在不同创作形式中反复主动参与，同时保留低压力的逻辑与策略体验。较低的思考得分不代表理解或推理能力不足。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "思考100分、创造60分，实际相差40分；探索50分。本次问卷呈现较集中的思考偏好，但不能证明更高的逻辑能力或长期固定类型。需要确认是否是思考过程跨场景吸引孩子，还是近期接触与材料差异所致。",
+      "reverse_top1": {
+        "leading_domain": "create",
+        "secondary_domain": "think",
+        "approval": "K68-1020-TASK9",
+        "text_template": "本次问卷中创造得分明显高于思考，更突出想象、故事和表达的兴趣，但不能证明艺术天赋或长期固定的兴趣类型。需要观察孩子是否在故事、画面、角色等不同形式中都愿意自主表达，也了解近期接触与材料差异的影响。思考得分较低不代表理解或推理能力不足。"
+      }
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "思考可以通过策略、找规律和现实问题等不同形式得到检验；创造则适合提供完全开放、不需要正确答案的故事或角色体验，看看低分是否与过去接触机会有关。若孩子更愿意创作，也是新的有效观察线索。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "领先兴趣多样化：分别尝试路线推理、规则变化和日常问题，不重复单一题型",
+        "创造机会再开放：尝试口述故事、角色扮演或绘画，不要求逻辑完整或作品表现",
+        "体验条件对照：用熟悉和陌生材料比较选择，避免将一次偏好固定化",
+        "探索作为低压力第三入口：自由观察细节与变化，不要求给出正确解释"
+      ],
+      "third_domain_dynamic": true,
+      "reverse_top1": {
+        "leading_domain": "create",
+        "secondary_domain": "think",
+        "approval": "K68-1020-TASK9",
+        "items": [
+          "创造形式多样化：分别尝试口述故事、角色扮演和绘画，观察想象与表达是否持续吸引，不要求逻辑完整或作品表现",
+          "思考机会独立开放：尝试容易上手的路线、规则游戏和日常问题，让孩子自主选择，不把答对作为参与要求",
+          "体验条件对照：用熟悉和陌生材料比较选择，避免将一次偏好固定化",
+          "另外提供低压力的探索体验：自由观察细节与变化，不要求给出正确解释，也不预设探索的排名"
+        ]
+      }
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜故事改编：孩子自己选择人物和结局，可自由创作，不必先完成推理",
+        "活动B｜多形式策略挑战：自由选择路线、规则或生活问题，观察是否跨形式喜欢寻找办法",
+        "对照观察｜若某种创作材料不被选择，可换成口述或角色游戏后再观察"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "检验思考兴趣能否跨不同活动和时间持续出现，而非简单增加训练",
+        "向孩子开放不以正确答案为目标的故事、绘画与想象游戏",
+        "了解过去的活动接触机会，避免用低分否定创造或探索",
+        "根据后续自主选择和快乐感更新判断，不提前固定专长"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "换成不同思考任务，是否依然愿意主动参与？",
+        "换成口述、绘画或角色游戏，创造兴趣是否出现？",
+        "过去较少体验某种活动，是否影响了本次分数？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

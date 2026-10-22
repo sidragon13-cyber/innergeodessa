@@ -1,0 +1,172 @@
+{
+  "template_id": "K68-1018-FIXED70-01",
+  "pair": [
+    "think",
+    "discover"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "以唯一已核验Result Object读取六维分数；不在JSON中储存某个儿童的样本分数",
+    "按六维实际得分降序选择前两项作为15选1的无序组合索引；相同分数仅以冻结域顺序决定索引，不代表真实兴趣优先级",
+    "Gap只等于所选最高两个实际分数之差；G00=0、G10=10、G20=20、G30>=30，G30正文显示真实差额",
+    "保留全六维并列名次：第二第三同分时说明并列第二；前三同分时三者均列第一；必要时显示更多并列，不凭索引降级",
+    "第三维及同分方向必须根据真实分数调用对应专业内容；固定Think+Discover+Build中的Build只是历史模板素材，不是儿童必然第三名",
+    "Top1可能反转，活动目的和第一第二表述以实际得分为准；G00不人为指定强弱",
+    "差距不决定活动次数、训练强度、心理类型或长期课程，优先尊重儿童自主选择和反复体验",
+    "固定70%保持不变，使用原9个装配槽位插入30%变量；不得叠加重复摘要或将变量插入表格错误位置",
+    "缺少真实30题逐题证据时REAL_EVIDENCE=BLOCKED，禁止正式儿童个人报告；QA提示不进入家长正文"
+  ],
+  "facet_rules": {
+    "think": "仅从该维真实5题映射区分规律/比较方法/预测/具体解题等",
+    "discover": "仅从该维真实5题映射区分观察变化/尝试/追问/结果比较等",
+    "third": "只对实际第三维提取题目级特征；与第二并列时同等解释"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1018-V30-01-G20",
+  "gap_code": "G20",
+  "eligibility": "gap == 20",
+  "label": "相对明显主次",
+  "not_final_child_report": true,
+  "reference_samples": [
+    "K68_1017_Gap0_80_80_Optimized_Final.docx",
+    "K68_1017_Gap10_80_70_Optimized_Final.docx",
+    "K68_1017_Gap20_90_70_Optimized_Final.docx",
+    "K68_1017_Gap30Plus_90_60_Optimized_Final.docx"
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次前两项兴趣差20分：第一项在问卷中的相对重心更明显，但第二项不应被视为附属或被取消。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "{top1_name}{top1_score}分、{top2_name}{top2_score}分，分差20分。第一兴趣在本次回答中形成较清晰的相对重心；{third_priority_sentence} 本次需要同时弄清两件事：孩子为什么愿意回到领先的活动过程，以及第二兴趣能否脱离第一兴趣独立吸引他。"
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "{top1_name}{top1_score}分相对突出，提示孩子在本次情境中可能更容易被解决问题、比较方案与规律挑战吸引。{top2_name}{top2_score}分仍排第二，但应单独观察对新发现与变化的兴趣。{third_priority_sentence} 第三方向是否能提供独立的参与满足，也需要通过动手体验验证。",
+      "reverse_top1": {
+        "leading_domain": "discover",
+        "secondary_domain": "think",
+        "text_template": "探索得分高于思考20分，本次结果的相对重心更偏向观察未知、尝试和发现变化。可优先提供能够自主观察与尝试的体验，同时保留独立的解谜和规律游戏，观察思考过程本身是否也能吸引孩子主动返回。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。"
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "这里需要区别“用探索帮助解题”与“为了发现而探索”。如果孩子只在有明确谜题时愿意观察，第一兴趣的牵引可能更强；如果没有需要解决的问题仍主动观察新事物，第二兴趣就具备独立吸引力。20分不是能力水平、课外班优先级或固定参与比例。{tie_expansion_sentence}",
+      "reverse_top1": {
+        "leading_domain": "discover",
+        "secondary_domain": "think",
+        "approval": "K68-1020-TASK9",
+        "text_template": "这里需要区别“为了发现而探索”与“享受寻找规律和比较办法”。可以分别提供自由观察和独立的解谜活动：观察孩子是否主动追踪新变化，也看没有新奇材料时，寻找规律和比较办法本身是否仍有吸引力。两种兴趣可以在同一活动中结合，但不能仅凭分差判断其中一种依赖另一种。分差不是能力水平、课外班优先级或固定参与比例。"
+      }
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "围绕明显重心提供不同难度但同样自由的入口：如规律游戏、路线设计、儿童策略活动，观察吸引孩子的是思考过程还是胜负结果",
+        "给第二兴趣独立的舞台：安排没有标准答案或解谜目标的自然观察，检验孩子是否愿意主动发现与继续追问",
+        "分离与组合比较：同一个坡道可先自由看变化、再可选预测任务；比较孩子在哪种任务下更主动投入",
+        "第三维不要作为“第一兴趣的工具”：提供{third_hobby_option}，独立观察制作和改造过程的吸引力"
+      ],
+      "third_domain_dynamic": true,
+      "reverse_top1": {
+        "leading_domain": "discover",
+        "secondary_domain": "think",
+        "approval": "K68-1020-TASK9",
+        "items": [
+          "围绕探索兴趣提供不同对象的自由观察与尝试，如自然观察、材料变化和科学小实验，观察孩子是否主动发现变化、继续追问",
+          "给思考兴趣独立的舞台：安排规律游戏、路线选择或儿童策略活动，观察寻找办法本身是否有吸引力，而不只看胜负",
+          "分离与组合比较：同一个坡道可先自由看变化、再可选预测任务；比较孩子在哪种任务下更主动投入",
+          "其他兴趣也应有独立体验机会，不必只为探索或解题服务；观察孩子是否愿意自主选择和再次参与"
+        ]
+      }
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜自己设计规则的迷宫：孩子可以改起点、限制或路线，观察是否自发改进策略、尝试不同方案，不以快慢评价",
+        "活动B｜没有题目的户外观察：只提供放大镜或记录卡，不给待解问题；观察孩子是否仍主动提出新问题或选择再次观察",
+        "比较结论｜若独立观察的参与度较低，先调整材料与环境，再判断是否真的不喜欢探索；不能凭一次拒绝下结论"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "起点：让第一兴趣有多种自由形式，检验领先偏好是否跨形式存在，不升级成训练任务",
+        "独立开放：为第二兴趣留出无解题目标的活动，观察其自身的吸引力",
+        "交替对照：将开放观察与策略任务拆开、再组合，判断兴趣重心来自具体活动还是过程本身",
+        "回顾：围绕孩子多次自选的具体环节扩展材料，同时保留第二及第三方向，不锁定路线"
+      ],
+      "avoid_repeating_base_plan": true,
+      "reverse_top1": {
+        "leading_domain": "discover",
+        "secondary_domain": "think",
+        "approval": "K68-1020-TASK9",
+        "weeks": [
+          "起点：让第一兴趣有多种自由形式，检验领先偏好是否跨形式存在，不升级成训练任务",
+          "独立开放：为思考兴趣提供规律、路线或策略活动，观察孩子是否享受寻找办法本身，不要求必须借助新奇发现才参与",
+          "交替对照：将开放观察与策略任务拆开、再组合，判断兴趣重心来自具体活动还是过程本身",
+          "回顾：围绕孩子多次自选的具体环节扩展材料，同时保留其他兴趣的体验机会，不锁定路线"
+        ]
+      }
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "面对有规则的问题挑战，孩子是否无需催促就愿意修改方法并继续？",
+        "当探索不帮助完成题目时，孩子还会主动发现和追问吗？",
+        "孩子喜欢搭建是因为能验证策略，还是因制作本身带来乐趣？"
+      ]
+    }
+  },
+  "optimization_note": "四档差异必须体现于结论、三维关系、兴趣发展目的、活动设计理由、家庭支持与后续观察；不依赖分数替换、形容词替换或末尾附注。仅真实题项数据可支持逐题行为判断。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

@@ -1,0 +1,137 @@
+{
+  "template_id": "K68-1019-FIXED70-14",
+  "pair": [
+    "create",
+    "move"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "Gap=top1实际分数-top2实际分数；G00=0 G10=10 G20=20 G30+=30以上",
+    "第三维、排名和并列关系必须从六维实际结果读取",
+    "不从兴趣分数推断能力、人格、行为顺序或长期稳定性"
+  ],
+  "facet_rules": {
+    "create": "只有真实逐题数据才能细化想象、叙事及表达的具体偏好",
+    "move": "只有真实逐题数据才能细化移动、节奏和身体体验的具体偏好",
+    "third": "第三维必须依据实际分数和并列动态判断，不把Discover固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-14-G00",
+  "gap_code": "G00",
+  "eligibility": "gap == 0",
+  "label": "创造与行动并列：表达及身体参与的双入口",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "create": 80,
+      "move": 80,
+      "discover": 70,
+      "think": 50,
+      "build": 40,
+      "connect": 30
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差0分。创造80分与行动80分并列最高，探索70分列第三。问卷显示想象表达与身体参与处在同一相对位置，但喜欢编故事和喜欢移动挑战是两种不同的兴趣。可以分别安排个人故事创作和不涉及创作的身体游戏，再在动作故事中观察两种过程能否自然连接。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜创造80分与行动80分并列最高，探索70分列第三。问卷显示想象表达与身体参与处在同一相对位置，但喜欢编故事和喜欢移动挑战是两种不同的兴趣。可以分别安排个人故事创作和不涉及创作的身体游戏，再在动作故事中观察两种过程能否自然连接。"
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "创造80分与行动80分并列第一，探索70分列第三。这说明本次没有分数上的主次，不能推断孩子一定擅长表演或动作协调。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "独立创作可以观察孩子是否喜欢构思人物、故事和表达；没有角色要求的户外运动观察是否喜欢身体参与；动作故事用于观察两种兴趣是否互相促进。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "开放单独画画、编故事或角色设计的自由创作入口",
+        "开放不用讲故事的舞蹈、路线游戏或户外活动",
+        "在动作故事中由孩子决定讲述、表演或自由切换",
+        "第三维探索继续安排观察新变化的独立机会"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜动作故事：观察创造角色与身体表达哪个过程更吸引孩子",
+        "活动B｜个人创作：观察没有身体表演时是否仍愿意想象表达",
+        "增设不带故事任务的身体游戏，单独观察行动兴趣"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "并列兴趣保持平等的自选入口，不人为规定主次",
+        "尊重孩子选择只创作、只行动或两者结合",
+        "关注最享受的过程和隔一段时间是否自愿再选",
+        "探索机会独立保留，不用分数标签限制活动"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "不需要表演时是否仍喜欢编故事或设计角色？",
+        "没有角色任务时是否仍愿意自主运动？",
+        "动作故事中更享受构思还是身体参与？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

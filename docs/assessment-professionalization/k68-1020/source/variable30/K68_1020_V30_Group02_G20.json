@@ -1,0 +1,166 @@
+{
+  "template_id": "K68-1019-FIXED70-02",
+  "pair": [
+    "think",
+    "build"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "以唯一已核验Result Object读取六维分数；不在JSON中储存某个儿童的样本分数",
+    "按六维实际得分降序选择前两项作为15选1的无序组合索引；相同分数仅以冻结域顺序决定索引，不代表真实兴趣优先级",
+    "Gap只等于所选最高两个实际分数之差；G00=0、G10=10、G20=20、G30>=30，G30正文显示真实差额",
+    "保留全六维并列名次：第二第三同分时说明并列第二；前三同分时三者均列第一；必要时显示更多并列，不凭索引降级",
+    "第三维及同分方向必须根据真实分数调用对应专业内容；固定Think+Build+Discover中的Discover只是历史模板素材，不是儿童必然第三名",
+    "Top1可能反转，活动目的和第一第二表述以实际得分为准；G00不人为指定强弱",
+    "差距不决定活动次数、训练强度、心理类型或长期课程，优先尊重儿童自主选择和反复体验",
+    "固定70%保持不变，使用原9个装配槽位插入30%变量；不得叠加重复摘要或将变量插入表格错误位置",
+    "缺少真实30题逐题证据时REAL_EVIDENCE=BLOCKED，禁止正式儿童个人报告；QA提示不进入家长正文"
+  ],
+  "facet_rules": {
+    "think": "仅以真实Think 5题定位规律/方法比较/预测/解题等",
+    "build": "仅以真实Build 5题定位搭建/拆装/修改/测试等",
+    "third": "实际第三维逐题证据核实后才能细分；无证据不臆测"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-02-G20",
+  "gap_code": "G20",
+  "eligibility": "gap == 20",
+  "label": "较明显重心：验证思考与建构的独立吸引力",
+  "not_final_child_report": true,
+  "reference_samples": [],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两个兴趣的实际分差为20分。思考比建构高20分，本次问卷呈现更明确的思考兴趣重心。核心任务是验证孩子是否主动返回问题解决过程，同时确认建构是否独立有趣，而不只是完成思考题目的工具。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次兴趣结论｜思考90分，建构70分，探索60分。思考比建构高20分，本次问卷呈现更明确的思考兴趣重心。核心任务是验证孩子是否主动返回问题解决过程，同时确认建构是否独立有趣，而不只是完成思考题目的工具。",
+      "reverse_top1": {
+        "leading_domain": "build",
+        "secondary_domain": "think",
+        "text_template": "建构得分高于思考20分，本次更突出制作、搭建与结构调整的兴趣。可从孩子自主选择材料和修改作品的体验开始，同时单独提供规律与策略游戏，观察思考是否也具有独立吸引力。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "本次思考90分、建构70分，分差20分；探索60分是第三方向。思考过程在本次回答中相对更突出，但这并不表示制作不重要。重要的是分清孩子喜欢“找出办法”与“亲手搭建”时各自的投入，而不是把完成作品等同于喜爱制作。",
+      "reverse_top1": {
+        "leading_domain": "build",
+        "secondary_domain": "think",
+        "approval": "K68-1020-TASK9",
+        "text_template": "建构兴趣在本次回答中相对更突出，体现为对制作、搭建和调整过程的偏好。思考兴趣仍应有独立体验机会。重要的是分清孩子喜欢“亲手搭建”与“找出办法”时各自的投入，而不是把完成作品等同于喜爱制作，也不把制作兴趣较高解释为动手能力更强。"
+      }
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。"
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "提供不依赖材料的策略问题，观察思考兴趣能否独立成立；另提供没有正确答案和结构评分的自由搭建，观察建构能否在没有“必须解决难题”的情况下吸引孩子。最后才让两种过程在纸桥项目中结合。探索可以通过安全实验或观察变化单独体验。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "主兴趣独立深入：提供不同规则的迷宫、推理和策略体验，观察孩子是否乐于比较办法而非只喜欢赢",
+        "第二兴趣独立检验：搭建活动不设置解题目标，看看孩子是否愿意折叠、拆装和调整本身",
+        "组合桥接：纸桥可先自由做再讨论方案，不把制作简单变成执行正确答案",
+        "探索第三入口：开放观察变化，看孩子是否喜欢发现本身"
+      ],
+      "third_domain_dynamic": true,
+      "reverse_top1": {
+        "leading_domain": "build",
+        "secondary_domain": "think",
+        "approval": "K68-1020-TASK9",
+        "items": [
+          "建构兴趣独立深入：提供不同材料的折叠、拆装和搭建体验，观察孩子是否享受制作与调整本身，不只看成品表现",
+          "思考兴趣独立检验：提供无需制作成品的迷宫、推理和策略体验，观察孩子是否乐于比较办法而非只喜欢赢",
+          "组合桥接：纸桥可先自由做再讨论方案，不把制作简单变成执行正确答案",
+          "另外开放观察变化的体验，看孩子是否喜欢发现本身，不预设探索在本次结果中的排名"
+        ]
+      }
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A（纸桥承重）｜允许孩子不以承重成绩为目标自由调整材料，观察搭建与修改本身能否独立带来兴趣。",
+        "活动B（逻辑路线挑战）｜脱离实物制作观察比较策略、修改路线是否持续有吸引力，以区分思考重心和建构兴趣。",
+        "组合观察｜第二兴趣不只是第一兴趣的辅助；另外开放无需解题的观察发现活动。"
+      ],
+      "exclude_fixed_activities": true,
+      "reverse_top1": {
+        "leading_domain": "build",
+        "secondary_domain": "think",
+        "approval": "K68-1020-TASK9",
+        "items": [
+          "活动A（纸桥承重）｜允许孩子不以承重成绩为目标自由调整材料，观察搭建与修改本身能否独立带来兴趣。",
+          "活动B（逻辑路线挑战）｜脱离实物制作观察比较策略、修改路线是否持续有吸引力，了解思考过程是否也能独立吸引孩子，而不只用于完成搭建。",
+          "组合观察｜第二兴趣不只是第一兴趣的辅助；另外开放无需解题的观察发现活动。"
+        ]
+      }
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "围绕思考提供不同形式的自由选择，不转化为提高分数的训练",
+        "安排没有标准解法的制作空间，尊重建构兴趣的独立性",
+        "把推理与制作先分开再组合，观察哪一部分真正带来快乐",
+        "继续为探索及其他兴趣留有入口，不因20分固定长期培养方向"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "不需要成品时，孩子是否仍主动讨论规则和可能的解法？",
+        "没有正确答案时，孩子会喜欢制作过程和调整结构吗？",
+        "在组合活动中孩子更享受提出方案，还是亲自修改材料？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

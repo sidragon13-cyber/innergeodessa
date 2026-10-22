@@ -1,0 +1,160 @@
+{
+  "template_id": "K68-1019-FIXED70-03",
+  "pair": [
+    "think",
+    "create"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "以唯一已核验Result Object读取六维分数；不在JSON中储存某个儿童的样本分数",
+    "按六维实际得分降序选择前两项作为15选1的无序组合索引；相同分数仅以冻结域顺序决定索引，不代表真实兴趣优先级",
+    "Gap只等于所选最高两个实际分数之差；G00=0、G10=10、G20=20、G30>=30，G30正文显示真实差额",
+    "保留全六维并列名次：第二第三同分时说明并列第二；前三同分时三者均列第一；必要时显示更多并列，不凭索引降级",
+    "第三维及同分方向必须根据真实分数调用对应专业内容；固定Think+Create+Discover中的Discover只是历史模板素材，不是儿童必然第三名",
+    "Top1可能反转，活动目的和第一第二表述以实际得分为准；G00不人为指定强弱",
+    "差距不决定活动次数、训练强度、心理类型或长期课程，优先尊重儿童自主选择和反复体验",
+    "固定70%保持不变，使用原9个装配槽位插入30%变量；不得叠加重复摘要或将变量插入表格错误位置",
+    "缺少真实30题逐题证据时REAL_EVIDENCE=BLOCKED，禁止正式儿童个人报告；QA提示不进入家长正文"
+  ],
+  "facet_rules": {
+    "think": "仅凭真实逐题证据细化规则和解题偏好",
+    "create": "仅凭真实逐题证据细化想象、表达和创作偏好",
+    "third": "第三维须依据实际分数和并列动态判断，不把Discover固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-03-G20",
+  "gap_code": "G20",
+  "eligibility": "gap == 20",
+  "label": "兴趣重心更清晰：验证创造兴趣的独立吸引力",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "think": 90,
+      "create": 70,
+      "discover": 60,
+      "build": 50,
+      "connect": 40,
+      "move": 30
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差20分。思考比创造高20分，本次呈现较明确的思考活动偏好。重要的是验证孩子是否愿意主动返回解题和比较方案，同时安排没有对错的创造体验，看故事或表达本身是否也能独立吸引。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜思考90分、创造70分、探索60分。思考比创造高20分，本次呈现较明确的思考活动偏好。重要的是验证孩子是否愿意主动返回解题和比较方案，同时安排没有对错的创造体验，看故事或表达本身是否也能独立吸引。",
+      "reverse_top1": {
+        "leading_domain": "create",
+        "secondary_domain": "think",
+        "text_template": "创造得分高于思考20分，本次更突出想象与表达的兴趣。可从自主编故事、绘画或角色游戏开始，同时提供独立的问题解决体验，不要求每次创作都承担解题任务。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "思考90分、创造70分，实际相差20分；探索60分。分差说明本轮回答中的相对重心，不意味着想象力更低。应分开观察解决问题的过程与自由表达的过程，再决定是否将两者结合。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "同一个故事谜题可能让孩子投入推理线索，却不一定意味着他享受写故事。可先分别提供独立策略挑战和无输赢的故事改编，再安排一个“侦探故事”桥接活动，比较哪部分让孩子更愿意主动返回。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "领先兴趣独立体验：安排不同规则的棋类、路线和策略活动，观察思考过程本身",
+        "第二兴趣独立检验：提供无标准答案的绘画、角色或故事改编，不设置逻辑评分",
+        "桥接项目：孩子可以选择解开故事谜团，也可以重新创作结局",
+        "保留探索观察：提供自然素材，避免把发现只当作完成谜题的工具"
+      ],
+      "third_domain_dynamic": true,
+      "reverse_top1": {
+        "leading_domain": "create",
+        "secondary_domain": "think",
+        "approval": "K68-1020-TASK9",
+        "items": [
+          "创造兴趣独立体验：提供无标准答案的绘画、角色或故事改编，观察孩子是否享受加入自己的想法，不设置逻辑评分",
+          "思考兴趣独立检验：安排不同规则的棋类、路线和策略活动，观察比较办法本身是否有吸引力，不要求先创作故事",
+          "桥接项目：孩子可以选择解开故事谜团，也可以重新创作结局",
+          "保留探索观察：提供自然素材，避免把发现只当作完成谜题的工具"
+        ]
+      }
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜开放故事创作：由孩子决定人物和情节，观察是否喜欢创造而非只追求合理答案",
+        "活动B｜规则路线挑战：不用创作包装，观察找方法的兴趣是否独立存在",
+        "组合观察｜如孩子更喜欢解谜，也保留无压力的创作选择"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "提供多种思考形式，观察是否持续享受推理而非一味加难",
+        "安排无评分和无正确结局的创作空间，重视表达的快乐",
+        "将两项先分开再桥接，避免把创作只当作解题装饰",
+        "记录创造是否在不同场景主动出现，不以20分决定长期方向"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "不要求做作品时，还喜欢独立研究解法吗？",
+        "没有正确答案时，是否愿意编故事或设计角色？",
+        "桥接活动中更享受推理线索还是表达新想法？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

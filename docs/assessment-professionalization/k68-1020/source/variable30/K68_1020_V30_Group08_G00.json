@@ -1,0 +1,143 @@
+{
+  "template_id": "K68-1019-FIXED70-08",
+  "pair": [
+    "discover",
+    "connect"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "以唯一已核验Result Object读取六维分数；不在JSON中储存某个儿童的样本分数",
+    "按六维实际得分降序选择前两项作为15选1的无序组合索引；相同分数仅以冻结域顺序决定索引，不代表真实兴趣优先级",
+    "Gap只等于所选最高两个实际分数之差；G00=0、G10=10、G20=20、G30>=30，G30正文显示真实差额",
+    "保留全六维并列名次：第二第三同分时说明并列第二；前三同分时三者均列第一；必要时显示更多并列，不凭索引降级",
+    "第三维及同分方向必须根据真实分数调用对应专业内容；固定Discover+Connect+Think中的Discover只是历史模板素材，不是儿童必然第三名",
+    "Top1可能反转，活动目的和第一第二表述以实际得分为准；G00不人为指定强弱",
+    "差距不决定活动次数、训练强度、心理类型或长期课程，优先尊重儿童自主选择和反复体验",
+    "固定70%保持不变，使用原9个装配槽位插入30%变量；不得叠加重复摘要或将变量插入表格错误位置",
+    "缺少真实30题逐题证据时REAL_EVIDENCE=BLOCKED，禁止正式儿童个人报告；QA提示不进入家长正文"
+  ],
+  "facet_rules": {
+    "discover": "仅凭真实逐题证据细化观察与发现偏好",
+    "connect": "仅凭真实逐题证据细化合作交流和共同参与偏好",
+    "third": "第三维须依据实际分数和并列动态判断，不把Think固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-08-G00",
+  "gap_code": "G00",
+  "eligibility": "gap == 0",
+  "label": "探索与合作并列：发现本身和共同参与是否都吸引孩子",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "discover": 80,
+      "connect": 80,
+      "think": 70,
+      "create": 50,
+      "build": 40,
+      "move": 30
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差0分。探索和连接均为80分，并列最高。不能据此指定主次。要分别看看孩子是否喜欢自己发现变化、与人共同协作，还是喜欢在分享发现时同时得到两种乐趣。思考70分也需独立观察。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜探索80分、创造80分、思考70分。探索和连接均为80分，并列最高。不能据此指定主次。要分别看看孩子是否喜欢自己发现变化、与人共同协作，还是喜欢在分享发现时同时得到两种乐趣。思考70分也需独立观察。"
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "探索与连接均为80分，并列第一；思考70分。两项同分意味着本次问卷没有分数上的主次，并不表示所有活动中吸引力都相等。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "探索的乐趣可能来自发现未知；连接的乐趣可能来自交流、协商与共同参与。双人发现任务可以结合两者，但独自观察和不以发现为目标的合作游戏也应分别提供。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "双入口：同时开放独立自然观察与非探索主题的合作游戏",
+        "交汇入口：在双人发现任务中允许孩子自主决定交流或分头观察",
+        "第三方向：增加不依赖合作的推理或规律游戏，观察思考过程的吸引力",
+        "分别关注自主选择、活动中享受的环节、是否愿意再次参与"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜双人发现任务：关注发现变化与互动协作各自带来的快乐",
+        "活动B｜自然观察：没有伙伴参加时，是否仍主动发现和追问",
+        "另设合作搭建或共同创作，检验不以探索为主题的合作兴趣"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "不人为决定探索或合作哪项优先",
+        "让孩子有独自参与与共同参与的真实选择",
+        "记录孩子最喜欢的是发现、分享、合作还是其中组合",
+        "尊重愿不愿参加的选择，不以表现好坏评估兴趣"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "单独观察时是否仍会自主探索？",
+        "没有发现任务时是否仍喜欢与人共同活动？",
+        "双人任务中享受发现还是协作，或两者兼有？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

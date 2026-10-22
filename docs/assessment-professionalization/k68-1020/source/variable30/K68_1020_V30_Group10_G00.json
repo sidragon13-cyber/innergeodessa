@@ -1,0 +1,137 @@
+{
+  "template_id": "K68-1019-FIXED70-10",
+  "pair": [
+    "build",
+    "create"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "Gap=top1实际分数-top2实际分数；G00=0 G10=10 G20=20 G30+=30以上",
+    "第三维、排名和并列关系必须从六维实际结果读取",
+    "不从兴趣分数推断能力、人格、行为顺序或长期稳定性"
+  ],
+  "facet_rules": {
+    "build": "仅凭真实题目级证据细化搭建、调整与制作兴趣",
+    "create": "仅凭真实题目级证据细化想象、表达与自由创作兴趣",
+    "third": "第三维必须依据实际分数和并列动态判断，不把Think固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-10-G00",
+  "gap_code": "G00",
+  "eligibility": "gap == 0",
+  "label": "建构与创造并列：做出来与想出来都值得独立观察",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "build": 80,
+      "create": 80,
+      "discover": 70,
+      "think": 50,
+      "connect": 40,
+      "move": 30
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差0分。建构80分、创造80分并列第一，探索70分列第三。两个同分方向一个偏向亲手制作、测试与改进，一个偏向想象内容、表达与再创作。分别观察孩子在两种活动中的自主选择，以及是否乐于在设计空间时自然结合。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜建构80分、创造80分并列第一，探索70分列第三。两个同分方向一个偏向亲手制作、测试与改进，一个偏向想象内容、表达与再创作。分别观察孩子在两种活动中的自主选择，以及是否乐于在设计空间时自然结合。"
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "建构80分与创造80分并列第一，探索70分为第三方向。并列是本次问卷的相对结果，不能推定孩子在每项制作和创作活动中同等投入。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "分开提供不要求讲故事的搭建活动、无需制作成品的自由编故事，再开放设计小空间的组合活动。观察最享受的是结构反复调整，还是加入角色与新情节。探索也可通过观察陌生材料独立体验。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "双入口：搭建结构和自由故事分别提供，不人为区分主次",
+        "交汇入口：设计小空间可只制作、只构思，也可由孩子自主混合",
+        "第三方向独立开放自然观察，不把探索等同于作品制作",
+        "关注孩子愿不愿意自发再次选择两种活动，而非作品质量"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜设计一个小空间：看孩子更享受亲手改造，还是赋予空间故事",
+        "活动B｜自由故事创作：不需要搭建时是否仍自愿构思角色与情节",
+        "另提供低压力观察活动，检验探索自身吸引力"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "给建构与创造相近的自主体验机会，不因为并列强求同时做两件事",
+        "允许只享受搭建或只享受表达，不追求固定作品",
+        "记录自选入口、活动中最投入的过程和下次是否愿意继续",
+        "探索维度保持独立观察机会"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "只搭建而没有故事任务时，会主动调整材料或结构吗？",
+        "没有实物制作时，会主动加入新人物或情节吗？",
+        "设计小空间时更享受哪一个过程，两者会自然结合吗？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

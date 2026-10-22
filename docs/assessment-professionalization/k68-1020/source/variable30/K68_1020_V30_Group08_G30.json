@@ -1,0 +1,149 @@
+{
+  "template_id": "K68-1019-FIXED70-08",
+  "pair": [
+    "discover",
+    "connect"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "以唯一已核验Result Object读取六维分数；不在JSON中储存某个儿童的样本分数",
+    "按六维实际得分降序选择前两项作为15选1的无序组合索引；相同分数仅以冻结域顺序决定索引，不代表真实兴趣优先级",
+    "Gap只等于所选最高两个实际分数之差；G00=0、G10=10、G20=20、G30>=30，G30正文显示真实差额",
+    "保留全六维并列名次：第二第三同分时说明并列第二；前三同分时三者均列第一；必要时显示更多并列，不凭索引降级",
+    "第三维及同分方向必须根据真实分数调用对应专业内容；固定Discover+Connect+Think中的Discover只是历史模板素材，不是儿童必然第三名",
+    "Top1可能反转，活动目的和第一第二表述以实际得分为准；G00不人为指定强弱",
+    "差距不决定活动次数、训练强度、心理类型或长期课程，优先尊重儿童自主选择和反复体验",
+    "固定70%保持不变，使用原9个装配槽位插入30%变量；不得叠加重复摘要或将变量插入表格错误位置",
+    "缺少真实30题逐题证据时REAL_EVIDENCE=BLOCKED，禁止正式儿童个人报告；QA提示不进入家长正文"
+  ],
+  "facet_rules": {
+    "discover": "仅凭真实逐题证据细化观察与发现偏好",
+    "connect": "仅凭真实逐题证据细化合作交流和共同参与偏好",
+    "third": "第三维须依据实际分数和并列动态判断，不把Think固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-08-G30",
+  "gap_code": "G30",
+  "eligibility": "gap >= 30",
+  "label": "探索明显领先：验证跨场景持续性并开放合作机会",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "discover": 100,
+      "connect": 60,
+      "think": 50,
+      "create": 40,
+      "build": 30,
+      "move": 20
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差40分。探索100分、连接60分，实际差40分。问卷显示探索偏好集中，但不能推断孩子不喜欢别人或社交能力不足。应跨对象检验发现的持续吸引力，同时给予无压力的共同活动机会；思考50分也需保持开放。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜探索100分、创造60分、思考50分。探索100分、连接60分，实际差40分。问卷显示探索偏好集中，但不能推断孩子不喜欢别人或社交能力不足。应跨对象检验发现的持续吸引力，同时给予无压力的共同活动机会；思考50分也需保持开放。",
+      "reverse_top1": {
+        "leading_domain": "connect",
+        "secondary_domain": "discover",
+        "text_template": "连接得分明显高于探索，本次结果更偏向交流、合作和共同完成。可在不同伙伴与活动形式中观察这种兴趣是否重复出现，同时保留可自主选择的探索体验。分差不代表好奇心不足，也不能推断社交能力。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "探索100分、连接60分，实际差40分；思考50分。此差距只是本轮活动偏好结构，不代表社交发展水平或长期固定特质。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "让孩子在不同材料和场景中自主探索，同时提供简单、平等、无需展示成果的伙伴活动。若合作兴趣在新的互动形式中出现，是增加了新的观察证据，而不是与分数冲突。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "跨形式检验探索：植物、天气、光影和日常新现象",
+        "开放低压力的合作拼图、共同绘画或双人游戏",
+        "自然发现可自选独立观察或与人分享，不强制合作",
+        "第三维思考保持自主问题挑战机会"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜双人发现任务：让孩子自行选择合作程度，观察互动机会的影响",
+        "活动B｜自然观察：换不同对象验证发现过程的持续性",
+        "另提供不要求展示或完成任务的轻松共同活动"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "关注探索是否在多种形式下持续吸引，而非增加课时",
+        "别把相对低分连接解释成不合群",
+        "给孩子自主选择伙伴、方式和参与程度的机会",
+        "观察过去接触机会是否影响连接题目中的选择"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "更换未知现象是否仍主动观察？",
+        "没有探索目标的伙伴活动是否也能享受？",
+        "较低连接得分是否与合作机会或活动形式有关？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

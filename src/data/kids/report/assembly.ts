@@ -1063,6 +1063,12 @@ export function assembleK68ReportSections(
   locale:
     K68ReportLocale,
 ): readonly AssembledK68ReportSection[] {
+  if (report.contentVersion === "K68-1020") {
+    if (!report.contentBinding) throw new Error("K68-1020 report binding is missing.");
+    // Already selected approved content. Do not feed new source blocks through
+    // the historical Markdown fragment selectors or Word bookmark coordinates.
+    return report.contentBinding.sections.map(section => ({id: section.id, blocks: section.blocks}));
+  }
   const combinationSummary =
     getCombinationFragment(
       report,

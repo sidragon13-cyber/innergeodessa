@@ -1,0 +1,491 @@
+{
+  "approval": "K68-1020-TASK9",
+  "review_source": "TASK8 complete 32-item review in this conversation; explicitly approved in TASK9",
+  "baseline_backup": "/private/tmp/k68-1020-task9/baseline",
+  "sources": [
+    {
+      "source_path": "variable30/K68_1020_V30_Group01_G20.json",
+      "before_sha256": "416139a9c11ed36e411958998f6867119b2412ce7f6f28f1ee22187e902cd407",
+      "after_sha256": "6fe27dbb5de9fa80892a8effb022f15fbfc47898b9170a7534554efdac231e23"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group01_G30.json",
+      "before_sha256": "5fb4b37a0287c60bdf721ea0f0aad66685b57b1fb33cf005df5fc738fa42e709",
+      "after_sha256": "e532d65ea812c1cdc6ab51c2a125f6698b387bde336aff951724d1151cbf8248"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group02_G10.json",
+      "before_sha256": "f2910b42ac11c2776aa40e0ac7aecd617679624ce9722746c862aaef535e95bb",
+      "after_sha256": "e4ff16c3d27a136fb61e696ba8e0173eba070df5b424d80891ad74e165f3192c"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group02_G20.json",
+      "before_sha256": "eeceb901546d439f34577920c1d00cddcb59e0b01f0bb7c6d237dc9754dc67d0",
+      "after_sha256": "9ef3f18b5921fff5c8149e67583d986565c4986b8325fd769e9cc8bcbd65faa8"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group02_G30.json",
+      "before_sha256": "5aa6720b331078f35dc237345a68eb708773547914e69076a419162000a03e26",
+      "after_sha256": "eb819f602377367667a3ed99d58bfb71971abcd15047e70fd930031a6d529b41"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group03_G20.json",
+      "before_sha256": "aeafe991463e0641e72890c57cd7301494756127dfa46d9a46a7a95487993901",
+      "after_sha256": "249609e230548a1b4f53d378d5ae8a1d2cb8c54fa4fcb3534dc3fe6f96fbcab9"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group03_G30.json",
+      "before_sha256": "4f09b11f81bfbcd1a950a769acad4b6fc0c436dcdf6e0081cce17ac29a7e6e20",
+      "after_sha256": "8de3bfb11f70d8bd9adf318d7494428214e367d0ff73557f9d5a805ca34d4594"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group04_G20.json",
+      "before_sha256": "dad193afbbb34d24a218525b6b8d1164bad6f09ee51e871b70651f1df6446275",
+      "after_sha256": "0127fc7fc40373d4fc07479507a6fe6aecd37d77baad8f535678c373c3cb5bbe"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group07_G10.json",
+      "before_sha256": "88a425e4d06bcf85ba30844c6ef9ea1f117e813f98c02c46fa8da9e3f16941fc",
+      "after_sha256": "f1383042b425efcfe9bf8c9f642d2e09213a72ff20d58b74a50189c5007d8ab3"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group09_G10.json",
+      "before_sha256": "178ec10a0545f9f286316acad90c075c2027e25e0f23a0b2ee31a5e1ba5e133e",
+      "after_sha256": "ba5806ddaa2115d6b0c552716918d202bdb3106d6bbc1c6904ba76c1617d7106"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group09_G20.json",
+      "before_sha256": "704e473016fe1a31ca7746eb8442ef8ffe423148811657177422964652d72127",
+      "after_sha256": "962bd6e1eadde845bb87acfb8cf55df158752bce75da9c96a2f0b10e49dc4280"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group10_G10.json",
+      "before_sha256": "42c4159973fb4c77bcc1c5321ca4912ef731f1a0e2d72461748699ef1b27e5f5",
+      "after_sha256": "495591383c67cd707d8474667a846cf94e355b0f4edd008632596b6bf5b1077e"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group10_G20.json",
+      "before_sha256": "9736d3b1a39f924f37c178bab6d7bd524e2588ab0f8fa29ddc9fb457489c77af",
+      "after_sha256": "2fde0c5ed65989ee31f0c7b34e26d1dc662244ab8fbde2e480ed6e4afa3bfad8"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group10_G30.json",
+      "before_sha256": "f05eb46d6c74192a12e1a2bbeec44b11f49c721ac53cdf5518a862edc778f44a",
+      "after_sha256": "f32a5c40d960191f5469bcef55e976a5bd467c771b21e9b414ff979e64189716"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group11_G10.json",
+      "before_sha256": "001e5692f3354040ab8cf43bc1afd10d9070a49119be9461378237e9aae67e08",
+      "after_sha256": "46a9a4f80bd0d6ce2b6cd9723befb341bf02ee5939c5bcd2d591040c332793f4"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group12_G20.json",
+      "before_sha256": "8e26615bc12af70c30a9111b5508bca54713878c696da6e53a6f7b025ee50632",
+      "after_sha256": "76c414bf55bbdf6e8ade43362b3e2f5e0b333a21d97346621b2660610e2095bb"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group13_G10.json",
+      "before_sha256": "ccd2584adac0f63cb6a5f97999da73ceb589e189a1c90ac70ca277c077eb92da",
+      "after_sha256": "3fc19f32afb71185db39b8997a2154eb1e2b7313adef1a19209b1b155454ba25"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group13_G20.json",
+      "before_sha256": "58b9c9ee966ab34eb8b4528a71f442b5f622b0f7f1c422ef39cb0a00aff99a3d",
+      "after_sha256": "980729953ffd2081e086c46fad4d2b4de708201182b762faa89edd5ae79d27d7"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group14_G20.json",
+      "before_sha256": "7a116558d53bc503dd0872ac8b4369b4047f530f0c68e66c3e6177a0f5662286",
+      "after_sha256": "8160be4068e1be8de60961237bf62be78b94e475b46201345eb44a19477dfe77"
+    },
+    {
+      "source_path": "variable30/K68_1020_V30_Group15_G20.json",
+      "before_sha256": "b11375b13d37c04e9b223801c432a5c84d7c32dc26a8e61178d10db5c4f8753b",
+      "after_sha256": "2ae5e58127a87cb7e9bec5c914eadd983dd68aaa4ec0434ef7cd078f7283cc71"
+    }
+  ],
+  "contexts": [
+    {
+      "group": 1,
+      "gap_code": "G20",
+      "source_path": "variable30/K68_1020_V30_Group01_G20.json",
+      "slot": "P3_RELATION",
+      "field": "text_template",
+      "original_slot_sha256": "e4c0374211cff17d2474790072391c029b62bd69d670b9e1e82fbda29c9c43a8",
+      "approved_payload_sha256": "28dc1140ac7f93dd4603438d42e96b956f6d0890f0afbcf644e1f5ee0e1917ca",
+      "resolved_reason": "把为发现而探索解释为第二兴趣"
+    },
+    {
+      "group": 1,
+      "gap_code": "G20",
+      "source_path": "variable30/K68_1020_V30_Group01_G20.json",
+      "slot": "P4_INTEREST",
+      "field": "items",
+      "original_slot_sha256": "36c1f1ee3b19f275b515033bfba392ffe98eeb55f8e50fa36eaaceb9bfefd7f5",
+      "approved_payload_sha256": "79198c33632c5d1c90662a5999d3af230cd7c2250dee741e526b78e30205a947",
+      "resolved_reason": "把规律游戏作为重心，把自然观察作为第二兴趣"
+    },
+    {
+      "group": 1,
+      "gap_code": "G20",
+      "source_path": "variable30/K68_1020_V30_Group01_G20.json",
+      "slot": "P6_PLAN",
+      "field": "weeks",
+      "original_slot_sha256": "266882e72a41b409d8f0132befd1d28c6b19c2f5c5ddce0f8e7d66c5e6341227",
+      "approved_payload_sha256": "c047f81d0625a72deeeb65058781fbe0d5bfe8967fbe76f529d272fc0d93bf98",
+      "resolved_reason": "为第二兴趣提供无解题目标活动，仍预设探索居次"
+    },
+    {
+      "group": 1,
+      "gap_code": "G30",
+      "source_path": "variable30/K68_1020_V30_Group01_G30.json",
+      "slot": "P4_INTEREST",
+      "field": "items",
+      "original_slot_sha256": "a75dfed11a1762ed35952a359f142670aca50fcaad5de4c3edaf9cb1ebd4f4d2",
+      "approved_payload_sha256": "e819c6f5c351ca8439110676dc7124abe61963bca2eee55eb7f7733113a33d1b",
+      "resolved_reason": "把思考过程称为领先过程，把自然观察称为第二兴趣"
+    },
+    {
+      "group": 2,
+      "gap_code": "G10",
+      "source_path": "variable30/K68_1020_V30_Group02_G10.json",
+      "slot": "P3_RELATION",
+      "field": "text_template",
+      "original_slot_sha256": "b5520cf2cd543163752a71431abc018aae2041748d73b5657711c4ea3b4a580d",
+      "approved_payload_sha256": "0e831da64dbca485f26f02915642bc6aa1735c72c6fa641acf868326b23d243b",
+      "resolved_reason": "用比较方法的持续兴趣解释领先，仍预设思考领先"
+    },
+    {
+      "group": 2,
+      "gap_code": "G20",
+      "source_path": "variable30/K68_1020_V30_Group02_G20.json",
+      "slot": "P3_PROFILE",
+      "field": "text_template",
+      "original_slot_sha256": "873981fba5d5fdb3326489fd45d31f3a801130ef53d888b1f4fe7272dbdaa872",
+      "approved_payload_sha256": "53274c21424a5d89fc41da293a75d05a5876c5b25f90cfcdbe42e9ad64d0a077",
+      "resolved_reason": "思考过程在本次回答中相对更突出"
+    },
+    {
+      "group": 2,
+      "gap_code": "G20",
+      "source_path": "variable30/K68_1020_V30_Group02_G20.json",
+      "slot": "P4_INTEREST",
+      "field": "items",
+      "original_slot_sha256": "7dc0850fd4795f84aaecaca4bc838231364a89ddf03d4f4bcbf3c9f5251b6e62",
+      "approved_payload_sha256": "977d751c1687049590ea7687bb61f6d99b1bec776a27b600c0ee74fcc15a494b",
+      "resolved_reason": "第二兴趣独立检验指向搭建"
+    },
+    {
+      "group": 2,
+      "gap_code": "G20",
+      "source_path": "variable30/K68_1020_V30_Group02_G20.json",
+      "slot": "P5_ACTIVITY",
+      "field": "items",
+      "original_slot_sha256": "3a3645cc4a256c5705f8ec0ace74bef94b2898401b11c1731b9622c552bd8c14",
+      "approved_payload_sha256": "4de9ee921cb781f933d29dab052736528544d968c8df8abf761ad443f3699c60",
+      "resolved_reason": "区分思考重心和建构兴趣"
+    },
+    {
+      "group": 2,
+      "gap_code": "G30",
+      "source_path": "variable30/K68_1020_V30_Group02_G30.json",
+      "slot": "P3_PROFILE",
+      "field": "text_template",
+      "original_slot_sha256": "67e22066e019177268059089cf158c42bfd3365978d0cbd80a9244313a8ef5dd",
+      "approved_payload_sha256": "fe7346f269dcef188947765307541a7f87c87aec5486301d1128b6b13a329d69",
+      "resolved_reason": "问卷显示更集中的思考偏好"
+    },
+    {
+      "group": 2,
+      "gap_code": "G30",
+      "source_path": "variable30/K68_1020_V30_Group02_G30.json",
+      "slot": "P3_RELATION",
+      "field": "text_template",
+      "original_slot_sha256": "cff94a232ec848724ddf6c4d9ab02c3bb14d4e7618dec8a7484000d1d6f3b5c2",
+      "approved_payload_sha256": "ea70b00c1d281a8a4da3fc12a2e97265a60cc4c01b74e9221163083b849847ed",
+      "resolved_reason": "优先思考入口并把制作解释为低得分方向"
+    },
+    {
+      "group": 2,
+      "gap_code": "G30",
+      "source_path": "variable30/K68_1020_V30_Group02_G30.json",
+      "slot": "P4_INTEREST",
+      "field": "items",
+      "original_slot_sha256": "2c59dae953e5a30f3de1144ea6d685056e5767bd5d23b4cfcd28e9bee4576613",
+      "approved_payload_sha256": "cfa92189455d8427a237c8fac5f97d69680b351a55182c15019630c46613e7b9",
+      "resolved_reason": "领先方向多样化指向思考"
+    },
+    {
+      "group": 2,
+      "gap_code": "G30",
+      "source_path": "variable30/K68_1020_V30_Group02_G30.json",
+      "slot": "P5_ACTIVITY",
+      "field": "items",
+      "original_slot_sha256": "c86c86c19c1863e17ec4b700b8ae285e52c21540975d1ae9d23ef81293c36099",
+      "approved_payload_sha256": "7b27e98aa232d0f46ae290eb8d48151cdbdb3c782b1cfe32897ad8af30afdd0d",
+      "resolved_reason": "明显领先的思考偏好"
+    },
+    {
+      "group": 2,
+      "gap_code": "G30",
+      "source_path": "variable30/K68_1020_V30_Group02_G30.json",
+      "slot": "P6_PLAN",
+      "field": "weeks",
+      "original_slot_sha256": "aa5591ae10c49d1d193aea3e75854581ae8908eeeefab600aedad3098be67c81",
+      "approved_payload_sha256": "391be617bc81d61ca4af460bfe51e571974ac9bf14b598d475db3c81c69a1999",
+      "resolved_reason": "领先的思考偏好"
+    },
+    {
+      "group": 3,
+      "gap_code": "G20",
+      "source_path": "variable30/K68_1020_V30_Group03_G20.json",
+      "slot": "P4_INTEREST",
+      "field": "items",
+      "original_slot_sha256": "6764ec625dd765c39abe4ddc1732a72977c69c5864732e026b7c38a3ad60304a",
+      "approved_payload_sha256": "e87398c1f2b37baa942dad509639baca6ff4ad2c95f5363c9659b936f5c9b479",
+      "resolved_reason": "领先兴趣指向棋类路线策略，第二兴趣指向绘画角色故事"
+    },
+    {
+      "group": 3,
+      "gap_code": "G30",
+      "source_path": "variable30/K68_1020_V30_Group03_G30.json",
+      "slot": "P3_PROFILE",
+      "field": "text_template",
+      "original_slot_sha256": "650bffda41f76c6e083a72fbfe9b68d2e1e41b6bba171e2517c7c9159fc7da5f",
+      "approved_payload_sha256": "76a14c3c87bf7cba28b6ba615b47623ed2b0cf25aabfcb57c9ed36ac16f34536",
+      "resolved_reason": "本次问卷呈现较集中的思考偏好"
+    },
+    {
+      "group": 3,
+      "gap_code": "G30",
+      "source_path": "variable30/K68_1020_V30_Group03_G30.json",
+      "slot": "P4_INTEREST",
+      "field": "items",
+      "original_slot_sha256": "e888ac6286eadd41cf676ae4251a25d4f4d71befd23b48e7d5e5f1852d39169e",
+      "approved_payload_sha256": "228af10bd81699caa3d5b063a9065f81d33a3b2854f683007fad12c4cd3062a2",
+      "resolved_reason": "领先兴趣多样化指向路线推理和规则变化"
+    },
+    {
+      "group": 4,
+      "gap_code": "G20",
+      "source_path": "variable30/K68_1020_V30_Group04_G20.json",
+      "slot": "P4_INTEREST",
+      "field": "items",
+      "original_slot_sha256": "7ce1097802fe025f37fa703a3562addde9ee718479a623b9d6f64e0bb32b452e",
+      "approved_payload_sha256": "a6830ba2e620c76a806ad9b88f465e6a74be190eefe2b960eed9cbda32c4e5de",
+      "resolved_reason": "对领先的思考兴趣提供多样化规则游戏"
+    },
+    {
+      "group": 7,
+      "gap_code": "G10",
+      "source_path": "variable30/K68_1020_V30_Group07_G10.json",
+      "slot": "P3_RELATION",
+      "field": "text_template",
+      "original_slot_sha256": "7b243a8b03d88a66f4032c161661508d83cb7d106640631f70e54bf1efa9dcd6",
+      "approved_payload_sha256": "2cca5a32465b01da06b21b064459a61df2a6e311fa1bbe73313d919a7f3b323b",
+      "resolved_reason": "探索的轻微领先"
+    },
+    {
+      "group": 9,
+      "gap_code": "G10",
+      "source_path": "variable30/K68_1020_V30_Group09_G10.json",
+      "slot": "P3_PROFILE",
+      "field": "text_template",
+      "original_slot_sha256": "6a390f18a5a377493964552dfd3e00f5e9f4686ca512fa0f2c3670e0ce7a4f71",
+      "approved_payload_sha256": "8192ff7cafc00fbc9b1cade3f29781145d5d020e56a1de132d08a8ede9e95d49",
+      "resolved_reason": "探索轻微领先"
+    },
+    {
+      "group": 9,
+      "gap_code": "G20",
+      "source_path": "variable30/K68_1020_V30_Group09_G20.json",
+      "slot": "P3_PROFILE",
+      "field": "text_template",
+      "original_slot_sha256": "f07edd67a9cb1e8071da29b5a9ee8ac147a439ee6090b154d0c30c0b2add9845",
+      "approved_payload_sha256": "b3859986b0c1f6e68411b8f37b6c062609eb844b9238c9d1a4bb78188503cf73",
+      "resolved_reason": "探索在本次回答中更突出"
+    },
+    {
+      "group": 10,
+      "gap_code": "G10",
+      "source_path": "variable30/K68_1020_V30_Group10_G10.json",
+      "slot": "P5_ACTIVITY",
+      "field": "items",
+      "original_slot_sha256": "62f22badca33a2ce96c7e923c9be8ee4ac60e102db19b0cbe59e25bcdb40f3ad",
+      "approved_payload_sha256": "2f5c8b2a5f0594a01d31f9794413d1f972f8edc2b1b2654a685b031199c6dbc8",
+      "resolved_reason": "以不同建构材料检验领先"
+    },
+    {
+      "group": 10,
+      "gap_code": "G10",
+      "source_path": "variable30/K68_1020_V30_Group10_G10.json",
+      "slot": "P7_OBSERVATION",
+      "field": "items",
+      "original_slot_sha256": "69e6e9e75904b401568adc1e322284cd74dbe26a1f91cb478d8b7b89a7cc559d",
+      "approved_payload_sha256": "30d5ba02a5f6ba7fd3c31919f8bba115f8c7ccddfe8c2b8b5b7b3dba3f95ff88",
+      "resolved_reason": "建构轻微领先"
+    },
+    {
+      "group": 10,
+      "gap_code": "G20",
+      "source_path": "variable30/K68_1020_V30_Group10_G20.json",
+      "slot": "P3_PROFILE",
+      "field": "text_template",
+      "original_slot_sha256": "bbe4ceaae0c28101e79314d72421970d5aab7982b13a572ee3b0bd2d14c81152",
+      "approved_payload_sha256": "1dd19056cf292c3368cd37a73ceb2bc10ec80611dedb14dd6f58aecd366da6b7",
+      "resolved_reason": "问卷的重心偏向建构"
+    },
+    {
+      "group": 10,
+      "gap_code": "G20",
+      "source_path": "variable30/K68_1020_V30_Group10_G20.json",
+      "slot": "P5_ACTIVITY",
+      "field": "items",
+      "original_slot_sha256": "57fc60573b54227a6532b577f23fb01ed3ce71236833806586effd1be7d7f79b",
+      "approved_payload_sha256": "2626700d71ea01004572abca00548900a7da3260db73e077d1736c7075d92673",
+      "resolved_reason": "检验建构重心跨形式存在"
+    },
+    {
+      "group": 10,
+      "gap_code": "G30",
+      "source_path": "variable30/K68_1020_V30_Group10_G30.json",
+      "slot": "P5_ACTIVITY",
+      "field": "items",
+      "original_slot_sha256": "379b27236b903515e8fcae23ebfa6c572512bd3251dc9b31b3d0d1b24bbdf65b",
+      "approved_payload_sha256": "2fc8a5ca6101d50890e7fb6f59a6f6af35427b87f4135d304bdae5546cfb632d",
+      "resolved_reason": "以建构材料观察集中偏好"
+    },
+    {
+      "group": 11,
+      "gap_code": "G10",
+      "source_path": "variable30/K68_1020_V30_Group11_G10.json",
+      "slot": "P5_ACTIVITY",
+      "field": "items",
+      "original_slot_sha256": "c670ea7758816acc6b13c8d7b287e70f56a8c1e25ad341c7f4f415bd866bb535",
+      "approved_payload_sha256": "d6c990f64eba4bbbd904b52694081c7375f735f8718bd84f03bf162540897da5",
+      "resolved_reason": "轻微建构领先"
+    },
+    {
+      "group": 11,
+      "gap_code": "G10",
+      "source_path": "variable30/K68_1020_V30_Group11_G10.json",
+      "slot": "P7_OBSERVATION",
+      "field": "items",
+      "original_slot_sha256": "562df7fce92eb899fe6445a07970d76708816a5c8b2c58abdb77eeb194ed7042",
+      "approved_payload_sha256": "8a86670c998340627fedc8a5f5a72e02c203d8bac42fb0c818c37722cee588ee",
+      "resolved_reason": "建构的轻微领先"
+    },
+    {
+      "group": 12,
+      "gap_code": "G20",
+      "source_path": "variable30/K68_1020_V30_Group12_G20.json",
+      "slot": "P6_PLAN",
+      "field": "weeks",
+      "original_slot_sha256": "960b108e99ebb0cb48ee0559a1824b047235820f9311990d11fa382dfb3b9344",
+      "approved_payload_sha256": "2cdab01c75391c2b8a603ff50bfe19c29a27e38aa1816f663a6a25654bab1d3e",
+      "resolved_reason": "第二兴趣指向身体活动"
+    },
+    {
+      "group": 13,
+      "gap_code": "G10",
+      "source_path": "variable30/K68_1020_V30_Group13_G10.json",
+      "slot": "P5_ACTIVITY",
+      "field": "items",
+      "original_slot_sha256": "3f12dd6c6b9d377b001ac64f8f9b51805c262d1ca8d0963d5b0afab89e0fd2a5",
+      "approved_payload_sha256": "7b6526fa05699bd4797b3441bc141fc83b6bf6958d026145ab9879f8e1b8bc75",
+      "resolved_reason": "以个人创作验证轻微领先"
+    },
+    {
+      "group": 13,
+      "gap_code": "G20",
+      "source_path": "variable30/K68_1020_V30_Group13_G20.json",
+      "slot": "P5_ACTIVITY",
+      "field": "items",
+      "original_slot_sha256": "2e4e96c2461408d6fb166e93a5e86ec7f4fb96f2f22fa1ba8b5ba1a655a9d8a0",
+      "approved_payload_sha256": "b7b0165b91c02cf2e52529b866b858c96edd29cee476161e9a7e1c4aef2409f5",
+      "resolved_reason": "非创作型合作任务被解释为第二兴趣"
+    },
+    {
+      "group": 14,
+      "gap_code": "G20",
+      "source_path": "variable30/K68_1020_V30_Group14_G20.json",
+      "slot": "P5_ACTIVITY",
+      "field": "items",
+      "original_slot_sha256": "040c852ea4ce3f939b75f4b9a8b07c525e2b7a8c2e92cabb422446f5d37c7c8c",
+      "approved_payload_sha256": "3499d93e1c3b259df49657352d2673a2c8c765dcbf3011a20844b7ceb4cde4ae",
+      "resolved_reason": "身体活动被解释为第二兴趣"
+    },
+    {
+      "group": 15,
+      "gap_code": "G20",
+      "source_path": "variable30/K68_1020_V30_Group15_G20.json",
+      "slot": "P4_INTEREST",
+      "field": "items",
+      "original_slot_sha256": "7b7863d975a2c3ba2b641107df51dcf05926d7be023c5cb544a76ce54913f1c8",
+      "approved_payload_sha256": "ced2364050c64a9d40c12d035a6beda66d2b56d5e0bfb5c3fc7a1baeadffbbc9",
+      "resolved_reason": "个人路线与节奏活动被解释为第二兴趣"
+    }
+  ],
+  "forward_output_sha256": [
+    "7d5e5c478e12dd1dc30822044dce37060e452f212d05d436ba6c82167f22831e",
+    "df35070fa336d6b7d612b4cff327909e9bc3243da65eab758949519e961401be",
+    "ef12a7cda057b7980830869e03a50e6a29762dae93ab3cbcbb83d2fd1f2cb68e",
+    "d2f8698bcef8e0694a8498052c4a27ec0b5aa2baddfccb64a85bffb9d28c0bac",
+    "06a5efdce172927ba9248f4921741806b1be5fb267e1c7ecfff8c6dcacc654c1",
+    "1829b6a33e694ee8101ed55ca924eb5ec8542a71715020544b469736301d36ce",
+    "0c90355a0cd22c9f75725e8fbf3396330136d702b0dace07b95bcad8ea88ff6d",
+    "860b63391ad5e1e4f8e8140944b63d5c8569140c176effa51e950314c055cc6d",
+    "093dcd427db4d19b13d06e1f8db8d97a4c93ed12c83863231cd9c388304460bb",
+    "82fc76f12febd86f4f2ace66e7e4be4ce841e158316e008f8727474ca218c2fb",
+    "71d9b05e0862733f1bc97e7a970fabb8b0e4c1ca7942e246683407fde45e4163",
+    "cef388574b92617def2050c156c37417e1263ac762e6c6b8405e9e975d59e363",
+    "4be7781db7614c7184a63301343938ca6c9c1511f4e76e52f067464fb42a027a",
+    "6cb5e186cc326515275cf80f4c73ceb23308b9391156195a548cee59f0a5068e",
+    "81c728b9bf30d63e334cc46263c064b81017bb40ae53a2935f8d67bdcb5dc4f7",
+    "1f9be1bb7bb131a30b520ba36f88ef1ec3e81b6f252bce2d43120bca1e312449",
+    "b30c0736971b89f87d909933432649eaec16376449c90f8fa52caa0e85d02b6d",
+    "6a66c9bda99242626f1e9a6b268d44e19cc219db76317f0f3056881e3cba82bc",
+    "893def22499c12e688f6c6c0b6ec65319c0d5b1d60829ea9c26b56a5840da6e1",
+    "dab52a353cd693e7e251561a2399a9fd54b54a389a5fd36a44f2a46a8d0a23fa",
+    "78eb6eae7cab32962c1421b53d3406af99a2c8fc96bd3cd144c472a9152931d7",
+    "8d1b08389ec8c32f16dc3cdb254570490e1ff71b72681dc0becbf5a54c4f5489",
+    "04d3864b2b94df05e37e833490baf938bc681a045c21373a7e03e717dbd18642",
+    "a74dadb66fe2866097500f9811ab22f3e0e18dddf76717866142d71d62f6b50e",
+    "93f2f3fa4035323d0d1519de62a5c3692cd2afb5c956a3530d1601df11f180b8",
+    "08048c6a1bf3cb9a7eeaa491d2bdab9b9526e9569ac6e448fef34dccb1d49a84",
+    "8ef146518fc5293b8095727457f6bf201ab729db8af9384cecf2d57e458794ed",
+    "21c58ab3cc32d730f125795ae1e19b05019aefc93ab0393326ee4a9be21a0682",
+    "7a9fd62f859ffb587a5ae1c43b1f919fb09dd3d489f3cefba24f58778e2f8e58",
+    "cfce053d2a705a9612b11c74016c7666054ae62e9610157b5131b0df4a00398c",
+    "2a1921957740b19a46a095c62148b5931a96972a81865ffa3b13aef06e6fb2f9",
+    "f51ca0c635a0da44bf2ca8ca6a85fa8224d89a5eabab37c58e597aeca5945d35",
+    "f570e1a39929e0af01759e3b465bd7c002112625099772d02b4bcb60c2a33c73",
+    "6fdbaec257038bf11db29420c1c83b4286dc0355a8b3aa75afedd2b6eecd902a",
+    "fcfc2698f569b77feb6d2bbd75ec31e5071e6041c5fbf723d0efb449b9f2166f",
+    "436c928bba21ed6015e44195b2e51537a2cea067d2354b7c68cdbef7a156785d",
+    "4e8051d3882fea5f80bba63a245d5b60decb9de97c7e261512d36eef4b25e37f",
+    "6f628d9660dea49e9c4d9f3f978e68795394c9a8dcf6196388bbcb5633f1b4e9",
+    "4289e2f0751c4c1321a568709045d4082fe5277e0fd630379b83229f9bc1f3f3",
+    "defcad2467e67ffb72092bcb8d6f31d935dfae96be3168cc431bfeafba519673",
+    "f1ada639e282491251107b4fdca066d9276f3ad9dd8b4b83517abfff3bec1297",
+    "ea34a9b2e42df2bd92e2bdfdb90dc7442a7373f5d51aa3c36db93fe5fa1ca8a7",
+    "04b0c348d929ca56b457aa5f6cd528e13bb28e7761f1a11433b9f7400e8fed5d",
+    "fc13cb56b7542ea4c26d9d89a6b14675473cabcc44f595128a7b5479591c446b",
+    "22a3c9229b36b8ed10ab3458c3aaf3d2d416de390c253115871fbd6ded6e4cc8",
+    "cda4e856bff8da67d61d5a5f03bf9a71f078d07b6bcaf875aa0f79e050f1cff4",
+    "822063e7a992b19bc005131eb890b83559e54e30e76a04451f51fd6bd2607d33",
+    "22e7ad380e59cf9f49c3d5272df7d629ca24864981ecd00af0e106b2df07188c",
+    "31b8b6d0c8bdaeda0df8fc131231ad3c6f5734bf992886628cee9bf88f1f78b2",
+    "614907fe76eb4d5988c667c08c878dbaed3b93f253001bf481630d33abddbc7b",
+    "c763a7c698e53fda1657e0d6575c74acd025f862851b032bbdeaa76b720870a7",
+    "9659fb08434d566fb40d6d293b8b6459c6bd116fcd28007717d1ebc42d367082",
+    "f859ea017ddde2f3bc6b65cf1cac7ddb8975ac52f836b0a4dcae62ec2ce92ccf",
+    "1811e3ad4ae4f6efe8621ecf3f2649602034e6da2901e2c482c9626e563c29f3",
+    "7efbb42a24efa34730508b705c427200129ec10518fa13877edbcc885b55a1d3",
+    "e0639a7ae89976ed2954dd47de8c7ff591281a89fc2c64f5f546fc96216bd7bf",
+    "98834b30db98373eef77090e3282f44f9e9877f4b85e3d9110b9276cd221c908",
+    "1de2b4e10c139674128b6944194c890d87b7065cc37c94059d94c8ffaa3ec703",
+    "575d9fb64d7c4b95553e8fa2083e08fb892a362ee35a9a6f5b74b235374edcd0",
+    "d7df73066c9b0cbc02576c1590373f38af0e1a8a3b2d6e611f25b1e5bdc13f17"
+  ]
+}

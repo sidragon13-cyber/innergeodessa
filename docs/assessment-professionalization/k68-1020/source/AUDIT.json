@@ -1,0 +1,130 @@
+{
+  "files_fixed70": 15,
+  "files_variable30": 60,
+  "changes": [
+    {
+      "group": "01",
+      "fixed_changes": {
+        "看看 Discover 本次兴趣 是否会进一步增强兴趣": 0,
+        "这一维的真实得分、名次及并列关系由个性化结果呈现。": 0
+      },
+      "fixed_input": "/mnt/data/K68_FIXED70_FINAL_1019/K68_Fixed70_Group01_FullRepair_V6.docx"
+    },
+    {
+      "group": "02",
+      "fixed_changes": {
+        "看看 Discover 本次兴趣 是否会进一步增强兴趣": 1,
+        "这一维的真实得分、名次及并列关系由个性化结果呈现。": 1
+      },
+      "fixed_input": "/mnt/data/K68_Fixed70_Groups02_04/K68_Fixed70_Group02_Think_Build_Discover_Professional.docx"
+    },
+    {
+      "group": "03",
+      "fixed_changes": {
+        "看看 Discover 本次兴趣 是否会进一步增强兴趣": 1,
+        "这一维的真实得分、名次及并列关系由个性化结果呈现。": 1
+      },
+      "fixed_input": "/mnt/data/K68_Fixed70_Groups02_04/K68_Fixed70_Group03_Think_Create_Discover_Professional.docx"
+    },
+    {
+      "group": "04",
+      "fixed_changes": {
+        "看看 Discover 本次兴趣 是否会进一步增强兴趣": 1,
+        "这一维的真实得分、名次及并列关系由个性化结果呈现。": 1
+      },
+      "fixed_input": "/mnt/data/K68_Fixed70_Groups02_04/K68_Fixed70_Group04_Think_Connect_Discover_Professional.docx"
+    },
+    {
+      "group": "05",
+      "fixed_changes": {
+        "看看 Discover 本次兴趣 是否会进一步增强兴趣": 1,
+        "这一维的真实得分、名次及并列关系由个性化结果呈现。": 1
+      },
+      "fixed_input": "/mnt/data/K68_Fixed70_Groups05_07/K68_Fixed70_Group05_Think_Move_Discover_Professional.docx"
+    },
+    {
+      "group": "06",
+      "fixed_changes": {
+        "看看 Discover 本次兴趣 是否会进一步增强兴趣": 0,
+        "这一维的真实得分、名次及并列关系由个性化结果呈现。": 1
+      },
+      "fixed_input": "/mnt/data/K68_Fixed70_Groups05_07/K68_Fixed70_Group06_Discover_Build_Think_Professional.docx"
+    },
+    {
+      "group": "07",
+      "fixed_changes": {
+        "看看 Discover 本次兴趣 是否会进一步增强兴趣": 0,
+        "这一维的真实得分、名次及并列关系由个性化结果呈现。": 1
+      },
+      "fixed_input": "/mnt/data/K68_Fixed70_Groups05_07/K68_Fixed70_Group07_Discover_Create_Think_Professional.docx"
+    },
+    {
+      "group": "08",
+      "fixed_changes": {
+        "看看 Discover 本次兴趣 是否会进一步增强兴趣": 0,
+        "这一维的真实得分、名次及并列关系由个性化结果呈现。": 1
+      },
+      "fixed_input": "/mnt/data/K68_Fixed70_Groups08_10/K68_Fixed70_Group08_Discover_Connect_Think_Professional.docx"
+    },
+    {
+      "group": "09",
+      "fixed_changes": {
+        "看看 Discover 本次兴趣 是否会进一步增强兴趣": 0,
+        "这一维的真实得分、名次及并列关系由个性化结果呈现。": 1
+      },
+      "fixed_input": "/mnt/data/K68_Fixed70_Groups08_10/K68_Fixed70_Group09_Discover_Move_Think_Professional.docx"
+    },
+    {
+      "group": "10",
+      "fixed_changes": {
+        "看看 Discover 本次兴趣 是否会进一步增强兴趣": 1,
+        "这一维的真实得分、名次及并列关系由个性化结果呈现。": 1
+      },
+      "fixed_input": "/mnt/data/K68_Fixed70_Groups08_10/K68_Fixed70_Group10_Build_Create_Discover_Professional.docx"
+    },
+    {
+      "group": "11",
+      "fixed_changes": {
+        "看看 Discover 本次兴趣 是否会进一步增强兴趣": 1,
+        "这一维的真实得分、名次及并列关系由个性化结果呈现。": 1
+      },
+      "fixed_input": "/mnt/data/K68_Fixed70_Groups11_13/K68_Fixed70_Group11_Build_Connect_Discover_Professional.docx"
+    },
+    {
+      "group": "12",
+      "fixed_changes": {
+        "看看 Discover 本次兴趣 是否会进一步增强兴趣": 1,
+        "这一维的真实得分、名次及并列关系由个性化结果呈现。": 1,
+        "• 不以速度或难度为目标；重点是让孩子既参与制作，也亲自体验结果。": 1
+      },
+      "fixed_input": "/mnt/data/K68_Fixed70_Groups11_13/K68_Fixed70_Group12_Build_Move_Discover_Professional.docx"
+    },
+    {
+      "group": "13",
+      "fixed_changes": {
+        "看看 Discover 本次兴趣 是否会进一步增强兴趣": 1,
+        "这一维的真实得分、名次及并列关系由个性化结果呈现。": 1
+      },
+      "fixed_input": "/mnt/data/K68_Fixed70_Groups11_13/K68_Fixed70_Group13_Create_Connect_Discover_Professional.docx"
+    },
+    {
+      "group": "14",
+      "fixed_changes": {
+        "看看 Discover 本次兴趣 是否会进一步增强兴趣": 1,
+        "这一维的真实得分、名次及并列关系由个性化结果呈现。": 1
+      },
+      "fixed_input": "/mnt/data/K68_Fixed70_Groups14_15/K68_Fixed70_Group14_Create_Move_Discover_Professional.docx"
+    },
+    {
+      "group": "15",
+      "fixed_changes": {
+        "看看 Discover 本次兴趣 是否会进一步增强兴趣": 1,
+        "这一维的真实得分、名次及并列关系由个性化结果呈现。": 1
+      },
+      "fixed_input": "/mnt/data/K68_Fixed70_Groups14_15/K68_Fixed70_Group15_Connect_Move_Discover_Professional.docx"
+    }
+  ],
+  "issues": [],
+  "status": "SOURCE_TEXT_FIX_APPLIED; CONTENT/ASSEMBLY_RUNTIME_NOT_VERIFIED",
+  "note": "Preserve preapproved prose; per-child third rank, joint slot mapping and real answer runtime must be checked before production."
+}

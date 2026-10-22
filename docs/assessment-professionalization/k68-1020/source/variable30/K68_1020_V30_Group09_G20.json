@@ -1,0 +1,155 @@
+{
+  "template_id": "K68-1019-FIXED70-09",
+  "pair": [
+    "discover",
+    "move"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "以唯一已核验Result Object读取六维分数；不在JSON中储存某个儿童的样本分数",
+    "按六维实际得分降序选择前两项作为15选1的无序组合索引；相同分数仅以冻结域顺序决定索引，不代表真实兴趣优先级",
+    "Gap只等于所选最高两个实际分数之差；G00=0、G10=10、G20=20、G30>=30，G30正文显示真实差额",
+    "保留全六维并列名次：第二第三同分时说明并列第二；前三同分时三者均列第一；必要时显示更多并列，不凭索引降级",
+    "第三维及同分方向必须根据真实分数调用对应专业内容；固定Discover+Move+Think中的Discover只是历史模板素材，不是儿童必然第三名",
+    "Top1可能反转，活动目的和第一第二表述以实际得分为准；G00不人为指定强弱",
+    "差距不决定活动次数、训练强度、心理类型或长期课程，优先尊重儿童自主选择和反复体验",
+    "固定70%保持不变，使用原9个装配槽位插入30%变量；不得叠加重复摘要或将变量插入表格错误位置",
+    "缺少真实30题逐题证据时REAL_EVIDENCE=BLOCKED，禁止正式儿童个人报告；QA提示不进入家长正文"
+  ],
+  "facet_rules": {
+    "discover": "仅凭真实题目级证据细化发现、变化和观察兴趣",
+    "move": "仅凭真实题目级证据细化身体参与、节奏或路线兴趣",
+    "third": "第三维必须依据实际分数和并列动态判断，不把Think固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-09-G20",
+  "gap_code": "G20",
+  "eligibility": "gap == 20",
+  "label": "探索重心较清楚：检验行动是否具有独立吸引力",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "discover": 90,
+      "move": 70,
+      "think": 60,
+      "create": 50,
+      "build": 40,
+      "connect": 30
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差20分。探索90分、行动70分，相差20分，本次问卷更偏向发现变化与未知。关键是验证孩子是否主动返回观察过程，同时单独提供没有探索目标的身体活动，判断行动兴趣是否能独立存在。思考60分仍有观察价值。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜探索90分、行动70分、思考60分。探索90分、行动70分，相差20分，本次问卷更偏向发现变化与未知。关键是验证孩子是否主动返回观察过程，同时单独提供没有探索目标的身体活动，判断行动兴趣是否能独立存在。思考60分仍有观察价值。",
+      "reverse_top1": {
+        "leading_domain": "move",
+        "secondary_domain": "discover",
+        "text_template": "行动得分高于探索20分，本次更突出身体参与和动态挑战的兴趣。可从适龄运动、节奏或路线活动开始，同时保留无需完成运动任务的观察体验，了解探索是否也具有独立吸引力。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "探索90分、行动70分，相差20分；思考60分。探索在本次回答中更突出，但这不是运动能力或身体发展水平的比较。",
+      "reverse_top1": {
+        "leading_domain": "move",
+        "secondary_domain": "discover",
+        "approval": "K68-1020-TASK9",
+        "text_template": "行动兴趣在本次回答中相对更突出，体现为对移动、节奏和身体参与的偏好。这是活动兴趣的相对差异，不是运动能力、身体发展水平或观察能力的比较；探索仍应有独立体验机会。"
+      }
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "让孩子体验不需要移动的自然观察与无需寻找线索的身体游戏，分别观察投入程度；之后再用自然寻宝把两种过程结合，以便区分喜欢“发现什么”与喜欢“移动本身”。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "拓展探索：光影、天气、植物或生活中的微小变化，比较发现过程的持续吸引力",
+        "行动独立入口：提供自由路线、节奏运动或骑行，不附加观察任务",
+        "组合验证：自然寻宝中让孩子选择停留观察或继续前进",
+        "思考独立入口：安静的路线谜题或策略选择，不把思考等同于寻宝表现"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜自然寻宝路线：区分发现线索的兴趣和沿路线移动的乐趣",
+        "活动B｜静态观察：不用跑动仍会主动发现、比较和追问吗？",
+        "补充无发现任务的运动，检验行动本身是否引发自主返回"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "丰富探索对象而不是增加固定学习强度",
+        "保留身体行动的独立选择，不只作为探索任务的交通方式",
+        "先分开体验观察与运动，再通过寻宝自然结合",
+        "以孩子自愿重复和愉悦程度而非速度或完成清单判断"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "独立观察时是否愿意持续追问变化？",
+        "没有新发现任务时，仍愿意移动、尝试路线或节奏活动吗？",
+        "自然寻宝中最享受的是找到线索还是身体参与？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

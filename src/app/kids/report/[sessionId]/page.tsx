@@ -181,7 +181,10 @@ export default function KidsProfessionalReportPage() {
 
         const generated = result.ageForm === "K912"
           ? generateK912ProfessionalReport(buildK912ReportFacts(result))
-          : generateK68ProfessionalReport(buildK68ReportFacts(result));
+          : generateK68ProfessionalReport(
+              buildK68ReportFacts(result),
+              { contentVersion: "K68-1020" },
+            );
 
         if (!cancelled) {
           setReport(

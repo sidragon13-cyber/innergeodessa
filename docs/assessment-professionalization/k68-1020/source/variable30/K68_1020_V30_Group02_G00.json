@@ -1,0 +1,132 @@
+{
+  "template_id": "K68-1019-FIXED70-02",
+  "pair": [
+    "think",
+    "build"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "以唯一已核验Result Object读取六维分数；不在JSON中储存某个儿童的样本分数",
+    "按六维实际得分降序选择前两项作为15选1的无序组合索引；相同分数仅以冻结域顺序决定索引，不代表真实兴趣优先级",
+    "Gap只等于所选最高两个实际分数之差；G00=0、G10=10、G20=20、G30>=30，G30正文显示真实差额",
+    "保留全六维并列名次：第二第三同分时说明并列第二；前三同分时三者均列第一；必要时显示更多并列，不凭索引降级",
+    "第三维及同分方向必须根据真实分数调用对应专业内容；固定Think+Build+Discover中的Discover只是历史模板素材，不是儿童必然第三名",
+    "Top1可能反转，活动目的和第一第二表述以实际得分为准；G00不人为指定强弱",
+    "差距不决定活动次数、训练强度、心理类型或长期课程，优先尊重儿童自主选择和反复体验",
+    "固定70%保持不变，使用原9个装配槽位插入30%变量；不得叠加重复摘要或将变量插入表格错误位置",
+    "缺少真实30题逐题证据时REAL_EVIDENCE=BLOCKED，禁止正式儿童个人报告；QA提示不进入家长正文"
+  ],
+  "facet_rules": {
+    "think": "仅以真实Think 5题定位规律/方法比较/预测/解题等",
+    "build": "仅以真实Build 5题定位搭建/拆装/修改/测试等",
+    "third": "实际第三维逐题证据核实后才能细分；无证据不臆测"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-02-G00",
+  "gap_code": "G00",
+  "eligibility": "gap == 0",
+  "label": "思考与建构并列：理解问题与亲手制作的双入口",
+  "not_final_child_report": true,
+  "reference_samples": [],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两个兴趣的实际分差为0分。思考与建构在本次问卷中同分，无法从分数判断唯一第一。两种入口分别指向“想清楚怎么做”和“亲手把它做出来”；探索仍提供观察变化的第三种机会。家长应看孩子是否分别享受两个过程，还是在自由制作里自发结合。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次兴趣结论｜思考80分与建构80分并列第一；探索70分列第三。思考与建构在本次问卷中同分，无法从分数判断唯一第一。两种入口分别指向“想清楚怎么做”和“亲手把它做出来”；探索仍提供观察变化的第三种机会。家长应看孩子是否分别享受两个过程，还是在自由制作里自发结合。"
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "思考与建构同为80分，均并列第一；探索70分，为第三方向。对孩子而言，规律推理与动手搭建在本次问卷中没有分数主次。值得区分的是，孩子愿意独立解决问题、独立制作，还是在提出想法后立即动手验证。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。"
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "同一个纸桥项目里，孩子可能喜欢想出承重结构（思考），也可能喜欢折叠、连接和修改材料（建构）。本次两项同分，不代表每个场景里参与程度完全相同；可以分别给无材料的路线谜题、自由搭建和二者结合的项目，观察主动选择与快乐来源。探索则观察材料变化是否也带来独立兴趣。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "双入口并列：提供无需制作材料的推理游戏与无需预先设计的自由搭建，让两类兴趣都有独立被选择的机会",
+        "自然交汇：把纸桥做成开放挑战，孩子可以自己决定先画方案还是先动手，再看最享受哪个环节",
+        "探索的独立空间：提供植物或影子观察，不必把每次发现都转成制作任务"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A（纸桥承重）｜让孩子自由决定是先研究结构还是先动手试做；观察最享受的是比较方案、折叠材料，还是修改后的发现。",
+        "活动B（逻辑路线挑战）｜在不使用制作材料时，观察孩子是否仍主动享受比较路线和解决问题；与纸桥的动手吸引力分别比较。",
+        "组合观察｜两种主兴趣本次同分，不人为判断哪一种更重要；另保留独立探索自然变化的机会。"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "先提供思考、制作两种同等容易的选择，不按照同分强行安排训练量",
+        "再次在不同日子提供两种活动，看孩子是否愿意主动返回",
+        "让孩子自行选择组合使用思考与制作，或保持两种独立爱好",
+        "回顾自主选择、投入和快乐感；兴趣保持并行也是合理结果"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "没有制作材料时，孩子会主动选择找规律或路线问题吗？",
+        "没有明确答案要求时，孩子会主动搭建、拆装和修改吗？",
+        "观察材料变化的兴趣是否可独立出现，而不是只为完成纸桥？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

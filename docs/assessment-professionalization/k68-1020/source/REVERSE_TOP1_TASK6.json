@@ -1,0 +1,322 @@
+{
+  "approval": "K68-1020-TASK6",
+  "baseline": "input.zip; original MANIFEST and FILE_CHECKSUMS retained as package provenance",
+  "backup": "/private/tmp/k68-1020-task6/baseline",
+  "changes": [
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group01_G10.json",
+      "slot": "P3_PROFILE",
+      "before_sha256": "d116c5b5421336e42ceccfa3ed98838ced74c4984008472b7360ef8d9912a2f8",
+      "after_sha256": "d356111dae0e589c0d631a5ad3d1a6a553346991f94e4c11f26e861e904df7b3",
+      "approved_text_sha256": "88e835e3980d19d9afb2e0494dbc6d06f76fa31c5524f895510946055754e26b"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group01_G20.json",
+      "slot": "P3_PROFILE",
+      "before_sha256": "c4dc26937cda2e9a94ec3702f662abe99b502c1340700debdfaf48fdfb591ed1",
+      "after_sha256": "416139a9c11ed36e411958998f6867119b2412ce7f6f28f1ee22187e902cd407",
+      "approved_text_sha256": "64273008e1d84f3f1750852a4d91ad00148aa3e9d2177ff464b1cb1e1180d29a"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group01_G30.json",
+      "slot": "P3_PROFILE",
+      "before_sha256": "297f8fb7b8a9aaf3207a32af3e6b982262b261e636b6fd231fd48a555e32d948",
+      "after_sha256": "5fb4b37a0287c60bdf721ea0f0aad66685b57b1fb33cf005df5fc738fa42e709",
+      "approved_text_sha256": "7b261fee8d1a47760fd3ee953a9bcabbb483d25840e5a07aa2e9555abb26e297"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group02_G10.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "e435e1a346b9cecdb76ab81077522ded4e62dc03e49838f1b747fe4870664e1e",
+      "after_sha256": "f2910b42ac11c2776aa40e0ac7aecd617679624ce9722746c862aaef535e95bb",
+      "approved_text_sha256": "68b85dd47ca14672170af8a2d8d0063be64d8e232aa14ecd399416fed8437d2c"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group02_G20.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "24894f01332e53d9970a278ccf091605262c0638ea557bdf1e1f300a08eaa058",
+      "after_sha256": "eeceb901546d439f34577920c1d00cddcb59e0b01f0bb7c6d237dc9754dc67d0",
+      "approved_text_sha256": "e40d8cc44fb0ab8071cd5d71a9a74447812ca1fc18cdef17c80320c10be73ecc"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group02_G30.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "be22fbf1e1b37e567f72635d5cc4066429ed112b5f9ee0eead5ec570bc370569",
+      "after_sha256": "5aa6720b331078f35dc237345a68eb708773547914e69076a419162000a03e26",
+      "approved_text_sha256": "feb5ac42e62d3b74d99b8ad1847d25c5e94c1f2f189f667b2bccb3352b49d082"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group03_G10.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "037d5f128b12fa0eef9133ae084f70cc42b3402b777dd9a2725d93f68575e52d",
+      "after_sha256": "eb7489b80ec2f38e6cc5195e1f495a6c3a5e28a823d253e49f5527454bc1674a",
+      "approved_text_sha256": "c349807323098503977076c72b980c76207a8a5d51dcc1c302692007eb9e6293"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group03_G20.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "791a2b00ed68a35f0cc99a7a1be92cf2fd406d78fd1c6270333c0d73b2e9b5c8",
+      "after_sha256": "aeafe991463e0641e72890c57cd7301494756127dfa46d9a46a7a95487993901",
+      "approved_text_sha256": "c57c48e93916262500960cefa41acdb5d3f19b5ad22a3dbd8a57dc93404b821c"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group03_G30.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "537fc167c23c0d20ae785360d324b0b070924bd266af10240df9a2f57dab4ace",
+      "after_sha256": "4f09b11f81bfbcd1a950a769acad4b6fc0c436dcdf6e0081cce17ac29a7e6e20",
+      "approved_text_sha256": "0b5f3e0ae3ec8c40e6c2fae90d4f08cfd1e251adaf1ff2c6165458698d852a1e"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group04_G10.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "54a85bba12e81e9aa19db5852a83e769115eb45f05f08e44630f239c226d78a5",
+      "after_sha256": "e3b0209cf232ce5eeb485af7aab103a39d03abc357fe0bc331a8aa88e3cda04d",
+      "approved_text_sha256": "828b6f26656175e71fafb5cb16f1887631aef2a81d65f755963f0db325f1f832"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group04_G20.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "7d29de4e2e58a620db5e64b5fbf6c23db6fba1cdecd97825ec28b87a5a71dc52",
+      "after_sha256": "dad193afbbb34d24a218525b6b8d1164bad6f09ee51e871b70651f1df6446275",
+      "approved_text_sha256": "d580edc9b1eed507480db16b05c3f495b52834b3843996a9efecdcab83efb1c9"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group04_G30.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "96dad02ae640d2290a7be8f8f3049ed411d9716ac9f4c653949ea0d4cbc3d680",
+      "after_sha256": "cba7cf72018a8b2cd1fe08d33c13c45c8038d0b3ed197bb5cda092b38ed4447a",
+      "approved_text_sha256": "f35481a6c27b457f18be9c51d2a6c1f41bd48eb6b407a6cf18678e1e174dad16"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group05_G10.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "59245fb6d4dd14aaaa1fd79eab23ece7b349be2a47db0da48762e059b0b84145",
+      "after_sha256": "02194db487a1986a1840accca68c2eb8a2708b18b7bd5d247e8ab478589c9874",
+      "approved_text_sha256": "62cb0cbbaf5f4a7fc0b3c6229c1719fc59e52c2d33411b9c8a818325e8a57127"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group05_G20.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "7c6f122a848ac7f64c27a028b32b443cdc46d9fb1204f1fbd57d0b02113d25b9",
+      "after_sha256": "93f979d6d4e73a56a0daae75fd976e1f30d2aa236210801af121de6c39197ede",
+      "approved_text_sha256": "8e8c20a5be246145686829209d37860c58433648cd7199561ab583203434e5de"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group05_G30.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "3c43342dc0a9bad0909eb92d805c2b91ea073bfa9a1450d3724e35a0526599a6",
+      "after_sha256": "4c23019effe75eed4e1ce85fe821614df7b30f972ee3137a9a996feb17dac6e8",
+      "approved_text_sha256": "7f189f7c99edc222d67489358b7bb74f8973beb1bd907647e6c810ed13134845"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group06_G10.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "304957967b8248f86bfb3d9edab7f91a43aaa7307ca9618ac928245cfcae7b78",
+      "after_sha256": "f02daadd776ee60525ba69a1beae9a00e5beed3776116978f86a2a591a2cda42",
+      "approved_text_sha256": "76d4224a6563ec3b237de01feaa88c4fda313b74fd00ab578d8f05eeeabca71d"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group06_G20.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "0860b29f09a9f9d3bc584ee0b6f3aedf52dc2350062c78a87829b7e895f3b506",
+      "after_sha256": "5c17c81e0061a6e6a541e94adb6d895ae7577dcbec60a398a45ca6bd637dd8e1",
+      "approved_text_sha256": "e16f8065b0213109e1d48fefd8bf72a086fc8022310f5b45fdbc3461039dfc34"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group06_G30.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "0fd24556f1578e2d9e23a02bf11a0a068ac0a0fb6b42cd393d16e39bfe9218a5",
+      "after_sha256": "f81577196ee35d7806e0ff33bb56a22cb7fea385e708724e3378d179c9f50338",
+      "approved_text_sha256": "05ce0151df748a6ea8bf5df4e70b7f3904878f42748a73f1c15db42244e9700e"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group07_G10.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "648e4b3be88db860b9cc376a7c615864223275a8494efe6bf5786ecc7d2cd5b2",
+      "after_sha256": "88a425e4d06bcf85ba30844c6ef9ea1f117e813f98c02c46fa8da9e3f16941fc",
+      "approved_text_sha256": "47c886320f0e512973956124a125014e6f6b9776301242d480fab6abb749ac9f"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group07_G20.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "ad5f279f11b2624ab4c539612d90daa555f63e0cefecca786f9398f140f8c64d",
+      "after_sha256": "e2fb1d0157885294b06d92db18e4bb1f72bbf48cd435624f0717f7f6243cbf54",
+      "approved_text_sha256": "5b969bc0a8a6dbeed609cd3b82c39decbc968fb9f287bdf6727de1f588b9c407"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group07_G30.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "1d409cbddcaf44d38c210866fddf1d8196c4b54a33eadd41dc2ab0506b2c6afa",
+      "after_sha256": "6d543a27788210fb8019633b3a5d5ad67c0e6d1a4db3c4d8677a04fda209403a",
+      "approved_text_sha256": "b2840ee03f1be89bacfbadc9b3d46dfb7ce91fd28d09a2bcf4a7df5be502bee9"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group08_G10.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "e521a24d40bfde0de22c0367c0ff2e23559bdae62c000f27a5d7ba9b0e73db05",
+      "after_sha256": "a481d9d357165556a3f7b713bf3a452b965cb9c024d2f0faae167944d302e6ad",
+      "approved_text_sha256": "af6607b5cc9b6399bb2e6c8f89f96a75edc856d8f0baff10984dd56583a0ab5f"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group08_G20.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "9b11a13e3ad8259443a4531a3e54404e03917e2e98320f131cde057882f9e076",
+      "after_sha256": "f2eaf2a75019c6967acde99a8c0f4baa02183e463d01aeef87c74c3df8e5c5ee",
+      "approved_text_sha256": "84796b216edceb338379d813b15837c7f716d017c27088f43447a4d8908c696e"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group08_G30.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "0bdc291d1305afd733b386b08c9713d17165451d284283992c8de80d8e0f72ed",
+      "after_sha256": "d6759dd82dbe5e4e8e50ad688325f3cdfaef4e03824eac638e6ee5399cfdc2a0",
+      "approved_text_sha256": "9a5befceca5224c30ab23fa289201f48da4c5c58983b45cf44efabd7197b87ea"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group09_G10.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "69b42bb75a3a92b25907343f593f986c31067d9ca43ef83bab7353099c5d9a10",
+      "after_sha256": "178ec10a0545f9f286316acad90c075c2027e25e0f23a0b2ee31a5e1ba5e133e",
+      "approved_text_sha256": "01c2731c16965e3f69c3fd5d89e16b72e5c082723a0ad4acdb6af049dc44753a"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group09_G20.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "d16cfefb3f88855c7f5484f606ccb9e8de0e7601714241c03f9a3be7c0e6c02e",
+      "after_sha256": "704e473016fe1a31ca7746eb8442ef8ffe423148811657177422964652d72127",
+      "approved_text_sha256": "3417fc9c36db8a1d3774421ebd30bf93df0ee9c0baba9ffbf752d07dbf5db905"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group09_G30.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "6314ef1c2e87a80191d5e6c70c3a3ac4c70727d40ae091a6558fbb0f2a995907",
+      "after_sha256": "dad22ada0cf0af4711f9fae77dab249c033f6d4c7c6e5c8bc03a243411b35607",
+      "approved_text_sha256": "182097a23688972a4e0296ad6981198bc2a6d0f9122d4ae7fd1abee92ec8dc8f"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group10_G10.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "695e17db00243caf681d66e92d865dbc521916999b4a294187a490ea6921c97a",
+      "after_sha256": "42c4159973fb4c77bcc1c5321ca4912ef731f1a0e2d72461748699ef1b27e5f5",
+      "approved_text_sha256": "2ec1ab9e0eff7016cc923ae8d29e2685569833f4dfd4bb62e9ef9ca44bbed48e"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group10_G20.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "91942abaa5e38b0d320e0592383d0d7d4a42267c385978668df9ced9b78c0d16",
+      "after_sha256": "9736d3b1a39f924f37c178bab6d7bd524e2588ab0f8fa29ddc9fb457489c77af",
+      "approved_text_sha256": "67a14c55df72b64b2a189e9aa0568b07f16b6f22130bbca2c9144c46a6d654d5"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group10_G30.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "869b93418d36e327f6c1931f06650d036e0aafa52f7fdcd8e659a9e2fa1bbb9b",
+      "after_sha256": "f05eb46d6c74192a12e1a2bbeec44b11f49c721ac53cdf5518a862edc778f44a",
+      "approved_text_sha256": "f03f179176b4e555618f48259a9fa58a2d2d13f7a7fb384c675601509872d27a"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group11_G10.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "3eb7e7859324d66eced2eb948e14bda7d7d94416e5871a92e3d3a6d40cb972be",
+      "after_sha256": "001e5692f3354040ab8cf43bc1afd10d9070a49119be9461378237e9aae67e08",
+      "approved_text_sha256": "be6416bb1468f285dad037c58dd2286eee4d75b0a6f305f3047a9d17c221f977"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group11_G20.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "503fa39684e7e0509ea4dabfc91dc9922e89ac3850ffc189c9ffd85a3b618d7a",
+      "after_sha256": "201915a4923ec5c846765bc1a74319eec4e1d6132a9d670ae111511e1bfe0deb",
+      "approved_text_sha256": "3095a42601d68e1ffdf26b2f7cf46c7d8a87ee21d522b77dc531cfc01e25bcac"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group11_G30.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "745148feb1e30b112d5291d20026fb926a285f71f33b4ae0c0cb5f442335f4c9",
+      "after_sha256": "23323d4cb37ad77483ad80334fc605cac9cd3e960503ab3b85916650da46519c",
+      "approved_text_sha256": "1a8cbbe3845ee49f539f43e9b55ae73d1441533978341a882cc18904d3450c5b"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group12_G10.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "24ec9e1f38b47c4b105ff0ada9618e4ab291aeb41a147887c669c2ea3f312f4f",
+      "after_sha256": "282b325f7c01c067c3a5d27dcf611abca183bf9636969d728e1e006856c0d55d",
+      "approved_text_sha256": "c2dde150248f550192a753c4674299ce2be3e4c9e46248127b0213b1d7591c97"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group12_G20.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "190979e31792196967df748bc9ecf04ee3677fc119798210437c200175f7a69c",
+      "after_sha256": "8e26615bc12af70c30a9111b5508bca54713878c696da6e53a6f7b025ee50632",
+      "approved_text_sha256": "b069254dc6e572be21de447008abdbfeacb39a3d1ecbe42695c213b5a44b3edb"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group12_G30.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "bb3f1583dce45c0dc1dc58abd1e09ada8aefb11912bdf1000ee4c32c6576f492",
+      "after_sha256": "9095fa8f6e8eb5c8aea2d4acc2fb33083f34dda2cdd7ee9b0549e010588640f4",
+      "approved_text_sha256": "bba0a29485ced12a149899bf5e026cb8ccec63a5e2eed2b6a415ae8bb7a87a65"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group13_G10.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "28bcf2d9b99108e620e07252e742ad651c91a591b26f45f526f81c50bf2a0ea1",
+      "after_sha256": "ccd2584adac0f63cb6a5f97999da73ceb589e189a1c90ac70ca277c077eb92da",
+      "approved_text_sha256": "50a55477f71aa6b4c5fc8aeb87484e9189f2aef2fba242cfc65d5057f2a27946"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group13_G20.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "1c395c7c92346b69d51956d04673a3ad7a9dee85c877112feec9935f5484db69",
+      "after_sha256": "58b9c9ee966ab34eb8b4528a71f442b5f622b0f7f1c422ef39cb0a00aff99a3d",
+      "approved_text_sha256": "9e284972ea80af8a7c7b0d1ce161281cf474377d081f5723d335ccc4a77fb46e"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group13_G30.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "5d537cc5b8f0c25096173df6f2832b17357c635f702108ecd141f7dba50e3072",
+      "after_sha256": "6e403fa7df9fcad2cdfad575b7fff26f7618c33ce7d859912bdfa73bf055a7fd",
+      "approved_text_sha256": "7b9b323ca10ebb5ae8a9c6f34708a9f66d436f122bb0f09328cd39ffdfceb0c5"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group14_G10.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "6cda1bf27b3c5d7482c4c6579dd6adb91a3fafa152fa99b4d6c4ec54b25d1451",
+      "after_sha256": "b9182b7477badef52dfc8804c2b36441ff912ee8d43f171bbf166f36494c4c7e",
+      "approved_text_sha256": "4c0ec887074d651909f9e35f72ee73a611921eabdfa020d5be7b01fb2bcac957"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group14_G20.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "749d2e677c426bd0a8a3d064324eba243cc14f65c7e3f445b1edc8844e6c3bc0",
+      "after_sha256": "7a116558d53bc503dd0872ac8b4369b4047f530f0c68e66c3e6177a0f5662286",
+      "approved_text_sha256": "eb577d8483bdadeab5d4e459b22d2d07534ad57f5a779af1564f5e074f06a536"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group14_G30.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "7fa4d84aa0c79476ef782db74a67b82e6db828fdd03bbc6b479d337f58d672d2",
+      "after_sha256": "2c33a6cd949a1cfc1969e00c205dd0547a1815013afd99046583f53245ade436",
+      "approved_text_sha256": "b281c7ca8e85b9a1b7288871924de84d710cc5a7ad51515deff47ada1b8d880c"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group15_G10.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "364a6a390d02d0fb99259e79bc92d23142b43effb8d195d33d665b2f3f5554a6",
+      "after_sha256": "84042d10a64484cdb5008e6444103dd9661bcd96e977cde6e38a9b5f911a839c",
+      "approved_text_sha256": "5bc1944f6aa159c8379d296d8994b037ba0099c1d1b681351f2b7febffe23b9b"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group15_G20.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "b30e7e5218bdabc74a71e2449771ff1cab8ca4c867768ff31458283a2b98226d",
+      "after_sha256": "b11375b13d37c04e9b223801c432a5c84d7c32dc26a8e61178d10db5c4f8753b",
+      "approved_text_sha256": "8c79c2ed6842cc2f9500ec6b1766f45e3d370f3c0a592e930d07b5c9f8508b1e"
+    },
+    {
+      "path": "docs/assessment-professionalization/k68-1020/source/variable30/K68_1020_V30_Group15_G30.json",
+      "slot": "P1_SUMMARY",
+      "before_sha256": "86e9c4d993511f72d1af525eae44133b78ed05e2abaca21d6328912e5dee8c14",
+      "after_sha256": "a66dc69879ee8cdead5deb401585924a5d743fde1377b1ba7123bc84cc7aad06",
+      "approved_text_sha256": "c4471862605dc9032eeb1661d25c310d3f5bdf66182cab1b66231c02b0073a34"
+    }
+  ]
+}

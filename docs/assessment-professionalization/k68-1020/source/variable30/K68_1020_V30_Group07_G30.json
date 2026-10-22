@@ -1,0 +1,149 @@
+{
+  "template_id": "K68-1019-FIXED70-07",
+  "pair": [
+    "discover",
+    "create"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "以唯一已核验Result Object读取六维分数；不在JSON中储存某个儿童的样本分数",
+    "按六维实际得分降序选择前两项作为15选1的无序组合索引；相同分数仅以冻结域顺序决定索引，不代表真实兴趣优先级",
+    "Gap只等于所选最高两个实际分数之差；G00=0、G10=10、G20=20、G30>=30，G30正文显示真实差额",
+    "保留全六维并列名次：第二第三同分时说明并列第二；前三同分时三者均列第一；必要时显示更多并列，不凭索引降级",
+    "第三维及同分方向必须根据真实分数调用对应专业内容；固定Discover+Create+Think中的Discover只是历史模板素材，不是儿童必然第三名",
+    "Top1可能反转，活动目的和第一第二表述以实际得分为准；G00不人为指定强弱",
+    "差距不决定活动次数、训练强度、心理类型或长期课程，优先尊重儿童自主选择和反复体验",
+    "固定70%保持不变，使用原9个装配槽位插入30%变量；不得叠加重复摘要或将变量插入表格错误位置",
+    "缺少真实30题逐题证据时REAL_EVIDENCE=BLOCKED，禁止正式儿童个人报告；QA提示不进入家长正文"
+  ],
+  "facet_rules": {
+    "discover": "仅凭真实逐题证据细化观察与发现偏好",
+    "create": "仅凭真实逐题证据细化自由创作和表达偏好",
+    "third": "第三维须依据实际分数和并列动态判断，不把Think固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-07-G30",
+  "gap_code": "G30",
+  "eligibility": "gap >= 30",
+  "label": "探索明显领先：检验持续吸引力并重新开放自由创造",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "discover": 100,
+      "create": 60,
+      "think": 50,
+      "build": 40,
+      "connect": 30,
+      "move": 20
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差40分。探索100分、创造60分，实际差40分；本次偏好明显集中于发现未知和观察变化。需要验证这种兴趣能否跨对象、时间持续，同时让创作获得完全自由、低压力的独立机会；思考50分也不应被忽视。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜探索100分、创造60分、思考50分。探索100分、创造60分，实际差40分；本次偏好明显集中于发现未知和观察变化。需要验证这种兴趣能否跨对象、时间持续，同时让创作获得完全自由、低压力的独立机会；思考50分也不应被忽视。",
+      "reverse_top1": {
+        "leading_domain": "create",
+        "secondary_domain": "discover",
+        "text_template": "创造得分明显高于探索，本次结果更偏向想象与自由表达。可在不同创作形式中观察孩子是否主动重复参与，同时保留低压力的观察和发现体验。分差不能解释为缺乏好奇心或已经具有艺术天赋。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "探索100分、创造60分，差40分；思考50分。较大分差是本次问卷的相对结构，不等于艺术天赋或表达能力不足。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "让孩子在自然、生活和不同观察媒介中体验探索，同时提供没有“正确答案”和观察任务的自由创作。较低创作分可能受机会与熟悉程度影响，不能预先排除。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "跨场景验证：植物、光影、声音和日常变化能否持续吸引",
+        "重新开放无任务的自由绘画、角色想象和故事创作",
+        "融合项目允许孩子自由决定是否把观察转化成作品",
+        "第三维思考也提供非强制的问题和规律体验"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜自然发现变成故事：允许只观察、只想象或自由结合，不要求创作成果",
+        "活动B｜自然观察：更换现象，验证探索乐趣能否重复出现",
+        "自由创造独立进行，检验较低分是否因为缺少接触机会"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "通过不同情境验证探索的主动性，而非简单增加课程",
+        "为创作保留轻松、开放、无需展示成果的机会",
+        "了解近期活动经验与材料熟悉度对问卷的影响",
+        "避免按40分差对能力、人格或长期特长贴标签"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "换成陌生适龄现象仍愿自主探索吗？",
+        "不要求记录观察结果时会选择自由创作吗？",
+        "低分方向是否由于近期缺少合适体验？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

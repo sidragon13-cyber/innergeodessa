@@ -1,0 +1,143 @@
+{
+  "template_id": "K68-1019-FIXED70-05",
+  "pair": [
+    "think",
+    "move"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "以唯一已核验Result Object读取六维分数；不在JSON中储存某个儿童的样本分数",
+    "按六维实际得分降序选择前两项作为15选1的无序组合索引；相同分数仅以冻结域顺序决定索引，不代表真实兴趣优先级",
+    "Gap只等于所选最高两个实际分数之差；G00=0、G10=10、G20=20、G30>=30，G30正文显示真实差额",
+    "保留全六维并列名次：第二第三同分时说明并列第二；前三同分时三者均列第一；必要时显示更多并列，不凭索引降级",
+    "第三维及同分方向必须根据真实分数调用对应专业内容；固定Think+Move+Discover中的Discover只是历史模板素材，不是儿童必然第三名",
+    "Top1可能反转，活动目的和第一第二表述以实际得分为准；G00不人为指定强弱",
+    "差距不决定活动次数、训练强度、心理类型或长期课程，优先尊重儿童自主选择和反复体验",
+    "固定70%保持不变，使用原9个装配槽位插入30%变量；不得叠加重复摘要或将变量插入表格错误位置",
+    "缺少真实30题逐题证据时REAL_EVIDENCE=BLOCKED，禁止正式儿童个人报告；QA提示不进入家长正文"
+  ],
+  "facet_rules": {
+    "think": "仅凭真实逐题证据细化规则和解题偏好",
+    "move": "仅凭真实逐题证据细化身体参与和行动偏好",
+    "third": "第三维须依据实际分数和并列动态判断，不把Discover固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-05-G00",
+  "gap_code": "G00",
+  "eligibility": "gap == 0",
+  "label": "思考与行动并列：比较路线选择和身体参与的独立吸引力",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "think": 80,
+      "move": 80,
+      "discover": 70,
+      "build": 50,
+      "create": 40,
+      "connect": 30
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差0分。思考与行动均为80分，并列最高。一次问卷不能判断孩子更喜欢规划路线还是通过跑走、移动和身体挑战参与；请分别提供思考游戏与自由身体活动，再观察寻宝活动能否自然连接二者。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜思考80分、行动80分、探索70分。思考与行动均为80分，并列最高。一次问卷不能判断孩子更喜欢规划路线还是通过跑走、移动和身体挑战参与；请分别提供思考游戏与自由身体活动，再观察寻宝活动能否自然连接二者。"
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "思考与行动均为80分、并列第一；探索70分。相同得分不代表每次都既爱规划又爱运动。观察面对纯路线谜题、自由移动及寻宝路线时，孩子分别享受什么。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "思考关注路线选择和比较办法，行动关注身体移动和亲自参与。同一寻宝游戏可以同时包含两种过程，但不能只因孩子参加寻宝就断定两种兴趣都稳定存在。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "双入口：分别开放路线解谜与自由运动，不设置先后主次",
+        "桥接：寻宝路线允许孩子自行决定走法，也可以边走边改变主意",
+        "第三维探索：在户外留出自由发现变化的机会，不强制寻答案",
+        "观察三类活动的主动开始、过程愉悦和自主再选"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜寻宝路线：对照孩子享受选路线、实际移动，还是两种过程自然结合",
+        "活动B｜逻辑路线挑战：在不要求身体移动时观察思考兴趣是否独立存在",
+        "另给自由身体活动，避免把行动偏好仅归为完成路线任务"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "为思考和行动提供同样容易接触的机会",
+        "由孩子决定使用路线图或直接探索空间",
+        "在不同日子自由更换活动，观察偏好是否持续",
+        "记录享受的过程，不按并列分数规定活动次数"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "没有身体移动时仍愿意比较路线吗？",
+        "没有路线问题时是否享受自由运动？",
+        "寻宝时最兴奋的是规划、移动还是发现新线索？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}

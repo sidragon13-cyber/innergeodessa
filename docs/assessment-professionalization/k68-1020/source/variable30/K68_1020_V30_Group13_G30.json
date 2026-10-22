@@ -1,0 +1,143 @@
+{
+  "template_id": "K68-1019-FIXED70-13",
+  "pair": [
+    "create",
+    "connect"
+  ],
+  "slot_order": [
+    "P1_RESULT",
+    "P1_SUMMARY",
+    "P3_PROFILE",
+    "P3_EVIDENCE",
+    "P3_RELATION",
+    "P4_INTEREST",
+    "P5_ACTIVITY",
+    "P6_PLAN",
+    "P7_OBSERVATION"
+  ],
+  "input_contract": {
+    "required": [
+      "question_bank_version",
+      "scoring_version",
+      "six_domain_scores",
+      "responses_30",
+      "item_metadata",
+      "rank_groups",
+      "third_domain"
+    ],
+    "domain_score_values": "0..100, step 10",
+    "evidence_rule": "真实题目ID/响应值/所属维度/Facet及题库版本必须核验；缺失时禁止宣称个体细分和具体题目证据"
+  },
+  "runtime_rules": [
+    "Gap=top1实际分数-top2实际分数；G00=0 G10=10 G20=20 G30+=30以上",
+    "第三维、排名和并列关系必须从六维实际结果读取",
+    "不从兴趣分数推断能力、人格、行为顺序或长期稳定性"
+  ],
+  "facet_rules": {
+    "create": "只有真实逐题数据才能细化想象、叙事及表达的具体偏好",
+    "connect": "只有真实逐题数据才能细化共同参与、交流与合作的具体偏好",
+    "third": "第三维必须依据实际分数和并列动态判断，不把Discover固定为第三"
+  },
+  "validation": [
+    "六维得分、排名、并列与全文文字相符",
+    "9个slot均完成且无工程占位符对外可见",
+    "不得用维度总分臆造题目级回答或Facet结论",
+    "不得把分差描述为能力、天赋或稳定习惯",
+    "不重复固定70%的活动卡与4-8周基础计划",
+    "正文首页外连续排版，页码连续"
+  ],
+  "id": "K68-1019-V30-13-G30",
+  "gap_code": "G30",
+  "eligibility": "gap >= 30",
+  "label": "创造明显领先：跨媒介检验并开放合作机会",
+  "not_final_child_report": true,
+  "reference_samples": [
+    {
+      "create": 100,
+      "connect": 60,
+      "discover": 50,
+      "think": 40,
+      "build": 30,
+      "move": 20
+    }
+  ],
+  "slots": {
+    "P1_RESULT": {
+      "kind": "rank_interpretation",
+      "text_template": "本次最高两项实际相差40分。创造100分、连接60分，实际相差40分；探索50分列第三。本次问卷里的创作偏好更集中，但不等于天赋、人格或长期固定的兴趣。应在不同材料和不同时间验证创作的吸引力，同时保证孩子仍能低压力选择合作与探索。"
+    },
+    "P1_SUMMARY": {
+      "kind": "summary",
+      "text_template": "本次结果总结｜创造100分、连接60分，实际相差40分；探索50分列第三。本次问卷里的创作偏好更集中，但不等于天赋、人格或长期固定的兴趣。应在不同材料和不同时间验证创作的吸引力，同时保证孩子仍能低压力选择合作与探索。",
+      "reverse_top1": {
+        "leading_domain": "connect",
+        "secondary_domain": "create",
+        "text_template": "连接得分明显高于创造，本次结果更偏向交流、合作和共同完成。可在不同伙伴与任务中观察这种兴趣是否重复出现，同时保留可自主选择的故事、绘画或角色体验。分差不代表缺乏想象力，也不能确认社交天赋。",
+        "approval": "K68-1020-TASK6"
+      }
+    },
+    "P3_PROFILE": {
+      "kind": "score_based_interpretation_no_invented_items",
+      "text_template": "创造100分、连接60分，实际差40分，探索50分第三。这里的分差仅表示本次相对差异，不证明创作能力、社交性格或持久稳定性。"
+    },
+    "P3_EVIDENCE": {
+      "kind": "verified_evidence",
+      "min_items": 2,
+      "max_items": 3,
+      "item_fields": [
+        "item_id",
+        "question_bank_version",
+        "domain",
+        "facet",
+        "raw_response",
+        "selection_reason"
+      ],
+      "fallback": "没有通过核验的真实30题逐题记录时，仅按六维分数解释相对偏好，不写具体儿童题目行为或假造偏好证据。",
+      "text_template": ""
+    },
+    "P3_RELATION": {
+      "kind": "pair_interpretation",
+      "text_template": "让孩子在故事、绘画、角色等形式之间自由选择，观察对创造过程的热情是否可迁移；单独设置不需要展示作品的合作活动，避免把连接兴趣当作创作的附属。"
+    },
+    "P4_INTEREST": {
+      "kind": "priority_hobbies",
+      "items": [
+        "跨媒介观察：在文字、画面和角色创作中是否持续主动投入",
+        "合作低门槛：简单共同游戏或交流不设置作品要求",
+        "轮流编故事可以自由参与，也允许只听、改或暂不参加",
+        "探索独立开放发现未知的机会，考虑既有接触经验"
+      ],
+      "third_domain_dynamic": true
+    },
+    "P5_ACTIVITY": {
+      "kind": "additional_activities",
+      "items": [
+        "活动A｜轮流编故事：孩子可选择创作、接续或倾听，不作表现评价",
+        "活动B｜个人创作：跨媒介观察持续偏好，不强制完成作品",
+        "提供不需要创作成果的合作体验，检查实际吸引力"
+      ],
+      "exclude_fixed_activities": true
+    },
+    "P6_PLAN": {
+      "kind": "personalized_focus_only",
+      "weeks": [
+        "丰富创作材料而非机械加大训练量",
+        "连接方向提供不要求表达优秀的轻松合作机会",
+        "观察主动返回创作活动而非一次作品质量",
+        "探索不因相对低分而失去接触机会"
+      ],
+      "avoid_repeating_base_plan": true
+    },
+    "P7_OBSERVATION": {
+      "kind": "personalized_cues",
+      "items": [
+        "更换媒介后仍愿意创作吗？",
+        "不要求完成作品时也愿意与别人共同参与吗？",
+        "低分兴趣是否可能因接触机会而暂时不突出？"
+      ]
+    }
+  },
+  "optimization_note": "2026-10-19冻结标准：同一组四档核心结论、活动目标、支持与观察须实质不同；不利用总分臆造题目证据。",
+  "revision": "2026-10-19 / substantive personalization rewrite",
+  "design_freeze": "K68-V30-DESIGN-FREEZE-20261019"
+}
