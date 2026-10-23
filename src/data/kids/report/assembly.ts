@@ -1,3 +1,4 @@
+import {localizeK68Blocks} from './content-localization';
 import {
   parseFixedReportMarkdown,
   type FixedReportRichBlock,
@@ -1067,7 +1068,7 @@ export function assembleK68ReportSections(
     if (!report.contentBinding) throw new Error("K68-1020 report binding is missing.");
     // Already selected approved content. Do not feed new source blocks through
     // the historical Markdown fragment selectors or Word bookmark coordinates.
-    return report.contentBinding.sections.map(section => ({id: section.id, blocks: section.blocks}));
+    return report.contentBinding.sections.map(section => ({id: section.id, blocks: localizeK68Blocks(section.blocks,locale)}));
   }
   const combinationSummary =
     getCombinationFragment(

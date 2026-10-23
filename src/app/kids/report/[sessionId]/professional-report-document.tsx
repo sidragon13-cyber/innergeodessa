@@ -1,5 +1,7 @@
 "use client";
 
+import {localizeK68Text} from "@/data/kids/report/content-localization";
+
 import {
   ReportHeader,
   ReportMetadata,
@@ -164,7 +166,7 @@ export function K68ProfessionalReportDocument({
   const assembledSections =
     assembleK68ReportSections(
       report,
-      report.contentVersion === "K68-1020" ? "zh" : reportLocale,
+      reportLocale,
     );
 
   const primaryDomains =
@@ -188,8 +190,11 @@ export function K68ProfessionalReportDocument({
         title:
           (
   report.contentVersion === "K68-1020"
-    ? report.contentBinding?.sections.find(item => item.id === section.id)?.titleZh
-      ?? SECTION_TITLES[section.id][reportLocale]
+    ? localizeK68Text(
+        report.contentBinding?.sections.find(item => item.id === section.id)?.titleZh
+          ?? SECTION_TITLES[section.id].zh,
+        reportLocale,
+      )
     : SECTION_TITLES[section.id][reportLocale]
 ),
       }),
@@ -391,7 +396,7 @@ export function K68ProfessionalReportDocument({
         }
         description={
           report.contentVersion === "K68-1020"
-            ? "本报告共8个部分，围绕兴趣结果、专业分析、探索活动与家长支持展开。"
+            ? (isZh ? "本报告共8个部分，围绕兴趣结果、专业分析、探索活动与家长支持展开。" : "This report contains 8 sections covering interest results, professional interpretation, exploration activities, and parent support.")
             : isZh
               ? "本报告共12个部分，从六维兴趣地图逐步进入行为信号、兴趣组合、探索建议与家长观察计划。"
               : "This report contains 12 sections covering the six-domain interest map, behavioural evidence, interest combinations, exploration guidance, and a parent observation plan."
@@ -432,8 +437,11 @@ export function K68ProfessionalReportDocument({
               title={
                 (
   report.contentVersion === "K68-1020"
-    ? report.contentBinding?.sections.find(item => item.id === section.id)?.titleZh
-      ?? SECTION_TITLES[section.id][reportLocale]
+    ? localizeK68Text(
+        report.contentBinding?.sections.find(item => item.id === section.id)?.titleZh
+          ?? SECTION_TITLES[section.id].zh,
+        reportLocale,
+      )
     : SECTION_TITLES[section.id][reportLocale]
 )
               }
