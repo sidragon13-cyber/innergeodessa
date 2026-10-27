@@ -1,3 +1,4 @@
+import { THINK_DISCOVER_PARENT_OBSERVATION } from "./content/combinations/think-discover";
 import { K912_COMBINATION_PACKS, K912_DOMAIN_PACKS } from "./content";
 import { K912_MASTER_TEMPLATE, K912_SECTION_TITLES } from "./content/master-template";
 import { K912_INTERPRETATION_BOUNDARIES } from "./rules/interpretation-boundaries";
@@ -67,6 +68,11 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
 
   const primaryProfessional = primaryPack.professional;
   const secondaryProfessional = secondaryPack.professional;
+  const topThreeDomains = facts.ranking.slice(0, 3);
+  const thirdDomain = topThreeDomains[2];
+  const thirdPack = K912_DOMAIN_PACKS[thirdDomain];
+  const thirdProfessional = thirdPack.professional;
+  const thirdLabel = K912_DOMAIN_LABELS[thirdDomain];
 
   const patternContextZh =
     ({
@@ -78,10 +84,7 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
     facts.patternContext;
   const ranking = facts.ranking.map((domain, index) => `${index + 1}. ${K912_DOMAIN_LABELS[domain].en} ${facts.scores[domain]}`).join(" · ");
   const rankingZh = facts.ranking.map((domain, index) => `${index + 1}. ${K912_DOMAIN_LABELS[domain].zh} ${facts.scores[domain]}`).join(" · ");
-  const selectedEvidence = [
-    combination.primary,
-    combination.secondary,
-  ].flatMap((domain) =>
+  const selectedEvidence = topThreeDomains.flatMap((domain) =>
     [...facts.evidenceByDomain[domain]]
       .sort(
         (left, right) =>
@@ -91,21 +94,134 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
       .slice(0, 2),
   );
 
+  // K912 TASK 4A: choose approved guidance from selected Think evidence.
+  const secondThinkFacet = selectedEvidence
+    .filter((item) => item.domain === "think")[1]?.facet.zh ?? "";
+
+  const thinkDiscoverFacetAdvice = secondThinkFacet.includes("约束")
+    ? join(
+        "Explore how the child approaches several rules or constraints, develops a possible solution, and checks whether it meets the conditions.",
+        "可以优先尝试带有多项规则或限制条件的任务，让孩子提出可行方案，再检查是否符合条件。",
+      )
+    : secondThinkFacet.includes("比较")
+      ? join(
+          "Explore how the child compares two strategies, explains their trade-offs, and checks a chosen approach through observation.",
+          "可以优先尝试比较两种解决策略，让孩子说明各自取舍，并通过观察检验选择的方案。",
+        )
+      : join(
+          "Try an activity combining comparison of possible explanations with observation and evidence checking.",
+          "可以优先尝试兼具方案比较与证据检验的活动，通过真实观察进一步了解兴趣。",
+        );
+
+  // TASK 4D-2C: Evidence-linked action for Discover + Build.
+  const discoverBuildSecondFacet =
+    selectedEvidence.filter((item) => item.domain === "discover")[1]?.facet.zh ?? "";
+
+  const discoverBuildAction = discoverBuildSecondFacet.includes("持续观察")
+    ? {
+        project: join(
+          "Use the existing model project to observe the same feature at several points in time. Record what changes and what stays the same before deciding on a modification.",
+          "沿用现有模型项目，在多个时间点观察同一特征，记录哪些发生变化、哪些保持不变，再决定是否修改模型。",
+        ),
+        observation: join(
+          "Observe whether the child voluntarily returns to collect further observations and uses changes over time to reconsider an earlier explanation.",
+          "观察孩子是否愿意主动回来继续记录，并根据不同时间的变化重新考虑原先的解释。",
+        ),
+      }
+    : discoverBuildSecondFacet.includes("证据检验")
+      ? {
+          project: join(
+            "Use the existing model project to test one explanation. Change only one condition at a time, record the result, and discuss whether the evidence supports the explanation.",
+            "沿用现有模型项目检验一个解释：每次只改变一个条件，记录测试结果，再讨论证据是否支持原先的解释。",
+          ),
+          observation: join(
+            "Observe whether the child is willing to test a prediction, notice results that differ from expectations, and reconsider the explanation.",
+            "观察孩子是否愿意检验猜测、注意与预期不同的结果，并重新考虑原先的解释。",
+          ),
+        }
+      : {
+          project: join(
+            "Use the existing project to investigate one question and record observations before deciding what to change.",
+            "沿用现有项目调查一个具体问题，先记录观察结果，再决定需要修改什么。",
+          ),
+          observation: join(
+            "Observe which investigation or recording steps the child chooses to revisit voluntarily.",
+            "观察孩子愿意主动重复哪些调查或记录环节。",
+          ),
+        };
+
+  // TASK 4D-1: Facet-specific actions for the validated Think + Discover pilot.
+  const thinkDiscoverAction = secondThinkFacet.includes("约束")
+    ? {
+        project: join(
+          "Try a challenge with several rules. Ask the child to propose a solution, check each condition, and revise the approach if necessary.",
+          "尝试一个包含多项规则的挑战：让孩子提出方案、逐项检查条件，并在不符合要求时调整方法。",
+        ),
+        observation: join(
+          "Observe whether working through several constraints remains interesting and whether the child voluntarily checks and revises the solution.",
+          "观察孩子是否愿意主动处理多项限制、逐项检查方案，并在发现不符合条件时继续调整。",
+        ),
+      }
+    : secondThinkFacet.includes("比较")
+      ? {
+          project: join(
+            "Present two strategies for one problem. Invite the child to compare trade-offs, choose one, and test the result.",
+            "为同一问题提供两种策略，让孩子比较各自取舍、选择一种方案，并测试实际结果。",
+          ),
+          observation: join(
+            "Observe whether comparing alternatives is enjoyable and whether the child voluntarily adjusts a strategy after feedback.",
+            "观察孩子是否愿意主动比较不同方法，并在看到反馈后继续调整策略。",
+          ),
+        }
+      : {
+          project: join(
+            "Try a simple reasoning-and-investigation activity and observe which step attracts the child's interest.",
+            "尝试一个结合思考与调查的小任务，观察孩子更愿意参与其中哪个环节。",
+          ),
+          observation: join(
+            "Observe which part of the activity the child voluntarily chooses, repeats, or wishes to investigate further.",
+            "观察孩子主动选择、重复或希望继续调查的具体环节。",
+          ),
+        };
+
   const behaviourEvidence = selectedEvidence.map((item) => {
     const label = K912_DOMAIN_LABELS[item.domain];
 
+    const responseMeaning = {
+      1: join(
+        "Little interest expressed in this activity at present.",
+        "目前对这一活动表达的兴趣较低。",
+      ),
+      2: join(
+        "A relatively low level of interest expressed at present.",
+        "目前表达的兴趣相对较低。",
+      ),
+      3: join(
+        "Interest is uncertain and worth exploring further.",
+        "当前兴趣尚不明确，值得通过实际体验进一步观察。",
+      ),
+      4: join(
+        "A positive level of interest expressed in this activity.",
+        "目前对这一活动表达了较积极的兴趣。",
+      ),
+      5: join(
+        "A strong level of interest expressed in this activity.",
+        "目前对这一活动表达了较强的兴趣。",
+      ),
+    }[item.responseValue];
+
     return join(
-      `${label.en} · ${item.facet.en} · ${item.responseValue}/5. This is a real item-level interest response and supports the current report interpretation without being treated as an ability judgment.`,
-      `${label.zh} · ${item.facet.zh} · ${item.responseValue}/5。这个结果来自真实题目回应，为当前兴趣解释提供具体证据，但不代表能力判断。`,
+      `${label.en} · ${item.facet.en} · ${item.responseValue}/5. Assessment item: "${item.prompt.en}". ${responseMeaning.en}`,
+      `${label.zh} · ${item.facet.zh} · ${item.responseValue}/5。对应题目：“${item.prompt.zh}”。${responseMeaning.zh}`,
     );
   });
 
   const backgroundInterestItems = facts.ranking
-    .slice(2)
+    .slice(3)
     .map((domain) =>
       join(
-        `${K912_DOMAIN_LABELS[domain].en} · ${Math.round(facts.scores[domain])}: ${K912_DOMAIN_PACKS[domain].interpretation.en}`,
-        `${K912_DOMAIN_LABELS[domain].zh} · ${Math.round(facts.scores[domain])}：${K912_DOMAIN_PACKS[domain].interpretation.zh}`,
+        `${K912_DOMAIN_LABELS[domain].en} · ${Math.round(facts.scores[domain])}/100. Domain activity description, not evidence of strong current interest: ${K912_DOMAIN_PACKS[domain].interpretation.en}`,
+        `${K912_DOMAIN_LABELS[domain].zh} · ${Math.round(facts.scores[domain])}/100。以下描述的是该领域包含的活动，并非孩子当前有较强兴趣的证明：${K912_DOMAIN_PACKS[domain].interpretation.zh}`,
       ),
     );
 
@@ -149,7 +265,10 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
       paragraphs: [
         combinationPack.combinationSummary,
         combinationPack.whyThisCombinationMatters,
-        combinationPack.childReflection,
+        join(
+          `${thirdLabel.en} ranks third at ${Math.round(facts.scores[thirdDomain])}/100. This is a supplementary exploration signal, not a proven ability or permanent strength.`,
+          `${thirdLabel.zh}位列本次兴趣排序第三，得分${Math.round(facts.scores[thirdDomain])}/100。这是值得通过真实活动继续观察的补充兴趣信号，不代表能力或稳定优势。`,
+        ),
       ],
       blocks: [
         {
@@ -159,7 +278,34 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
             `${K912_DOMAIN_LABELS[combination.primary].en} + ${K912_DOMAIN_LABELS[combination.secondary].en}`,
             `${K912_DOMAIN_LABELS[combination.primary].zh}＋${K912_DOMAIN_LABELS[combination.secondary].zh}`,
           ),
-          paragraphs: [combinationPack.combinationSummary],
+          paragraphs: [
+            join(
+              combination.key === "think-discover"
+                ? `The current interest scores are Think ${Math.round(facts.scores.think)}/100 and Discover ${Math.round(facts.scores.discover)}/100. Selected item responses: ${selectedEvidence.map((item) => `${item.facet.en} ${item.responseValue}/5`).join("; ")}. ${thinkDiscoverFacetAdvice.en} ${facts.leadingCluster.includes("think") && facts.leadingCluster.includes("discover")
+                  ? "These interests belong to the same recorded leading cluster; their ranking should not be treated as a stable preference difference."
+                  : "The ranking reflects current responses, not a fixed or permanent preference."} These are interest signals, not ability findings.`
+                : `The current responses highlight ${K912_DOMAIN_LABELS[combination.primary].en} and ${K912_DOMAIN_LABELS[combination.secondary].en} as leading interest areas. This report uses the six-domain results and individual item responses to explore how these interests may interact in activities.`,
+              combination.key === "think-discover"
+                ? `本次兴趣分数为思考${Math.round(facts.scores.think)}/100、探索${Math.round(facts.scores.discover)}/100。精选题目回应包括：${selectedEvidence.map((item) => `${item.facet.zh}${item.responseValue}/5`).join("；")}。${thinkDiscoverFacetAdvice.zh}${facts.leadingCluster.includes("think") && facts.leadingCluster.includes("discover")
+                  ? "思考与探索同属本次结果中的领先兴趣组，不宜仅凭排序判断稳定偏好。"
+                  : "当前排序仅反映本次兴趣回应，不代表固定或永久的兴趣偏好。"}这些结果是兴趣线索，不代表能力判断。`
+                : `本次回答中，孩子当前较突出的兴趣方向为${K912_DOMAIN_LABELS[combination.primary].zh}与${K912_DOMAIN_LABELS[combination.secondary].zh}。报告将结合六领域结果与具体题目回应，进一步说明这两个方向可能如何共同影响活动选择。`,
+            ),
+          ],
+        },
+        {
+          id: "executive-third-interest",
+          kind: "paragraph",
+          title: join(
+            "Third interest · supplementary exploration",
+            "第三兴趣 · 补充探索方向",
+          ),
+          paragraphs: [
+            join(
+              `${thirdLabel.en} is third at ${Math.round(facts.scores[thirdDomain])}/100. Explore whether interest persists during real activities; this result does not establish ability or lasting strength.`,
+              `${thirdLabel.zh}位列第三，得分${Math.round(facts.scores[thirdDomain])}/100。应通过真实活动观察参与兴趣是否持续，不能据此认定能力或稳定优势。`,
+            ),
+          ],
         },
         {
           id: "executive-meaning",
@@ -169,15 +315,6 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
             "现在最值得关注什么",
           ),
           paragraphs: [combinationPack.whyThisCombinationMatters],
-        },
-        {
-          id: "executive-child-question",
-          kind: "reflection",
-          title: join(
-            "A question for the child",
-            "给孩子的问题",
-          ),
-          paragraphs: [combinationPack.childReflection],
         },
       ],
     },
@@ -257,16 +394,16 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
           ),
           items: [
             join(
-              `First–second gap: ${facts.firstSecondGap.toFixed(1)}`,
-              `第一与第二差距：${facts.firstSecondGap.toFixed(1)}`,
+              `First–second gap: ${Math.round(facts.firstSecondGap)}`,
+              `第一与第二差距：${Math.round(facts.firstSecondGap)}`,
             ),
             join(
-              `Second–third gap: ${facts.secondThirdGap.toFixed(1)}`,
-              `第二与第三差距：${facts.secondThirdGap.toFixed(1)}`,
+              `Second–third gap: ${Math.round(facts.secondThirdGap)}`,
+              `第二与第三差距：${Math.round(facts.secondThirdGap)}`,
             ),
             join(
-              `Overall spread: ${facts.overallSpread.toFixed(1)}`,
-              `六维整体跨度：${facts.overallSpread.toFixed(1)}`,
+              `Overall spread: ${Math.round(facts.overallSpread)}`,
+              `六维整体跨度：${Math.round(facts.overallSpread)}`,
             ),
           ],
         },
@@ -276,50 +413,58 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
     {
       id: "highlighted-interest-drivers",
       title: K912_SECTION_TITLES[4],
-      paragraphs: [
-        primaryProfessional.coreDefinition,
-        primaryProfessional.typicalExpression,
-        primaryProfessional.engagementConditions,
-        primaryProfessional.lowerEngagementConditions,
-      ],
-      blocks: [
-        {
-          id: "primary-definition",
-          kind: "callout",
-          title: join(
-            `${K912_DOMAIN_LABELS[combination.primary].en} · Current Primary Interest`,
-            `${K912_DOMAIN_LABELS[combination.primary].zh} · 当前主要兴趣方向`,
-          ),
-          paragraphs: [primaryProfessional.coreDefinition],
-        },
-        {
-          id: "primary-real-world",
-          kind: "bullet-list",
-          title: join(
-            "How this interest may appear in real activities",
-            "这种兴趣可能怎样出现在真实活动中",
-          ),
-          items: [primaryProfessional.typicalExpression],
-        },
-        {
-          id: "primary-engagement",
-          kind: "bullet-list",
-          title: join(
-            "Conditions that may support engagement",
-            "什么环境更容易激活这种兴趣",
-          ),
-          items: [primaryProfessional.engagementConditions],
-        },
-        {
-          id: "primary-lower-engagement",
-          kind: "bullet-list",
-          title: join(
-            "Conditions that may reduce visible engagement",
-            "什么环境可能降低兴趣表现",
-          ),
-          items: [primaryProfessional.lowerEngagementConditions],
-        },
-      ],
+      paragraphs: topThreeDomains.flatMap((domain) => {
+        const professional = K912_DOMAIN_PACKS[domain].professional;
+        return [
+          professional.coreDefinition,
+          professional.typicalExpression,
+          professional.engagementConditions,
+          professional.lowerEngagementConditions,
+        ];
+      }),
+      blocks: topThreeDomains.flatMap((domain, index) => {
+        const professional = K912_DOMAIN_PACKS[domain].professional;
+        const label = K912_DOMAIN_LABELS[domain];
+        const rank = index + 1;
+        return [
+          {
+            id: `top-${rank}-definition`,
+            kind: "callout" as const,
+            title: join(
+              `${label.en} · Interest #${rank}`,
+              `${label.zh} · 第${rank}兴趣方向`,
+            ),
+            paragraphs: [professional.coreDefinition],
+          },
+          {
+            id: `top-${rank}-real-world`,
+            kind: "bullet-list" as const,
+            title: join(
+              `${label.en} · Real-world expressions`,
+              `${label.zh} · 现实活动中的兴趣表现`,
+            ),
+            items: [professional.typicalExpression],
+          },
+          {
+            id: `top-${rank}-engagement`,
+            kind: "bullet-list" as const,
+            title: join(
+              `${label.en} · Supporting conditions`,
+              `${label.zh} · 有利于参与的条件`,
+            ),
+            items: [professional.engagementConditions],
+          },
+          {
+            id: `top-${rank}-lower-engagement`,
+            kind: "bullet-list" as const,
+            title: join(
+              `${label.en} · Less supportive conditions`,
+              `${label.zh} · 可能降低参与的条件`,
+            ),
+            items: [professional.lowerEngagementConditions],
+          },
+        ];
+      }),
     },
 
     {
@@ -327,8 +472,8 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
       title: K912_SECTION_TITLES[5],
       paragraphs: [
         join(
-          "All 42 recorded responses remain traceable in the report data. The report selects a small number of real Facet Evidence points from the current Primary and Secondary interests.",
-          "全部42项真实回应仍完整保留并可以追溯。完整报告从当前主要兴趣和第二兴趣中选择少量真实Facet证据进行重点解释。",
+          "All 42 recorded responses remain traceable in the report data. The report selects a small number of real Facet Evidence points from the top three current interest domains.",
+          "全部42项真实回应仍完整保留并可以追溯。完整报告从当前排名前三的兴趣方向中选择少量真实Facet证据进行重点解释。",
         ),
         ...behaviourEvidence,
       ],
@@ -344,13 +489,43 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
           ],
         },
         {
-          id: "primary-facet-coverage",
+          id: "top-three-facet-coverage",
           kind: "bullet-list",
           title: join(
-            "Seven-facet coverage of the primary interest",
-            "主要兴趣方向的七个兴趣侧面",
+            "Seven-facet coverage across the top three interests",
+            "前三兴趣方向的七个兴趣侧面",
           ),
-          items: [primaryProfessional.facetCoverage],
+          items: topThreeDomains.map((domain) => {
+            const professional = K912_DOMAIN_PACKS[domain].professional;
+            const label = K912_DOMAIN_LABELS[domain];
+            return join(
+              `${label.en}\n${professional.facetCoverage.en}`,
+              `${label.zh}\n${professional.facetCoverage.zh}`,
+            );
+          }),
+        },
+        {
+          id: "personalized-facet-interpretation",
+          kind: "paragraph",
+          title: join(
+            "What the selected responses suggest",
+            "精选回应说明了什么",
+          ),
+          paragraphs: topThreeDomains.map((domain) => {
+            const evidence = selectedEvidence.filter((item) => item.domain === domain);
+            const first = evidence[0];
+            const second = evidence[1];
+            const label = K912_DOMAIN_LABELS[domain];
+
+            if (!first || !second) {
+              throw new Error(`K912 missing selected Facet evidence for ${domain}`);
+            }
+
+            return join(
+              `${label.en}: The child responded ${first.responseValue}/5 to ${first.facet.en} and ${second.responseValue}/5 to ${second.facet.en}. These are two selected current interest responses, not proof of observed behaviour or ability. Try an activity involving these processes and observe which part the child voluntarily returns to.`,
+              `${label.zh}：本次对“${first.facet.zh}”的兴趣回应为${first.responseValue}/5，对“${second.facet.zh}”的兴趣回应为${second.responseValue}/5。这两项是本次精选的兴趣线索，并不代表其他侧面没有兴趣，也不能证明已经具备相应能力。可以安排包含这些过程的小任务，观察孩子更愿意主动选择、重复或继续其中哪个环节。`,
+            );
+          }),
         },
         {
           id: "selected-facet-evidence",
@@ -423,8 +598,8 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
           kind: "paragraph",
           paragraphs: [
             join(
-              "The remaining four domains are not discarded. They provide context for how broad or concentrated the current interest map is.",
-              "其余四个兴趣方向并没有被排除，它们用于帮助理解当前兴趣地图是更集中还是更广泛。",
+              "The remaining three domains are not discarded. They provide context for how broad or concentrated the current interest map is.",
+              "其余三个兴趣方向并没有被排除，它们用于帮助理解当前兴趣地图是更集中还是更广泛。",
             ),
           ],
         },
@@ -447,6 +622,7 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
         combinationPack.suitableEnvironment,
         primaryPack.explorationEnvironment,
         secondaryPack.explorationEnvironment,
+        thirdPack.explorationEnvironment,
       ],
       blocks: [
         {
@@ -476,6 +652,15 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
           ),
           paragraphs: [secondaryPack.explorationEnvironment],
         },
+        {
+          id: "third-exploration-environment",
+          kind: "paragraph",
+          title: join(
+            `${thirdLabel.en} · Additional exploration environment`,
+            `${thirdLabel.zh} · 补充探索环境`,
+          ),
+          paragraphs: [thirdPack.explorationEnvironment],
+        },
       ],
     },
 
@@ -484,9 +669,9 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
       title: K912_SECTION_TITLES[9],
       paragraphs: [
         combinationPack.projectSuggestions,
-        primaryProfessional.quickExploration,
-        primaryProfessional.miniProject,
-        primaryProfessional.deeperExploration,
+        thirdProfessional.quickExploration,
+        thirdProfessional.miniProject,
+        thirdProfessional.deeperExploration,
       ],
       blocks: [
         {
@@ -498,32 +683,49 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
           ),
           items: [combinationPack.projectSuggestions],
         },
+        ...(combination.key === "think-discover"
+          ? [{
+              id: "personalized-facet-project",
+              kind: "project" as const,
+              title: join(
+                "Personalized exploration focus",
+                "本次个性化探索重点",
+              ),
+              items: [thinkDiscoverAction.project],
+            }]
+          : []),
+        ...(combination.key === "discover-build"
+          ? [{
+              id: "personalized-facet-project",
+              kind: "project" as const,
+              title: join(
+                "Personalized exploration focus",
+                "本次个性化探索重点",
+              ),
+              items: [discoverBuildAction.project],
+            }]
+          : []),
         {
-          id: "quick-exploration",
+          id: "third-exploration-projects",
           kind: "project",
           title: join(
-            "Quick Exploration",
-            "快速体验",
+            `${thirdLabel.en} · Optional exploration`,
+            `${thirdLabel.zh} · 补充探索建议`,
           ),
-          paragraphs: [primaryProfessional.quickExploration],
-        },
-        {
-          id: "mini-project",
-          kind: "project",
-          title: join(
-            "1–2 Week Mini Project",
-            "1–2周短期项目",
-          ),
-          paragraphs: [primaryProfessional.miniProject],
-        },
-        {
-          id: "deeper-exploration",
-          kind: "project",
-          title: join(
-            "4–8 Week Deeper Exploration",
-            "4–8周深入探索",
-          ),
-          paragraphs: [primaryProfessional.deeperExploration],
+          items: [
+            join(
+              `Quick: ${thirdProfessional.quickExploration.en}`,
+              `快速体验：${thirdProfessional.quickExploration.zh}`,
+            ),
+            join(
+              `Mini: ${thirdProfessional.miniProject.en}`,
+              `短期项目：${thirdProfessional.miniProject.zh}`,
+            ),
+            join(
+              `Deep: ${thirdProfessional.deeperExploration.en}`,
+              `深入探索：${thirdProfessional.deeperExploration.zh}`,
+            ),
+          ],
         },
       ],
     },
@@ -534,10 +736,10 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
       paragraphs: [
         combinationPack.childReflection,
         combinationPack.parentObservation,
-        primaryProfessional.childReflection,
-        primaryProfessional.parentObservation,
-        secondaryProfessional.childReflection,
-        secondaryProfessional.parentObservation,
+        (combination.key === "think-discover" ? THINK_DISCOVER_PARENT_OBSERVATION.primary : primaryProfessional.parentObservation),
+        (combination.key === "think-discover" ? THINK_DISCOVER_PARENT_OBSERVATION.secondary : secondaryProfessional.parentObservation),
+        thirdProfessional.childReflection,
+        thirdProfessional.parentObservation,
       ],
       blocks: [
         {
@@ -559,31 +761,13 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
           items: [combinationPack.parentObservation],
         },
         {
-          id: "primary-child-reflection",
-          kind: "reflection",
-          title: join(
-            `${K912_DOMAIN_LABELS[combination.primary].en} reflection`,
-            `${K912_DOMAIN_LABELS[combination.primary].zh}方向 · 孩子问题`,
-          ),
-          items: [primaryProfessional.childReflection],
-        },
-        {
           id: "primary-parent-observation",
           kind: "observation",
           title: join(
             `${K912_DOMAIN_LABELS[combination.primary].en} observation`,
             `${K912_DOMAIN_LABELS[combination.primary].zh}方向 · 家长观察`,
           ),
-          items: [primaryProfessional.parentObservation],
-        },
-        {
-          id: "secondary-child-reflection",
-          kind: "reflection",
-          title: join(
-            `${K912_DOMAIN_LABELS[combination.secondary].en} reflection`,
-            `${K912_DOMAIN_LABELS[combination.secondary].zh}方向 · 孩子问题`,
-          ),
-          items: [secondaryProfessional.childReflection],
+          items: [(combination.key === "think-discover" ? THINK_DISCOVER_PARENT_OBSERVATION.primary : primaryProfessional.parentObservation)],
         },
         {
           id: "secondary-parent-observation",
@@ -592,7 +776,47 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
             `${K912_DOMAIN_LABELS[combination.secondary].en} observation`,
             `${K912_DOMAIN_LABELS[combination.secondary].zh}方向 · 家长观察`,
           ),
-          items: [secondaryProfessional.parentObservation],
+          items: [(combination.key === "think-discover" ? THINK_DISCOVER_PARENT_OBSERVATION.secondary : secondaryProfessional.parentObservation)],
+        },
+        ...(combination.key === "think-discover"
+          ? [{
+              id: "personalized-facet-observation",
+              kind: "observation" as const,
+              title: join(
+                "Personalized parent observation",
+                "本次个性化家长观察",
+              ),
+              items: [thinkDiscoverAction.observation],
+            }]
+          : []),
+        ...(combination.key === "discover-build"
+          ? [{
+              id: "personalized-facet-observation",
+              kind: "observation" as const,
+              title: join(
+                "Personalized parent observation",
+                "本次个性化家长观察",
+              ),
+              items: [discoverBuildAction.observation],
+            }]
+          : []),
+        {
+          id: "third-child-reflection",
+          kind: "reflection",
+          title: join(
+            `${thirdLabel.en} · Child reflection for exploration`,
+            `${thirdLabel.zh} · 补充兴趣的孩子自我反思`,
+          ),
+          items: [thirdProfessional.childReflection],
+        },
+        {
+          id: "third-parent-observation",
+          kind: "observation",
+          title: join(
+            `${thirdLabel.en} · Parent observation for exploration`,
+            `${thirdLabel.zh} · 补充兴趣的家长观察`,
+          ),
+          items: [thirdProfessional.parentObservation],
         },
       ],
     },
@@ -603,8 +827,9 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
       paragraphs: [
         K912_MASTER_TEMPLATE.evidence,
         K912_MASTER_TEMPLATE.jointReading,
-        primaryProfessional.commonMisreads,
-        primaryProfessional.interpretationBoundary,
+        ...topThreeDomains.map(
+          (domain) => K912_DOMAIN_PACKS[domain].professional.commonMisreads
+        ),
         combinationPack.interpretationBoundary,
         K912_INTERPRETATION_BOUNDARIES,
       ],
@@ -622,22 +847,15 @@ export function generateK912ProfessionalReport(facts: K912ReportFacts): Generate
           ],
         },
         {
-          id: "primary-common-misreads",
+          id: "top-three-common-misreads",
           kind: "boundary",
           title: join(
-            "Common misreads to avoid",
-            "常见误读",
+            "Common misreads across the top three interests",
+            "前三兴趣方向的常见误读",
           ),
-          paragraphs: [primaryProfessional.commonMisreads],
-        },
-        {
-          id: "primary-boundary",
-          kind: "boundary",
-          title: join(
-            "Primary-interest boundary",
-            "主要兴趣方向的解释边界",
+          paragraphs: topThreeDomains.map(
+            (domain) => K912_DOMAIN_PACKS[domain].professional.commonMisreads
           ),
-          paragraphs: [primaryProfessional.interpretationBoundary],
         },
         {
           id: "combination-boundary",

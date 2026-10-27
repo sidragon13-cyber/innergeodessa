@@ -11,10 +11,12 @@ import {
 } from "@/components/report";
 import { useLocale } from "@/components/locale";
 import {
-  assembleK912ReportSections,
+  assembleK912ReportChapters,
   type AssembledK912ReportBlock,
   type AssembledK912ReportSection,
 } from "@/data/kids/report/k912/assembly";
+import { assembleK912Content1025 } from "@/data/kids/report/k912-1025/runtime-assembly";
+import originalK912Tables from "@/data/kids/report/k912-1025/group02-original-tables.json";
 import { K912_DOMAIN_LABELS } from "@/data/kids/report/k912/types";
 import type { GeneratedK912ProfessionalReport } from "@/data/kids/report/k912/generator";
 
@@ -1883,6 +1885,81 @@ function K912SectionUsesFullWidth(
   );
 }
 
+
+type K9121025DisplayBlock =
+  | { kind: "paragraph"; text: string }
+  | { kind: "table"; rows: readonly (readonly string[])[] };
+
+function restoreK9121025ChapterTables(
+  chapterNumber: number,
+  paragraphs: readonly string[],
+): readonly K9121025DisplayBlock[] {
+  const tables = originalK912Tables.tables.filter(
+    (table) =>
+      table.chapter === String(chapterNumber) &&
+      [6, 7, 9, 11].includes(table.sourceTable),
+  );
+
+  const normalize = (value: string) =>
+    value.replace(/\\s+/g, "").trim();
+
+  const positions = new Map<
+    number,
+    { length: number; rows: readonly (readonly string[])[] }
+  >();
+
+  for (const table of tables) {
+    const cells = table.rows.flat();
+    const matches: number[] = [];
+
+    for (let start = 0; start <= paragraphs.length - cells.length; start++) {
+      if (cells.every(
+        (cell, offset) =>
+          normalize(paragraphs[start + offset]) === normalize(cell),
+      )) {
+        matches.push(start);
+      }
+    }
+
+    if (matches.length !== 1) {
+      throw new Error(
+        `K912 source table ${table.sourceTable}: expected one match, got ${matches.length}`,
+      );
+    }
+
+    const start = matches[0];
+
+    for (const [otherStart, previous] of positions) {
+      if (
+        start < otherStart + previous.length &&
+        otherStart < start + cells.length
+      ) {
+        throw new Error("K912 source tables overlap");
+      }
+    }
+
+    positions.set(start, { length: cells.length, rows: table.rows });
+  }
+
+  const blocks: K9121025DisplayBlock[] = [];
+
+  for (let index = 0; index < paragraphs.length;) {
+    const table = positions.get(index);
+
+    if (table) {
+      blocks.push({ kind: "table", rows: table.rows });
+      index += table.length;
+    } else {
+      blocks.push({
+        kind: "paragraph",
+        text: paragraphs[index++],
+      });
+    }
+  }
+
+  return blocks;
+}
+
 export function K912ProfessionalReportDocument({
   report,
 }: {
@@ -1893,10 +1970,34 @@ export function K912ProfessionalReportDocument({
   const reportLocale = locale === "zh" ? "zh" : "en";
   const isZh = reportLocale === "zh";
 
-  const sections = assembleK912ReportSections(
+  const legacyChapters = assembleK912ReportChapters(
     report,
     reportLocale,
   );
+
+  // K912-1025: never expose unapproved or incomplete content.
+  // English remains on the existing verified report path.
+  let verified1025:
+    | ReturnType<typeof assembleK912Content1025>
+    | null = null;
+
+  if (isZh) {
+    try {
+      const candidate = assembleK912Content1025(report.facts);
+      verified1025 = candidate;
+    } catch {
+      // The content binder intentionally rejects unapproved assets.
+      verified1025 = null;
+    }
+  }
+
+  const chapters = verified1025 && isZh
+    ? verified1025.chapters.map((chapter) => ({
+        id: `k912-1025-${chapter.number}`,
+        title: chapter.title,
+        sections: [],
+      }))
+    : legacyChapters;
 
   const primary = report.combination.primary;
   const secondary = report.combination.secondary;
@@ -2009,35 +2110,90 @@ export function K912ProfessionalReportDocument({
             ? "K912专业报告目录"
             : "K912 Professional Report table of contents"
         }
-        items={sections.map((section, index) => ({
-          id: section.id,
-          anchor: section.id,
+        items={chapters.map((chapter, index) => ({
+          id: chapter.id,
+          anchor: chapter.id,
           order: index + 1,
-          title: section.title,
+          title: chapter.title,
         }))}
         title={isZh ? "报告目录" : "Table of Contents"}
         description={
           isZh
-            ? "十二个部分依次解释测试结果、主要兴趣、真实证据、兴趣组合、探索方向以及亲子观察。"
-            : "Twelve sections move from results and primary interest through real evidence, interest combination, exploration and parent-child observation."
+            ? "八个章节依次解释测试结果、主要兴趣、真实证据、兴趣组合、探索方向以及亲子观察。"
+            : "Eight chapters move from results and primary interest through real evidence, interest combination, exploration and parent-child observation."
         }
       />
 
+      {/* K912_1025_RENDER_BRANCH_V1 */}
+      {verified1025 && isZh ? (
+        <div className="personality-report-sections mt-10 space-y-10">
+          {verified1025.chapters.map((chapter) => (
+            <ReportSection
+              key={`k912-1025-${chapter.number}`}
+              id={`k912-1025-${chapter.number}`}
+              order={chapter.number}
+              sectionLabel={`第 ${String(chapter.number).padStart(2, "0")} 章`}
+              title={chapter.title}
+              blocks={[
+                {
+                  id: `k912-1025-${chapter.number}-content`,
+                  label: "专业解读",
+                  content: (
+                    <div className="space-y-4">
+                      {restoreK9121025ChapterTables(
+                        chapter.number,
+                        chapter.paragraphs,
+                      ).map((block, index) =>
+                        block.kind === "table" ? (
+                          <div key={index} className="overflow-x-auto">
+                            <table className="w-full border-collapse text-sm">
+                              <tbody>
+                                {block.rows.map((row, rowIndex) => (
+                                  <tr key={rowIndex}>
+                                    {row.map((cell, cellIndex) => (
+                                      <td
+                                        key={cellIndex}
+                                        className="border border-slate-300 p-3 align-top"
+                                      >
+                                        {cell}
+                                      </td>
+                                    ))}
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        ) : (
+                          <p key={index} className="leading-8">
+                            {block.text}
+                          </p>
+                        ),
+                      )}
+                    </div>
+                  ),
+                },
+              ]}
+              tableOfContentsId={TABLE_OF_CONTENTS_ID}
+              backToContentsLabel="返回目录"
+            />
+          ))}
+        </div>
+      ) : (
       <div className="personality-report-sections mt-10 space-y-10">
-        {sections.map((section, index) => (
+        {chapters.map((chapter, index) => (
           <ReportSection
-            key={section.id}
-            id={section.id}
+            key={chapter.id}
+            id={chapter.id}
             order={index + 1}
             sectionLabel={
               isZh
-                ? `第 ${String(index + 1).padStart(2, "0")} 部分`
-                : `Section ${String(index + 1).padStart(2, "0")}`
+                ? `第 ${String(index + 1).padStart(2, "0")} 章`
+                : `Chapter ${String(index + 1).padStart(2, "0")}`
             }
-            title={section.title}
-            blocks={[
-              {
+            title={chapter.title}
+            blocks={chapter.sections.map((section) => ({
                 id: `${section.id}-content`,
+                title: section.title !== chapter.title ? section.title : undefined,
                 label: isZh
                   ? "专业解读"
                   : "Professional Interpretation",
@@ -2046,7 +2202,7 @@ export function K912ProfessionalReportDocument({
                     ? "max-w-none"
                     : undefined,
                 content: (
-                  <div className="space-y-6">
+                  <div className="space-y-6" data-k912-section-id={section.id}>
                     {section.blocks.length
                       ? (
                           <K912SectionBlockLayout
@@ -2117,8 +2273,7 @@ export function K912ProfessionalReportDocument({
                         )}
                   </div>
                 ),
-              },
-            ]}
+              }))}
             tableOfContentsId={TABLE_OF_CONTENTS_ID}
             backToContentsLabel={
               isZh ? "返回目录" : "Back to contents"
@@ -2126,6 +2281,7 @@ export function K912ProfessionalReportDocument({
           />
         ))}
       </div>
+      )}
 
       <footer className="mt-12 border-t border-[#c8c2b5] pt-7 text-sm leading-7 text-[#6d746b]">
         <p>InnerGeo Kids · {report.reportVersion}</p>

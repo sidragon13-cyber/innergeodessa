@@ -1,0 +1,329 @@
+{
+  "release": "K912-1025",
+  "scope": "K912 professional report content runtime only",
+  "created_at_utc": "2026-10-27T20:50:51.557916+00:00",
+  "asset_sha256_before_authorization": "384aeee932e123848d730adb7aab09486fe255dd84d009dd82e473d59de1d30e",
+  "fixed70_count": 15,
+  "variable30_count": 60,
+  "test_evidence": {
+    "forward": "60/60 PASS",
+    "reverse": "60/60 PASS",
+    "tie_safety": "60/60 PASS",
+    "production_guard": "PASS",
+    "smoke_exit_status": 0
+  },
+  "authorization_status": "APPLIED_LOCAL_PENDING_SESSION_QA",
+  "records": [
+    {
+      "asset": "01-G00",
+      "previous_approval": "SOURCE_RECOVERED_NOT_APPROVED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "01-G10",
+      "previous_approval": "SOURCE_RECOVERED_NOT_APPROVED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "01-G20",
+      "previous_approval": "SOURCE_RECOVERED_NOT_APPROVED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "01-G30",
+      "previous_approval": "SOURCE_RECOVERED_NOT_APPROVED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "02-G00",
+      "previous_approval": "PENDING_REPAIRED_SOURCE_RECONCILIATION",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "02-G10",
+      "previous_approval": "PENDING_REPAIRED_SOURCE_RECONCILIATION",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "02-G20",
+      "previous_approval": "PENDING_REPAIRED_SOURCE_RECONCILIATION",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "02-G30",
+      "previous_approval": "PENDING_REPAIRED_SOURCE_RECONCILIATION",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "03-G00",
+      "previous_approval": "PENDING_REPAIRED_SOURCE_RECONCILIATION",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "03-G10",
+      "previous_approval": "PENDING_REPAIRED_SOURCE_RECONCILIATION",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "03-G20",
+      "previous_approval": "PENDING_REPAIRED_SOURCE_RECONCILIATION",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "03-G30",
+      "previous_approval": "PENDING_REPAIRED_SOURCE_RECONCILIATION",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "04-G00",
+      "previous_approval": "PENDING_REPAIRED_SOURCE_RECONCILIATION",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "04-G10",
+      "previous_approval": "PENDING_REPAIRED_SOURCE_RECONCILIATION",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "04-G20",
+      "previous_approval": "PENDING_REPAIRED_SOURCE_RECONCILIATION",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "04-G30",
+      "previous_approval": "PENDING_REPAIRED_SOURCE_RECONCILIATION",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "05-G00",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "05-G10",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "05-G20",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "05-G30",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "06-G00",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "06-G10",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "06-G20",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "06-G30",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "07-G00",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "07-G10",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "07-G20",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "07-G30",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "08-G00",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "08-G10",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "08-G20",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "08-G30",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "09-G00",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "09-G10",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "09-G20",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "09-G30",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "10-G00",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "10-G10",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "10-G20",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "10-G30",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "11-G00",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "11-G10",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "11-G20",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "11-G30",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "12-G00",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "12-G10",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "12-G20",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "12-G30",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "13-G00",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "13-G10",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "13-G20",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "13-G30",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "14-G00",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "14-G10",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "14-G20",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "14-G30",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "15-G00",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "15-G10",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "15-G20",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    },
+    {
+      "asset": "15-G30",
+      "previous_approval": "SOURCE_IMPORTED_NOT_RUNTIME_VALIDATED",
+      "requested_approval": "APPROVED"
+    }
+  ],
+  "protected": [
+    "K68",
+    "Paystack",
+    "Save CTA",
+    "Accounts",
+    "Entitlements",
+    "Backend",
+    "Database"
+  ],
+  "asset_sha256_after_authorization": "c10309e175f3c56a976714c5e3f11d2ce17b523948939afc62a6e596dcd1f44f",
+  "approval_applied_count": 60
+}
