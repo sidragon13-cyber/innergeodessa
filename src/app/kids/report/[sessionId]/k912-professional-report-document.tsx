@@ -16,7 +16,7 @@ import {
   type AssembledK912ReportSection,
 } from "@/data/kids/report/k912/assembly";
 import { assembleK912Content1025 } from "@/data/kids/report/k912-1025/runtime-assembly";
-import originalK912Tables from "@/data/kids/report/k912-1025/group02-original-tables.json";
+import group01Tables from "@/data/kids/report/k912-1025/group01-restored-tables.json";
 import { K912_DOMAIN_LABELS } from "@/data/kids/report/k912/types";
 import type { GeneratedK912ProfessionalReport } from "@/data/kids/report/k912/generator";
 
@@ -1888,76 +1888,435 @@ function K912SectionUsesFullWidth(
 
 type K9121025DisplayBlock =
   | { kind: "paragraph"; text: string }
-  | { kind: "table"; rows: readonly (readonly string[])[] };
+  | { kind: "table"; rows: string[][] };
 
-function restoreK9121025ChapterTables(
-  chapterNumber: number,
-  paragraphs: readonly string[],
-): readonly K9121025DisplayBlock[] {
-  const tables = originalK912Tables.tables.filter(
-    (table) =>
-      table.chapter === String(chapterNumber) &&
-      [6, 7, 9, 11].includes(table.sourceTable),
-  );
-
-  const normalize = (value: string) =>
-    value.replace(/\\s+/g, "").trim();
-
-  const positions = new Map<
-    number,
-    { length: number; rows: readonly (readonly string[])[] }
-  >();
-
-  for (const table of tables) {
-    const cells = table.rows.flat();
-    const matches: number[] = [];
-
-    for (let start = 0; start <= paragraphs.length - cells.length; start++) {
-      if (cells.every(
-        (cell, offset) =>
-          normalize(paragraphs[start + offset]) === normalize(cell),
-      )) {
-        matches.push(start);
-      }
-    }
-
-    if (matches.length !== 1) {
-      throw new Error(
-        `K912 source table ${table.sourceTable}: expected one match, got ${matches.length}`,
-      );
-    }
-
-    const start = matches[0];
-
-    for (const [otherStart, previous] of positions) {
-      if (
-        start < otherStart + previous.length &&
-        otherStart < start + cells.length
-      ) {
-        throw new Error("K912 source tables overlap");
-      }
-    }
-
-    positions.set(start, { length: cells.length, rows: table.rows });
-  }
-
-  const blocks: K9121025DisplayBlock[] = [];
-
-  for (let index = 0; index < paragraphs.length;) {
-    const table = positions.get(index);
-
-    if (table) {
-      blocks.push({ kind: "table", rows: table.rows });
-      index += table.length;
-    } else {
-      blocks.push({
-        kind: "paragraph",
-        text: paragraphs[index++],
+// Tables are reconstructed from this group's exact authoritative text, never Group01 cells.
+function restoreK9121025ChapterTables(group: string, chapter: number, paragraphs: readonly string[]): K9121025DisplayBlock[] {
+  const definitions = group === "01"
+    ? group01Tables.tables.filter(t => Number(t.chapter) === chapter).map(t => ({ lines: t.sourceLines, rows: t.rows }))
+    : (() => {
+      const headers: Record<number, { cells: string[]; rowCount: number }> = {
+        3: { cells: ["日常体验", "可持续的爱好", "开放项目与进一步探索"], rowCount: 2 },
+        4: { cells: ["活动资源", "对应过程", "推荐理由与观察目标"], rowCount: 4 },
+        5: { cells: ["时间阶段", "家长提供的选择", "可观察的过程"], rowCount: 5 },
+      };
+      const def = headers[chapter];
+      if (!def) return [];
+      const found: { lines: string[]; rows: string[][] }[] = [];
+      paragraphs.forEach((_, i) => {
+        if (!def.cells.every((cell, offset) => paragraphs[i + offset] === cell)) return;
+        const lines = paragraphs.slice(i, i + def.cells.length * def.rowCount);
+        if (lines.length !== def.cells.length * def.rowCount || lines.some(line => !line.trim())) throw new Error(`Group ${group}: incomplete table in chapter ${chapter}`);
+        const rows = Array.from({ length: def.rowCount }, (_, row) => lines.slice(row * def.cells.length, (row + 1) * def.cells.length));
+        found.push({ lines, rows });
       });
+      if (found.length !== (chapter === 3 ? 2 : 1)) throw new Error(`Group ${group}: missing source table in chapter ${chapter}`);
+      return found;
+    })();
+  const matches = new Map<number, { lines: readonly string[]; rows: string[][] }>();
+  for (const definition of definitions) {
+    const positions: number[] = [];
+    for (let i = 0; i <= paragraphs.length - definition.lines.length; i++) {
+      if (definition.lines.every((line, j) => line === paragraphs[i + j])) positions.push(i);
     }
+    if (positions.length !== 1) throw new Error(`Group ${group}: table in chapter ${chapter} requires one exact match, got ${positions.length}`);
+    const index = positions[0];
+    for (const [other, table] of matches) if (index < other + table.lines.length && other < index + definition.lines.length) throw new Error(`Group ${group}: overlapping tables`);
+    matches.set(index, definition);
   }
-
+  const blocks: K9121025DisplayBlock[] = [];
+  for (let i = 0; i < paragraphs.length;) {
+    const table = matches.get(i);
+    if (table) { blocks.push({ kind: "table", rows: table.rows }); i += table.lines.length; }
+    else { blocks.push({ kind: "paragraph", text: paragraphs[i++] }); }
+  }
   return blocks;
+}
+
+function K9121025ReportDocument({ report }: { readonly report: GeneratedK912ProfessionalReport }) {
+  let assembled: ReturnType<typeof assembleK912Content1025>;
+  let chapters: (ReturnType<typeof assembleK912Content1025>["chapters"][number] & {
+    displayBlocks: K9121025DisplayBlock[];
+  })[];
+  try {
+    assembled = assembleK912Content1025(report.facts);
+    chapters = assembled.chapters.map(chapter => ({
+      ...chapter,
+      displayBlocks: restoreK9121025ChapterTables(assembled.group, chapter.number, chapter.paragraphs),
+    }));
+  } catch {
+    // Let the existing framework error boundary handle failure; never present legacy
+    // content as 1025 or expose source paths, tokens, or session data in an error.
+    throw new Error("K912报告暂时无法显示，请稍后重试。");
+  }
+  const { scores, ranking } = report.facts;
+  const rankLabel = (domain: (typeof ranking)[number]) => {
+    const rank = 1 + ranking.filter(other => scores[other] > scores[domain]).length;
+    const tied = ranking.filter(other => scores[other] === scores[domain]).length > 1;
+    return `${tied ? "并列" : ""}第${rank}位`;
+  };
+  return (
+    <main className="k912-print-layout min-h-screen bg-[#eaf2f9] text-[#213b56]">
+      {/* K912_PRINT_LAYOUT_V1 */}
+      <style>{`
+        @media print {
+          @page {
+            size: A4;
+            margin: 12mm;
+
+            @top-left {
+              content: "INNERGEO KIDS";
+              color: #164374;
+              font-size: 9pt;
+              padding-left: 2mm;
+              padding-right: 2mm;
+              background: #f1f7fc;
+              border-bottom: 0.25mm solid #b8d7ec;
+            }
+
+            @top-right {
+              content: "K912 儿童兴趣测试报告";
+              color: #426c90;
+              font-size: 8pt;
+              padding-left: 2mm;
+              padding-right: 2mm;
+              background: #f1f7fc;
+              border-bottom: 0.25mm solid #b8d7ec;
+            }
+
+            @bottom-left {
+              content: "更懂自己，生活更美好。";
+              color: #6487a8;
+              font-size: 8pt;
+              padding-left: 2mm;
+              border-top: 0.25mm solid #b8d7ec;
+            }
+
+            @bottom-right {
+              content: counter(page, decimal-leading-zero);
+              color: #164374;
+              font-size: 8pt;
+              padding-right: 2mm;
+              border-top: 0.25mm solid #b8d7ec;
+            }
+          }
+
+          html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            background: white !important;
+          }
+
+          .k912-print-layout {
+            background: white !important;
+            color: #213b56 !important;
+          }
+
+          .k912-print-layout > div {
+            max-width: none !important;
+            padding: 0 !important;
+          }
+
+          .k912-print-layout header {
+            min-height: 0 !important;
+            height: 255mm !important;
+            margin: 0 !important;
+            padding: 18mm !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            break-after: page !important;
+            box-sizing: border-box !important;
+          }
+
+          .k912-print-layout section {
+            margin: 0 0 5mm !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            break-before: auto !important;
+            break-inside: auto !important;
+          }
+
+
+          .k912-print-layout section h2 {
+            font-size: 16pt !important;
+            line-height: 1.4 !important;
+            margin-bottom: 5mm !important;
+            break-after: avoid !important;
+          }
+
+          .k912-print-layout section h3 {
+            font-size: 11pt !important;
+            line-height: 1.4 !important;
+            margin-top: 5mm !important;
+            margin-bottom: 2mm !important;
+            break-after: avoid !important;
+          }
+
+          .k912-print-layout section p {
+            font-size: 9.5pt !important;
+            line-height: 1.55 !important;
+            margin: 0 !important;
+            orphans: 3;
+            widows: 3;
+          }
+
+          .k912-print-layout section .space-y-4 {
+            row-gap: 2.5mm !important;
+          }
+
+          /* K912 GROUP01 / BODY TYPOGRAPHY V1 */
+          .k912-print-layout section h2 {
+            color: #164374 !important;
+            font-weight: 700 !important;
+            padding-bottom: 2mm !important;
+            border-bottom: 0.3mm solid #c5dcec !important;
+          }
+
+          .k912-print-layout section h3 {
+            color: #24577f !important;
+            font-weight: 650 !important;
+          }
+
+          .k912-print-layout section table {
+            width: 100% !important;
+            border-collapse: collapse !important;
+            break-inside: avoid !important;
+          }
+
+          .k912-print-layout section thead {
+            display: table-header-group;
+          }
+
+          .k912-print-layout section tr {
+            break-inside: avoid !important;
+          }
+        }
+      `}</style>
+      <div className="mx-auto max-w-4xl px-5 py-12">
+        <div className="mb-6 print:hidden">
+          <ReportPrintButton label="打印 / 保存 PDF" guidance="使用浏览器打印功能打印或保存本报告。" />
+        </div>
+                  {/* K912_G4A_COMPLETE_QA_COVER */}
+          <header className="relative mb-10 isolate overflow-hidden rounded-[24px] border border-[#bfd8ec] bg-gradient-to-b from-white via-[#edf7ff] to-[#d9ecfc] p-8 shadow-sm print:break-after-page print:rounded-none print:shadow-none">
+
+            {/* K912 COVER VISUAL: decorative only; no report data */}
+            <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[230px] overflow-hidden">
+              <svg
+                viewBox="0 0 900 270"
+                preserveAspectRatio="xMidYMid slice"
+                className="h-full w-full"
+              >
+                <defs>
+                  <linearGradient id="k912-cover-sky" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#ffffff" />
+                    <stop offset="65%" stopColor="#e5f3ff" />
+                    <stop offset="100%" stopColor="#b9d9f5" />
+                  </linearGradient>
+                  <linearGradient id="k912-cover-mountain" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#7eafe0" />
+                    <stop offset="100%" stopColor="#d8ebfa" />
+                  </linearGradient>
+                </defs>
+                <rect width="900" height="270" fill="url(#k912-cover-sky)" />
+                <circle cx="775" cy="56" r="42" fill="#fff8e9" opacity=".75" />
+                <path d="M390 250 L590 65 L680 162 L755 50 L900 245 Z"
+                      fill="url(#k912-cover-mountain)" />
+                <path d="M545 110 L590 65 L624 126 L593 113 L578 128 Z"
+                      fill="#ffffff" opacity=".95" />
+                <path d="M714 108 L755 50 L805 126 L763 108 L748 120 Z"
+                      fill="#ffffff" opacity=".95" />
+                <path d="M290 270 L505 150 L645 245 L760 156 L900 260 L900 270 Z"
+                      fill="#b8d8f0" opacity=".65" />
+                <path d="M0 255 Q220 207 425 258 T900 246 L900 270 L0 270 Z"
+                      fill="#e9f5ff" opacity=".8" />
+              </svg>
+            </div>
+
+            <div className="relative z-10">
+              <p className="text-xs font-bold tracking-[0.2em] text-[#547fa5]">
+                INNERGEO KIDS · K912
+              </p>
+              <p className="mt-1 text-xs text-[#547fa5]">
+                更懂自己，生活更美好。
+              </p>
+
+              <h1 className="mt-5 text-[27px] font-bold leading-tight text-[#164374]">
+                K912 儿童兴趣测试报告
+              </h1>
+
+              <p className="mt-3 border-b border-[#8eb4d1] pb-4 text-sm text-[#426c90]">
+                9–12 岁儿童｜六维兴趣发展与个性化探索分析
+              </p>
+
+              <p className="mt-4 rounded-md bg-[#e7f1fa] px-3 py-2 text-xs font-semibold text-[#29587c]">
+                InnerGeo Kids · {assembled.contentVersion}
+              </p>
+
+              <p className="mt-4 text-xs leading-6 text-[#456985]">
+                本报告通过六维兴趣得分、兴趣组合分析与适龄活动建议，
+                帮助家长理解孩子当前的活动参与偏好。
+                分数不代表智力、能力或未来职业倾向。
+              </p>
+
+              <h2 className="mt-5 text-base font-bold text-[#164374]">
+                当前兴趣概览｜六维结果
+              </h2>
+
+              <table className="mt-2 w-full border-collapse text-sm">
+                <thead>
+                  <tr className="bg-[#dceaf6] text-[#164374]">
+                    <th className="border border-[#b8d1e5] px-3 py-2 text-left">
+                      兴趣领域
+                    </th>
+                    <th className="border border-[#b8d1e5] px-3 py-2 text-left">
+                      本次得分
+                    </th>
+                    <th className="border border-[#b8d1e5] px-3 py-2 text-left">
+                      名次
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ranking.map((domain, index) => (
+                    <tr key={domain} className={index % 2 === 0 ? "bg-white/80" : "bg-[#e7f1fa]/80"}>
+                      <td className="border border-[#b8d1e5] px-3 py-1.5">
+                        {K912_DOMAIN_LABELS[domain].zh}
+                      </td>
+                      <td className="border border-[#b8d1e5] px-3 py-1.5">
+                        <div className="flex items-center gap-3">
+                          <div className="h-2 flex-1 overflow-hidden rounded-full bg-[#dceaf6]">
+                            <div
+                              className="h-full rounded-full bg-[#398bd2]"
+                              style={{
+                                width: `${scores[domain as keyof typeof scores]}%`,
+                              }}
+                            />
+                          </div>
+                          <span className="w-8 text-right font-semibold text-[#164374]">
+                            {scores[domain as keyof typeof scores]}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="border border-[#b8d1e5] px-3 py-1.5">
+                        {rankLabel(domain)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <h2 className="mt-5 text-base font-bold text-[#164374]">
+                主要兴趣结构｜个性化摘要
+              </h2>
+
+              <p className="mt-2 border-l-[3px] border-[#79a9cc] bg-white/80 px-3 py-2 text-xs leading-6 text-[#365a79]">
+                {assembled.slots.P1_SUMMARY}
+              </p>
+
+              <h2 className="mt-5 text-base font-bold text-[#164374]">
+                报告目录
+              </h2>
+
+              <nav id={TABLE_OF_CONTENTS_ID} aria-label="K912专业报告目录" className="mt-2 grid grid-cols-2 gap-x-3 gap-y-2">
+                {assembled.chapters.map(chapter => (
+                  <a key={chapter.number} href={`#k912-1025-${chapter.number}`} className="text-xs leading-5 text-[#365a79]">
+                    {String(chapter.number).padStart(2, "0")} · {chapter.title.replace(/^0[1-8]\s*[｜|]\s*/, "")}
+                  </a>
+                ))}
+              </nav>
+            </div>
+
+            <div aria-hidden="true" className="pointer-events-none mt-4 h-16">
+              <svg viewBox="0 0 1000 150" preserveAspectRatio="none" className="h-full w-full">
+                <path d="M0 135 L150 55 L250 110 L380 15 L540 130 L700 35 L840 120 L1000 55 L1000 150 L0 150Z" fill="#bfd5e8"/>
+                <path d="M0 145 L180 105 L350 145 L530 75 L720 140 L1000 100 L1000 150 L0 150Z" fill="#8fb5d2"/>
+              </svg>
+            </div>
+          </header>
+
+{chapters.map((heading) => {
+          const blocks = heading.displayBlocks;
+
+          return (
+            <section
+              key={heading.number}
+                id={`k912-1025-${heading.number}`}
+                data-k912-chapter={heading.number}
+              className="mb-8 rounded-[24px] border border-[#d9e6f2] bg-white p-8 shadow-sm print:break-before-auto print:rounded-none print:border-0 print:shadow-none"
+            >
+              <div className="mb-6 h-1 w-20 rounded-full bg-[#7aa7c9]" />
+              <h2 className="mb-7 text-2xl font-semibold">
+                {heading.title}
+              </h2>
+
+              <div className="space-y-4">
+                {blocks.map((block, index) => {
+                  if (block.kind === "table") {
+                    return (
+                      <table
+                        key={`table-${index}`}
+                        className="my-5 w-full border-collapse text-left text-sm print:break-inside-avoid"
+                      >
+                        <thead>
+                          <tr className="bg-[#e8f2fa]">
+                            {block.rows[0].map((cell, i) => (
+                              <th key={i} className="border border-[#c7ddeb] p-3 text-[#244d70]">
+                                {cell}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {block.rows.slice(1).map((row, rowIndex) => (
+                            <tr key={rowIndex}>
+                              {row.map((cell, cellIndex) => (
+                                <td
+                                  key={cellIndex}
+                                  className="border border-[#c7ddeb] p-3 align-top leading-6"
+                                >
+                                  {cell}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    );
+                  }
+
+                  const text = block.text;
+                  const isSubheading =
+                    /^\d+\.\d+\s*[｜|.]?/.test(text) ||
+                    /^(日常体验|可持续的爱好|开放项目与进一步探索|家长观察|活动资源)$/.test(text);
+
+                  return isSubheading ? (
+                    <h3 key={index} className="mt-7 border-l-[3px] border-[#79a9cc] pl-4 text-base font-semibold leading-7 text-[#244d70]">
+                      {text}
+                    </h3>
+                  ) : (
+                    <p key={index} className="text-sm leading-8 text-[#38536c]">
+                      {text}
+                    </p>
+                  );
+                })}
+              </div>
+
+              <a href={`#${TABLE_OF_CONTENTS_ID}`} className="mt-6 inline-block text-sm text-[#426c90] print:hidden">返回目录</a>
+
+            </section>
+          );
+        })}
+        <div className="print:hidden">
+          <ReportNavigation
+            primary={{ href: `/kids/result/${report.facts.sessionId}`, label: "返回免费结果" }}
+            secondary={{ href: "/kids", label: "儿童测评首页" }}
+          />
+        </div>
+      </div>
+    </main>
+  );
 }
 
 export function K912ProfessionalReportDocument({
@@ -1970,34 +2329,9 @@ export function K912ProfessionalReportDocument({
   const reportLocale = locale === "zh" ? "zh" : "en";
   const isZh = reportLocale === "zh";
 
-  const legacyChapters = assembleK912ReportChapters(
-    report,
-    reportLocale,
-  );
+  if (isZh) return <K9121025ReportDocument report={report} />;
 
-  // K912-1025: never expose unapproved or incomplete content.
-  // English remains on the existing verified report path.
-  let verified1025:
-    | ReturnType<typeof assembleK912Content1025>
-    | null = null;
-
-  if (isZh) {
-    try {
-      const candidate = assembleK912Content1025(report.facts);
-      verified1025 = candidate;
-    } catch {
-      // The content binder intentionally rejects unapproved assets.
-      verified1025 = null;
-    }
-  }
-
-  const chapters = verified1025 && isZh
-    ? verified1025.chapters.map((chapter) => ({
-        id: `k912-1025-${chapter.number}`,
-        title: chapter.title,
-        sections: [],
-      }))
-    : legacyChapters;
+  const chapters = assembleK912ReportChapters(report, reportLocale);
 
   const primary = report.combination.primary;
   const secondary = report.combination.secondary;
@@ -2124,61 +2458,6 @@ export function K912ProfessionalReportDocument({
         }
       />
 
-      {/* K912_1025_RENDER_BRANCH_V1 */}
-      {verified1025 && isZh ? (
-        <div className="personality-report-sections mt-10 space-y-10">
-          {verified1025.chapters.map((chapter) => (
-            <ReportSection
-              key={`k912-1025-${chapter.number}`}
-              id={`k912-1025-${chapter.number}`}
-              order={chapter.number}
-              sectionLabel={`第 ${String(chapter.number).padStart(2, "0")} 章`}
-              title={chapter.title}
-              blocks={[
-                {
-                  id: `k912-1025-${chapter.number}-content`,
-                  label: "专业解读",
-                  content: (
-                    <div className="space-y-4">
-                      {restoreK9121025ChapterTables(
-                        chapter.number,
-                        chapter.paragraphs,
-                      ).map((block, index) =>
-                        block.kind === "table" ? (
-                          <div key={index} className="overflow-x-auto">
-                            <table className="w-full border-collapse text-sm">
-                              <tbody>
-                                {block.rows.map((row, rowIndex) => (
-                                  <tr key={rowIndex}>
-                                    {row.map((cell, cellIndex) => (
-                                      <td
-                                        key={cellIndex}
-                                        className="border border-slate-300 p-3 align-top"
-                                      >
-                                        {cell}
-                                      </td>
-                                    ))}
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        ) : (
-                          <p key={index} className="leading-8">
-                            {block.text}
-                          </p>
-                        ),
-                      )}
-                    </div>
-                  ),
-                },
-              ]}
-              tableOfContentsId={TABLE_OF_CONTENTS_ID}
-              backToContentsLabel="返回目录"
-            />
-          ))}
-        </div>
-      ) : (
       <div className="personality-report-sections mt-10 space-y-10">
         {chapters.map((chapter, index) => (
           <ReportSection
@@ -2281,7 +2560,6 @@ export function K912ProfessionalReportDocument({
           />
         ))}
       </div>
-      )}
 
       <footer className="mt-12 border-t border-[#c8c2b5] pt-7 text-sm leading-7 text-[#6d746b]">
         <p>InnerGeo Kids · {report.reportVersion}</p>
