@@ -342,7 +342,7 @@ main#top .profile-section .profile-intro h2 em {
    ========================================================= */
 
 main#top .profile-section {
-  padding: 36px 0 112px;
+  padding: 36px 0 24px;
   background: var(--brand-background);
   color: var(--brand-text);
 }
@@ -579,7 +579,7 @@ main#top .inner-map-summary strong {
   }
 
   main#top .profile-section {
-    padding: 28px 0 86px;
+    padding: 28px 0 24px;
   }
 
   main#top .explore-shell,
@@ -2326,5 +2326,136 @@ main#top .methodology-teaser-link:hover strong {
   .methodology-page .legal-hero h1 {
     font-size: clamp(38px, 11vw, 50px);
     line-height: 1.06;
+  }
+}
+
+
+
+/* HOME-02B: Centered single-column brand hero */
+main#top .hero {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 500px;
+}
+
+main#top .hero-copy {
+  width: 100%;
+  max-width: 1080px;
+  margin-inline: auto;
+  padding: 68px clamp(28px, 5vw, 72px);
+}
+
+main#top .hero h1 {
+  max-width: 940px;
+  font-size: clamp(46px, 5vw, 72px);
+  line-height: 1.12;
+}
+
+main#top .hero h1 em {
+  display: inline-block;
+  margin-top: 8px;
+}
+
+main#top .hero-intro {
+  max-width: 660px;
+}
+
+@media (max-width: 700px) {
+  main#top .hero {
+    min-height: auto;
+  }
+
+  main#top .hero-copy {
+    padding: 52px 24px;
+  }
+
+  main#top .hero h1 {
+    font-size: clamp(40px, 10vw, 54px);
+  }
+}
+
+
+/* HOME-03C: Explore section spacing and alignment */
+main#top .explore-section {
+  padding-top: 48px;
+}
+
+main#top .explore-shell {
+  width: min(100%, 1200px);
+  margin-inline: auto;
+  padding-inline: clamp(24px, 4vw, 56px);
+}
+
+
+/* HOME-03D: Unified four-product grid */
+@media (min-width: 701px) {
+  main#top .experience-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+main#top .experience-card#zodiac {
+  grid-column: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 390px;
+  column-gap: normal;
+}
+
+main#top .experience-card#zodiac .card-topline,
+main#top .experience-card#zodiac .card-copy,
+main#top .experience-card#zodiac .card-footer {
+  grid-column: auto;
+  grid-row: auto;
+}
+
+main#top .experience-card#zodiac .card-copy {
+  align-self: stretch;
+  max-width: none;
+  margin: 46px 0 38px;
+}
+
+main#top .experience-card#zodiac .card-footer {
+  align-self: stretch;
+  margin-top: auto;
+}
+
+@media (max-width: 700px) {
+  main#top .experience-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+
+/* HOME-03E: Brand philosophy section */
+main#top .brand-philosophy {
+  padding: clamp(42px, 5vw, 72px);
+  border: 1.5px solid var(--brand-border);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+main#top .brand-philosophy .profile-intro {
+  max-width: 900px;
+}
+
+main#top .brand-philosophy .profile-intro h2 {
+  max-width: 900px;
+  color: var(--brand-text);
+  line-height: 1.18;
+}
+
+main#top .brand-philosophy .profile-intro h2 em {
+  color: var(--brand-gold-dark);
+}
+
+main#top .brand-philosophy .profile-intro p {
+  max-width: 780px;
+  color: var(--brand-muted);
+  line-height: 1.9;
+}
+
+@media (max-width: 700px) {
+  main#top .brand-philosophy {
+    padding: 32px 24px;
   }
 }

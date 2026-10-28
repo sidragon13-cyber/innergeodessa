@@ -113,8 +113,8 @@ export const uiDictionaries: Record<
     home: {
       hero: {
         eyebrow: "Understand yourself · Explore direction",
-        title: "Understand Yourself.",
-        emphasizedTitle: "Find Your Direction.",
+        title: "Know Yourself Better.",
+        emphasizedTitle: "Live Better.",
         description:
           "Explore yourself through three structured assessments—Personality, Career Interests and Kids Interests—alongside an independent Zodiac Interests experience.",
         primaryAction: "Start Exploring",
@@ -154,11 +154,11 @@ export const uiDictionaries: Record<
         },
       },
       profile: {
-        eyebrow: "Different explorations, connected",
-        title: "Every exploration",
-        emphasizedTitle: "helps you see a little more of yourself.",
+        eyebrow: "INNERGEO · BEYOND THE ASSESSMENT",
+        title: "Self-discovery goes beyond assessments.",
+        emphasizedTitle: "It touches every part of life.",
         description:
-          "Personality, Career Interests, Kids Interests and Zodiac Interests do not define you. Each exploration offers a new perspective, helping you connect the clues and gradually form your own Inner Map.",
+          "From interests and work to friendships, family and love, we experience different choices, relationships and emotions every day. Understanding our personality, interests, needs and inner feelings can help us recognize our preferences and expectations, understand how we relate to others, and explore a way of living that suits us.",
         exampleLabel: "Inner Map preview",
         personalityLabel: "Personality",
         careerLabel: "Career Interests",
@@ -238,8 +238,8 @@ export const uiDictionaries: Record<
     home: {
       hero: {
         eyebrow: "认识自己 · 探索方向",
-        title: "认识自己，",
-        emphasizedTitle: "找到更适合的方向。",
+        title: "更好地了解自己，",
+        emphasizedTitle: "获得更好的生活。",
         description:
           "通过人格、职业兴趣与儿童兴趣三类结构化测评，以及独立的星座兴趣探索，从不同角度理解自己、发现兴趣，并找到更清晰的方向。",
         primaryAction: "开始探索",
@@ -279,11 +279,11 @@ export const uiDictionaries: Record<
         },
       },
       profile: {
-        eyebrow: "不同探索，彼此连接",
-        title: "每一次探索，",
-        emphasizedTitle: "都让你多看见一点自己。",
+        eyebrow: "INNERGEO · 不止于测评",
+        title: "认识自己，",
+        emphasizedTitle: "从生活的每一个方面开始。",
         description:
-          "人格、职业兴趣、儿童兴趣与星座兴趣不会替你定义自己。每一次探索只是提供一个新的视角，帮助你慢慢连接线索，形成属于自己的 Inner Map。",
+          "从兴趣与工作，到朋友、家庭与爱情，我们每天都在经历不同的选择、关系与情绪。了解自己的性格、兴趣、需求与内心感受，有助于我们更清楚地认识自己的偏好与期待，理解与他人的相处方式，并探索适合自己的生活节奏。",
         exampleLabel: "Inner Map 预览",
         personalityLabel: "人格探索",
         careerLabel: "职业兴趣",

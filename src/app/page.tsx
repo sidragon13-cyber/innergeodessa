@@ -22,9 +22,9 @@ export default function Home() {
     <main id="top">
       <SiteHeader />
       <Hero />
-      <HomeTrustMetrics />
-
       <HomeExploreSection />
+
+      <HomeTrustMetrics />
 
       <HomeProfileSection />
 

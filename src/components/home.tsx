@@ -3,7 +3,6 @@
 import Link from "next/link";
 
 import {
-  BrandHeroVisual,
   BrandLogo,
   BrandTrustStrip,
 } from "@/components/brand";
@@ -153,7 +152,6 @@ export function Hero() {
         </div>
       </div>
 
-      <BrandHeroVisual locale={locale} />
     </Container>
   );
 }
@@ -457,70 +455,20 @@ export function HomeProfileSection() {
       spacing="large"
       className="profile-section"
     >
-      <Container
-        size="wide"
-        className="profile-shell"
-      >
-        <div className="inner-map-card">
-          <div className="inner-map-copy">
-            <SectionHeading
-              eyebrow={profile.eyebrow}
-              title={
-                <>
-                  {profile.title}
-                  <br />
-                  <em>{profile.emphasizedTitle}</em>
-                </>
-              }
-              description={<p>{profile.description}</p>}
-              className="profile-intro"
-            />
-          </div>
-
-          <div className="inner-map-preview">
-            <div
-              className="inner-map-grid"
-              aria-hidden="true"
-            />
-
-            <svg
-              className="inner-map-connections"
-              viewBox="0 0 620 440"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path d="M142 105C212 118 246 158 310 220" />
-              <path d="M478 105C410 122 372 164 310 220" />
-              <path d="M145 334C216 319 252 278 310 220" />
-              <path d="M478 334C410 316 372 272 310 220" />
-              <circle cx="310" cy="220" r="7" />
-            </svg>
-
-            <div className="inner-map-node inner-map-node-personality">
-              <span>01</span>
-              <strong>{profile.personalityLabel}</strong>
-            </div>
-
-            <div className="inner-map-node inner-map-node-career">
-              <span>02</span>
-              <strong>{profile.careerLabel}</strong>
-            </div>
-
-            <div className="inner-map-node inner-map-node-kids">
-              <span>03</span>
-              <strong>{profile.kidsLabel}</strong>
-            </div>
-
-            <div className="inner-map-node inner-map-node-zodiac">
-              <span>04</span>
-              <strong>{profile.zodiacLabel}</strong>
-            </div>
-
-            <div className="inner-map-summary">
-              <p>{profile.mapTitle}</p>
-              <strong>{profile.mapStatus}</strong>
-            </div>
-          </div>
+      <Container size="wide" className="profile-shell">
+        <div className="brand-philosophy">
+          <SectionHeading
+            eyebrow={profile.eyebrow}
+            title={
+              <>
+                {profile.title}
+                <br />
+                <em>{profile.emphasizedTitle}</em>
+              </>
+            }
+            description={<p>{profile.description}</p>}
+            className="profile-intro"
+          />
         </div>
       </Container>
     </Section>

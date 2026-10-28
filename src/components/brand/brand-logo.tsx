@@ -199,7 +199,7 @@ export function BrandTrustStrip({
     locale === "zh"
       ? {
           eyebrow: "InnerGeo 是什么",
-          title: "在线自我探索与数字测评平台",
+          title: "从探索到理解，简单清晰。",
           description:
             "InnerGeo 提供人格、职业兴趣、儿童兴趣等结构化测评，以及独立的星座兴趣探索。用户可在线完成探索、获得结果，并选择购买更深入的数字报告，用于理解自己、发现兴趣与探索方向。",
           flow:
@@ -207,28 +207,28 @@ export function BrandTrustStrip({
           services: [
             {
               number: "01",
-              title: "在线测评",
+              title: "开始探索",
               description:
-                "完成结构化问卷或引导式探索体验，获得个人结果与基础解读。",
+                "选择适合的探索项目，完成在线问卷或引导体验。",
             },
             {
               number: "02",
-              title: "数字报告",
+              title: "查看结果",
               description:
-                "可选购更深入的数字报告，获得扩展解读、个人洞察与方向参考。",
+                "获得个人结果，了解主要偏好、兴趣及探索线索。",
             },
             {
               number: "03",
-              title: "自我探索",
+              title: "深入理解",
               description:
-                "帮助理解性格、兴趣与可能的方向，用于个人探索与反思，不提供医学或心理诊断。",
+                "根据需要解锁深入数字报告，获得更完整的解读。",
             },
           ],
         }
       : {
           eyebrow: "What InnerGeo Does",
           title:
-            "Online Self-Discovery & Digital Assessment Platform",
+            "From Exploration to Understanding.",
           description:
             "InnerGeo provides structured assessments for personality, career interests and kids interests, alongside a separate Zodiac Interests experience. Users complete assessments online, receive results, and can purchase in-depth digital reports for self-understanding, interest discovery and direction exploration.",
           flow:
@@ -236,21 +236,21 @@ export function BrandTrustStrip({
           services: [
             {
               number: "01",
-              title: "Online Assessments",
+              title: "Start Exploring",
               description:
-                "Complete structured questionnaires or guided exploration experiences and receive personal results with introductory explanations.",
+                "Choose an exploration path and complete an online questionnaire or guided experience.",
             },
             {
               number: "02",
-              title: "Digital Reports",
+              title: "View Your Results",
               description:
-                "Optional paid digital reports provide deeper interpretation, personal insights and direction-oriented guidance.",
+                "Receive your personal results and explore key preferences, interests and discovery clues.",
             },
             {
               number: "03",
-              title: "Self-Discovery",
+              title: "Go Deeper",
               description:
-                "Designed for personal exploration and reflection. InnerGeo does not provide medical or psychological diagnosis.",
+                "Unlock an optional in-depth digital report for more detailed interpretation and insights.",
             },
           ],
         };
@@ -276,9 +276,6 @@ export function BrandTrustStrip({
           {content.description}
         </p>
 
-        <p className="brand-purpose-flow">
-          {content.flow}
-        </p>
       </div>
 
       <div className="brand-purpose-services">
